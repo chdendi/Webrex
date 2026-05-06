@@ -43,7 +43,7 @@ const { title, hook, body, bullets, takeaway } = Astro.props;
     <div class="grid gap-3 mt-2 sm:grid-cols-3">
       {bullets.map((b) => (
         <div
-          class="rounded-[10px] border p-4 flex flex-col gap-2"
+          class="rounded-2xl border p-4 flex flex-col gap-2 transition-shadow hover:shadow-md"
           style="background: var(--color-surface); border-color: var(--color-border);"
         >
           {b.emoji && <span class="text-3xl leading-none">{b.emoji}</span>}
@@ -62,7 +62,7 @@ const { title, hook, body, bullets, takeaway } = Astro.props;
 
   {takeaway && (
     <div
-      class="rounded-[10px] p-4 mt-2"
+      class="rounded-2xl p-4 mt-2"
       style="background: var(--color-surface-muted); border-left: 3px solid var(--color-accent);"
     >
       <div class="text-[10px] font-semibold uppercase tracking-wider mb-2" style="color: var(--color-text-faint);">

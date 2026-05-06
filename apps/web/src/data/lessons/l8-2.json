@@ -1,0 +1,85 @@
+{
+	"id": "l8-2",
+	"level": 8,
+	"sublevel": 2,
+	"categoryIcon": "📱",
+	"categoryName": "响应式与移动端",
+	"title": "viewport meta 与「字超小/超大」之谜",
+	"time": 4,
+	"track": "core",
+	"needsLab": false,
+	"stuck": "Elements 面板里搜 viewport 搜不到？在 <head> 区找 <meta name=\"viewport\" 标签，通常在 <title> 后面。",
+	"steps": [
+		{
+			"slug": "concept",
+			"type": "concept",
+			"title": "一行 meta 决定手机上的字大还是字小",
+			"hook": "同一个网页，在手机上打开有时字小到要捏合放大，有时字大小刚好。这一行代码就决定了结果。",
+			"body": [
+				"手机浏览器默认假设页面是为 980px 宽的桌面屏幕设计的，所以会把页面缩小来完整显示——结果就是字变成蚂蚁大小，用户必须双指捏合放大才能阅读。",
+				"<meta name=\"viewport\" content=\"width=device-width, initial-scale=1\"> 告诉手机浏览器：「别用 980px，用手机屏幕的实际宽度来渲染，缩放比例保持 1:1」。",
+				"initial-scale=1 确保页面不会自动缩放。width=device-width 让布局以真实手机宽度为基准。现代网站几乎必须带这行 meta，否则移动端体验极差。"
+			],
+			"bullets": [
+				{
+					"emoji": "📏",
+					"title": "width=device-width",
+					"body": "视口宽度 = 手机屏幕物理宽度（CSS 像素）"
+				},
+				{
+					"emoji": "🔍",
+					"title": "initial-scale=1",
+					"body": "初始缩放比例 1:1，不放大也不缩小"
+				},
+				{
+					"emoji": "⚠️",
+					"title": "没有它会怎样",
+					"body": "页面按 980px 渲染后缩小——所有字变成蚂蚁大小"
+				}
+			],
+			"takeaway": "下一步：在 react.dev 的 Elements 面板里找到这行 meta 标签，读出它的 content 属性。"
+		},
+		{
+			"slug": "practice",
+			"type": "practice",
+			"title": "在 react.dev 里找到 viewport meta 标签",
+			"intro": "react.dev 是移动端友好的网站，它的 <head> 里一定藏着这行 viewport meta。用 Elements 面板的搜索功能定位它。",
+			"steps": [
+				"打开 react.dev。",
+				"按 `⌘+⌥+I` (Mac) / `F12` (Win/Linux) 打开 DevTools，确保你正在 **Elements** 面板。",
+				"在 Elements 面板中按 `⌘+F` (Mac) / `Ctrl+F` (Win/Linux) 打开搜索框。",
+				"输入 `viewport`，回车。Elements 面板会高亮显示匹配的 <meta> 标签——就在 <head> 区域里，<title> 标签的后面。",
+				"点击高亮的 <meta name=\"viewport\"> 标签，在右侧查看它的 **content** 属性值。",
+				"把这个 content 属性的完整内容抄下来（形如 `width=device-width, initial-scale=1` 的一段字符串）。"
+			],
+			"shortcuts": [
+				{
+					"label": "DevTools",
+					"mac": "⌘+⌥+I",
+					"win": "F12"
+				},
+				{
+					"label": "Elements 搜索",
+					"mac": "⌘+F",
+					"win": "Ctrl+F"
+				}
+			],
+			"expectedOutcome": "找到 <meta name=\"viewport\" content=\"width=device-width, initial-scale=1\">，看到了 width=device-width 和 initial-scale=1 两个关键配置。"
+		},
+		{
+			"slug": "verify",
+			"type": "verify",
+			"title": "react.dev 的 viewport meta 里写了什么？",
+			"prompt": "上一步你找到了 react.dev 的 <meta name=\"viewport\"> 标签。请把它的 content 属性内容粘贴到这里（所有字符）。",
+			"tier": "soft",
+			"expectedRegex": "(width=device-width|initial-scale)"
+		},
+		{
+			"slug": "ask-ai",
+			"type": "ask-ai",
+			"title": "问 AI：meta viewport 到底是什么",
+			"intro": "你找到了 react.dev 的 viewport meta 标签，现在让 AI 解释它的作用和移除它的后果。",
+			"template": "我在 react.dev 的 <head> 里找到了这行代码：\n\n<meta name=\"viewport\" content=\"width=device-width, initial-scale=1\">\n\n请帮我解释：\n1. 为什么手机浏览器默认会以 980px 的宽度渲染页面？这个 980px 是怎么来的？\n2. 如果把 width=device-width 删掉，只保留 initial-scale=1，在 iPhone 上会看到什么？\n3. 如果把 initial-scale=1 删掉，只保留 width=device-width，又会看到什么？\n4. 有没有其他有用的 viewport 配置项（比如 user-scalable）？"
+		}
+	]
+}

@@ -1,0 +1,95 @@
+{
+	"id": "l1-2",
+	"level": 1,
+	"sublevel": 2,
+	"categoryIcon": "🧭",
+	"categoryName": "开发者工具概览",
+	"title": "主请求的 5 个网络阶段（DNS → TCP → TLS → TTFB → Download）",
+	"time": 5,
+	"track": "core",
+	"needsLab": false,
+	"stuck": "Timing 标签是空的？刷新一下页面，浏览器需要重发一次请求才能记录时序。如果是 disk cache 命中也会没有 Timing 数据。",
+	"steps": [
+		{
+			"slug": "concept",
+			"type": "concept",
+			"title": "页面慢，到底慢在哪一段？",
+			"hook": "你按下回车到看到页面，浏览器其实做了 5 件事，每件都可能慢。如果只说「页面慢」，根本没法定位是谁的锅。",
+			"body": [
+				"Network 面板的 **Timing** 标签把这 5 段拆给你看，每段一个数字。",
+				"知道哪一段慢 = 知道找谁修：DNS 慢找运维、TTFB 慢找后端、Download 慢看带宽和资源体积。"
+			],
+			"bullets": [
+				{
+					"emoji": "🌐",
+					"title": "DNS Lookup",
+					"body": "把 react.dev 翻译成 IP 地址"
+				},
+				{
+					"emoji": "🤝",
+					"title": "Initial connection",
+					"body": "TCP 三次握手开通信通道"
+				},
+				{
+					"emoji": "🔒",
+					"title": "SSL",
+					"body": "HTTPS 加密协商（TLS 握手）"
+				},
+				{
+					"emoji": "⏳",
+					"title": "Waiting (TTFB)",
+					"body": "服务器在干活，等它的第一个字节"
+				},
+				{
+					"emoji": "📦",
+					"title": "Content Download",
+					"body": "把 HTML 体下载完"
+				}
+			],
+			"takeaway": "下一步在 react.dev 上录一次真实加载，看这 5 段各自花了多少 ms，再判断哪段最值得优化。"
+		},
+		{
+			"slug": "practice",
+			"type": "practice",
+			"title": "在 react.dev 上看主文档的 5 段时序",
+			"intro": "我们要刷新一次 react.dev，捕获主文档请求，看它的 Timing 拆分。",
+			"steps": [
+				"在新标签页打开 [react.dev](https://react.dev/)。",
+				"按 `F12` / `⌘+⌥+I` 打开 DevTools，切到 **Network** 面板。",
+				"顶部勾上 **Disable cache**（防止走缓存导致没有时序数据）。",
+				"按 `⌘+R` / `F5` 刷新页面。",
+				"请求列表里**第一行**就是主文档（Name 列叫 `react.dev` 或 `/`，Type 列是 `document`）。点它。",
+				"右侧面板切到 **Timing** 标签。你会看到一组色块，每段都标了名字和耗时（ms）。",
+				"下面这张表帮你认每个阶段的英文名和它慢通常意味着什么：\n\n| Timing 里的英文名 | 这段在干嘛 | 这段慢通常意味着 |\n| --- | --- | --- |\n| **DNS Lookup** | 把域名翻成 IP | DNS 服务器慢，或本地 DNS 缓存被清 |\n| **Initial connection** | TCP 握手开通信 | 用户离服务器物理远 / 中间网络拥堵 |\n| **SSL** | TLS 加密协商 | 证书或加密配置非最优 |\n| **Waiting for server response (TTFB)** | 服务端在处理 | **后端慢**——最常见的「页面慢」根因 |\n| **Content Download** | 把 HTML 下载完 | HTML 体太大，或带宽不足 |"
+			],
+			"shortcuts": [
+				{
+					"label": "DevTools",
+					"mac": "⌘+⌥+I",
+					"win": "F12"
+				},
+				{
+					"label": "刷新页面",
+					"mac": "⌘+R",
+					"win": "F5"
+				}
+			],
+			"expectedOutcome": "5 段时序数字都能看到。**TTFB**（Waiting for server response）通常是 react.dev 上最大的一段，因为它代表 Vercel 边缘节点和你之间的服务器响应时间。"
+		},
+		{
+			"slug": "verify",
+			"type": "verify",
+			"title": "你的 react.dev 主文档，最长那段叫什么？",
+			"prompt": "在 Timing 面板里找到 **数字最大** 的那个色块，把它的英文名粘贴进来。\n\nTiming 总共就这 5 个名字，照着抄即可：`DNS Lookup` / `Initial connection` / `SSL` / `Waiting for server response` / `Content Download`。",
+			"tier": "soft",
+			"expectedRegex": "(DNS Lookup|Initial connection|SSL|Waiting for server response|Content Download|TTFB|Waiting|Connection|Download|TCP|TLS|DNS)"
+		},
+		{
+			"slug": "ask-ai",
+			"type": "ask-ai",
+			"title": "问 AI：这些数字算正常吗？怎么再深查？",
+			"intro": "把 5 段时序的真实数字喂给 AI，让它判断是不是异常，并教你下一层排查方法。",
+			"template": "我刚在 react.dev 主文档请求的 Network → Timing 面板看到这 5 段时间：\n\n- DNS Lookup: [X] ms\n- Initial connection: [X] ms\n- SSL: [X] ms\n- Waiting for server response (TTFB): [X] ms\n- Content Download: [X] ms\n\n请帮我判断：\n1. 哪一段偏高？这种网站正常的「合理范围」大概是多少？\n2. 如果 TTFB 是几百毫秒，是后端慢、CDN 远、还是两者都有？怎么进一步定位？\n3. 在 DevTools 里除了 Timing 还有哪些工具能再深一层查源头？"
+		}
+	]
+}

@@ -1,0 +1,95 @@
+{
+	"id": "l2-4",
+	"level": 2,
+	"sublevel": 4,
+	"categoryIcon": "💬",
+	"categoryName": "Console",
+	"title": "copy() —— 把任何对象复制成 JSON（脱敏第二次练）",
+	"time": 3,
+	"track": "core",
+	"needsLab": true,
+	"stuck": "`copy()` 没反应？它只在 DevTools Console 里有用，是 DevTools 注入的全局函数，不是 JS 标准 API。如果你在自己代码里写 `copy(...)` 是没用的。另外 `copy()` 没有返回值，但**剪贴板里已经有内容了**——直接 `⌘+V` / `Ctrl+V` 粘到别处验证。",
+	"steps": [
+		{
+			"slug": "concept",
+			"type": "concept",
+			"title": "copy() —— 一行把任何 JS 值塞进剪贴板",
+			"hook": "你在 Console 里 `console.log` 出一个嵌套很深的对象，想把它发给同事。展开 → 选中 → 复制？复制出来还是 `[object Object]`。怎么办？",
+			"body": [
+				"`copy(value)` 是 Chrome DevTools 内置的工具函数。传任何东西进去——对象、数组、字符串、DOM 元素——它会自动把这个值序列化（对象数组走 `JSON.stringify` 美化版）然后塞进系统剪贴板。",
+				"比 `JSON.stringify(obj, null, 2)` + 在 Console 输出里手工选中复制要快得多，而且不会因为 Console 截断显示而丢字段。",
+				"但便利意味着风险：如果你 `copy()` 了一个含 `token` / `cookie` / 用户信息的对象，剪贴板里就是裸数据。下一步贴到聊天 / AI / 工单前，必须再过一次 Webrex 的 🛡 Redact。这次刚好用 lab 里一份预设的「像真的」用户数据来练第二遍脱敏。",
+				"下一步打开 lab，它会在 `localStorage[\"webrex.sample\"]` 里塞一个对象（含 email、JWT-like token、内网 URL），你用 `copy()` 一行拿到它，再走 Redact。"
+			],
+			"bullets": [
+				{
+					"emoji": "📋",
+					"title": "copy(x)",
+					"body": "DevTools 内置函数，把 x 序列化后放进剪贴板"
+				},
+				{
+					"emoji": "🚫",
+					"title": "无返回值",
+					"body": "Console 显示 `undefined`，但剪贴板里已经有内容"
+				},
+				{
+					"emoji": "🛡",
+					"title": "敏感数据先脱敏",
+					"body": "复制 token / cookie / 用户对象后，先过 Webrex Redact 再外发"
+				}
+			],
+			"takeaway": "下一步：在 lab 用 `copy(JSON.parse(localStorage.getItem('webrex.sample')))` 一行拿到一个含 email / token / 内网 URL 的对象，然后到 Webrex 顶栏 🛡 Redact 走第二遍脱敏。"
+		},
+		{
+			"slug": "practice",
+			"type": "practice",
+			"title": "copy() lab 数据 → Webrex Redact → 验证三类被替换",
+			"intro": "lab 页面在加载时把一个对象塞到 `localStorage[\"webrex.sample\"]`，含字段：`user`（一个 email）、`token`（以 `eyJ` 开头的 JWT 串）、`preferences`（一个偏好对象）、`internalUrl`（内网 URL）。我们用 `copy()` 一行把它整个拷走，然后过 Redact。",
+			"steps": [
+				"在新标签页打开 lab：[http://localhost:8787/lessons/l2-4](http://localhost:8787/lessons/l2-4)。等页面加载完。",
+				"按 `F12` / `⌘+⌥+I` 打开 DevTools，切到 **Console** 面板。",
+				"先看一眼这个对象长啥样——输入 `JSON.parse(localStorage.getItem('webrex.sample'))` 回车。Console 会展开一个对象，里面应该有 `user`、`token`、`preferences`、`internalUrl` 四个字段。点左侧三角 **▶** 展开确认。",
+				"现在用一行把它复制到剪贴板：输入 `copy(JSON.parse(localStorage.getItem('webrex.sample')))` 回车。Console 显示 `undefined`——别慌，`copy()` 没有返回值，但**剪贴板里已经有完整 JSON 了**。",
+				"（可选验证）打开一个文本编辑器（系统自带的「文本编辑」/ Notepad / VS Code 都行），按 `⌘+V` / `Ctrl+V` 粘出来看一眼。你应该看到一个格式化好的 JSON，包含 `\"user\": \"demo@webrex.dev\"`、`\"token\": \"eyJ...\"`、`\"internalUrl\": \"https://internal.webrex.dev/admin/dashboard\"`。",
+				"切回 Webrex 这个学习页面，点顶栏 **🛡 Redact** 按钮打开脱敏面板。",
+				"在上半区 **Paste original** 文本框里 `⌘+V` / `Ctrl+V` 粘贴。",
+				"粘贴完立即对照下表核对脱敏结果：\n\n| 原始字段 | 原始值大概样子 | 下半区脱敏后应替换为 |\n| --- | --- | --- |\n| `user` | `\"alice@example.com\"` | `<REDACTED_EMAIL>` |\n| `token` | `\"eyJhbGciOiJIUzI1NiIs...\"` | `<REDACTED_BEARER>` |\n| `internalUrl` | `\"https://internal.company.com/...\"` | `<REDACTED_INTERNAL_URL>` |\n| `preferences` | 一个普通偏好对象 | **保留原样**（不是敏感字段） |",
+				"顶部 chips 应至少出现 **3 个不同的标签**：`Email`、`Bearer`、`Internal URL`（顺序可能不同，可能还多出 chip）。",
+				"点下半区右上角 **Copy** 按钮，把脱敏后版本复制下来——下一步问 AI 用这一份。"
+			],
+			"shortcuts": [
+				{
+					"label": "DevTools",
+					"mac": "⌘+⌥+I",
+					"win": "F12"
+				},
+				{
+					"label": "粘贴",
+					"mac": "⌘+V",
+					"win": "Ctrl+V"
+				},
+				{
+					"label": "Console 清屏",
+					"mac": "⌘+K",
+					"win": "Ctrl+L"
+				}
+			],
+			"expectedOutcome": "你用一行 `copy()` 把一个真实形态的用户数据对象拿到剪贴板，并通过 Redact 看到 `token` → `<REDACTED_BEARER>`、email → `<REDACTED_EMAIL>`、内网 URL → `<REDACTED_INTERNAL_URL>` 三类被自动替换，而非敏感的 `preferences` 字段被原样保留。这就是「拿数据 → 脱敏 → 外发」的标准动作。"
+		},
+		{
+			"slug": "verify",
+			"type": "verify",
+			"title": "粘贴脱敏后 JSON 的一段，证明你走过了 Redact",
+			"prompt": "把 Redact 面板下半区 **Copy** 出来的**脱敏后** JSON，粘贴一段（哪怕只一两行也行）到下面。\n\n关键是文本里**必须包含 `<REDACTED_` 占位符**——这证明你确实走过了脱敏流程，而不是直接把原始数据贴出来。",
+			"tier": "soft",
+			"expectedRegex": "<REDACTED_"
+		},
+		{
+			"slug": "ask-ai",
+			"type": "ask-ai",
+			"title": "问 AI：从脱敏 JSON 反推业务结构",
+			"intro": "脱敏并不会丢失结构信息——字段名、嵌套层级都还在，只是值被替换成占位符。这就足够 AI 帮你分析「这个对象在业务上代表什么」。把脱敏后版本贴进下面模板。",
+			"template": "我从一个网页的 `localStorage` 里拿到一个 JSON 对象。我已经用脱敏工具处理过——文本里所有 `<REDACTED_EMAIL>` `<REDACTED_BEARER>` `<REDACTED_INTERNAL_URL>` 等占位符表示原本的敏感值（邮箱、token、内网 URL），结构和字段名是真实的。\n\n脱敏后 JSON 如下：\n\n```json\n（在这里粘贴 Redact 下半区 Copy 出来的脱敏版本）\n```\n\n请帮我分析：\n1. 按字段名和值类型，把这些字段分成几类：**用户身份类**、**会话/凭证类**、**用户偏好类**、**其他**。\n2. 这个对象整体看像是什么用途？（登录态缓存？用户配置？追踪数据？）\n3. 如果我是 QA / PM，从这个结构能猜到这个产品有哪些功能模块？\n4. 这种数据放在 `localStorage` 里有什么风险？哪些字段更适合放 `httpOnly` cookie？"
+		}
+	]
+}

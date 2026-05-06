@@ -1,5 +1,5 @@
 import { defineCollection, z } from 'astro:content';
-import { file } from 'astro/loaders';
+import { glob } from 'astro/loaders';
 
 const shortcutSchema = z.object({
   label: z.string(),
@@ -19,7 +19,7 @@ const conceptStep = z.object({
         emoji: z.string().optional(),
         title: z.string(),
         body: z.string().optional(),
-      })
+      }),
     )
     .optional(),
   takeaway: z.string().optional(),
@@ -54,15 +54,10 @@ const askAiStep = z.object({
   template: z.string(),
 });
 
-const stepSchema = z.discriminatedUnion('type', [
-  conceptStep,
-  practiceStep,
-  verifyStep,
-  askAiStep,
-]);
+const stepSchema = z.discriminatedUnion('type', [conceptStep, practiceStep, verifyStep, askAiStep]);
 
 const lessons = defineCollection({
-  loader: file('src/data/lessons.json'),
+  loader: glob({ pattern: '**/*.json', base: 'src/data/lessons' }),
   schema: z.object({
     id: z.string(),
     level: z.number().int().min(1).max(13),

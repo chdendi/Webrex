@@ -1,5 +1,7 @@
 ---
-interface Props { hint?: string }
+interface Props {
+  hint?: string;
+}
 const { hint } = Astro.props;
 if (!hint) return null as any;
 ---

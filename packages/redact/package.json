@@ -1,19 +1,24 @@
 {
-  "name": "@webrex/redact",
-  "version": "0.0.0",
-  "private": true,
-  "description": "Detect and scrub sensitive fields before sharing with AI",
-  "type": "module",
-  "exports": {
-    ".": {
-      "types": "./src/index.ts",
-      "import": "./src/index.ts"
-    }
-  },
-  "scripts": {
-    "typecheck": "tsc --noEmit"
-  },
-  "devDependencies": {
-    "typescript": "^5.6.3"
-  }
+	"name": "@webrex/redact",
+	"version": "0.0.0",
+	"private": true,
+	"description": "Detect and scrub sensitive fields before sharing with AI",
+	"type": "module",
+	"exports": {
+		".": {
+			"types": "./src/index.ts",
+			"import": "./src/index.ts"
+		}
+	},
+	"scripts": {
+		"typecheck": "tsc --noEmit",
+		"test": "vitest run",
+		"test:watch": "vitest",
+		"lint": "biome lint --error-on-warnings .",
+		"format": "biome format --write ."
+	},
+	"devDependencies": {
+		"typescript": "^5.6.3",
+		"vitest": "^4.1.5"
+	}
 }

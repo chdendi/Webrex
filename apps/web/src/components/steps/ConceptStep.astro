@@ -1,7 +1,11 @@
 ---
-import { mdGlossary as md, mdInlineGlossary as mdInline } from "~/lib/markdown";
+import { mdGlossary as md, mdInlineGlossary as mdInline } from '~/lib/markdown';
 
-interface BulletItem { emoji?: string; title: string; body?: string }
+interface BulletItem {
+  emoji?: string;
+  title: string;
+  body?: string;
+}
 interface Props {
   title: string;
   hook?: string;

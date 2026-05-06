@@ -1,13 +1,13 @@
 ---
-import "~/styles/global.css";
-import TopNav from "~/components/TopNav.astro";
-import Sidebar from "~/components/Sidebar.astro";
-import Footer from "~/components/Footer.astro";
-import type { CollectionEntry } from "astro:content";
+import '~/styles/global.css';
+import type { CollectionEntry } from 'astro:content';
+import Footer from '~/components/Footer.astro';
+import Sidebar from '~/components/Sidebar.astro';
+import TopNav from '~/components/TopNav.astro';
 
 interface Props {
-  current: CollectionEntry<"lessons">;
-  allLessons: CollectionEntry<"lessons">[];
+  current: CollectionEntry<'lessons'>;
+  allLessons: CollectionEntry<'lessons'>[];
   prevId?: string;
   nextId?: string;
   index: number;

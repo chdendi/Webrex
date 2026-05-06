@@ -1,11 +1,12 @@
 ---
-import VerifyCard from "../VerifyCard.tsx";
-import { md } from "~/lib/markdown";
+import { md } from '~/lib/markdown';
+import VerifyCard from '../VerifyCard.tsx';
+import ErrorBoundary from '../ErrorBoundary.tsx';
 
 interface Props {
   title: string;
   prompt: string;
-  tier: "hard" | "soft" | "self";
+  tier: 'hard' | 'soft' | 'self';
   expectedRegex?: string;
   labCheckEndpoint?: string;
 }
@@ -18,11 +19,13 @@ const promptHtml = md(prompt);
     {title}
   </h1>
 
-  <VerifyCard
-    client:load
-    tier={tier}
-    promptHtml={promptHtml}
-    expectedRegex={expectedRegex}
-    labEndpoint={labCheckEndpoint}
-  />
+  <ErrorBoundary client:load>
+    <VerifyCard
+      client:load
+      tier={tier}
+      promptHtml={promptHtml}
+      expectedRegex={expectedRegex}
+      labEndpoint={labCheckEndpoint}
+    />
+  </ErrorBoundary>
 </article>

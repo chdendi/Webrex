@@ -1,0 +1,99 @@
+{
+	"id": "l4-8",
+	"level": 4,
+	"sublevel": 8,
+	"categoryIcon": "🌍",
+	"categoryName": "网络 (Network)",
+	"title": "缓存与“为什么我改了没生效”",
+	"time": 5,
+	"track": "core",
+	"needsLab": true,
+	"stuck": "Network 面板 Size 列看不到 disk cache？确认顶部 'Disable cache' 没有勾选，然后刷新两次。",
+	"steps": [
+		{
+			"slug": "concept",
+			"type": "concept",
+			"title": "Network Size 列的四个面孔",
+			"hook": "你改了一个文件上线了，老板刷出来还是旧的。你说「清理缓存」。谁在缓存？存了多久？",
+			"body": [
+				"浏览器拿到服务器响应后，会根据 Cache-Control 响应头决定要不要把资源存起来、存多久。下一次请求同一个 URL 时，浏览器先看本地有没有有效缓存——有就直接用，省掉一次网络往返。",
+				"DevTools Network 面板的 Size 列就是缓存的「照妖镜」：200 表示从服务器完整下载了一遍（新鲜请求）；304 表示浏览器带着条件去问服务器「我这份过没过期」，服务器说没过期，只回个头不传内容；disk cache 表示压根没问服务器，直接从硬盘缓存拿出来用；memory cache 也是本地缓存，但存在内存里，更快，浏览器关了就没。",
+				"Cache-Control 头的常见指令：max-age=3600 意思是从下载那一刻起 3600 秒内直接用缓存不找服务器；no-cache 意思是用之前必须去服务器确认一下（发条件请求，可能收到 304）；no-store 意思是完全禁止缓存，每次必拉取新内容。",
+				"所以你改了文件、部署了，用户还看到旧内容——要么是用户的浏览器缓存没到期（max-age 还没到），要么是 CDN 边缘节点还拿着旧文件没回源更新。"
+			],
+			"bullets": [
+				{
+					"emoji": "📥",
+					"title": "200 完整下载",
+					"body": "服务器回了一整份内容——没用到任何缓存"
+				},
+				{
+					"emoji": "🔄",
+					"title": "304 未修改",
+					"body": "浏览器问了服务器，服务器说没变——省了传输体"
+				},
+				{
+					"emoji": "💾",
+					"title": "disk cache / memory cache",
+					"body": "浏览器直接取本地缓存——根本没发网络请求"
+				},
+				{
+					"emoji": "⏱️",
+					"title": "Cache-Control",
+					"body": "服务器通过这个头告诉浏览器：缓存策略是什么、缓存多久"
+				}
+			],
+			"takeaway": "下一步：在 lab 页面上反复刷新，观察三个资源的 Size 列如何变化，亲手验证每种缓存策略的效果。"
+		},
+		{
+			"slug": "practice",
+			"type": "practice",
+			"title": "刷新两次，看三个资源的缓存差异",
+			"intro": "这个 lab 页面返回一个 HTML 和两个 JSON API：一个告诉浏览器「缓存 60 秒」，一个告诉浏览器「每次确认」。刷新两次之后，三行的 Size 列会有三种不同表现。",
+			"steps": [
+				"在新标签页打开 http://localhost:8787/lessons/l4-8。",
+				"按 `⌘+⌥+I` (Mac) / `F12` (Win/Linux) 打开 DevTools。",
+				"切换到 **Network** 面板。确认顶部的 **Disable cache** 复选框 **没有勾选**。如果已勾选，点击取消它。",
+				"按 `⌘+R` / `F5` 刷新页面（第一次）。观察 Network 面板出现的请求。找到以下三个资源：主页面文档（l4-8）、/api/cache/short.json、/api/cache/no.json。",
+				"在列表里点击 `/api/cache/short.json`，右侧面板切换到 **Headers** 选项卡，在 **Response Headers** 区域找到 `Cache-Control` 的值，记录下来。",
+				"在列表里点击 `/api/cache/no.json`，同样在 Response Headers 里找到 `Cache-Control` 的值，记录下来。",
+				"按 `⌘+R` / `F5` 再次刷新（第二次）。现在看 Network 列表里三个资源的 **Size** 列。",
+				"对照下表确认你看到的情况：\n\n| 资源 | Cache-Control | 第一次 Size | 第二次 Size |\n| --- | --- | --- | --- |\n| l4-8 (页面文档) | 每次验证 | 实际体积（如 1.2 kB） | 304 |\n| /api/cache/short.json | max-age=60 | 实际体积 | disk cache 或 memory cache |\n| /api/cache/no.json | no-store 或 no-cache | 实际体积 | 200 |\n\n/short.json 第二次会是 disk cache 或 memory cache（完全没发网络请求）；/no.json 每次都是 200（每次都去服务器拉完整的）。"
+			],
+			"shortcuts": [
+				{
+					"label": "DevTools",
+					"mac": "⌘+⌥+I",
+					"win": "F12"
+				},
+				{
+					"label": "刷新页面",
+					"mac": "⌘+R",
+					"win": "F5"
+				},
+				{
+					"label": "强刷（跳过缓存）",
+					"mac": "⌘+⇧+R",
+					"win": "Ctrl+Shift+R"
+				}
+			],
+			"labUrl": "http://localhost:8787/lessons/l4-8",
+			"expectedOutcome": "第二次刷新后：/api/cache/short.json 的 Size 列显示 disk cache 或 memory cache；/api/cache/no.json 的 Size 列显示实际体积（200）；页面文档可能显示 304 或实际体积。"
+		},
+		{
+			"slug": "verify",
+			"type": "verify",
+			"title": "第二次刷新时 /api/cache/short.json 的 Size 列写什么？",
+			"prompt": "你在第二步刷新后，Network 面板里 /api/cache/short.json 的 Size 列显示的是什么？把那个词写下来。",
+			"tier": "soft",
+			"expectedRegex": "(memory|disk|cache|304|200|缓存|从)"
+		},
+		{
+			"slug": "ask-ai",
+			"type": "ask-ai",
+			"title": "问 AI：改了文件为什么用户还看到旧的？",
+			"intro": "你刚才在 Network Size 列亲眼看到三种缓存结果。现在把这个实验发现转成实际场景问题，让 AI 帮你把「缓存排查」变成条件反射。",
+			"template": "我在 lab 页面做了一个缓存实验：\n- 页面里有三个资源，各自有不同的 Cache-Control 头\n- /api/cache/short.json 的 Cache-Control 是 max-age=60，第二次刷新 Size 列显示 disk cache（浏览器直接从本地读了，没发请求）\n- /api/cache/no.json 的 Cache-Control 是 no-store，每次刷新 Size 列都是实际体积（每次都去服务器下载）\n\n请帮我回答：\n1. 我改了 /api/cache/short.json 的内容部署上线，为什么用户在前 60 秒内还看到旧数据？\n2. max-age=0 和 no-cache 有什么区别？什么时候用哪个？\n3. 如果我用了 CDN，用户看到的旧内容可能是浏览器缓存还是 CDN 缓存？怎么分别验证？\n4. 前端有没有办法强制用户拿到最新文件（比如给文件名加 hash）？"
+		}
+	]
+}

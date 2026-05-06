@@ -1,0 +1,73 @@
+{
+	"id": "l9-1",
+	"level": 9,
+	"sublevel": 1,
+	"categoryIcon": "🧪",
+	"categoryName": "浏览器兼容性",
+	"title": "三大引擎与“iOS 上没有真 Chrome”",
+	"time": 4,
+	"track": "core",
+	"needsLab": false,
+	"stuck": "chrome://version 打不开？确认你在 Chrome 地址栏输入，不是 Google 搜索框。Edge 用户试试 edge://version。",
+	"steps": [
+		{
+			"slug": "concept",
+			"type": "concept",
+			"title": "三个引擎一场局",
+			"hook": "你以为手机上装的 Chrome 是真 Chrome？一个被很多人忽略的事实：iOS 上根本没有真正的 Chrome。",
+			"body": [
+				"浏览器世界由三个渲染引擎统治：Blink（Chrome / Edge / Opera / Brave）、WebKit（Safari / 所有 iOS 浏览器）、Gecko（Firefox）。渲染引擎负责把 HTML/CSS/JS 变成屏幕上你看到的像素。",
+				"Apple 在 App Store 审核条款中要求：所有 iOS 浏览器必须使用 WebKit 渲染内容。这意味着你在 iPhone 上装的 Chrome、Edge、Firefox，它们的「内心」全都是 Safari 的 WebKit——外面套了一层对应品牌的 UI 皮肤而已。",
+				"这个限制带来了真正的兼容性风险：开发者用 Chrome (Blink) 开发测试 → 一切正常 → 发布后 iOS 用户报 bug。iOS 上的 Chrome 不等于桌面 Chrome，因为它们根本不是同一个引擎。"
+			],
+			"bullets": [
+				{
+					"emoji": "🔵",
+					"title": "Blink",
+					"body": "Chrome / Edge / Opera / Brave — 桌面端市场份额最大"
+				},
+				{
+					"emoji": "🧭",
+					"title": "WebKit",
+					"body": "Safari / iOS 上所有浏览器 — 移动端绕不开的引擎"
+				},
+				{
+					"emoji": "🦊",
+					"title": "Gecko",
+					"body": "Firefox — 独立生态，份额小但规则严格"
+				}
+			],
+			"takeaway": "下一步：在 Chrome 地址栏输入 chrome://version，亲眼看你的浏览器用了什么引擎和 JS 引擎。"
+		},
+		{
+			"slug": "practice",
+			"type": "practice",
+			"title": "亲眼看 Chrome 的引擎信息",
+			"intro": "chrome://version 是 Chrome 的自检页面，会列出 JavaScript 引擎、User-Agent 等底层信息。看一遍就不会忘了。",
+			"steps": [
+				"在 Chrome 地址栏输入 `chrome://version`，回车。",
+				"找到 **JavaScript** 一行，确认看到 `V8`——这是 Chrome 的 JS 引擎。",
+				"往下看 **User agent** 一行，整行大概长这样：`Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7)...Chrome/xxx Safari/537.36`。",
+				"关掉这个标签页，在新标签页打开 react.dev。",
+				"现在闭上眼想一个场景：\n\n| 测试环境 | 引擎 | 结论 |\n| --- | --- | --- |\n| 桌面 Chrome 上测试通过 | Blink + V8 | 仅代表 Blink 没问题 |\n| iPhone 上 Chrome 打开同一页面 | WebKit + JavaScriptCore | 完全不同的一组引擎 |\n| iPhone 上 Safari 打开同一页面 | WebKit + JavaScriptCore | 和 iPhone Chrome 用的是同一套 |\n\n结论：桌面 Chrome 测试通过 ≠ iPhone Chrome 没问题。它们是两个不同的浏览器，只是穿着同一件外套。"
+			],
+			"shortcuts": [],
+			"expectedOutcome": "你能说出三个主流渲染引擎的名字（Blink / WebKit / Gecko），并解释为什么「桌面 Chrome 正常 ≠ iPhone Chrome 正常」。"
+		},
+		{
+			"slug": "verify",
+			"type": "verify",
+			"title": "iOS 上的 Chrome 用的是什么引擎？",
+			"prompt": "iOS 上的 Chrome 浏览器使用什么渲染引擎？A) Blink  B) WebKit  C) Gecko  D) 自己的引擎",
+			"tier": "self",
+			"expectedRegex": "(B|WebKit|webkit|b)"
+		},
+		{
+			"slug": "ask-ai",
+			"type": "ask-ai",
+			"title": "问 AI：你想不到的跨浏览器坑",
+			"intro": "你知道 iOS 全是 WebKit 了，但真正麻烦的是那些「你觉得没问题其实有问题」的细节。让 AI 给你补上这课。",
+			"template": "我刚刚学到：iOS 上所有浏览器（包括 Chrome、Edge、Firefox）都被 Apple 要求使用 WebKit 渲染引擎，和桌面版用的是不同引擎。\n\n请帮我列出 3-5 个「开发者用桌面 Chrome 开发时觉得没问题，但到 iOS Safari/Chrome 上就会出 bug」的真实 CSS/JS 案例。每个案例给出：1）具体的 CSS 属性或 JS API 名称 2）在 iOS WebKit 上的表现 3）简单的修复方法。"
+		}
+	]
+}

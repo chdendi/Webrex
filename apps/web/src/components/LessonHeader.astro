@@ -1,13 +1,17 @@
 ---
-import type { CollectionEntry } from "astro:content";
-interface Props { lesson: CollectionEntry<"lessons"> }
+import type { CollectionEntry } from 'astro:content';
+
+interface Props {
+  lesson: CollectionEntry<'lessons'>;
+}
 const { lesson } = Astro.props;
 const d = lesson.data;
 
-const vStep = d.steps?.find((s: any) => s.type === "verify");
-const tier = vStep ? (vStep as any).tier : "soft";
-const tierLabel = ({ hard: "hard verify", soft: "soft verify", self: "self-check" } as Record<string, string>)[tier] || "soft verify";
-const trackLabel = d.track === "extension" ? "extension" : "core";
+const vStep = d.steps?.find((s: any) => s.type === 'verify');
+const tier = vStep ? (vStep as any).tier : 'soft';
+const tierLabel =
+  ({ hard: 'hard verify', soft: 'soft verify', self: 'self-check' } as Record<string, string>)[tier] || 'soft verify';
+const trackLabel = d.track === 'extension' ? 'extension' : 'core';
 ---
 
 <section class="flex flex-col gap-3">

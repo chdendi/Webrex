@@ -1,0 +1,92 @@
+{
+	"id": "l1-4",
+	"level": 1,
+	"sublevel": 4,
+	"categoryIcon": "🧭",
+	"categoryName": "开发者工具概览",
+	"title": "三个救命快捷键（J / C / M）",
+	"time": 3,
+	"track": "core",
+	"needsLab": false,
+	"stuck": "按了快捷键没反应？检查浏览器扩展（特别是 Vimium / 输入法 / 截图工具）有没有劫持这组组合键。临时退出对应扩展再试。",
+	"steps": [
+		{
+			"slug": "concept",
+			"type": "concept",
+			"title": "F12 不是唯一入口，分场景按 J / C / M 更快",
+			"hook": "报错出来时按 **J** 直接跳 Console；想点元素改 CSS 按 **C**；想模拟手机按 **M**。3 个键，3 种场景，比每次 F12 再点鼠标找面板快 3 秒。",
+			"body": [
+				"这 3 个快捷键的特点是**直达目的**——按下去 DevTools 就停在你想去的地方，不用再切面板、不用再点按钮。",
+				"肌肉记忆养成后，你看到一个问题会**条件反射**地按对应的键。"
+			],
+			"bullets": [
+				{
+					"emoji": "🚨",
+					"title": "J",
+					"body": "看报错 → 直接进 Console"
+				},
+				{
+					"emoji": "🔍",
+					"title": "C",
+					"body": "看元素 / 改 CSS → 直接进 Inspect 模式"
+				},
+				{
+					"emoji": "📱",
+					"title": "M",
+					"body": "看手机/平板效果 → 直接切 Device Toolbar"
+				}
+			],
+			"takeaway": "下一步在 react.dev 上一次性试 3 个键，记住手感。"
+		},
+		{
+			"slug": "practice",
+			"type": "practice",
+			"title": "三个键在 react.dev 上各按一次",
+			"intro": "顺序按 J → C → M，每次按完确认 DevTools 停到了对的地方。",
+			"steps": [
+				"在新标签页打开 [react.dev](https://react.dev/)。",
+				"按 `⌘+⌥+J` (Mac) / `Ctrl+Shift+J` (Win/Linux)。DevTools 打开，**直接停在 Console 面板**。",
+				"在 Console 输入框输入 `1+1` 回车，看到 `2`。确认你确实在 Console 而不是别的面板。",
+				"按 `⌘+⇧+C` (Mac) / `Ctrl+Shift+C` (Win/Linux)。DevTools 切到 Elements 面板，**鼠标变成带光圈的箭头**（这就是 Inspect 模式）。",
+				"把鼠标悬停在页面**左上角的 React logo** 上 → 鼠标位置浮现一个浮窗，显示 tag 名（`a` 或 `svg`）、尺寸、颜色等。然后按 `Esc` 退出 Inspect 模式。",
+				"按 `⌘+⇧+M` (Mac) / `Ctrl+Shift+M` (Win/Linux)。DevTools 顶部多出一行 **Device Toolbar**，页面被框成一个手机大小的视图。",
+				"在顶部 dropdown 选 **iPhone SE**（这是个一直存在的预设），页面变成 **375 × 667** 像素。",
+				"再按 `⌘+⇧+M` / `Ctrl+Shift+M` → Device Toolbar 关掉，回到桌面视图。",
+				"把这 3 个键和它们的去向背下来：\n\n| 场景 | Mac | Win/Linux | 直接停在哪 |\n| --- | --- | --- | --- |\n| 看报错 | `⌘+⌥+J` | `Ctrl+Shift+J` | Console 面板 |\n| 改 CSS / 看元素 | `⌘+⇧+C` | `Ctrl+Shift+C` | Inspect 模式 |\n| 看手机 / 平板效果 | `⌘+⇧+M` | `Ctrl+Shift+M` | Device Toolbar |"
+			],
+			"shortcuts": [
+				{
+					"label": "Console",
+					"mac": "⌘+⌥+J",
+					"win": "Ctrl+Shift+J"
+				},
+				{
+					"label": "Inspect",
+					"mac": "⌘+⇧+C",
+					"win": "Ctrl+Shift+C"
+				},
+				{
+					"label": "Device Toolbar",
+					"mac": "⌘+⇧+M",
+					"win": "Ctrl+Shift+M"
+				}
+			],
+			"expectedOutcome": "3 个键都按过，每个都把 DevTools 直接送到了对的地方。从此你看到「报错来了」会下意识按 J，看到「这个布局怪」会下意识按 C，要测「手机上长啥样」会下意识按 M。"
+		},
+		{
+			"slug": "verify",
+			"type": "verify",
+			"title": "切到 iPhone SE 后页面尺寸是多少？",
+			"prompt": "你按 `⌘+⇧+M` / `Ctrl+Shift+M` 切到 Device Toolbar，dropdown 选 **iPhone SE** 之后，DevTools 顶部显示的「宽 × 高」是多少？\n\n粘贴两个数字（顺序无所谓）。",
+			"tier": "soft",
+			"expectedRegex": "375.{0,8}667|667.{0,8}375"
+		},
+		{
+			"slug": "ask-ai",
+			"type": "ask-ai",
+			"title": "问 AI：还有哪些值得记的「分场景快捷键」",
+			"intro": "Webrex 给你的是 3 个最高频的。但 DevTools 里还有更多「按一个键就直达某场景」的快捷键。让 AI 给你列一份升级版。",
+			"template": "我刚学了 Chrome DevTools 的 3 个「分场景快捷键」：\n\n- `⌘+⌥+J` / `Ctrl+Shift+J` → 直接进 Console\n- `⌘+⇧+C` / `Ctrl+Shift+C` → 直接进 Inspect 模式\n- `⌘+⇧+M` / `Ctrl+Shift+M` → 切 Device Toolbar\n\n请帮我列出 DevTools 里**还有哪些值得记的「分场景快捷键」**（最多 5 个），每个说明：\n1. Mac 和 Win/Linux 的具体按键\n2. 按完直达哪个面板/工具\n3. 典型使用场景（什么样的问题会让我想按它）\n\n我希望肌肉记忆里有这种「特定按键打开特定面板」的对应表，而不是每次都按 F12 然后再点鼠标找。"
+		}
+	]
+}

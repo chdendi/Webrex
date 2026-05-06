@@ -1,0 +1,90 @@
+{
+	"id": "l6-2",
+	"level": 6,
+	"sublevel": 2,
+	"categoryIcon": "🗄️",
+	"categoryName": "Application —— 看数据存哪里",
+	"title": "LocalStorage / SessionStorage",
+	"time": 4,
+	"track": "core",
+	"needsLab": false,
+	"stuck": "找不到 Storage？在 Application 面板里展开 Storage 区域，Local Storage 和 Session Storage 都在下面。",
+	"steps": [
+		{
+			"slug": "concept",
+			"type": "concept",
+			"title": "两个键值仓库，一个持久一个临时",
+			"hook": "你想让网页记住用户的主题偏好。存 Cookie 会跟着请求发送浪费流量，存数据库得后端配合。浏览器里有两个更简单的选择。",
+			"body": [
+				"localStorage 和 sessionStorage 都是浏览器内置的键值存储，不需要网络请求。",
+				"localStorage 数据会一直保留，不因关闭标签页或浏览器而消失；sessionStorage 只在当前标签页会话内有效，关标签页即清空。",
+				"两者都只能存字符串，存对象需要用 `JSON.stringify()` 序列化，读取用 `JSON.parse()` 还原。",
+				"每个域名独立存储，上限约 5MB。Application → Storage → Local Storage / Session Storage 可查看。",
+				"localStorage 多标签页可共享；sessionStorage 每个标签页独立，新开标签页复制一份初始数据。"
+			],
+			"bullets": [
+				{
+					"emoji": "💾",
+					"title": "localStorage",
+					"body": "持久存储，关浏览器也不丢，适合主题/语言偏好"
+				},
+				{
+					"emoji": "🗂️",
+					"title": "sessionStorage",
+					"body": "标签页级会话，关标签页即清除，适合表单草稿/临时状态"
+				},
+				{
+					"emoji": "📏",
+					"title": "5 MB 上限",
+					"body": "两个 Storage 加起来约 5MB，存大文件用 IndexedDB"
+				}
+			],
+			"takeaway": "下一步：写入数据到两个 Storage，亲眼验证关闭标签页后谁还在、谁消失。"
+		},
+		{
+			"slug": "practice",
+			"type": "practice",
+			"title": "写入 Storage 并验证持久性差异",
+			"intro": "打开 react.dev 的 Console，手动写入 localStorage 和 sessionStorage，然后关掉标签页重新打开，看数据是否还在。",
+			"steps": [
+				"在新标签页打开 react.dev。",
+				"按 `⌘+⌥+I` / `F12` 打开 DevTools，切换到 **Application** 面板。",
+				"在左侧边栏展开 **Local Storage**，点击 `https://react.dev`，看当前存储了哪些 key。",
+				"切换到 **Console** 面板，输入 `localStorage.setItem('webrex-test', 'hello')` 回车。",
+				"切回 **Application** 面板，在 Local Storage 的 `https://react.dev` 下确认 `webrex-test` 出现了，值为 `hello`。",
+				"在 Console 输入 `sessionStorage.setItem('webrex-test', 'hello session')` 回车。",
+				"在 Application 面板展开 **Session Storage** → `https://react.dev`，确认 `webrex-test` 出现了。",
+				"关闭这个标签页（不要关整个浏览器），新开标签页重新打开 react.dev。",
+				"打开 Application 面板，检查 Local Storage 和 Session Storage：localStorage 的 `webrex-test` 还在，sessionStorage 的已经没了。"
+			],
+			"shortcuts": [
+				{
+					"label": "DevTools",
+					"mac": "⌘+⌥+I",
+					"win": "F12"
+				},
+				{
+					"label": "Console",
+					"mac": "⌘+⌥+J",
+					"win": "Ctrl+Shift+J"
+				}
+			],
+			"expectedOutcome": "重新打开标签页后，localStorage 的 key 依然存在，sessionStorage 的 key 已经消失。"
+		},
+		{
+			"slug": "verify",
+			"type": "verify",
+			"title": "关闭标签页后 sessionStorage 还在吗？",
+			"prompt": "sessionStorage 里存的数据，关闭这个标签页后还在吗？回答「在」或「不在」。",
+			"tier": "soft",
+			"expectedRegex": "(不在|不会|消失|清了|清空|没了|no|gone)"
+		},
+		{
+			"slug": "ask-ai",
+			"type": "ask-ai",
+			"title": "问 AI：localStorage vs sessionStorage",
+			"intro": "你亲手验证了两者的持久性差异。把这个经验转换成可复用的知识。",
+			"template": "我通过实验验证了：\n- localStorage 关标签页后数据还在\n- sessionStorage 关标签页后数据消失\n\n请帮我回答：\n1. localStorage 和 sessionStorage 各自最适合什么使用场景？（各举 2 个例子）\n2. 两者的存储容量限制是多少？超出后如何处理？\n3. 它们有安全风险吗？敏感数据（如 JWT token）应该存在这两者里吗？为什么？"
+		}
+	]
+}

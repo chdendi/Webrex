@@ -1,0 +1,87 @@
+{
+	"id": "l8-1",
+	"level": 8,
+	"sublevel": 1,
+	"categoryIcon": "📱",
+	"categoryName": "响应式与移动端",
+	"title": "用 Device Toolbar 切手机视图",
+	"time": 4,
+	"track": "core",
+	"needsLab": false,
+	"stuck": "快捷键没反应？确认焦点在 DevTools 面板内（不是页面本身），然后按 ⌘+⇧+M / Ctrl+Shift+M。",
+	"steps": [
+		{
+			"slug": "concept",
+			"type": "concept",
+			"title": "Device Toolbar 不是真手机，是模拟器",
+			"hook": "你在手机上打开 react.dev，看到的是什么样的？跟电脑上一样吗？",
+			"body": [
+				"Chrome DevTools 的 Device Toolbar 让你在电脑上模拟手机视图：它把视口缩小到手机尺寸，发送移动端 User-Agent，并启用触摸事件模拟。",
+				"但它不是真手机——CPU、GPU、网络延迟、真实触摸手感都和真机不同。把它理解为「快速粗略检查布局」的工具，最终还是要上真机验证。",
+				"Device Toolbar 的预设下拉里内置了 iPhone SE、Pixel 7 等主流机型。每个预设对应一组固定的视口宽高和像素比。"
+			],
+			"bullets": [
+				{
+					"emoji": "📐",
+					"title": "视口尺寸",
+					"body": "iPhone SE 预设 = 375×667 CSS 像素"
+				},
+				{
+					"emoji": "👆",
+					"title": "触摸模拟",
+					"body": "鼠标点击会被转成 touch 事件"
+				},
+				{
+					"emoji": "🌐",
+					"title": "UA 伪装",
+					"body": "告诉服务器「我是 iPhone」"
+				}
+			],
+			"takeaway": "下一步：在 react.dev 上打开 Device Toolbar，切成 iPhone SE 视图，观察页面布局变化。"
+		},
+		{
+			"slug": "practice",
+			"type": "practice",
+			"title": "在 react.dev 上用 Device Toolbar 切 iPhone SE",
+			"intro": "react.dev 在桌面端和移动端显示不同的导航布局。切换到 iPhone SE 后，顶部导航栏会收成汉堡菜单，hero 区文字和按钮也会重新排列。",
+			"steps": [
+				"在新标签页打开 react.dev。",
+				"确认页面已加载完成——你应该能看到 hero 区的标题 **The library for web and native user interfaces**。",
+				"按 `⌘+⌥+I` (Mac) / `F12` (Win/Linux) 打开 DevTools。",
+				"按 `⌘+⇧+M` (Mac) / `Ctrl+Shift+M` (Win/Linux) 切换 Device Toolbar。你会看到页面上方出现一个带尺子和设备下拉条的工具栏。",
+				"在 Device Toolbar 顶部的设备预设下拉框中，点开列表并选中 **iPhone SE**。",
+				"观察页面变化：视口宽度变为 375px，视口上方出现横尺标注 `375`。",
+				"对比桌面端和 iPhone SE 模式下的 hero 区：文字是否变小？按钮是否换行？导航栏是否变成菜单图标？",
+				"再次按 `⌘+⇧+M` / `Ctrl+Shift+M` 关闭 Device Toolbar，页面恢复桌面端布局。"
+			],
+			"shortcuts": [
+				{
+					"label": "DevTools",
+					"mac": "⌘+⌥+I",
+					"win": "F12"
+				},
+				{
+					"label": "Device Toolbar",
+					"mac": "⌘+⇧+M",
+					"win": "Ctrl+Shift+M"
+				}
+			],
+			"expectedOutcome": "iPhone SE 模式下视口宽度标注为 375px，页面顶部导航栏收成菜单图标，hero 区文字和按钮水平排列变为垂直排列。"
+		},
+		{
+			"slug": "verify",
+			"type": "verify",
+			"title": "iPhone SE 预设下，页面视口宽度是多少像素？",
+			"prompt": "上一步你在 Device Toolbar 里选了 iPhone SE 预设，视口上方的尺子会标注宽度。请回答：iPhone SE 预设下，页面视口宽度是多少像素？",
+			"tier": "soft",
+			"expectedRegex": "\\b375\\b"
+		},
+		{
+			"slug": "ask-ai",
+			"type": "ask-ai",
+			"title": "问 AI：响应式网站到底靠什么实现",
+			"intro": "你刚看到 react.dev 从桌面端到手机端发生了布局剧变——没有刷新页面，只是窗口变小了。把这个观察丢给 AI，让它帮你拆解响应式的底层机制。",
+			"template": "我打开 react.dev，在 Chrome DevTools 的 Device Toolbar 里把视口从桌面宽切到 iPhone SE 的 375px 宽。页面没有刷新，但布局全变了：顶部导航栏变成了汉堡菜单、hero 区文字从横排变竖排、按钮也换行了。\n\n请帮我解释：\n1. 这个「不刷新页面就改变布局」是靠什么 CSS 技术实现的？\n2. 常用的响应式断点有哪些（px 值）？\n3. 移动端优先和桌面端优先的设计策略有什么区别？"
+		}
+	]
+}

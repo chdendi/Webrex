@@ -1,0 +1,84 @@
+{
+	"id": "l10-2",
+	"level": 10,
+	"sublevel": 2,
+	"categoryIcon": "🔐",
+	"categoryName": "安全与权限基础",
+	"title": "CSP 报错——「为什么我的脚本被 block 了」",
+	"time": 5,
+	"track": "core",
+	"needsLab": true,
+	"stuck": "Console 里没看到 CSP 报错？确认你打开的是 http://localhost:8787/lessons/l10-csp（注意端口是 8787）。",
+	"steps": [
+		{
+			"slug": "concept",
+			"type": "concept",
+			"title": "Content-Security-Policy 是什么",
+			"hook": "有时你的脚本明明写了，浏览器却说「我不执行」。",
+			"body": [
+				"CSP 是服务器返回的一个响应头，告诉浏览器哪些来源的脚本/样式/图片可以加载。",
+				"违反 CSP 的策略会在 Console 中以红色错误出现，Network 面板里可以直接看 Response Headers。"
+			],
+			"bullets": [
+				{
+					"emoji": "🔑",
+					"title": "script-src 'self'",
+					"body": "只允许同源脚本，内联 <script> 和 eval 全部被 block"
+				},
+				{
+					"emoji": "⚠️",
+					"title": "script-src 'self' 'unsafe-inline'",
+					"body": "允许同源脚本 + 页面内联 <script>，安全性降低"
+				},
+				{
+					"emoji": "🌐",
+					"title": "script-src 'self' https://cdn.example.com",
+					"body": "允许同源脚本 + 指定第三方 CDN"
+				}
+			],
+			"takeaway": "CSP 是服务器说的「规矩」，Console 里的红色报错就是犯规了。"
+		},
+		{
+			"slug": "practice",
+			"type": "practice",
+			"title": "对比严格与宽松 CSP",
+			"intro": "两个本地页面，同一种内联脚本，一个跑得通一个跑不通。",
+			"steps": [
+				"打开 http://localhost:8787/lessons/l10-csp（严格 CSP，内联脚本被 block）。",
+				"打开 DevTools → Console，观察红色 CSP violation 报错。",
+				"打开 http://localhost:8787/lessons/l10-csp-lax（宽松 CSP，含 'unsafe-inline'）。",
+				"检查 Console — 没有报错，内联脚本正常执行。",
+				"在 Network 面板中选中页面请求，查看 Response Headers → Content-Security-Policy，对比两个值：\n\n| 策略 | script-src 值 | 内联脚本 | eval | 报错 |\n| --- | --- | --- | --- | --- |\n| 严格 CSP | 'self' | block | block | Console 红色错误 |\n| 宽松 CSP | 'self' 'unsafe-inline' | 允许 | block | 无错误 |"
+			],
+			"shortcuts": [
+				{
+					"label": "DevTools",
+					"mac": "⌘+⌥+I",
+					"win": "F12"
+				},
+				{
+					"label": "Network",
+					"mac": "⌘+⌥+N",
+					"win": "Ctrl+Shift+N"
+				}
+			],
+			"labUrl": "http://localhost:8787/lessons/l10-csp",
+			"expectedOutcome": "严格 CSP 下内联脚本被 block，Console 出现 CSP violation 错误。"
+		},
+		{
+			"slug": "verify",
+			"type": "verify",
+			"title": "验证",
+			"prompt": "CSP 里 `script-src 'self'` 允许执行哪种脚本？\nA) 只有同源的脚本\nB) 所有脚本\nC) 只有内联脚本\nD) 所有脚本都禁止",
+			"tier": "soft",
+			"expectedRegex": "(A|同源|只.{0,2}同|same.{0,3}origin|self)"
+		},
+		{
+			"slug": "ask-ai",
+			"type": "ask-ai",
+			"title": "问 AI",
+			"intro": "把 CSP 报错变成可执行的配置方案。",
+			"template": "我的网站在 Console 里报了 CSP violation：\n- Refused to execute inline script\n- 当前 script-src 是 'self'\n- 我需要加载 Google Analytics 和 Stripe 的第三方脚本\n请帮我：\n1. 解释为什么内联脚本被 block\n2. 写一个允许这些第三方脚本的完整 Content-Security-Policy 头\n3. 告诉我 'nonce' 和 'unsafe-inline' 的区别"
+		}
+	]
+}

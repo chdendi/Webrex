@@ -1,0 +1,103 @@
+{
+	"id": "l5-6",
+	"level": 5,
+	"sublevel": 6,
+	"categoryIcon": "📄",
+	"categoryName": "Sources —— 看代码在哪执行",
+	"title": "忽略框架代码（Ignore List）",
+	"time": 4,
+	"track": "core",
+	"needsLab": false,
+	"stuck": "在 Sources 左侧文件树里，右键点一个文件/文件夹，菜单里选 'Add to ignore list'。之后 F11 会自动跳过这些文件。",
+	"steps": [
+		{
+			"slug": "concept",
+			"type": "concept",
+			"title": "跳过框架，只看自己的代码",
+			"hook": "你按 F11 想 Step Into 自己的代码，结果一头扎进了 React 源码、Promise polyfill、甚至 node_modules 里的某个工具函数——能绕过去吗？",
+			"body": [
+				"**Ignore List（忽略列表）** 是 Sources 面板的一项机制，让你把指定的文件或文件夹「屏蔽」掉。被加入忽略列表的文件，在单步调试（F11 Step Into）时会被自动跳过，DevTools 不会进入这些文件的内部。",
+				"典型用法：把 `node_modules/`、`react/`、`vue/`、`webpack/` 这些第三方框架和构建产物的文件夹加入 Ignore List。这样按 F11 时，你的光标只会停留在你自己写的业务代码里，不会陷入框架内部。",
+				"配置方式有两种：**手动**——在 Sources 左侧文件树里右键一个文件，选「Add to ignore list」；**自动**——打开 DevTools Settings（`F1` / `⇧+?`）→ Ignore List 标签，用正则表达式批量匹配（如 `node_modules|next` 或 `react` 等关键词）。",
+				"Call Stack 面板也会受影响——按右键 → 「Show ignore-listed frames」可以切换是否显示被忽略帧。你自己的代码在调用栈里会更突出。"
+			],
+			"bullets": [
+				{
+					"emoji": "🚫",
+					"title": "忽略列表",
+					"body": "被忽略的文件在 F11 Step Into 时自动跳过"
+				},
+				{
+					"emoji": "📂",
+					"title": "文件夹级别",
+					"body": "可以右键整个文件夹（如 node_modules）加入忽略列表"
+				},
+				{
+					"emoji": "🧩",
+					"title": "正则批量",
+					"body": "在 Settings → Ignore List 用正则匹配模式批量添加"
+				},
+				{
+					"emoji": "🔍",
+					"title": "调用栈过滤",
+					"body": "忽略后，Call Stack 里框架帧默认折叠，自己的代码更清晰"
+				}
+			],
+			"takeaway": "下一步：在 react.dev 的 Sources 面板里，把 React 相关文件加入 Ignore List，然后按 F11 验证它们被跳过了。"
+		},
+		{
+			"slug": "practice",
+			"type": "practice",
+			"title": "在 react.dev 上把 React 加入 Ignore List",
+			"intro": "把 react.dev 上的 React 框架文件夹加入忽略列表，然后验证 F11 会跳过这些文件。",
+			"steps": [
+				"打开 react.dev，按 `F12`（Win/Linux）或 `⌘+⌥+I`（Mac）打开 DevTools，切换到 **Sources** 面板。",
+				"在左侧文件树中找到 `react.dev` 域名下的文件夹结构。寻找包含 React 框架代码的文件夹——通常叫 `react`、`react-dom`，或者路径中包含 `node_modules/react` 的文件夹。",
+				"**右键点击**这个 React 框架文件夹（不是单个文件），在弹出的上下文菜单中选择 **Add to ignore list**。文件夹图标会变为灰色或带有特殊标识，表示已被忽略。",
+				"现在在**你自己的代码区域**（非 React 框架文件夹，如 `_next/static/chunks/pages/` 下面的文件）找一行代码，点击行号设一个普通断点。",
+				"回到 react.dev 页面，点击右上角的 **Search** 按钮触发断点。",
+				"断点触发后，按 `F11`（Step Into）多次尝试单步进入函数。观察调试器行为——当你 step into 一个调用了 React 内部函数的表达式时，DevTools 直接跳过了那些被忽略的文件，你的光标留在了可见的业务代码中。",
+				"对比一下：不去掉 Ignore List，直接右键被忽略的文件夹 → 选择 **Remove from ignore list**。再次按 F11——这次你会进入 React 内部代码。\n\n| 状态 | F11 Step Into 行为 |\n| --- | --- |\n| React 文件夹在 Ignore List | 跳过 React 内部代码，只在自己代码中前进 |\n| React 文件夹不在 Ignore List | 会进入 React 内部函数，偏离你的代码 |",
+				"按 `F8` 恢复执行。"
+			],
+			"shortcuts": [
+				{
+					"label": "DevTools",
+					"mac": "⌘+⌥+I",
+					"win": "F12"
+				},
+				{
+					"label": "Step Into",
+					"mac": "F11",
+					"win": "F11"
+				},
+				{
+					"label": "Resume",
+					"mac": "F8",
+					"win": "F8"
+				},
+				{
+					"label": "Settings",
+					"mac": "F1",
+					"win": "F1"
+				}
+			],
+			"expectedOutcome": "被加入 Ignore List 的文件夹在 F11 Step Into 时会被自动跳过，调试器只在自己写的代码中前进。"
+		},
+		{
+			"slug": "verify",
+			"type": "verify",
+			"title": "忽略列表中的文件在 F11 时会怎样？",
+			"prompt": "添加到 Ignore List 的文件，在你按 F11 单步执行时会怎样？A) 被跳过 B) 正常进入 C) 报错 D) 被删除",
+			"tier": "soft",
+			"expectedRegex": "(A|跳过|skip|忽略|不进入|绕过)"
+		},
+		{
+			"slug": "ask-ai",
+			"type": "ask-ai",
+			"title": "问 AI：什么时候设置 Ignore List",
+			"intro": "你现在知道 Ignore List 能帮你跳过框架代码。但哪些该忽略、哪些不该？让 AI 给你判断标准。",
+			"template": "我在 Chrome DevTools 使用 Sources 面板调试 react.dev。我把 React 的 node_modules 文件夹加入了 Ignore List，这样 F11 Step Into 时就不会陷入框架代码了。\n\n请帮我分析：\n1. 在一个典型的前端项目中，哪些文件/文件夹应该加入 Ignore List？哪些**绝对不能**加入（因为可能包含你自己的代码）？\n2. 用 Settings → Ignore List 的正则表达式批量配置（比如 `/node_modules/`）和手动右键添加，各有什么优缺点？\n3. Ignore List 会影响断点吗——如果我在被忽略的文件里打了断点，会触发吗？\n4. 在调试一个「可能是框架 bug」的场景时，应该怎么灵活开关 Ignore List？"
+		}
+	]
+}

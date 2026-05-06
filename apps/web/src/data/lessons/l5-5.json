@@ -1,0 +1,87 @@
+{
+	"id": "l5-5",
+	"level": 5,
+	"sublevel": 5,
+	"categoryIcon": "📄",
+	"categoryName": "Sources —— 看代码在哪执行",
+	"title": "美化压缩代码（{} 按钮）",
+	"time": 3,
+	"track": "core",
+	"needsLab": false,
+	"stuck": "打开一个压缩成一行的 JS 文件后，看代码区域左下角有一个 {} 图标（花括号），点它就是 Pretty Print。",
+	"steps": [
+		{
+			"slug": "concept",
+			"type": "concept",
+			"title": "一行代码变千行——{} 按钮",
+			"hook": "你打开生产环境的 JS 文件，看到的是一整行几十万字符的「面条」。怎么让它可读？",
+			"body": [
+				"生产环境的 JS 文件通常被工具（Webpack/Vite/Terser）**压缩（minify）**成一整行——删空格、缩短变量名（`isUserLoggedIn` → `a`）、去掉换行。压缩后的代码执行结果不变，但对人类完全不可读。",
+				"Sources 面板代码编辑器左下角有一个 **`{}`** 按钮，官方名称为「Pretty Print」（美化输出）。点击后，DevTools 会重新格式化当前文件——加上换行和缩进，让代码结构清晰可见。",
+				"注意美化**不会恢复原始变量名**——`a`、`b`、`c` 依然是 `a`、`b`、`c`。但你可以看到函数边界、if/for 块结构、表达式嵌套关系。最关键的收益：格式化后每行都有行号，可以**打断点**了。",
+				"如果站点部署了 **Source Map**（源映射文件），DevTools 会自动展开原始源码而非压缩版。这时你已经在看原代码了，不需要手动点 `{}`。"
+			],
+			"bullets": [
+				{
+					"emoji": "{}",
+					"title": "{} Pretty Print",
+					"body": "将压缩代码格式化为带缩进的多行结构"
+				},
+				{
+					"emoji": "🔢",
+					"title": "行号回归",
+					"body": "格式化后每行都有行号，可以正常打断点"
+				},
+				{
+					"emoji": "⚠️",
+					"title": "变量名不会恢复",
+					"body": "minified 后的变量名保持不变，但结构和流程清晰了"
+				},
+				{
+					"emoji": "🗺️",
+					"title": "Source Map 优先",
+					"body": "如果有 .map 文件，DevTools 直接展示原始源码，无需手动 Pretty Print"
+				}
+			],
+			"takeaway": "下一步：在 react.dev 上找一个压缩成一行的 JS 文件，点 {} 按钮把它展开。"
+		},
+		{
+			"slug": "practice",
+			"type": "practice",
+			"title": "在 react.dev 上美化压缩 JS",
+			"intro": "找一个 react.dev 的压缩 JS 文件，亲眼见证从一行「面条」变成有结构的代码。",
+			"steps": [
+				"打开 react.dev，按 `F12`（Win/Linux）或 `⌘+⌥+I`（Mac）打开 DevTools，切换到 **Sources** 面板。",
+				"在左侧文件树中展开 `react.dev` 域名下的文件夹，找到 `_next/static/chunks/` 目录。这个目录下的文件通常是 webpack 打包的产物。",
+				"点击打开其中一个 JS 文件（选一个体积较大的，文件名带有 `framework-xxx.js` 或数字编号 chunk 特征）。打开后观察代码编辑区——应该是一条极长的横线，你需要往右滚很远才能看到结尾。这就是**压缩代码**。",
+				"找到代码编辑器**底部状态栏**。左边有一排小图标——找到 **`{}`**（花括号）图标。点击它。",
+				"观察变化：\n\n| 美化前 | 美化后 |\n| --- | --- |\n| 整个文件只有 1 行（或几行） | 代码被展开为成百上千行 |\n| 没有可辨识的结构 | 可以看到缩进、函数体、if/for 块 |\n| 行号列只有 1 行 | 每一行都有独立行号 |\n| 无法打断点 | 可以在任意行点击行号打断点 |",
+				"现在试着在美化后的代码里找一个带缩进的层级——以 `function` 关键字开头、内部有更多缩进的行。在那行点一下行号，打个断点。这证明了格式化让你可以在压缩代码上正常打断点。",
+				"文件标签页名称旁边现在会出现 `:formatted` 后缀，表示你正在看美化版本。如果想回到原始压缩视图，再点一次 `{}` 按钮即可切换。"
+			],
+			"shortcuts": [
+				{
+					"label": "DevTools",
+					"mac": "⌘+⌥+I",
+					"win": "F12"
+				}
+			],
+			"expectedOutcome": "点击 {} 后代码从单行变多行，有了缩进结构和行号。可以正常打断点。文件标签出现 `:formatted` 后缀。"
+		},
+		{
+			"slug": "verify",
+			"type": "verify",
+			"title": "美化后的代码变量名会恢复吗？",
+			"prompt": "美化（Pretty Print）后的代码，变量名会恢复成原始命名吗？回答「会」或「不会」。",
+			"tier": "soft",
+			"expectedRegex": "(不会|不能|不.{0,2}恢复|no|keep|保持|压缩|minified|不.{0,2}还原)"
+		},
+		{
+			"slug": "ask-ai",
+			"type": "ask-ai",
+			"title": "问 AI：调试压缩代码和 Source Map 的作用",
+			"intro": "你已经知道怎么美化压缩代码了。现在让 AI 告诉你 Source Map 的终极解决方案。",
+			"template": "我在 Chrome DevTools 的 Sources 面板里调试 react.dev。生产环境的 JS 文件被 minify 成一整行，变量名也从 `handleClick` 变成了 `a`、`b`、`c`。\n\n我用 {} 按钮（Pretty Print）把代码格式化了，可以看到结构了，但变量名还是 minified 的。\n\n请帮我解释：\n1. Pretty Print 和 Source Map 的区别是什么？Pretty Print 能做什么、不能做什么？\n2. Source Map 是什么？它和 Pretty Print 的关系是什么？为什么有了 Source Map 就不需要手动点 {}？\n3. 如果生产站点没有 Source Map（react.dev 有吗？），我除了 Pretty Print 之外还有什么办法调试？\n4. 有哪些技巧可以帮助我在 minified 代码中快速定位目标函数（比如搜某些标志性字符串）？"
+		}
+	]
+}

@@ -6,7 +6,7 @@ interface Props {
 const { mac, win } = Astro.props;
 
 function renderKeys(s: string) {
-  return s.split("+").map((k) => k.trim());
+  return s.split('+').map((k) => k.trim());
 }
 const macKeys = renderKeys(mac);
 const winKeys = renderKeys(win);

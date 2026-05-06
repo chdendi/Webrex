@@ -1,11 +1,11 @@
 ---
-import { getCollection } from "astro:content";
-import LessonLayout from "~/layouts/LessonLayout.astro";
-import LessonHeader from "~/components/LessonHeader.astro";
-import Card from "~/components/Card.astro";
+import { getCollection } from 'astro:content';
+import Card from '~/components/Card.astro';
+import LessonHeader from '~/components/LessonHeader.astro';
+import LessonLayout from '~/layouts/LessonLayout.astro';
 
 export async function getStaticPaths() {
-  const lessons = await getCollection("lessons");
+  const lessons = await getCollection('lessons');
   lessons.sort((a, b) => a.data.level - b.data.level || a.data.sublevel - b.data.sublevel);
   return lessons.map((lesson, i) => ({
     params: { id: lesson.id },

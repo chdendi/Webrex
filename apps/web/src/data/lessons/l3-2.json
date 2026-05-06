@@ -1,0 +1,95 @@
+{
+	"id": "l3-2",
+	"level": 3,
+	"sublevel": 2,
+	"categoryIcon": "🧱",
+	"categoryName": "Elements",
+	"title": "临时改文字与样式（设计师做原型必备）",
+	"time": 4,
+	"track": "core",
+	"needsLab": true,
+	"stuck": "双击 H1 文字没进入编辑模式？先在 Elements 面板里用单击选中那一行 `<h1>...</h1>` 节点，再双击文字内容部分（不是 tag 本身）。或者右键节点 → **Edit as HTML** 一次性改整个标签。",
+	"steps": [
+		{
+			"slug": "concept",
+			"type": "concept",
+			"title": "DevTools 里的改动是「沙盒」——刷新就丢，但这是它的优点",
+			"hook": "你想给设计师证明「这个按钮如果改成红色会更醒目」，但又不想麻烦研发 build 一版给你看。DevTools 让你在自己电脑上 30 秒做出原型。",
+			"body": [
+				"DevTools 改 HTML 文字、改 CSS 样式，全都只活在你当前这个 tab 里。**刷新页面，所有改动消失**。这不是 bug，是它最重要的特性——你可以无副作用地试 10 个颜色、10 个字号、10 套文案。",
+				"试到满意后，**只把最终那一版** copy 给研发：右键 Styles 面板里的规则 → **Copy declaration** 或 **Copy rule**，粘到聊天/文档/PR 评论里，研发一眼就懂要改什么。",
+				"**注意**：DevTools 编辑没有 Ctrl+Z 撤销栈。改坏了想恢复，最简单的办法是 `⌘+R` / `F5` 刷新，回到原始页面再来一次。"
+			],
+			"bullets": [
+				{
+					"emoji": "🧪",
+					"title": "临时沙盒",
+					"body": "改动只在当前 tab，刷新即丢，不会影响线上和别人"
+				},
+				{
+					"emoji": "📋",
+					"title": "Copy rule",
+					"body": "试到满意右键 → Copy rule，把最终 CSS 贴给研发"
+				},
+				{
+					"emoji": "🚫",
+					"title": "没有 Undo",
+					"body": "改坏了就刷新页面重来，DevTools 编辑无撤销栈"
+				}
+			],
+			"takeaway": "下一步：在练习页把 H1 文字改掉、把颜色改红、把字号变大，然后 Copy rule 拿到最终 CSS。"
+		},
+		{
+			"slug": "practice",
+			"type": "practice",
+			"title": "把 H1 改个文字、改个颜色、放大字号，最后 Copy rule",
+			"intro": "练习页的 H1 「欢迎来到 Webrex」原始样式是 `font-size: 32px; color: #1F2937;`。我们临时把它变成红色大号字，然后把最终 CSS 复制出来。",
+			"labUrl": "http://localhost:8787/lessons/l3-1",
+			"steps": [
+				"在新标签页打开 [http://localhost:8787/lessons/l3-1](http://localhost:8787/lessons/l3-1)。按 `F12` / `⌘+⌥+I` 打开 DevTools，切到 **Elements** 面板。",
+				"在 Elements 面板里按 `⌘+F` (Mac) / `Ctrl+F` (Win/Linux) 打开 Elements 搜索框，输入 `欢迎` 回车，光标自动跳到 `<h1>欢迎来到 Webrex</h1>` 节点。",
+				"**双击** H1 节点里的文字 **欢迎来到 Webrex**（不是双击 `<h1>` tag），文字进入编辑状态。把它改成 **欢迎来到 [写你自己的名字]**，回车保存。页面顶部的标题立刻变了。",
+				"保持 H1 选中状态，看右侧 **Styles** 子面板。找到那条 `h1` 规则里的 `color: rgb(31, 41, 55);`（也就是 `#1F2937`）。",
+				"**点 `color` 值左边的小色块**（实心方块），弹出取色器。在底部的 hex 输入框里把值改成 `#EF4444`（红色），回车。H1 文字立刻变红。",
+				"在同一条规则里找 `font-size: 32px;`，**双击 `32px`** 进入编辑，改成 `48px`，回车。H1 文字立刻变大。",
+				"**试试 Ctrl+Z / Cmd+Z**——你会发现没用。DevTools 编辑没有撤销栈。改坏了想全部恢复就按 `⌘+R` / `F5` 刷新。**先不要刷新**，保留你的红色 48px 改动到下一步。",
+				"在 Styles 面板里**右键** `color: #EF4444;` 这一行 → 选 **Copy declaration**，粘到一个文本编辑器里看一下，应该是 `color: rgb(239, 68, 68);` 这样的一行。",
+				"再**右键 `h1` 这条规则的选择器** `h1` → 选 **Copy rule**，粘到文本编辑器，应该得到一段完整的：\n\n```css\nh1 {\n  font-size: 48px;\n  color: rgb(239, 68, 68);\n  /* ...其他原有属性 */\n}\n```\n\n这就是你给研发的「最终方案」。",
+				"对比 Copy declaration vs Copy rule：\n\n| 操作 | 复制出来的内容 | 适合贴在哪里 |\n| --- | --- | --- |\n| Copy declaration | 一行 `color: ...;` | 聊天里说「就改这一条」 |\n| Copy rule | 整个 `h1{ ... }` 块 | PR 评论 / 设计文档 / Figma 注释 |\n| Copy element | 整段 `<h1>...</h1>` outerHTML | 给研发看「文字+结构」一起改 |"
+			],
+			"shortcuts": [
+				{
+					"label": "DevTools",
+					"mac": "⌘+⌥+I",
+					"win": "F12"
+				},
+				{
+					"label": "Elements 内搜索",
+					"mac": "⌘+F",
+					"win": "Ctrl+F"
+				},
+				{
+					"label": "刷新页面（=放弃改动）",
+					"mac": "⌘+R",
+					"win": "F5"
+				}
+			],
+			"expectedOutcome": "你完成了一次「设计原型 → 复制 CSS」的完整闭环：在浏览器里直接试出红色 48px 的最终效果，并把它打包成一段标准 CSS rule，可以直接贴给研发，不用画图、不用 Figma、不用让研发再去试。"
+		},
+		{
+			"slug": "verify",
+			"type": "verify",
+			"title": "粘贴你 Copy rule 出来的最终 CSS",
+			"prompt": "你刚才在 Styles 面板里右键 `h1` 选择器 → **Copy rule**，得到了一段完整的 CSS。\n\n把它原样粘贴到下面（至少要包含 `color` 这一行和你改后的颜色值，如 `#EF4444` 或 `rgb(239, 68, 68)`）。",
+			"tier": "soft",
+			"expectedRegex": "color\\s*:\\s*(#[0-9a-fA-F]{3,8}|rgb|rgba|red|[a-zA-Z]+)"
+		},
+		{
+			"slug": "ask-ai",
+			"type": "ask-ai",
+			"title": "问 AI：把这段 CSS 整理成 PR 评论格式",
+			"intro": "你已经有了一段完整的 CSS rule，但直接贴在 PR 评论里有点光秃秃。让 AI 把它包装成研发友好的格式：含变更前后对比、改动理由、文件路径推测。",
+			"template": "我在 Chrome DevTools 里把网站某个 H1 标题的样式改成了下面这样，准备提个 PR 评论建议研发改一下。\n\n原样式：\n```css\nh1 {\n  font-size: 32px;\n  color: #1F2937;\n}\n```\n\n我改后的样式（Copy rule 出来的）：\n```css\nh1 {\n  font-size: 48px;\n  color: #EF4444;\n}\n```\n\n请帮我：\n1. 整理成一个标准的 git diff 格式（`-` 旧的 / `+` 新的）。\n2. 写一段 PR 评论，包含「为什么改」（视觉权重、首屏吸引力）、「影响范围」（只 H1 还是所有标题层级）、「需要研发确认」（是否会影响响应式、是否要同步改 H2/H3）。\n3. 推测这段 CSS 一般会写在哪个文件（如 `globals.css` / `Header.module.css` / Tailwind 配置），让研发更快定位。"
+		}
+	]
+}

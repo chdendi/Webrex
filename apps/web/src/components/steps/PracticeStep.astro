@@ -1,8 +1,12 @@
 ---
-import Shortcut from "../Shortcut.astro";
-import { mdGlossary as md } from "~/lib/markdown";
+import { mdGlossary as md } from '~/lib/markdown';
+import Shortcut from '../Shortcut.astro';
 
-interface ShortcutItem { label: string; mac: string; win: string }
+interface ShortcutItem {
+  label: string;
+  mac: string;
+  win: string;
+}
 interface Props {
   title: string;
   intro?: string;

@@ -1,0 +1,77 @@
+{
+	"id": "l10-1",
+	"level": 10,
+	"sublevel": 1,
+	"categoryIcon": "🔐",
+	"categoryName": "安全与权限基础",
+	"title": "HTTPS、地址栏图标与 Mixed Content",
+	"time": 5,
+	"track": "core",
+	"needsLab": true,
+	"stuck": "地址栏图标找不到？Chrome 117 以后不再是锁 icon，点地址栏左侧的 tune 图标 → Connection is secure。",
+	"steps": [
+		{
+			"slug": "concept",
+			"type": "concept",
+			"title": "地址栏的三个秘密",
+			"hook": "地址栏左边那个小图标，远不止装饰。",
+			"body": [
+				"Chrome 117+ 把「锁」换成了「tune」图标，点开能看到连接详情。",
+				"Mixed Content 指 HTTPS 页面加载了 HTTP 资源，浏览器对不同类型的处理策略完全不同。"
+			],
+			"bullets": [
+				{
+					"emoji": "🔒",
+					"title": "被动 Mixed Content",
+					"body": "img/audio/video — 浏览器警告但会加载"
+				},
+				{
+					"emoji": "🚫",
+					"title": "主动 Mixed Content",
+					"body": "script/iframe/css — 浏览器直接 block"
+				}
+			],
+			"takeaway": "主动内容被 block，被动内容被警告，动手看看。"
+		},
+		{
+			"slug": "practice",
+			"type": "practice",
+			"title": "检查地址栏与 Console",
+			"intro": "用 HTTPS 站点观察 Chrome 的安全提示。",
+			"steps": [
+				"打开 https://react.dev。",
+				"点击地址栏左侧 tune 图标，查看「Connection is secure」详情。",
+				"打开 DevTools → Console，观察是否有 Mixed Content 警告。",
+				"对比下表，理解两种 Mixed Content 的浏览器行为：\n\n| 类型 | 包含哪些 | 浏览器行为 | 原因 |\n| --- | --- | --- | --- |\n| 主动（Active） | script, iframe, css, xhr | 完全 block | 可篡改页面逻辑 |\n| 被动（Passive） | img, audio, video | 警告但加载 | 不影响页面执行 |"
+			],
+			"shortcuts": [
+				{
+					"label": "DevTools",
+					"mac": "⌘+⌥+I",
+					"win": "F12"
+				},
+				{
+					"label": "Console",
+					"mac": "⌘+⌥+J",
+					"win": "Ctrl+Shift+J"
+				}
+			],
+			"expectedOutcome": "Console 可能出现被动 Mixed Content 警告；主动 Mixed Content 则直接被 block。"
+		},
+		{
+			"slug": "verify",
+			"type": "verify",
+			"title": "验证",
+			"prompt": "Mixed Content 中的主动内容（Active）和被动内容（Passive）哪种会被浏览器直接 block？\nA) 主动\nB) 被动\nC) 都会\nD) 都不会",
+			"tier": "soft",
+			"expectedRegex": "(A|主动|active|script|block)"
+		},
+		{
+			"slug": "ask-ai",
+			"type": "ask-ai",
+			"title": "问 AI",
+			"intro": "把今天的发现整理成修复清单。",
+			"template": "我在 HTTPS 站点上发现了 Mixed Content 警告：\n- 主动内容（script/iframe/css）被浏览器直接 block\n- 被动内容（img/audio/video）被警告但仍加载\n请告诉我：\n1. 如何用 Chrome DevTools 定位所有 Mixed Content 资源？\n2. 修复 Mixed Content 的几种方案分别是什么？"
+		}
+	]
+}

@@ -1,6 +1,11 @@
 ---
-interface Props { title?: string; icon?: string; numeral?: string; class?: string }
-const { title, icon, numeral, class: extra = "" } = Astro.props;
+interface Props {
+  title?: string;
+  icon?: string;
+  numeral?: string;
+  class?: string;
+}
+const { title, icon, numeral, class: extra = '' } = Astro.props;
 ---
 
 <section

@@ -1,0 +1,94 @@
+{
+	"id": "l3-1",
+	"level": 3,
+	"sublevel": 1,
+	"categoryIcon": "🧱",
+	"categoryName": "Elements",
+	"title": "Inspect 找到任意元素",
+	"time": 3,
+	"track": "core",
+	"needsLab": true,
+	"stuck": "按了 `⌘+⇧+C` / `Ctrl+Shift+C` 鼠标没变成探针？先按 `F12` 打开 DevTools，再按这个快捷键；Inspect 模式必须在 DevTools 已打开的前提下才能开启。",
+	"steps": [
+		{
+			"slug": "concept",
+			"type": "concept",
+			"title": "把眼睛看到的东西，变成 DOM 里能定位的节点",
+			"hook": "你在页面上看到一个按钮颜色不对、一行字号偏小——下一步要做的事是「在 DOM 里把它找出来」。在 Elements 树里一层层翻找太慢，Inspect 模式就是干这个的。",
+			"body": [
+				"Inspect 模式开启后，鼠标变成一根「探针」：悬停页面任意元素，浮窗立刻告诉你这个元素的 tag、class、尺寸、字号、颜色、对比度。",
+				"点击锁定后，Inspect 模式自动关闭，Elements 面板里对应的 DOM 节点被高亮选中——你接下来想改样式、看属性、删节点，都从这里继续。",
+				"这是从「眼睛看到」到「DOM 里找到」最短的路径，比在 Elements 树里手动展开 `<div>` 套 `<div>` 快十倍。"
+			],
+			"bullets": [
+				{
+					"emoji": "🎯",
+					"title": "Inspect 模式",
+					"body": "鼠标变探针，悬停即看属性，点击即定位"
+				},
+				{
+					"emoji": "📐",
+					"title": "浮窗信息",
+					"body": "tag.class、尺寸（W×H）、字号、颜色、对比度评分"
+				},
+				{
+					"emoji": "🔗",
+					"title": "跳到 Elements",
+					"body": "点击锁定后自动在 Elements 面板高亮选中节点"
+				}
+			],
+			"takeaway": "下一步：在练习页里用 Inspect 模式直接点中那个 H1 「欢迎来到 Webrex」，看浮窗显示的字号是多少。"
+		},
+		{
+			"slug": "practice",
+			"type": "practice",
+			"title": "在练习页用 Inspect 锁定 H1 「欢迎来到 Webrex」",
+			"intro": "练习页有一个固定的 H1 「欢迎来到 Webrex」（字号 32px、颜色 #1F2937）和三个按钮。我们用 Inspect 模式直奔 H1。",
+			"labUrl": "http://localhost:8787/lessons/l3-1",
+			"steps": [
+				"在新标签页打开 [http://localhost:8787/lessons/l3-1](http://localhost:8787/lessons/l3-1)。",
+				"确认看到页面顶部的大标题 **欢迎来到 Webrex**，和它下方的副标题 **Webrex L3 demo · 这里的元素和样式会保持稳定，便于你练习**。",
+				"按 `F12` (Win/Linux) 或 `⌘+⌥+I` (Mac) 打开 DevTools，切到 **Elements** 面板（顶栏第一个 tab）。",
+				"按 `⌘+⇧+C` (Mac) / `Ctrl+Shift+C` (Win/Linux) 开启 Inspect 模式。鼠标会变成一个带光圈的箭头，DevTools 顶栏左上角的「箭头」图标也会变蓝。",
+				"把鼠标移到页面顶部的 **欢迎来到 Webrex** 文字上**不要点**。此时浮窗出现，最上面一行是 `h1` + 它的尺寸（`宽 × 高` 单位 px，宽度看你窗口、高度约 38px）。下面还有 **Font**（字体族 + 字号）、**Color**（文字颜色色值）、**Contrast**（对比度评分）三栏。",
+				"在浮窗里读出这几个值：**Font** 那行写的字号（应该是 `32px`），**Color** 那行写的文字颜色（应该是 `#1F2937` 或对应的 RGB）。",
+				"**点击** H1 一下。Inspect 模式自动关闭（鼠标恢复正常），同时 Elements 面板里 `<h1>欢迎来到 Webrex</h1>` 这一行被蓝色高亮选中。",
+				"看 Elements 面板右侧的 **Styles** 子面板。最上面那条 `h1` 规则里能看到 `font-size: 32px;` 和 `color: rgb(31, 41, 55);`（也就是 #1F2937）——和你刚才在浮窗里读到的完全一致。",
+				"再练一次：按 `⌘+⇧+C` / `Ctrl+Shift+C` 重新开启 Inspect，悬停三个按钮中第一个 **原型按钮 一**，看浮窗显示的背景色（蓝色）和按钮尺寸。点一下锁定到 Elements。"
+			],
+			"shortcuts": [
+				{
+					"label": "DevTools",
+					"mac": "⌘+⌥+I",
+					"win": "F12"
+				},
+				{
+					"label": "Inspect 模式",
+					"mac": "⌘+⇧+C",
+					"win": "Ctrl+Shift+C"
+				},
+				{
+					"label": "命令面板（在 DevTools 里）",
+					"mac": "⌘+⇧+P",
+					"win": "Ctrl+Shift+P"
+				}
+			],
+			"expectedOutcome": "你能不展开 DOM 树，仅靠 Inspect 模式 → 鼠标悬停 → 点击，三步定位到 H1 节点；并且从浮窗读出它的字号是 `32px`、颜色是 `#1F2937`。这就是后面所有 Elements 操作的起点。"
+		},
+		{
+			"slug": "verify",
+			"type": "verify",
+			"title": "H1 的字号是多少？",
+			"prompt": "你刚才用 Inspect 模式悬停在 H1 **欢迎来到 Webrex** 上，浮窗的 **Font** 那行显示了它的字号。\n\n这个字号是多少？（带不带 `px` 单位都行）",
+			"tier": "soft",
+			"expectedRegex": "32\\s*(px)?"
+		},
+		{
+			"slug": "ask-ai",
+			"type": "ask-ai",
+			"title": "问 AI：Inspect 浮窗里的「对比度」是什么意思",
+			"intro": "Inspect 浮窗里除了字号、颜色，还有一个 **Contrast** 评分（一般是一个数字 + 一个 AA / AAA 标签）。这个值在无障碍设计里非常关键，让 AI 把它讲清楚。",
+			"template": "我在 Chrome DevTools 里用 Inspect 模式（Cmd+Shift+C）悬停一个网页 H1 元素，浮窗显示：\n- Font: 32px\n- Color: #1F2937\n- Contrast: 12.6 AAA\n\n请帮我解答：\n1. 这个 Contrast 12.6 是怎么算出来的？跟什么颜色对比？\n2. AAA / AA / 不及格 这几档分别对应多少分？为什么 WCAG 用这套标准？\n3. 我作为非前端（PM/QA），什么场景下应该主动看这个对比度数字？\n4. Inspect 模式（悬停定位）和直接在 Elements 树里手动展开找节点，分别什么场景用哪个更快？"
+		}
+	]
+}

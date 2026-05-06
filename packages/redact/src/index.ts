@@ -1,10 +1,10 @@
-export { redact } from './redact.js';
+export type { PatternDef, RedactCategory } from './patterns.js';
+export { PATTERNS } from './patterns.js';
 export type {
-  RedactOptions,
   RedactionMatch,
   RedactionResult,
   RedactionSummary,
+  RedactOptions,
   ReplacementStyle,
 } from './redact.js';
-export { PATTERNS } from './patterns.js';
-export type { PatternDef, RedactCategory } from './patterns.js';
+export { redact } from './redact.js';

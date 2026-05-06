@@ -1,11 +1,4 @@
-export type RedactCategory =
-  | 'cookie'
-  | 'authorization'
-  | 'bearer'
-  | 'email'
-  | 'phone'
-  | 'ip'
-  | 'internalUrl';
+export type RedactCategory = 'cookie' | 'authorization' | 'bearer' | 'email' | 'phone' | 'ip' | 'internalUrl';
 
 export interface PatternDef {
   category: RedactCategory;
@@ -14,20 +7,9 @@ export interface PatternDef {
   pattern: RegExp;
 }
 
-const internalHostFragments = [
-  'localhost',
-  '127.0.0.1',
-  '0.0.0.0',
-  '.local',
-  '.internal',
-  '.lan',
-  '.corp',
-  '.intra',
-];
+const internalHostFragments = ['localhost', '127.0.0.1', '0.0.0.0', '.local', '.internal', '.lan', '.corp', '.intra'];
 
-const internalUrlAlternation = internalHostFragments
-  .map((f) => f.replace(/\./g, '\\.'))
-  .join('|');
+const internalUrlAlternation = internalHostFragments.map((f) => f.replace(/\./g, '\\.')).join('|');
 
 export const PATTERNS: PatternDef[] = [
   {
@@ -70,9 +52,6 @@ export const PATTERNS: PatternDef[] = [
     category: 'internalUrl',
     label: 'Internal URL',
     emoji: '🌐',
-    pattern: new RegExp(
-      `https?:\\/\\/(?:[A-Za-z0-9.-]*(?:${internalUrlAlternation}))[^\\s'"\`<>]*`,
-      'gi'
-    ),
+    pattern: new RegExp(`https?:\\/\\/(?:[A-Za-z0-9.-]*(?:${internalUrlAlternation}))[^\\s'"\`<>]*`, 'gi'),
   },
 ];

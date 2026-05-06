@@ -54,7 +54,10 @@ function makeReplacement(def: PatternDef, style: ReplacementStyle): string {
 }
 
 export function redact(input: string, options: RedactOptions = {}): RedactionResult {
-  const enabled = { ...DEFAULT_OPTIONS.enabledCategories, ...options.enabledCategories };
+  const enabled = {
+    ...DEFAULT_OPTIONS.enabledCategories,
+    ...options.enabledCategories,
+  };
   const style = options.replacement ?? DEFAULT_OPTIONS.replacement;
 
   const allMatches: RedactionMatch[] = [];
@@ -86,7 +89,7 @@ export function redact(input: string, options: RedactOptions = {}): RedactionRes
   allMatches.sort((a, b) => a.start - b.start || b.end - b.end);
   const kept: RedactionMatch[] = [];
   let cursor = 0;
-  for (const m of allMatches.sort((a, b) => a.start - b.start || (b.end - b.start) - (a.end - a.start))) {
+  for (const m of allMatches.sort((a, b) => a.start - b.start || b.end - b.start - (a.end - a.start))) {
     if (m.start >= cursor) {
       kept.push(m);
       cursor = m.end;

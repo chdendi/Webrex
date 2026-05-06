@@ -1,0 +1,80 @@
+{
+	"id": "l12-2",
+	"level": 12,
+	"sublevel": 2,
+	"categoryIcon": "🏗️",
+	"categoryName": "现代前端架构常识",
+	"title": "SSR / CSR / 水合错误",
+	"time": 5,
+	"track": "core",
+	"needsLab": false,
+	"stuck": "看不懂 View Source？在地址栏输入 `view-source:https://react.dev` 直接查看。",
+	"steps": [
+		{
+			"slug": "concept",
+			"type": "concept",
+			"title": "三兄弟——HTML 从哪来",
+			"hook": "同样是 HTML，出生的地方完全不同。",
+			"body": [
+				"SSR：HTML 在服务器上生成，完整发送到浏览器。用户看到内容快，SEO 友好。",
+				"CSR：服务器只发一个空壳 HTML（如 `<div id='root'></div>`），浏览器下载 JS 后在客户端构建整个 DOM。首屏白屏时间长。",
+				"SSG：HTML 在构建时就生成好了，部署的是纯静态文件。适合内容不常变的站点（博客、文档站）。",
+				"水合是 React 在 SSR HTML 上挂载事件监听器的过程（`hydrateRoot`）。服务器生成的 HTML 和客户端渲染结果不同时，就会报水合错误。"
+			],
+			"bullets": [
+				{
+					"emoji": "🖥️",
+					"title": "SSR",
+					"body": "HTML 在服务器生成，首屏快，SEO 好。"
+				},
+				{
+					"emoji": "🌍",
+					"title": "CSR",
+					"body": "空壳 HTML + JS 渲染，首屏白屏，SEO 差。"
+				},
+				{
+					"emoji": "📦",
+					"title": "SSG",
+					"body": "构建时生成 HTML，纯静态，速度最快。"
+				},
+				{
+					"emoji": "💧",
+					"title": "水合",
+					"body": "React 把事件绑定到服务端 HTML，不一致就报错。"
+				}
+			],
+			"takeaway": "SSR 快在首屏，CSR 灵活在前端，SSG 稳在静态。看 View Source 就能分出来。"
+		},
+		{
+			"slug": "practice",
+			"type": "practice",
+			"title": "三招辨 SSR 和 CSR",
+			"intro": "用三个简单的浏览器操作，区分页面属于哪种渲染模式。",
+			"steps": [
+				"打开 react.dev，右键 → 查看页面源代码。",
+				"搜索页面里的文本内容（如 React）——源码里能直接搜到吗？能就说明是 SSR 或 SSG。",
+				"再打开 DevTools → Elements 面板——和 View Source 内容几乎一致，说明 react.dev 是预渲染的。",
+				"打开 http://localhost:8787/lessons/l12-spa，查看页面源代码——内容很少，搜索不到页面上的文本。",
+				"对比 react.dev 的 View Source 和该 SPA 页面的 View Source，差异一目了然。",
+				"打开 react.dev 的 DevTools → Console——留意有没有水合相关的警告（react.dev 维护得很好，通常不会出现）。",
+				"对照下表，判断一个页面属于哪种渲染模式：\n\n| 特性 | SSR | CSR | SSG | 判断方式 |\n| --- | --- | --- | --- |\n| View Source 有无内容 | 有完整 HTML | 只有空壳 | 有完整 HTML | view-source:URL |\n| 首屏速度 | 快 | 慢（白屏） | 最快 | Performance 面板 |\n| 是否需要服务器 | 是 | 否（可用 CDN） | 否（纯静态文件） | 看请求头 |\n| JS 禁用后能否显示 | 能（基础内容） | 不能 | 能（完整内容） | disable JS 测试 |"
+			],
+			"expectedOutcome": "react.dev 的 View Source 有完整 HTML 内容（SSR/SSG），本地 SPA 页面只有空壳（CSR）。"
+		},
+		{
+			"slug": "verify",
+			"type": "verify",
+			"title": "验证",
+			"prompt": "查看页面源代码时只看到一个空的 `<div id='app'></div>`，这是 SSR 还是 CSR？",
+			"tier": "soft",
+			"expectedRegex": "(CSR|客户端|client|SPA|不是SSR)"
+		},
+		{
+			"slug": "ask-ai",
+			"type": "ask-ai",
+			"title": "问 AI",
+			"intro": "把今天看到的差异转成一个架构问题。",
+			"template": "SSR 和 CSR 各自的优缺点和适用场景分别是什么？水合错误的常见原因有哪些（比如浏览器扩展注入 DOM、服务器与客户端时区不一致等），应该如何排查和修复？Next.js 和 Remix 分别在这套体系里扮演什么角色？"
+		}
+	]
+}

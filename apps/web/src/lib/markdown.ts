@@ -1,5 +1,5 @@
-import { marked } from "marked";
-import { glossary } from "~/data/glossary";
+import { marked } from 'marked';
+import { glossary } from '~/data/glossary';
 
 // Configure once at module load
 marked.setOptions({
@@ -18,34 +18,29 @@ export function mdInline(text: string): string {
 }
 
 function escapeRegex(s: string): string {
-  return s.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+  return s.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
 }
 
-const sortedGlossary = [...glossary].sort(
-  (a, b) => b.term.length - a.term.length,
-);
+const sortedGlossary = [...glossary].sort((a, b) => b.term.length - a.term.length);
 
 export function glossarizeText(text: string): string {
   const result = splitAndProcess(text, applyGlossary);
   return result;
 }
 
-function splitAndProcess(
-  text: string,
-  processor: (s: string) => string,
-): string {
-  let result = "";
+function splitAndProcess(text: string, processor: (s: string) => string): string {
+  let result = '';
   let remaining = text;
   let inCodeBlock = false;
 
   while (remaining.length > 0) {
     if (inCodeBlock) {
-      const newlineIdx = remaining.indexOf("\n");
+      const newlineIdx = remaining.indexOf('\n');
       if (newlineIdx === -1) {
         result += remaining;
         break;
       }
-      const endMarker = remaining.indexOf("```", newlineIdx);
+      const endMarker = remaining.indexOf('```', newlineIdx);
       if (endMarker === -1) {
         result += remaining;
         break;
@@ -54,13 +49,13 @@ function splitAndProcess(
       remaining = remaining.slice(endMarker + 3);
       inCodeBlock = false;
     } else {
-      const fenceIdx = remaining.indexOf("```");
+      const fenceIdx = remaining.indexOf('```');
       if (fenceIdx === -1) {
         result += processInlineCode(remaining, processor);
         break;
       }
       result += processInlineCode(remaining.slice(0, fenceIdx), processor);
-      result += "```";
+      result += '```';
       remaining = remaining.slice(fenceIdx + 3);
       inCodeBlock = true;
     }
@@ -69,17 +64,14 @@ function splitAndProcess(
   return result;
 }
 
-function processInlineCode(
-  text: string,
-  processor: (s: string) => string,
-): string {
-  let result = "";
+function processInlineCode(text: string, processor: (s: string) => string): string {
+  let result = '';
   let remaining = text;
   let inBacktick = false;
 
   while (remaining.length > 0) {
     if (inBacktick) {
-      const endIdx = remaining.indexOf("`");
+      const endIdx = remaining.indexOf('`');
       if (endIdx === -1) {
         result += remaining;
         break;
@@ -88,13 +80,13 @@ function processInlineCode(
       remaining = remaining.slice(endIdx + 1);
       inBacktick = false;
     } else {
-      const tickIdx = remaining.indexOf("`");
+      const tickIdx = remaining.indexOf('`');
       if (tickIdx === -1) {
         result += processor(remaining);
         break;
       }
       result += processor(remaining.slice(0, tickIdx));
-      result += "`";
+      result += '`';
       remaining = remaining.slice(tickIdx + 1);
       inBacktick = true;
     }
@@ -108,16 +100,16 @@ function applyGlossary(text: string): string {
   for (const entry of sortedGlossary) {
     const escaped = escapeRegex(entry.term);
     const isCJK = /^[\u4e00-\u9fff]/.test(entry.term);
-    const left = isCJK ? "" : "\\b";
-    const right = isCJK ? "" : "\\b";
-    const regex = new RegExp(`${left}${escaped}${right}`, "gi");
+    const left = isCJK ? '' : '\\b';
+    const right = isCJK ? '' : '\\b';
+    const regex = new RegExp(`${left}${escaped}${right}`, 'gi');
     result = result.replace(regex, (match) => {
       const escapedDef = entry.definition
-        .replace(/&/g, "&amp;")
-        .replace(/"/g, "&quot;")
-        .replace(/</g, "&lt;")
-        .replace(/>/g, "&gt;");
-      return `<span class="glossary" title="${escapedDef}" data-glossary-term="${entry.term.replace(/"/g, "&quot;")}">${match}</span>`;
+        .replace(/&/g, '&amp;')
+        .replace(/"/g, '&quot;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;');
+      return `<span class="glossary" title="${escapedDef}" data-glossary-term="${entry.term.replace(/"/g, '&quot;')}">${match}</span>`;
     });
   }
   return result;

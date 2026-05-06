@@ -1,0 +1,97 @@
+{
+	"id": "l5-1",
+	"level": 5,
+	"sublevel": 1,
+	"categoryIcon": "📄",
+	"categoryName": "Sources —— 看代码在哪执行",
+	"title": "怎么找到代码（Cmd+O / Cmd+Shift+F）",
+	"time": 4,
+	"track": "core",
+	"needsLab": false,
+	"stuck": "把 DevTools 切到 Sources 面板，然后直接按 Cmd+O（Mac）或 Ctrl+O（Win/Linux）试试。",
+	"steps": [
+		{
+			"slug": "concept",
+			"type": "concept",
+			"title": "两种搜索，两个目的",
+			"hook": "Sources 面板里有两种搜索——一个帮你找文件，一个帮你找代码内容。你分得清吗？",
+			"body": [
+				"Sources 面板有两种内置搜索方式：**Cmd+O** 是按文件名模糊匹配，帮你快速打开某个 JS/CSS 文件；**Cmd+Shift+F** 是全局文本搜索，在所有已加载的源文件中搜索关键字。",
+				"文件名搜索（Cmd+O）只看文件名，不搜内容。如果你记得有个文件叫 `index-xxx.js`，用它秒开。但如果你要找 `React.createElement` 这个函数调用出现在哪些文件里，只能用全局搜索。",
+				"全局搜索（Cmd+Shift+F）搜的是文件内容，适合追查某个函数、变量、字符串在哪些文件中被引用。两者配合：先用全局搜索定位代码在哪，再用文件名搜索快速跳转文件。"
+			],
+			"bullets": [
+				{
+					"emoji": "📂",
+					"title": "Cmd+O 文件名搜索",
+					"body": "模糊匹配文件名，只搜文件名不搜内容"
+				},
+				{
+					"emoji": "🔍",
+					"title": "Cmd+Shift+F 全局搜索",
+					"body": "搜索所有已加载文件的内容文本"
+				},
+				{
+					"emoji": "🤝",
+					"title": "组合用法",
+					"body": "全局搜索找位置 → 文件名搜索快速跳转"
+				}
+			],
+			"takeaway": "下一步：在 react.dev 的 Sources 面板里，先用 Cmd+O 搜文件名，再用 Cmd+Shift+F 搜代码内容，感受两种搜索的区别。"
+		},
+		{
+			"slug": "practice",
+			"type": "practice",
+			"title": "对比两种搜索方式",
+			"intro": "在 react.dev 的 Sources 面板里亲手用两种搜索，看结果差异。",
+			"steps": [
+				"打开 react.dev，按 `F12` (Win/Linux) 或 `⌘+⌥+I` (Mac) 打开 DevTools。",
+				"点击顶部的 **Sources** 标签进入 Sources 面板。",
+				"按 `⌘+O` (Mac) / `Ctrl+O` (Win/Linux) 打开文件名搜索框。输入 `index`——观察：下拉列表里只出现文件名包含 `index` 的文件。",
+				"按 `Esc` 关掉文件名搜索框。",
+				"按 `⌘+⇧+F` (Mac) / `Ctrl+Shift+F` (Win/Linux) 打开全局搜索面板（左侧会出现搜索输入区）。",
+				"在全局搜索框输入 `React.createElement`，按回车。观察右侧结果——DevTools 列出了所有包含 `React.createElement` 的文件及行号。",
+				"对比两次搜索的结果：\n\n| 搜索方式 | 快捷键 | 搜什么 | 搜 `index` 的结果 | 搜 `React.createElement` 的结果 |\n| --- | --- | --- | --- | --- |\n| 文件名搜索 | `⌘+O` / `Ctrl+O` | 只搜文件名 | 列出文件名为 index... 的文件 ✓ | 找不到 ✗ |\n| 全局搜索 | `⌘+⇧+F` / `Ctrl+Shift+F` | 搜全部文件内容 | 列出文件内容含 index 的行 ✓ | 列出含 React.createElement 的行 ✓ |",
+				"再试一次：用 Cmd+O 输入 `createElement`——文件名叫 createElement 的可能很少甚至没有。但用 Cmd+Shift+F 搜同样的词，能搜出一大堆结果。这就是区别。"
+			],
+			"shortcuts": [
+				{
+					"label": "DevTools",
+					"mac": "⌘+⌥+I",
+					"win": "F12"
+				},
+				{
+					"label": "文件名搜索",
+					"mac": "⌘+O",
+					"win": "Ctrl+O"
+				},
+				{
+					"label": "全局搜索",
+					"mac": "⌘+⇧+F",
+					"win": "Ctrl+Shift+F"
+				},
+				{
+					"label": "关闭搜索框",
+					"mac": "Esc",
+					"win": "Esc"
+				}
+			],
+			"expectedOutcome": "重点区分：文件名搜索只匹配文件名（搜内容找不到），全局搜索遍历所有文件内容（搜什么都能到）。"
+		},
+		{
+			"slug": "verify",
+			"type": "verify",
+			"title": "文件名搜索能搜到 React.createElement 吗？",
+			"prompt": "在 Sources 面板里搜索 'React.createElement' —— 用文件名搜索（Cmd+O）能找到吗？还是只能用全局搜索（Cmd+Shift+F）？回答「文件名搜索能找到」或「只能全局搜索」。",
+			"tier": "soft",
+			"expectedRegex": "(全局|Cmd.{0,3}Shift.{0,3}F|文件名搜不到|不会|不能|no|只能在|全局搜|仅)"
+		},
+		{
+			"slug": "ask-ai",
+			"type": "ask-ai",
+			"title": "问 AI：如何在压缩代码里定位函数实现",
+			"intro": "你已经知道两种搜索的区别。现在让 AI 告诉你如何在压缩过的生产代码里高效定位具体函数实现。",
+			"template": "我在用 Chrome DevTools 调试 react.dev。Sources 面板有两种搜索：\n- 文件名搜索（Cmd+O）只按文件名匹配\n- 全局搜索（Cmd+Shift+F）搜所有文件内容\n\n在实际追查中，我经常遇到压缩成一行的 JS bundle（几十万行，变量名都替换成 a/b/c）。请问：\n1. 在这种 minified 代码里，怎么用全局搜索快速定位特定 React 组件的方法实现？\n2. 有哪些搜索技巧（比如搜特征字符串、搜 DOM class 名）能帮我在压缩代码里快速定位？\n3. Source Map 能解决这个问题吗？什么情况下有 Source Map 可用？"
+		}
+	]
+}

@@ -1,15 +1,15 @@
 ---
-import type { CollectionEntry } from "astro:content";
+import type { CollectionEntry } from 'astro:content';
 
 interface Props {
-  lessons: CollectionEntry<"lessons">[];
+  lessons: CollectionEntry<'lessons'>[];
   currentId: string;
 }
 
 const { lessons, currentId } = Astro.props;
 
 // Group by level
-const byLevel = new Map<number, CollectionEntry<"lessons">[]>();
+const byLevel = new Map<number, CollectionEntry<'lessons'>[]>();
 for (const l of lessons) {
   const arr = byLevel.get(l.data.level) ?? [];
   arr.push(l);
@@ -22,7 +22,7 @@ for (const arr of byLevel.values()) {
 const sortedLevels = [...byLevel.entries()].sort((a, b) => a[0] - b[0]);
 
 // Compute total time per level
-function levelTime(arr: CollectionEntry<"lessons">[]): number {
+function levelTime(arr: CollectionEntry<'lessons'>[]): number {
   return arr.reduce((sum, l) => sum + l.data.time, 0);
 }
 ---

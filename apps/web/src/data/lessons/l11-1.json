@@ -1,0 +1,81 @@
+{
+	"id": "l11-1",
+	"level": 11,
+	"sublevel": 1,
+	"categoryIcon": "📊",
+	"categoryName": "性能指标与 Source Map",
+	"title": "跑一次 Lighthouse",
+	"time": 5,
+	"track": "core",
+	"needsLab": false,
+	"stuck": "找不到 Lighthouse 标签？DevTools 顶部 tab 最右边 » 折叠菜单里或许藏着。或者在 Console 里直接输 Lighthouse 试试。",
+	"steps": [
+		{
+			"slug": "concept",
+			"type": "concept",
+			"title": "Lighthouse 是什么",
+			"hook": "DevTools 里内置了一台审计机器人。",
+			"body": [
+				"Lighthouse 对页面做五大审计：Performance、Accessibility、Best Practices、SEO、PWA。",
+				"每项 0-100 分，低分项附带具体修复建议，按节省收益排序。",
+				"无痕模式下运行分数最干净——避免扩展干扰结果。"
+			],
+			"bullets": [
+				{
+					"emoji": "⚡",
+					"title": "Performance",
+					"body": "加载速度与交互响应"
+				},
+				{
+					"emoji": "♿",
+					"title": "Accessibility",
+					"body": "无障碍访问质量"
+				},
+				{
+					"emoji": "✅",
+					"title": "Best Practices",
+					"body": "Web 安全与规范"
+				}
+			],
+			"takeaway": "跑一次报告就有一份优化清单。"
+		},
+		{
+			"slug": "practice",
+			"type": "practice",
+			"title": "给 react.dev 跑 Lighthouse",
+			"intro": "用 react.dev 作为审计目标。",
+			"steps": [
+				"打开 react.dev。",
+				"打开 DevTools → **Lighthouse** 标签。",
+				"勾选分类：Performance、Accessibility、Best Practices。",
+				"点击 **Analyze page load**，等待约 30 秒。",
+				"记录 Performance 得分。",
+				"滚动到「Opportunities」区域——按潜在节省量排序。阅读前 3 条建议。",
+				"对比：\n\n| 分类 | react.dev 得分 | 含义 |\n| --- | --- | --- |\n| Performance | （你的得分） | 加载与交互速度 |\n| Accessibility | （你的得分） | 可访问性 |\n| Best Practices | （你的得分） | 安全与规范 |"
+			],
+			"shortcuts": [
+				{
+					"label": "DevTools",
+					"mac": "⌘+⌥+I",
+					"win": "F12"
+				}
+			],
+			"expectedOutcome": "得到一份包含分数和优化建议的完整报告。"
+		},
+		{
+			"slug": "verify",
+			"type": "verify",
+			"title": "验证",
+			"prompt": "你跑出来的 react.dev Lighthouse Performance 得分大约是多少？填一个数字（0-100）。",
+			"tier": "soft",
+			"expectedRegex": "\\d+"
+		},
+		{
+			"slug": "ask-ai",
+			"type": "ask-ai",
+			"title": "问 AI",
+			"intro": "拿着报告去问 AI。",
+			"template": "我给 react.dev 跑了 Lighthouse，Performance 得分是 __。Opportunities 前三条是：1) __ 2) __ 3) __。请解释每条的含义，并排出优先修复顺序。"
+		}
+	]
+}

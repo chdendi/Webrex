@@ -1,26 +1,28 @@
 {
-  "name": "@webrex/web",
-  "version": "0.0.0",
-  "private": true,
-  "type": "module",
-  "scripts": {
-    "dev": "astro dev --port 4321",
-    "build": "astro build",
-    "preview": "astro preview",
-    "typecheck": "astro check"
-  },
-  "dependencies": {
-    "@astrojs/check": "^0.9.4",
-    "@astrojs/react": "^4.4.0",
-    "@tailwindcss/vite": "^4.1.16",
-    "@types/react": "^19.2.0",
-    "@types/react-dom": "^19.2.0",
-    "@webrex/redact": "workspace:*",
-    "astro": "^5.18.0",
-    "marked": "^18.0.3",
-    "react": "^19.2.0",
-    "react-dom": "^19.2.0",
-    "tailwindcss": "^4.1.16",
-    "typescript": "^5.6.3"
-  }
+	"name": "@webrex/web",
+	"version": "0.0.0",
+	"private": true,
+	"type": "module",
+	"scripts": {
+		"dev": "astro dev --port 4321",
+		"build": "astro build",
+		"preview": "astro preview",
+		"lint": "biome lint --error-on-warnings .",
+		"format": "biome format --write .",
+		"typecheck": "astro check"
+	},
+	"dependencies": {
+		"@astrojs/check": "^0.9.4",
+		"@astrojs/react": "^4.4.0",
+		"@tailwindcss/vite": "^4.1.16",
+		"@types/react": "^19.2.0",
+		"@types/react-dom": "^19.2.0",
+		"@webrex/redact": "workspace:*",
+		"astro": "^5.18.0",
+		"marked": "^18.0.3",
+		"react": "^19.2.0",
+		"react-dom": "^19.2.0",
+		"tailwindcss": "^4.1.16",
+		"typescript": "^5.6.3"
+	}
 }

@@ -126,7 +126,7 @@ const nextLessonTitle = nextId
 
   <RedactionPanel client:load />
   <AiChatPanel
-    client:load
+    client:only="react"
     lessonId={lesson.id}
     lessonTitle={lesson.data.title}
     stepType={step.type}

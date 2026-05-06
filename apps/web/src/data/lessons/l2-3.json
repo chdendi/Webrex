@@ -1,95 +1,95 @@
 {
-	"id": "l2-3",
-	"level": 2,
-	"sublevel": 3,
-	"categoryIcon": "💬",
-	"categoryName": "Console",
-	"title": "$0 —— 引用你刚选中的元素",
-	"time": 3,
-	"track": "core",
-	"needsLab": false,
-	"stuck": "在 Elements 树里找不到 `<h1>React</h1>`？按 `⌘+F` / `Ctrl+F` 在 Elements 面板顶部弹出搜索框，输入 `React`，回车跳到第一个匹配。或者直接在页面上右键那个超大的「React」字样 → **Inspect**，DevTools 会自动定位到它。",
-	"steps": [
-		{
-			"slug": "concept",
-			"type": "concept",
-			"title": "$0 = 「我刚在 Elements 里点的那个元素」",
-			"hook": "你在 Elements 面板里点中了一个按钮，想立刻在 Console 里改它的样式或读它的属性——怎么把这个「眼睛看到的元素」拿到代码手里？答：`$0`。",
-			"body": [
-				"`$0` 是 Chrome DevTools 内置的一个特殊变量。它永远指向你**最近一次在 Elements 面板里选中的那个 DOM 元素**。不需要 `document.querySelector`，不需要 ID，不需要 class——选中即引用。",
-				"它是「从 UI 到代码」最快的桥梁。点中元素 → 切到 Console → 输入 `$0` → 这个元素就在你手里了，能读属性、能临时改样式、能调用方法。",
-				"DevTools 还顺带提供了几个朋友：`$1` 是上一次选中的（再上一次是 `$2`、`$3`、`$4`），`$$('selector')` 是 `document.querySelectorAll` 的简写并且返回真数组，`$_` 是上一条命令的结果。",
-				"下一步在 react.dev 上，用首页那个超大的 `<h1>React</h1>` 当靶子，把 `$0` 玩一遍。"
-			],
-			"bullets": [
-				{
-					"emoji": "🎯",
-					"title": "$0",
-					"body": "Elements 面板里最近选中的那个元素"
-				},
-				{
-					"emoji": "🕓",
-					"title": "$1 / $2 / $3 / $4",
-					"body": "上一次、再上一次⋯⋯选中的元素"
-				},
-				{
-					"emoji": "🔍",
-					"title": "$$('selector')",
-					"body": "querySelectorAll 简写，直接返回数组"
-				}
-			],
-			"takeaway": "下一步：在 react.dev 选中 `<h1>React</h1>`，在 Console 里依次跑 `$0`、`$0.tagName`、`$0.style.color = 'red'`，亲眼看页面上的「React」字样变红。"
-		},
-		{
-			"slug": "practice",
-			"type": "practice",
-			"title": "选中 react.dev 的 `<h1>React</h1>` 然后在 Console 玩 $0",
-			"intro": "react.dev 首页正中央有一个超大的 **React** 字样，那就是 `<h1>React</h1>`。我们用它当 `$0` 的靶子，因为它够大、变红立即能看到。",
-			"steps": [
-				"在新标签页打开 [react.dev](https://react.dev/)。",
-				"等页面加载完，看到正中央超大的 **React** 字样和下面那行 **The library for web and native user interfaces**。",
-				"在页面上的超大 **React** 字样上**右键** → 选 **Inspect**（或 **检查**）。DevTools 会打开并自动停在 Elements 面板，高亮选中那个 `<h1 ...>React</h1>` 节点。",
-				"确认 Elements 树里被选中的就是 `<h1>` 节点（行首是 `<h1`，里面文本是 `React`）。如果你点偏了选到了内层 `<span>` 之类的，往上点一层 `<h1>`。",
-				"切到 **Console** 面板（顶部 tab）。",
-				"在 Console 提示符后输入 `$0`，回车。输出应该是 `<h1 class=\"...\">React</h1>` 这样的元素引用——hover 它，页面上的「React」字样会被高亮。",
-				"依次输入下面的命令，每一行回车后核对输出：\n\n| 输入 | 预期输出 | 含义 |\n| --- | --- | --- |\n| `$0.tagName` | `'H1'` | 标签名（注意是大写） |\n| `$0.textContent` | `'React'` | 元素内的纯文本 |\n| `$0.style.color = 'red'` | `'red'` | 页面上「React」字样**立刻变红** |\n| `$0.outerHTML` | `'<h1 class=\"...\" style=\"color: red;\">React</h1>'` | 元素的完整 HTML（含刚加的红色） |",
-				"回到页面，确认那个超大的 **React** 字样**真的变红了**。这是临时改动，刷新页面就还原。",
-				"再玩一个：在 Console 输入 `$$('h2')`。它返回页面上**所有** `<h2>` 节点的数组。展开看看，第一个应该是 `<h2>Create user interfaces from components</h2>`。",
-				"（可选）回到 Elements 面板，再点一个别的元素（顶部导航的 **Learn** 链接）。然后切回 Console 输 `$0`——它现在指 Learn 链接了；输 `$1` 仍指刚才那个 `<h1>React</h1>`。"
-			],
-			"shortcuts": [
-				{
-					"label": "DevTools",
-					"mac": "⌘+⌥+I",
-					"win": "F12"
-				},
-				{
-					"label": "Inspect 元素（页面右键菜单里）",
-					"mac": "⌘+⇧+C",
-					"win": "Ctrl+Shift+C"
-				},
-				{
-					"label": "Elements 内搜索",
-					"mac": "⌘+F",
-					"win": "Ctrl+F"
-				}
-			],
-			"expectedOutcome": "你已经在 Console 里把 `<h1>React</h1>` 当成 JS 对象操作了：读到了 `tagName === 'H1'`，并且通过 `$0.style.color = 'red'` 让页面上的字样**真的变红**。这个反馈环（点 → `$0` → 改 → 看见变化）就是后续所有「在线调样式 / 临时改 DOM」的基础。"
-		},
-		{
-			"slug": "verify",
-			"type": "verify",
-			"title": "$0.tagName 输出的是什么？",
-			"prompt": "在 Console 里输入 `$0.tagName` 回车（前提：你刚才在 Elements 选中了 `<h1>React</h1>`）。\n\n它输出的是什么？把输出**原样**复制粘贴下来（含引号也行、不含也行）：",
-			"tier": "soft",
-			"expectedRegex": "['\"]?[Hh]1['\"]?"
-		},
-		{
-			"slug": "ask-ai",
-			"type": "ask-ai",
-			"title": "问 AI：$0 / $1 / $$ / $_ 这一家人各干啥",
-			"intro": "你已经会用 `$0` 和 `$$()` 了。趁热把 DevTools 这一整套「美元符号变量」都问清楚，下次见到不慌。",
-			"template": "我刚在 Chrome DevTools Console 学会了 `$0`——它指向 Elements 面板里最近选中的元素。现在我想把这一家「美元符号变量」搞清楚。\n\n请帮我对比说明下面这几个 DevTools 内置变量/函数：\n\n1. `$0`、`$1`、`$2`、`$3`、`$4`——分别是什么？\n2. `$_`——它和上面那几个有什么区别？\n3. `$('selector')`——它等价于什么标准 API？返回单个还是多个？\n4. `$$('selector')`——它等价于什么标准 API？返回的和原生有什么不一样？\n5. `$x('xpath')`——这个不常用，但是干啥的？\n\n每个都给一个**最短的实战使用场景**（一句话即可）。最后告诉我：这些只在 DevTools Console 里能用，对吗？我能在自己的代码里用 `$0` 吗？为什么？"
-		}
-	]
+  "id": "l2-3",
+  "level": 2,
+  "sublevel": 3,
+  "categoryIcon": "💬",
+  "categoryName": "Console",
+  "title": "$0 —— 引用你刚选中的元素",
+  "time": 3,
+  "track": "core",
+  "needsLab": false,
+  "stuck": "在 Elements 树里找不到 `<h1>React</h1>`？按 `⌘+F` / `Ctrl+F` 在 Elements 面板顶部弹出搜索框，输入 `React`，回车跳到第一个匹配。或者直接在页面上右键那个超大的「React」字样 → **Inspect**，DevTools 会自动定位到它。",
+  "steps": [
+    {
+      "slug": "concept",
+      "type": "concept",
+      "title": "$0 = 「我刚在 Elements 里点的那个元素」",
+      "hook": "你在 Elements 面板里点中了一个按钮，想立刻在 Console 里改它的样式或读它的属性——怎么把这个「眼睛看到的元素」拿到代码手里？答：`$0`。",
+      "body": [
+        "`$0` 是 Chrome DevTools 内置的一个特殊变量。它永远指向你**最近一次在 Elements 面板里选中的那个 DOM 元素**。不需要 `document.querySelector`，不需要 ID，不需要 class——选中即引用。",
+        "它是「从 UI 到代码」最高效的桥梁。点中元素 → 切到 Console → 输入 `$0` → 这个元素就在你手里了，能读属性、能临时改样式、能调用方法。",
+        "DevTools 还顺带提供了几个朋友：`$1` 是上一次选中的（再上一次是 `$2`、`$3`、`$4`），`$$('selector')` 是 `document.querySelectorAll` 的简写并且返回真数组，`$_` 是上一条命令的结果。",
+        "下一步在 react.dev 上，用首页那个超大的 `<h1>React</h1>` 当靶子，把 `$0` 玩一遍。"
+      ],
+      "bullets": [
+        {
+          "emoji": "🎯",
+          "title": "$0",
+          "body": "Elements 面板里最近选中的那个元素"
+        },
+        {
+          "emoji": "🕓",
+          "title": "$1 / $2 / $3 / $4",
+          "body": "上一次、再上一次⋯⋯选中的元素"
+        },
+        {
+          "emoji": "🔍",
+          "title": "$$('selector')",
+          "body": "querySelectorAll 简写，直接返回数组"
+        }
+      ],
+      "takeaway": "下一步：在 react.dev 选中 `<h1>React</h1>`，在 Console 里依次跑 `$0`、`$0.tagName`、`$0.style.color = 'red'`，直接观察页面上的「React」字样变红。"
+    },
+    {
+      "slug": "practice",
+      "type": "practice",
+      "title": "选中 react.dev 的 `<h1>React</h1>` 然后在 Console 玩 $0",
+      "intro": "react.dev 首页正中央有一个超大的 **React** 字样，那就是 `<h1>React</h1>`。我们用它当 `$0` 的靶子，因为它够大、变红立即能看到。",
+      "steps": [
+        "在新标签页打开 [react.dev](https://react.dev/)。",
+        "等页面加载完，看到正中央超大的 **React** 字样和下面那行 **The library for web and native user interfaces**。",
+        "在页面上的超大 **React** 字样上**右键** → 选 **Inspect**（或 **检查**）。DevTools 会打开并自动停在 Elements 面板，高亮选中那个 `<h1 ...>React</h1>` 节点。",
+        "确认 Elements 树里被选中的就是 `<h1>` 节点（行首是 `<h1`，里面文本是 `React`）。如果你点偏了选到了内层 `<span>` 之类的，往上点一层 `<h1>`。",
+        "切到 **Console** 面板（顶部 tab）。",
+        "在 Console 提示符后输入 `$0`，回车。输出应该是 `<h1 class=\"...\">React</h1>` 这样的元素引用——hover 它，页面上的「React」字样会被高亮。",
+        "依次输入下面的命令，每一行回车后核对输出：\n\n| 输入 | 预期输出 | 含义 |\n| --- | --- | --- |\n| `$0.tagName` | `'H1'` | 标签名（注意是大写） |\n| `$0.textContent` | `'React'` | 元素内的纯文本 |\n| `$0.style.color = 'red'` | `'red'` | 页面上「React」字样**立刻变红** |\n| `$0.outerHTML` | `'<h1 class=\"...\" style=\"color: red;\">React</h1>'` | 元素的完整 HTML（含刚加的红色） |",
+        "回到页面，确认那个超大的 **React** 字样**真的变红了**。这是临时改动，刷新页面就还原。",
+        "再玩一个：在 Console 输入 `$$('h2')`。它返回页面上**所有** `<h2>` 节点的数组。展开看看，第一个应该是 `<h2>Create user interfaces from components</h2>`。",
+        "（可选）回到 Elements 面板，再点一个别的元素（顶部导航的 **Learn** 链接）。然后切回 Console 输 `$0`——它现在指 Learn 链接了；输 `$1` 仍指刚才那个 `<h1>React</h1>`。"
+      ],
+      "shortcuts": [
+        {
+          "label": "DevTools",
+          "mac": "⌘+⌥+I",
+          "win": "F12"
+        },
+        {
+          "label": "Inspect 元素（页面右键菜单里）",
+          "mac": "⌘+⇧+C",
+          "win": "Ctrl+Shift+C"
+        },
+        {
+          "label": "Elements 内搜索",
+          "mac": "⌘+F",
+          "win": "Ctrl+F"
+        }
+      ],
+      "expectedOutcome": "你已经在 Console 里把 `<h1>React</h1>` 当成 JS 对象操作了：读到了 `tagName === 'H1'`，并且通过 `$0.style.color = 'red'` 让页面上的字样**真的变红**。这个反馈环（点 → `$0` → 改 → 看见变化）就是后续所有「在线调样式 / 临时改 DOM」的基础。"
+    },
+    {
+      "slug": "verify",
+      "type": "verify",
+      "title": "$0.tagName 输出的是什么？",
+      "prompt": "在 Console 里输入 `$0.tagName` 回车（前提：你刚才在 Elements 选中了 `<h1>React</h1>`）。\n\n它输出的是什么？把输出**原样**复制粘贴下来（含引号也行、不含也行）：",
+      "tier": "soft",
+      "expectedRegex": "['\"]?[Hh]1['\"]?"
+    },
+    {
+      "slug": "ask-ai",
+      "type": "ask-ai",
+      "title": "问 AI：$0 / $1 / $$ / $_ 这一家人各干啥",
+      "intro": "你已经会用 `$0` 和 `$$()` 了。趁热把 DevTools 这一整套「美元符号变量」都问清楚，下次见到不慌。",
+      "template": "我刚在 Chrome DevTools Console 学会了 `$0`——它指向 Elements 面板里最近选中的元素。现在我想把这一家「美元符号变量」搞清楚。\n\n请帮我对比说明下面这几个 DevTools 内置变量/函数：\n\n1. `$0`、`$1`、`$2`、`$3`、`$4`——分别是什么？\n2. `$_`——它和上面那几个有什么区别？\n3. `$('selector')`——它等价于什么标准 API？返回单个还是多个？\n4. `$$('selector')`——它等价于什么标准 API？返回的和原生有什么不一样？\n5. `$x('xpath')`——这个不常用，但是干啥的？\n\n每个都给一个**最短的实战使用场景**（一句话即可）。最后告诉我：这些只在 DevTools Console 里能用，对吗？我能在自己的代码里用 `$0` 吗？为什么？"
+    }
+  ]
 }

@@ -1,94 +1,94 @@
 {
-	"id": "l2-1",
-	"level": 2,
-	"sublevel": 1,
-	"categoryIcon": "💬",
-	"categoryName": "Console",
-	"title": "打开 Console 看懂红黄蓝",
-	"time": 4,
-	"track": "core",
-	"needsLab": true,
-	"stuck": "看不到 Filter 按钮？Console 面板顶部有一行工具栏，从左到右依次是：清空（🚫）、过滤输入框、Default levels 下拉。点 **Default levels** 下拉，就能勾选/取消 Errors / Warnings / Info / Verbose。",
-	"steps": [
-		{
-			"slug": "concept",
-			"type": "concept",
-			"title": "Console 是浏览器的对讲机，颜色 = 紧迫度",
-			"hook": "如果浏览器要告诉你「网页坏了」，它会去哪儿喊？答：Console。但它喊的方式有讲究——不是所有红字都同样要紧。",
-			"body": [
-				"Console 是浏览器和你之间唯一的「文字对讲机」。所有 JS 报错、网络异常、开发者主动打的日志，都汇到这里。",
-				"三种颜色对应三种紧迫度：**红色 Error** 表示「真出事了，某段代码崩了或请求失败了」；**黄色 Warning** 表示「能跑，但你最好看一眼，可能是 deprecated API 或潜在风险」；**蓝色 Info**（以及白色 log）表示「我只是顺便告诉你一声」。",
-				"下一步在 lab 页面里你会一次看到这三种颜色的真实样本：5 红 + 3 黄 + 2 蓝。然后用 Console 顶部的 **Default levels** 下拉框分别筛选，亲眼看每个分类各包含哪些条目。"
-			],
-			"bullets": [
-				{
-					"emoji": "🔴",
-					"title": "Error",
-					"body": "代码崩了 / 请求失败 / 必须处理"
-				},
-				{
-					"emoji": "🟡",
-					"title": "Warning",
-					"body": "能跑但有隐患 / 用了过时 API"
-				},
-				{
-					"emoji": "🔵",
-					"title": "Info",
-					"body": "纯提示 / 开发者主动打的状态信息"
-				}
-			],
-			"takeaway": "下一步：打开 lab，用 Default levels 下拉分别只显示 Errors / Warnings / Info，确认数量分别是 5 / 3 / 2。"
-		},
-		{
-			"slug": "practice",
-			"type": "practice",
-			"title": "在 lab 里筛选三色 + 展开第一条 Error 的堆栈",
-			"intro": "lab 页面在加载时会主动打印 5 条红色 Error、3 条黄色 Warning、2 条蓝色 Info，每一条都以 `[lab]` 开头方便识别。第一条 Error 是模拟的网络错误：`[lab] AbortError: The fetch to api/users/me was aborted`。",
-			"steps": [
-				"在新标签页打开 lab：[http://localhost:8787/lessons/l2-1](http://localhost:8787/lessons/l2-1)。",
-				"按 `F12` (Win/Linux) 或 `⌘+⌥+I` (Mac) 打开 DevTools。",
-				"点击顶部 tab 切到 **Console** 面板（如果默认不是）。",
-				"按 `⌘+R` / `F5` 刷新页面，让 lab 重新打印日志。你应该看到一片红黄蓝混在一起的 10 条 `[lab] ...` 输出。",
-				"找到 Console 顶部的 **Default levels** 下拉（在过滤输入框右侧，写着 *Default levels*、*All levels*、*Verbose* 之类）。点开它。",
-				"依次只勾选一个等级，逐项核对：\n\n| 只勾选的等级 | 应该看到的条数 | 第一条文本以什么开头 |\n| --- | --- | --- |\n| **Errors** | 5 | `[lab] AbortError: The fetch to api/users/me was aborted` |\n| **Warnings** | 3 | `[lab]` 开头的黄色三角图标行 |\n| **Info** | 2 | `[lab]` 开头的蓝色 ⓘ 图标行 |\n\n如果数字对得上，说明你已经能用筛选器区分三色。",
-				"把 **Default levels** 下拉重新勾上全部（Errors / Warnings / Info / Verbose），让所有日志都显示出来。",
-				"找到第一条红色 Error（`[lab] AbortError: The fetch to api/users/me was aborted`）。它左侧有一个小三角 **▶**。点这个三角展开。",
-				"展开后你会看到一段 **stack trace**（堆栈），每一行形如 `at functionName (file.js:行号:列号)`，最右边是文件名加行号。这告诉你「这个错是从哪个文件、哪一行抛出来的」。",
-				"把鼠标 hover 到堆栈最右边的 `file.js:12:34` 之类的链接上——它通常是可以点的，点了会跳到 Sources 面板对应的代码行。"
-			],
-			"shortcuts": [
-				{
-					"label": "DevTools",
-					"mac": "⌘+⌥+I",
-					"win": "F12"
-				},
-				{
-					"label": "刷新页面",
-					"mac": "⌘+R",
-					"win": "F5"
-				},
-				{
-					"label": "聚焦 Console 过滤框",
-					"mac": "⌘+F",
-					"win": "Ctrl+F"
-				}
-			],
-			"expectedOutcome": "你能用 **Default levels** 下拉单独看 Errors / Warnings / Info（数量 5/3/2），且能展开第一条 Error 看到堆栈，知道它是从哪个文件抛出来的。这两件事——**筛选** 和 **追溯来源**——是后续所有 Console 排错的基础。"
-		},
-		{
-			"slug": "verify",
-			"type": "verify",
-			"title": "粘贴第一条红色 Error 的完整文本",
-			"prompt": "在 lab 页面 Console 里找到第一条红色 Error（最上面那条 `[lab]` 开头的红色行）。\n\n选中它的全部文本（不包含展开的堆栈，只要那一行主消息），按 `⌘+C` / `Ctrl+C` 复制，然后粘贴到下面：",
-			"tier": "soft",
-			"expectedRegex": "(AbortError|api/users/me|\\[lab\\]|aborted)"
-		},
-		{
-			"slug": "ask-ai",
-			"type": "ask-ai",
-			"title": "问 AI：这条报错是哪一类问题",
-			"intro": "你已经看到 5 条红色 Error。挑一条你最看不懂的（推荐第一条 `AbortError`，因为它是网络类错误的典型样本），把完整文本和堆栈一起交给 AI，让它帮你判断这是网络问题、代码问题还是配置问题。",
-			"template": "我在 Chrome DevTools Console 里看到这条红色 Error：\n\n```\n[lab] AbortError: The fetch to api/users/me was aborted\n```\n\n（堆栈我也展开了，但暂时省略）\n\n请帮我判断：\n1. 这是哪一类问题？（网络 / JS 代码 / 配置 / 浏览器 API 误用）\n2. `AbortError` 是什么意思？什么情况下 fetch 会被 abort？\n3. 如果我是 PM 或 QA，看到这条报错，我应该把它派给前端、后端，还是运维？为什么？\n4. 一般遇到这种 Error，下一步应该看 DevTools 的哪个面板继续追？"
-		}
-	]
+  "id": "l2-1",
+  "level": 2,
+  "sublevel": 1,
+  "categoryIcon": "💬",
+  "categoryName": "Console",
+  "title": "打开 Console 看懂红黄蓝",
+  "time": 4,
+  "track": "core",
+  "needsLab": true,
+  "stuck": "看不到 Filter 按钮？Console 面板顶部有一行工具栏，从左到右依次是：清空（🚫）、过滤输入框、Default levels 下拉。点 **Default levels** 下拉，就能勾选/取消 Errors / Warnings / Info / Verbose。",
+  "steps": [
+    {
+      "slug": "concept",
+      "type": "concept",
+      "title": "Console 是浏览器的对讲机，颜色 = 紧迫度",
+      "hook": "如果浏览器要告诉你「网页坏了」，它会去哪儿喊？答：Console。但它喊的方式有讲究——不是所有红字都同样要紧。",
+      "body": [
+        "Console 是浏览器和你之间唯一的「文字对讲机」。所有 JS 报错、网络异常、开发者主动打的日志，都汇到这里。",
+        "三种颜色对应三种紧迫度：**红色 Error** 表示「真出事了，某段代码崩了或请求失败了」；**黄色 Warning** 表示「能跑，但你最好看一眼，可能是 deprecated API 或潜在风险」；**蓝色 Info**（以及白色 log）表示「我只是顺便告诉你一声」。",
+        "下一步在 lab 页面里你会一次看到这三种颜色的真实样本：5 红 + 3 黄 + 2 蓝。然后用 Console 顶部的 **Default levels** 下拉框分别筛选，直接观察每个分类各包含哪些条目。"
+      ],
+      "bullets": [
+        {
+          "emoji": "🔴",
+          "title": "Error",
+          "body": "代码崩了 / 请求失败 / 必须处理"
+        },
+        {
+          "emoji": "🟡",
+          "title": "Warning",
+          "body": "能跑但有隐患 / 用了过时 API"
+        },
+        {
+          "emoji": "🔵",
+          "title": "Info",
+          "body": "纯提示 / 开发者主动打的状态信息"
+        }
+      ],
+      "takeaway": "下一步：打开 lab，用 Default levels 下拉分别只显示 Errors / Warnings / Info，确认数量分别是 5 / 3 / 2。"
+    },
+    {
+      "slug": "practice",
+      "type": "practice",
+      "title": "在 lab 里筛选三色 + 展开第一条 Error 的堆栈",
+      "intro": "lab 页面在加载时会主动打印 5 条红色 Error、3 条黄色 Warning、2 条蓝色 Info，每一条都以 `[lab]` 开头方便识别。第一条 Error 是模拟的网络错误：`[lab] AbortError: The fetch to api/users/me was aborted`。",
+      "steps": [
+        "在新标签页打开 lab：[http://localhost:8787/lessons/l2-1](http://localhost:8787/lessons/l2-1)。",
+        "按 `F12` (Win/Linux) 或 `⌘+⌥+I` (Mac) 打开 DevTools。",
+        "点击顶部 tab 切到 **Console** 面板（如果默认不是）。",
+        "按 `⌘+R` / `F5` 刷新页面，让 lab 重新打印日志。你应该看到一片红黄蓝混在一起的 10 条 `[lab] ...` 输出。",
+        "找到 Console 顶部的 **Default levels** 下拉（在过滤输入框右侧，写着 *Default levels*、*All levels*、*Verbose* 之类）。点开它。",
+        "依次只勾选一个等级，逐项核对：\n\n| 只勾选的等级 | 应该看到的条数 | 第一条文本以什么开头 |\n| --- | --- | --- |\n| **Errors** | 5 | `[lab] AbortError: The fetch to api/users/me was aborted` |\n| **Warnings** | 3 | `[lab]` 开头的黄色三角图标行 |\n| **Info** | 2 | `[lab]` 开头的蓝色 ⓘ 图标行 |\n\n如果数字对得上，说明你已经能用筛选器区分三色。",
+        "把 **Default levels** 下拉重新勾上全部（Errors / Warnings / Info / Verbose），让所有日志都显示出来。",
+        "找到第一条红色 Error（`[lab] AbortError: The fetch to api/users/me was aborted`）。它左侧有一个小三角 **▶**。点这个三角展开。",
+        "展开后你会看到一段 **stack trace**（堆栈），每一行形如 `at functionName (file.js:行号:列号)`，最右边是文件名加行号。这告诉你「这个错是从哪个文件、哪一行抛出来的」。",
+        "把鼠标 hover 到堆栈最右边的 `file.js:12:34` 之类的链接上——它通常是可以点的，点了会跳到 Sources 面板对应的代码行。"
+      ],
+      "shortcuts": [
+        {
+          "label": "DevTools",
+          "mac": "⌘+⌥+I",
+          "win": "F12"
+        },
+        {
+          "label": "刷新页面",
+          "mac": "⌘+R",
+          "win": "F5"
+        },
+        {
+          "label": "聚焦 Console 过滤框",
+          "mac": "⌘+F",
+          "win": "Ctrl+F"
+        }
+      ],
+      "expectedOutcome": "你能用 **Default levels** 下拉单独看 Errors / Warnings / Info（数量 5/3/2），且能展开第一条 Error 看到堆栈，知道它是从哪个文件抛出来的。这两件事——**筛选** 和 **追溯来源**——是后续所有 Console 排错的基础。"
+    },
+    {
+      "slug": "verify",
+      "type": "verify",
+      "title": "粘贴第一条红色 Error 的完整文本",
+      "prompt": "在 lab 页面 Console 里找到第一条红色 Error（最上面那条 `[lab]` 开头的红色行）。\n\n选中它的全部文本（不包含展开的堆栈，只要那一行主消息），按 `⌘+C` / `Ctrl+C` 复制，然后粘贴到下面：",
+      "tier": "soft",
+      "expectedRegex": "(AbortError|api/users/me|\\[lab\\]|aborted)"
+    },
+    {
+      "slug": "ask-ai",
+      "type": "ask-ai",
+      "title": "问 AI：这条报错是哪一类问题",
+      "intro": "你已经看到 5 条红色 Error。挑一条你最看不懂的（推荐第一条 `AbortError`，因为它是网络类错误的典型样本），把完整文本和堆栈一起交给 AI，让它帮你判断这是网络问题、代码问题还是配置问题。",
+      "template": "我在 Chrome DevTools Console 里看到这条红色 Error：\n\n```\n[lab] AbortError: The fetch to api/users/me was aborted\n```\n\n（堆栈我也展开了，但暂时省略）\n\n请帮我判断：\n1. 这是哪一类问题？（网络 / JS 代码 / 配置 / 浏览器 API 误用）\n2. `AbortError` 是什么意思？什么情况下 fetch 会被 abort？\n3. 如果我是 PM 或 QA，看到这条报错，我应该把它派给前端、后端，还是运维？为什么？\n4. 一般遇到这种 Error，下一步应该看 DevTools 的哪个面板继续追？"
+    }
+  ]
 }

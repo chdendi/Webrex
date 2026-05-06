@@ -40,10 +40,7 @@
   },
   "overrides": [],
   "files": {
-    "includes": [
-      "apps/**/*.{ts,tsx,mjs,js}",
-      "packages/**/*.ts"
-    ],
+    "includes": ["apps/**/*.{ts,tsx,mjs,js,json,jsonc,astro}", "packages/**/*.ts"],
     "ignoreUnknown": true
   }
 }

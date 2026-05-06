@@ -1,82 +1,82 @@
 {
-	"id": "l11-2",
-	"level": 11,
-	"sublevel": 2,
-	"categoryIcon": "📊",
-	"categoryName": "性能指标与 Source Map",
-	"title": "LCP / CLS / INP 看懂",
-	"time": 5,
-	"track": "core",
-	"needsLab": false,
-	"stuck": "Performance 面板里看不到 LCP 标记？录制时把模式切成「page load」而不是默认的 record——刷新页面同时开始录制。",
-	"steps": [
-		{
-			"slug": "concept",
-			"type": "concept",
-			"title": "三大核心指标",
-			"hook": "Google 用三个数字衡量页面体验。",
-			"body": [
-				"LCP（Largest Contentful Paint）：最大可见元素渲染完的时间，好阈值 < 2.5s。",
-				"CLS（Cumulative Layout Shift）：布局累积偏移量，好阈值 < 0.1。",
-				"INP（Interaction to Next Paint）：用户交互到下一帧的延迟，好阈值 < 200ms。",
-				"Performance 面板的 Timings 轨道显示 LCP 菱形标记，Experience 轨道显示红色布局偏移块。"
-			],
-			"bullets": [
-				{
-					"emoji": "🖼️",
-					"title": "LCP",
-					"body": "最大元素何时出现"
-				},
-				{
-					"emoji": "📐",
-					"title": "CLS",
-					"body": "页面抖动了多少"
-				},
-				{
-					"emoji": "👆",
-					"title": "INP",
-					"body": "点了之后多快响应"
-				}
-			],
-			"takeaway": "三个指标定位页面卡在哪一环。"
-		},
-		{
-			"slug": "practice",
-			"type": "practice",
-			"title": "在 react.dev 上找 LCP 和布局偏移",
-			"intro": "用 Performance 面板录制一次页面加载。",
-			"steps": [
-				"打开 react.dev。",
-				"打开 DevTools → **Performance** 面板。",
-				"点击录制按钮左侧的下拉箭头，选择 **「Page load」** 模式。",
-				"点击录制按钮开始录制，页面自动刷新。加载完成后停止录制。",
-				"在 Timings 轨道找到 **LCP** 标记（菱形图标）。点击它——Summary 窗格显示哪个元素触发了 LCP。记录 LCP 耗时。",
-				"查看 Experience 轨道：红色方块表示布局偏移（Layout Shift）。",
-				"整理：\n\n| 指标 | 全称 | 好阈值 | 在 Performance 面板怎么看 |\n| --- | --- | --- | --- |\n| LCP | Largest Contentful Paint | < 2.5s | Timings 轨道菱形标记 |\n| CLS | Cumulative Layout Shift | < 0.1 | Experience 轨道红色方块 |\n| INP | Interaction to Next Paint | < 200ms | 需运行 Lighthouse 查看 |"
-			],
-			"shortcuts": [
-				{
-					"label": "DevTools",
-					"mac": "⌘+⌥+I",
-					"win": "F12"
-				}
-			],
-			"expectedOutcome": "找到 LCP 元素和耗时，看到 Experience 轨道中的布局偏移记录。"
-		},
-		{
-			"slug": "verify",
-			"type": "verify",
-			"title": "验证",
-			"prompt": "react.dev 的 LCP 元素是什么类型？A) 大标题文字 B) 首屏大图/图标 C) 按钮 D) 视频",
-			"tier": "soft",
-			"expectedRegex": "(A|文字|标题|text|hero|heading|h1|大标题)"
-		},
-		{
-			"slug": "ask-ai",
-			"type": "ask-ai",
-			"title": "问 AI",
-			"intro": "把实测数据喂给 AI。",
-			"template": "我测了 react.dev：LCP 元素是 __，耗时 __ms。CLS 分数为 __。请解释这三个 Web Vitals 的含义，并给出每种指标变差时最常见的修复手段。"
-		}
-	]
+  "id": "l11-2",
+  "level": 11,
+  "sublevel": 2,
+  "categoryIcon": "📊",
+  "categoryName": "性能指标与 Source Map",
+  "title": "LCP / CLS / INP 看懂",
+  "time": 5,
+  "track": "core",
+  "needsLab": false,
+  "stuck": "Performance 面板里看不到 LCP 标记？录制时把模式切成「page load」而不是默认的 record——刷新页面同时开始录制。",
+  "steps": [
+    {
+      "slug": "concept",
+      "type": "concept",
+      "title": "三大核心指标",
+      "hook": "Google 用三个数字衡量页面体验。",
+      "body": [
+        "LCP（Largest Contentful Paint）：最大可见元素渲染完的时间，好阈值 < 2.5s。",
+        "CLS（Cumulative Layout Shift）：布局累积偏移量，好阈值 < 0.1。",
+        "INP（Interaction to Next Paint）：用户交互到下一帧的延迟，好阈值 < 200ms。",
+        "Performance 面板的 Timings 轨道显示 LCP 菱形标记，Experience 轨道显示红色布局偏移块。"
+      ],
+      "bullets": [
+        {
+          "emoji": "🖼️",
+          "title": "LCP",
+          "body": "最大元素何时出现"
+        },
+        {
+          "emoji": "📐",
+          "title": "CLS",
+          "body": "页面抖动了多少"
+        },
+        {
+          "emoji": "👆",
+          "title": "INP",
+          "body": "点击之后响应速度"
+        }
+      ],
+      "takeaway": "三个指标定位页面卡在哪一环。"
+    },
+    {
+      "slug": "practice",
+      "type": "practice",
+      "title": "在 react.dev 上找 LCP 和布局偏移",
+      "intro": "用 Performance 面板录制一次页面加载。",
+      "steps": [
+        "打开 react.dev。",
+        "打开 DevTools → **Performance** 面板。",
+        "点击录制按钮左侧的下拉箭头，选择 **「Page load」** 模式。",
+        "点击录制按钮开始录制，页面自动刷新。加载完成后停止录制。",
+        "在 Timings 轨道找到 **LCP** 标记（菱形图标）。点击它——Summary 窗格显示哪个元素触发了 LCP。记录 LCP 耗时。",
+        "查看 Experience 轨道：红色方块表示布局偏移（Layout Shift）。",
+        "整理：\n\n| 指标 | 全称 | 好阈值 | 在 Performance 面板怎么看 |\n| --- | --- | --- | --- |\n| LCP | Largest Contentful Paint | < 2.5s | Timings 轨道菱形标记 |\n| CLS | Cumulative Layout Shift | < 0.1 | Experience 轨道红色方块 |\n| INP | Interaction to Next Paint | < 200ms | 需运行 Lighthouse 查看 |"
+      ],
+      "shortcuts": [
+        {
+          "label": "DevTools",
+          "mac": "⌘+⌥+I",
+          "win": "F12"
+        }
+      ],
+      "expectedOutcome": "找到 LCP 元素和耗时，看到 Experience 轨道中的布局偏移记录。"
+    },
+    {
+      "slug": "verify",
+      "type": "verify",
+      "title": "验证",
+      "prompt": "react.dev 的 LCP 元素是什么类型？A) 大标题文字 B) 首屏大图/图标 C) 按钮 D) 视频",
+      "tier": "soft",
+      "expectedRegex": "(A|文字|标题|text|hero|heading|h1|大标题)"
+    },
+    {
+      "slug": "ask-ai",
+      "type": "ask-ai",
+      "title": "问 AI",
+      "intro": "把实测数据喂给 AI。",
+      "template": "我测了 react.dev：LCP 元素是 __，耗时 __ms。CLS 分数为 __。请解释这三个 Web Vitals 的含义，并给出每种指标变差时最常见的修复手段。"
+    }
+  ]
 }

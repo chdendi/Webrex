@@ -1,94 +1,94 @@
 {
-	"id": "l2-5",
-	"level": 2,
-	"sublevel": 5,
-	"categoryIcon": "💬",
-	"categoryName": "Console",
-	"title": "Live Expression —— 实时监控变量",
-	"time": 3,
-	"track": "extension",
-	"needsLab": false,
-	"stuck": "找不到 👁 按钮？它在 Console 面板**最顶部**那一行工具栏里，位于清空按钮 🚫 右边、过滤输入框左边。hover 上去显示 *Create live expression*。如果你的 Console 工具栏被压缩了，把 DevTools 拉宽一点就出来了。",
-	"steps": [
-		{
-			"slug": "concept",
-			"type": "concept",
-			"title": "Live Expression = 一直盯着一个表达式重新求值",
-			"hook": "你想知道用户滚到了哪儿、当前键盘焦点在哪个元素上——总不能每秒手动敲一次 `console.log(window.scrollY)` 吧？",
-			"body": [
-				"**Live Expression** 是 Console 顶部那个 👁 按钮（hover 显示 *Create live expression*）。点它，输入一个 JS 表达式（任何能在 Console 里求值的东西），它会从 Console 顶部固定下来，**每 ~250ms 自动重新求值并更新显示**。",
-				"和 `console.log` 的根本区别：`console.log` 是「在某一刻打一个快照」，Live Expression 是「持续盯着，自动刷新」。后者特别适合监控**会变的值**：滚动位置、焦点元素、当前时间、`document.cookie`、某个全局状态变量。",
-				"它还能避免「日志洪水」问题——如果你写 `setInterval(() => console.log(scrollY), 100)`，Console 会被刷屏。Live Expression 只占顶部一行，覆盖式更新。",
-				"下一步在 react.dev 上加两个 Live Expression：`document.activeElement`（看当前焦点跟着 Tab 键跳）和 `window.scrollY`（看滚动条数字实时跳动）。"
-			],
-			"bullets": [
-				{
-					"emoji": "👁",
-					"title": "Create live expression",
-					"body": "Console 顶部按钮，固定一个表达式持续监控"
-				},
-				{
-					"emoji": "⏱",
-					"title": "~250ms 刷新一次",
-					"body": "自动重算，不需要你手动 log"
-				},
-				{
-					"emoji": "🧹",
-					"title": "不刷屏",
-					"body": "覆盖式更新，不像 setInterval+log 那样污染 Console"
-				}
-			],
-			"takeaway": "下一步：在 react.dev 加两个 Live Expression（`document.activeElement` 和 `window.scrollY`），按 Tab 切焦点、滚滚轮，看它俩实时变化。"
-		},
-		{
-			"slug": "practice",
-			"type": "practice",
-			"title": "在 react.dev 加两个 Live Expression 看它实时跳动",
-			"intro": "react.dev 顶部有 **Learn** / **Reference** / **Community** / **Blog** 几个导航链接，按 Tab 键能在它们之间跳焦点；页面又足够长，能滚动产生 `scrollY` 变化。两个监控目标都有现成材料。",
-			"steps": [
-				"打开 [react.dev](https://react.dev/)，按 `F12` / `⌘+⌥+I` 打开 DevTools，切到 **Console** 面板。",
-				"在 Console 面板**最顶部**那行工具栏（不是底部输入框！）找到 **👁** 按钮，位置在清空按钮 🚫 右边。hover 上去会显示 *Create live expression*。点它。",
-				"Console 顶部出现一个输入框。输入 `document.activeElement`，然后**按回车**保存（不是点叉关掉）。",
-				"保存后，那一行会显示当前焦点元素。页面刚加载时通常是 `<body>` 节点；如果你点过任何链接或按钮，就是那个被点过的元素。它前面有 👁 标记，背景色和普通日志不同。",
-				"把鼠标点回 react.dev 页面（让页面拿到焦点），然后**按 Tab 键** 2–3 次。每按一次，Live Expression 那一行的元素就会换——从 `<body>` 跳到第一个可聚焦元素，再跳到下一个（顶部导航的 **Learn**、**Reference** 等链接会依次成为焦点）。",
-				"再点一次顶部 👁 加第二个 Live Expression：输入 `window.scrollY`，回车。还没滚动时它显示 `0`。",
-				"在页面上往下滚动（鼠标滚轮或 `Space` 键）。看着 Console 顶部的两个 Live Expression：\n\n| 操作 | `document.activeElement` 的变化 | `window.scrollY` 的变化 |\n| --- | --- | --- |\n| 按 Tab 键 | 从一个链接跳到下一个 | 不变 |\n| 滚动鼠标滚轮 | 通常不变（除非滚动让焦点滚出视区） | **数字实时跳动**（0 → 几十 → 几百） |\n| 点页面上的 **Search** 按钮 | 变成 `<button aria-label=\"Search\">...` | 不变 |",
-				"（可选）再加第三个：`new Date().toLocaleTimeString()`——它会变成一个**实时跳动的时钟**，最直观感受 ~250ms 的刷新频率。",
-				"不想要某个 Live Expression 了？hover 它，右侧出现一个 **×** 删除图标，点它移除。"
-			],
-			"shortcuts": [
-				{
-					"label": "DevTools",
-					"mac": "⌘+⌥+I",
-					"win": "F12"
-				},
-				{
-					"label": "Console 清屏",
-					"mac": "⌘+K",
-					"win": "Ctrl+L"
-				},
-				{
-					"label": "切焦点（在页面上）",
-					"mac": "Tab",
-					"win": "Tab"
-				}
-			],
-			"expectedOutcome": "Console 顶部固定显示 2–3 个 Live Expression，分别盯着焦点元素、滚动位置（和可选的实时时钟）。你按 Tab 时第一行跟着跳，滚页面时第二行数字实时变。这种「无侵入、无刷屏」的监控比 `console.log` 更适合调任何随时间变化的值。"
-		},
-		{
-			"slug": "verify",
-			"type": "verify",
-			"title": "自查：你成功创建了至少一个 Live Expression 吗？",
-			"prompt": "回顾刚才的操作：\n\n- 你点过 Console 顶部的 👁 按钮吗？\n- 你输入了表达式（`document.activeElement` 或 `window.scrollY`）并回车保存了吗？\n- Console 顶部固定显示了一行带 👁 标记的实时数据吗？\n\n如果三件事都做到了，回答 **「是」** 或 **「成功」**。",
-			"tier": "self",
-			"expectedRegex": "(是|成功|done|yes|ok|完成|搞定)"
-		},
-		{
-			"slug": "ask-ai",
-			"type": "ask-ai",
-			"title": "问 AI：3 个值得长期挂着的 Live Expression",
-			"intro": "你已经会创建 Live Expression 了。现在让 AI 推荐几个真正值得在日常调试时挂着的表达式——按你的角色（PM / QA / 后端）给出针对性建议。",
-			"template": "我刚学会了 Chrome DevTools Console 顶部的 Live Expression 功能（👁 按钮，每 250ms 自动重新求值一个表达式）。\n\n我的角色是【PM / QA / 后端开发】（请按你认为最常见的非前端角色举例），日常调试时主要排查这些问题：\n\n- 表单填到一半数据丢了\n- 用户说「页面卡」但我在自己机器上看不出\n- 某个状态切换后 UI 没跟着更新\n- 偶发的请求失败\n\n请推荐 **3 个最值得长期挂着的 Live Expression**，每个给：\n\n1. **表达式本身**（一行 JS）\n2. **它显示什么**\n3. **典型用途**（什么场景下盯着它能立刻发现问题）\n4. **注意事项**（如果有，例如可能影响性能、或某些站点上拿不到）\n\n如果有 React / Vue 应用专用的额外推荐（例如怎么观测组件状态），也一起说。"
-		}
-	]
+  "id": "l2-5",
+  "level": 2,
+  "sublevel": 5,
+  "categoryIcon": "💬",
+  "categoryName": "Console",
+  "title": "Live Expression —— 实时监控变量",
+  "time": 3,
+  "track": "extension",
+  "needsLab": false,
+  "stuck": "找不到 👁 按钮？它在 Console 面板**最顶部**那一行工具栏里，位于清空按钮 🚫 右边、过滤输入框左边。hover 上去显示 *Create live expression*。如果你的 Console 工具栏被压缩了，把 DevTools 拉宽一点就出来了。",
+  "steps": [
+    {
+      "slug": "concept",
+      "type": "concept",
+      "title": "Live Expression = 一直盯着一个表达式重新求值",
+      "hook": "你想知道用户滚到了哪儿、当前键盘焦点在哪个元素上——总不能每秒手动敲一次 `console.log(window.scrollY)` 吧？",
+      "body": [
+        "**Live Expression** 是 Console 顶部那个 👁 按钮（hover 显示 *Create live expression*）。点它，输入一个 JS 表达式（任何能在 Console 里求值的东西），它会从 Console 顶部固定下来，**每 ~250ms 自动重新求值并更新显示**。",
+        "和 `console.log` 的根本区别：`console.log` 是「在某一刻打一个快照」，Live Expression 是「持续盯着，自动刷新」。后者特别适合监控**会变的值**：滚动位置、焦点元素、当前时间、`document.cookie`、某个全局状态变量。",
+        "它还能避免「日志洪水」问题——如果你写 `setInterval(() => console.log(scrollY), 100)`，Console 会被刷屏。Live Expression 只占顶部一行，覆盖式更新。",
+        "下一步在 react.dev 上加两个 Live Expression：`document.activeElement`（看当前焦点跟着 Tab 键跳）和 `window.scrollY`（看滚动条数字实时跳动）。"
+      ],
+      "bullets": [
+        {
+          "emoji": "👁",
+          "title": "Create live expression",
+          "body": "Console 顶部按钮，固定一个表达式持续监控"
+        },
+        {
+          "emoji": "⏱",
+          "title": "~250ms 刷新一次",
+          "body": "自动重算，不需要你手动 log"
+        },
+        {
+          "emoji": "🧹",
+          "title": "不刷屏",
+          "body": "覆盖式更新，不像 setInterval+log 那样污染 Console"
+        }
+      ],
+      "takeaway": "下一步：在 react.dev 加两个 Live Expression（`document.activeElement` 和 `window.scrollY`），按 Tab 切焦点、滚滚轮，看它俩实时变化。"
+    },
+    {
+      "slug": "practice",
+      "type": "practice",
+      "title": "在 react.dev 加两个 Live Expression 看它实时跳动",
+      "intro": "react.dev 顶部有 **Learn** / **Reference** / **Community** / **Blog** 几个导航链接，按 Tab 键能在它们之间跳焦点；页面又足够长，能滚动产生 `scrollY` 变化。两个监控目标都有现成材料。",
+      "steps": [
+        "打开 [react.dev](https://react.dev/)，按 `F12` / `⌘+⌥+I` 打开 DevTools，切到 **Console** 面板。",
+        "在 Console 面板**最顶部**那行工具栏（不是底部输入框！）找到 **👁** 按钮，位置在清空按钮 🚫 右边。hover 上去会显示 *Create live expression*。点它。",
+        "Console 顶部出现一个输入框。输入 `document.activeElement`，然后**按 Enter 键**保存（不是点叉关掉）。",
+        "保存后，那一行会显示当前焦点元素。页面刚加载时通常是 `<body>` 节点；如果你点过任何链接或按钮，就是那个被点过的元素。它前面有 👁 标记，背景色和普通日志不同。",
+        "把鼠标点回 react.dev 页面（让页面拿到焦点），然后**按 Tab 键** 2–3 次。每按一次，Live Expression 那一行的元素就会换——从 `<body>` 跳到第一个可聚焦元素，再跳到下一个（顶部导航的 **Learn**、**Reference** 等链接会依次成为焦点）。",
+        "再点一次顶部 👁 加第二个 Live Expression：输入 `window.scrollY`，回车。还没滚动时它显示 `0`。",
+        "在页面上往下滚动（鼠标滚轮或 `Space` 键）。看着 Console 顶部的两个 Live Expression：\n\n| 操作 | `document.activeElement` 的变化 | `window.scrollY` 的变化 |\n| --- | --- | --- |\n| 按 Tab 键 | 从一个链接跳到下一个 | 不变 |\n| 滚动鼠标滚轮 | 通常不变（除非滚动让焦点滚出视区） | **数字实时跳动**（0 → 几十 → 几百） |\n| 点页面上的 **Search** 按钮 | 变成 `<button aria-label=\"Search\">...` | 不变 |",
+        "（可选）再加第三个：`new Date().toLocaleTimeString()`——它会变成一个**实时跳动的时钟**，最直观感受 ~250ms 的刷新频率。",
+        "不想要某个 Live Expression 了？hover 它，右侧出现一个 **×** 删除图标，点它移除。"
+      ],
+      "shortcuts": [
+        {
+          "label": "DevTools",
+          "mac": "⌘+⌥+I",
+          "win": "F12"
+        },
+        {
+          "label": "Console 清屏",
+          "mac": "⌘+K",
+          "win": "Ctrl+L"
+        },
+        {
+          "label": "切焦点（在页面上）",
+          "mac": "Tab",
+          "win": "Tab"
+        }
+      ],
+      "expectedOutcome": "Console 顶部固定显示 2–3 个 Live Expression，分别盯着焦点元素、滚动位置（和可选的实时时钟）。你按 Tab 时第一行跟着跳，滚页面时第二行数字实时变。这种「无侵入、无刷屏」的监控比 `console.log` 更适合调任何随时间变化的值。"
+    },
+    {
+      "slug": "verify",
+      "type": "verify",
+      "title": "自查：你成功创建了至少一个 Live Expression 吗？",
+      "prompt": "回顾刚才的操作：\n\n- 你点过 Console 顶部的 👁 按钮吗？\n- 你输入了表达式（`document.activeElement` 或 `window.scrollY`）并按 Enter 保存了吗？\n- Console 顶部固定显示了一行带 👁 标记的实时数据吗？\n\n如果三件事都做到了，回答 **「是」** 或 **「成功」**。",
+      "tier": "self",
+      "expectedRegex": "(是|成功|done|yes|ok|完成|搞定)"
+    },
+    {
+      "slug": "ask-ai",
+      "type": "ask-ai",
+      "title": "问 AI：3 个值得长期挂着的 Live Expression",
+      "intro": "你已经会创建 Live Expression 了。现在让 AI 推荐几个真正值得在日常调试时挂着的表达式——按你的角色（PM / QA / 后端）给出针对性建议。",
+      "template": "我刚学会了 Chrome DevTools Console 顶部的 Live Expression 功能（👁 按钮，每 250ms 自动重新求值一个表达式）。\n\n我的角色是【PM / QA / 后端开发】（请按你认为最常见的非前端角色举例），日常调试时主要排查这些问题：\n\n- 表单填到一半数据丢了\n- 用户说「页面卡」但我在自己机器上看不出\n- 某个状态切换后 UI 没跟着更新\n- 偶发的请求失败\n\n请推荐 **3 个最值得长期挂着的 Live Expression**，每个给：\n\n1. **表达式本身**（一行 JS）\n2. **它显示什么**\n3. **典型用途**（什么场景下盯着它能立刻发现问题）\n4. **注意事项**（如果有，例如可能影响性能、或某些站点上拿不到）\n\n如果有 React / Vue 应用专用的额外推荐（例如怎么观测组件状态），也一起说。"
+    }
+  ]
 }

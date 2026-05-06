@@ -1,94 +1,94 @@
 {
-	"id": "l4-7",
-	"level": 4,
-	"sublevel": 7,
-	"categoryIcon": "🌍",
-	"categoryName": "网络 (Network)",
-	"title": "看懂 CORS 报错",
-	"time": 5,
-	"track": "core",
-	"needsLab": true,
-	"stuck": "Console 里没看到红色报错？确认你访问的是 http://localhost:8787/lessons/l4-7（注意是 8787 端口），不是 Webrex 的 4321 端口。",
-	"steps": [
-		{
-			"slug": "concept",
-			"type": "concept",
-			"title": "CORS 是浏览器警察，不是服务器锁",
-			"hook": "你写的请求服务器明明回了数据，浏览器却把它扔掉了。谁在替你做主？",
-			"body": [
-				"CORS（跨域资源共享）是浏览器的安全机制。关键认知：服务器照常接收请求、照常返回响应，但浏览器检查响应头里有没有 Access-Control-Allow-Origin，没有就直接丢弃。",
-				"请求分为两种：简单请求（GET/POST 带有限几种 Content-Type）直接发，浏览器只看响应头；非简单请求浏览器会先发一个 OPTIONS「预检」请求，预检没通过，真正的请求根本不会发。",
-				"所以遇到两种 CORS 报错：Console 里 'has been blocked by CORS policy: No Access-Control-Allow-Origin header' 说明响应回来了但被丢弃；'has been blocked by CORS policy: Response to preflight' 说明预检阶段就被拒绝了。",
-				"下一步你在 lab 页面里会看到：一个请求被 CORS 拦截（红色）、一个请求正常通过（绿色）。两个请求的区别只在响应头，不在你写的代码。"
-			],
-			"bullets": [
-				{
-					"emoji": "🚔",
-					"title": "浏览器把关",
-					"body": "服务器不拒绝跨域请求——是浏览器在拦截响应"
-				},
-				{
-					"emoji": "📋",
-					"title": "OPTIONS 预检",
-					"body": "非简单请求会先发预检，预检失败请求根本不发出"
-				},
-				{
-					"emoji": "🔑",
-					"title": "Access-Control-Allow-Origin",
-					"body": "这个响应头是唯一的关键——有它则通，无它则堵"
-				}
-			],
-			"takeaway": "下一步：在 lab 页面上亲眼看到红色报错和绿色成功，再去 Network 面板对比两者的响应头差异。"
-		},
-		{
-			"slug": "practice",
-			"type": "practice",
-			"title": "在 lab 页面对比 CORS 拦截 vs 放行",
-			"intro": "这个 lab 页面会同时发两个跨域请求：一个被 CORS 拦截，一个被 CORS 放行。你要做的就是在 Console 和 Network 面板里对比两者。",
-			"steps": [
-				"在新标签页打开 http://localhost:8787/lessons/l4-7。",
-				"按 `⌘+⌥+I` (Mac) / `F12` (Win/Linux) 打开 DevTools。",
-				"切换到 **Console** 面板。你应该看到一行红色报错和一 print green success 消息。红色报错包含 'has been blocked by CORS policy' 字样。如果没有，按 `⌘+R` / `F5` 刷新。",
-				"切换到 **Network** 面板。如果面板是空的，按 `⌘+R` / `F5` 刷新页面让它重新记录请求。",
-				"在 Network 列表里找到名为 `/api/cors-blocked` 的请求（红色/失败状态）和 `/api/cors-allowed` 的请求（绿色/成功状态）。如果列表太长，用顶部的 Filter 输入框过滤 'cors'。",
-				"点击 `/api/cors-blocked` 请求 → 右侧面板切换到 **Headers** 选项卡 → 查看 **Response Headers** 区域。",
-				"点击 `/api/cors-allowed` 请求 → 同样查看 **Response Headers** 区域。",
-				"对照下表：\n\n| 对比维度 | /api/cors-blocked | /api/cors-allowed |\n| --- | --- | --- |\n| HTTP 状态码 | 200（服务器正常返回） | 200 |\n| 响应体内容 | 有数据（但 Console 看不到） | 有数据（Console 打印了） |\n| Access-Control-Allow-Origin | **没有** ✗ | **有** ✓ |\n| Console 结果 | 红色 CORS 报错 ✗ | 绿色 success ✓ |\n\n看到差异在哪一列，就是 CORS 在做什么。"
-			],
-			"shortcuts": [
-				{
-					"label": "DevTools",
-					"mac": "⌘+⌥+I",
-					"win": "F12"
-				},
-				{
-					"label": "刷新页面",
-					"mac": "⌘+R",
-					"win": "F5"
-				},
-				{
-					"label": "Network 面板",
-					"mac": "⌘+⌥+N",
-					"win": "Ctrl+Shift+N"
-				}
-			],
-			"labUrl": "http://localhost:8787/lessons/l4-7",
-			"expectedOutcome": "Console 里一条红色 CORS 报错 + 一条绿色 success；Network 里 /api/cors-blocked 的 Response Headers 缺少 Access-Control-Allow-Origin，/api/cors-allowed 有这个头。"
-		},
-		{
-			"slug": "verify",
-			"type": "verify",
-			"title": "Console 里的 CORS 报错关键字是什么？",
-			"prompt": "上一步你在 Console 里看到了红色 CORS 报错。把那段报错里你能看到的英文关键词写下来（复制、凭记忆都行）。",
-			"tier": "soft",
-			"expectedRegex": "(Access-Control-Allow-Origin|CORS.{0,5}policy|has been blocked|blocked|缺少|不允许|跨域|No.{0,3}Access)"
-		},
-		{
-			"slug": "ask-ai",
-			"type": "ask-ai",
-			"title": "问 AI：这是前端问题还是后端问题？",
-			"intro": "你刚才亲眼看到：两个请求都返回了 200，区别只是一个响应头的有无。把这个发现和报错原文一起喂给 AI，让它帮你分清责任边界。",
-			"template": "我在 lab 页面上做了 CORS 实验：\n- /api/cors-blocked 返回 200，有响应体，但 Console 报错：'has been blocked by CORS policy: No Access-Control-Allow-Origin header is present'\n- /api/cors-allowed 返回 200，有响应体，Console 正常打印 success\n- 两者的唯一区别是 Response Headers 里有没有 Access-Control-Allow-Origin\n\n请帮我回答：\n1. 这个 CORS 报错需要前端改代码还是后端加响应头？为什么？\n2. OPTIONS 预检和简单请求的报错在 Console 里有什么不同？\n3. 如果后端没权限加 Access-Control-Allow-Origin，前端有没有办法绕过（比如代理）？"
-		}
-	]
+  "id": "l4-7",
+  "level": 4,
+  "sublevel": 7,
+  "categoryIcon": "🌍",
+  "categoryName": "网络 (Network)",
+  "title": "看懂 CORS 报错",
+  "time": 5,
+  "track": "core",
+  "needsLab": true,
+  "stuck": "Console 里没看到红色报错？确认你访问的是 http://localhost:8787/lessons/l4-7（注意是 8787 端口），不是 Webrex 的 4321 端口。",
+  "steps": [
+    {
+      "slug": "concept",
+      "type": "concept",
+      "title": "CORS 是浏览器警察，不是服务器锁",
+      "hook": "你写的请求服务器明明回了数据，浏览器却把它扔掉了。谁在替你做主？",
+      "body": [
+        "CORS（跨域资源共享）是浏览器的安全机制。关键认知：服务器照常接收请求、照常返回响应，但浏览器检查响应头里有没有 Access-Control-Allow-Origin，没有就直接丢弃。",
+        "请求分为两种：简单请求（GET/POST 带有限几种 Content-Type）直接发，浏览器只看响应头；非简单请求浏览器会先发一个 OPTIONS「预检」请求，预检没通过，真正的请求根本不会发。",
+        "所以遇到两种 CORS 报错：Console 里 'has been blocked by CORS policy: No Access-Control-Allow-Origin header' 说明响应回来了但被丢弃；'has been blocked by CORS policy: Response to preflight' 说明预检阶段就被拒绝了。",
+        "下一步你在 lab 页面里会看到：一个请求被 CORS 拦截（红色）、一个请求正常通过（绿色）。两个请求的区别只在响应头，不在你写的代码。"
+      ],
+      "bullets": [
+        {
+          "emoji": "🚔",
+          "title": "浏览器把关",
+          "body": "服务器不拒绝跨域请求——是浏览器在拦截响应"
+        },
+        {
+          "emoji": "📋",
+          "title": "OPTIONS 预检",
+          "body": "非简单请求会先发预检，预检失败请求根本不发出"
+        },
+        {
+          "emoji": "🔑",
+          "title": "Access-Control-Allow-Origin",
+          "body": "这个响应头是唯一的关键——有它则通，无它则堵"
+        }
+      ],
+      "takeaway": "下一步：在 lab 页面上直接观察到红色报错和绿色成功，再去 Network 面板对比两者的响应头差异。"
+    },
+    {
+      "slug": "practice",
+      "type": "practice",
+      "title": "在 lab 页面对比 CORS 拦截 vs 放行",
+      "intro": "这个 lab 页面会同时发两个跨域请求：一个被 CORS 拦截，一个被 CORS 放行。你要做的就是在 Console 和 Network 面板里对比两者。",
+      "steps": [
+        "在新标签页打开 http://localhost:8787/lessons/l4-7。",
+        "按 `⌘+⌥+I` (Mac) / `F12` (Win/Linux) 打开 DevTools。",
+        "切换到 **Console** 面板。你应该看到一行红色报错和一 print green success 消息。红色报错包含 'has been blocked by CORS policy' 字样。如果没有，按 `⌘+R` / `F5` 刷新。",
+        "切换到 **Network** 面板。如果面板是空的，按 `⌘+R` / `F5` 刷新页面让它重新记录请求。",
+        "在 Network 列表里找到名为 `/api/cors-blocked` 的请求（红色/失败状态）和 `/api/cors-allowed` 的请求（绿色/成功状态）。如果列表太长，用顶部的 Filter 输入框过滤 'cors'。",
+        "点击 `/api/cors-blocked` 请求 → 右侧面板切换到 **Headers** 选项卡 → 查看 **Response Headers** 区域。",
+        "点击 `/api/cors-allowed` 请求 → 同样查看 **Response Headers** 区域。",
+        "对照下表：\n\n| 对比维度 | /api/cors-blocked | /api/cors-allowed |\n| --- | --- | --- |\n| HTTP 状态码 | 200（服务器正常返回） | 200 |\n| 响应体内容 | 有数据（但 Console 看不到） | 有数据（Console 打印了） |\n| Access-Control-Allow-Origin | **没有** ✗ | **有** ✓ |\n| Console 结果 | 红色 CORS 报错 ✗ | 绿色 success ✓ |\n\n看到差异在哪一列，就是 CORS 在做什么。"
+      ],
+      "shortcuts": [
+        {
+          "label": "DevTools",
+          "mac": "⌘+⌥+I",
+          "win": "F12"
+        },
+        {
+          "label": "刷新页面",
+          "mac": "⌘+R",
+          "win": "F5"
+        },
+        {
+          "label": "Network 面板",
+          "mac": "⌘+⌥+N",
+          "win": "Ctrl+Shift+N"
+        }
+      ],
+      "labUrl": "http://localhost:8787/lessons/l4-7",
+      "expectedOutcome": "Console 里一条红色 CORS 报错 + 一条绿色 success；Network 里 /api/cors-blocked 的 Response Headers 缺少 Access-Control-Allow-Origin，/api/cors-allowed 有这个头。"
+    },
+    {
+      "slug": "verify",
+      "type": "verify",
+      "title": "Console 里的 CORS 报错关键字是什么？",
+      "prompt": "上一步你在 Console 里看到了红色 CORS 报错。把那段报错里你能看到的英文关键词写下来（复制、凭记忆都行）。",
+      "tier": "soft",
+      "expectedRegex": "(Access-Control-Allow-Origin|CORS.{0,5}policy|has been blocked|blocked|缺少|不允许|跨域|No.{0,3}Access)"
+    },
+    {
+      "slug": "ask-ai",
+      "type": "ask-ai",
+      "title": "问 AI：这是前端问题还是后端问题？",
+      "intro": "你刚才通过实验观察到：两个请求都返回了 200，区别只是一个响应头的有无。把这个发现和报错原文一起喂给 AI，让它帮你分清责任边界。",
+      "template": "我在 lab 页面上做了 CORS 实验：\n- /api/cors-blocked 返回 200，有响应体，但 Console 报错：'has been blocked by CORS policy: No Access-Control-Allow-Origin header is present'\n- /api/cors-allowed 返回 200，有响应体，Console 正常打印 success\n- 两者的唯一区别是 Response Headers 里有没有 Access-Control-Allow-Origin\n\n请帮我回答：\n1. 这个 CORS 报错需要前端改代码还是后端加响应头？为什么？\n2. OPTIONS 预检和简单请求的报错在 Console 里有什么不同？\n3. 如果后端没权限加 Access-Control-Allow-Origin，前端有没有办法绕过（比如代理）？"
+    }
+  ]
 }

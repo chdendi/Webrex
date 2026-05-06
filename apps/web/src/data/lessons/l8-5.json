@@ -1,87 +1,87 @@
 {
-	"id": "l8-5",
-	"level": 8,
-	"sublevel": 5,
-	"categoryIcon": "📱",
-	"categoryName": "响应式与移动端",
-	"title": "弱网弱机模拟（Throttling）",
-	"time": 5,
-	"track": "core",
-	"needsLab": false,
-	"stuck": "Performance 面板找不到 CPU throttling 选项？新版本 Chrome 里它在 Performance 面板 → 右上角 Capture Settings (⚙) → CPU 下拉里。如果找不到，只做 Network throttling 也行。",
-	"steps": [
-		{
-			"slug": "concept",
-			"type": "concept",
-			"title": "你的 Mac 太快了，慢下来才看得见问题",
-			"hook": "react.dev 在你的 MacBook 上刷新只要 0.4 秒，但你在地铁上用 4G 手机打开它要多长时间？",
-			"body": [
-				"开发者用高配电脑 + 光纤网络开发网站，天然看不到性能问题。但真实用户可能用的是 300 美元的手机 + 拥挤的 3G 信号——加载体验天差地别。",
-				"Chrome DevTools 提供双重节流：Network 面板的 Slow 3G 限制网速（下载 400Kbps、延迟 400ms），Performance 面板的 4× slowdown 限制 CPU（每个任务耗时 4 倍）。",
-				"两者叠加能模拟低端安卓机在弱网下的真实体验——你会发现 react.dev 这样高度优化的网站，在节流下加载时间也可能从 0.5 秒暴增到 5 秒以上。"
-			],
-			"bullets": [
-				{
-					"emoji": "🐢",
-					"title": "Slow 3G",
-					"body": "下载 400Kbps、上传 400Kbps、延迟 400ms"
-				},
-				{
-					"emoji": "🔻",
-					"title": "4× slowdown",
-					"body": "CPU 每个任务耗时乘 4，模拟低端芯片"
-				},
-				{
-					"emoji": "⏱️",
-					"title": "Finish 时间",
-					"body": "Network 面板底部显示所有资源加载完成的总时间"
-				}
-			],
-			"takeaway": "下一步：同时开启 Slow 3G 和 4× CPU slowdown，刷新 react.dev，记录加载完成时间。"
-		},
-		{
-			"slug": "practice",
-			"type": "practice",
-			"title": "双重节流下刷新 react.dev，对比加载时间",
-			"intro": "react.dev 在现代设备上加载极快。用 Network 和 Performance 面板同时施加减速，你会看到完全不同的加载体验——这是真实弱网用户的日常。",
-			"steps": [
-				"打开 react.dev。",
-				"按 `⌘+⌥+I` (Mac) / `F12` (Win/Linux) 打开 DevTools。",
-				"切换到 **Network** 面板。找到面板顶部的节流下拉框（默认显示 **No throttling**），点击它并从列表中选择 **Slow 3G**。",
-				"切换到 **Performance** 面板。点击面板右上角的齿轮图标（Capture Settings ⚙），在 **CPU** 下拉中选择 **4× slowdown**。",
-				"关闭设置面板。现在 Network 面板里节流是 Slow 3G，Performance 面板里 CPU 是 4× slowdown——双节流已开启。",
-				"按 `⌘+R` (Mac) / `F5` (Win/Linux) 刷新页面。注意观察页面加载时的白屏时间——文字和样式是一点一点出来的。",
-				"加载完成后，看 Network 面板底部的状态栏，记住 **Finish** 旁边的时间（如 `Finish: 4.3 s`）。",
-				"把 Network 节流设回 **No throttling**，Performance 的 CPU 设回 **No throttling**，再按 `⌘+R` / `F5` 刷新一次。对比两次加载速度的差异。"
-			],
-			"shortcuts": [
-				{
-					"label": "DevTools",
-					"mac": "⌘+⌥+I",
-					"win": "F12"
-				},
-				{
-					"label": "刷新页面",
-					"mac": "⌘+R",
-					"win": "F5"
-				}
-			],
-			"expectedOutcome": "Slow 3G + 4× slowdown 下，react.dev 的 Finish 时间从 < 1 秒变为若干秒（通常在 3-8 秒之间），页面加载过程明显可感知——白屏、文字逐块出现。"
-		},
-		{
-			"slug": "verify",
-			"type": "verify",
-			"title": "双节流下 react.dev 加载了多少秒？",
-			"prompt": "上一步你在 Slow 3G + 4× CPU slowdown 下刷新了 react.dev。请在 Network 面板底部找到 Finish 时间，写下它的秒数（只写数字，如 4.3）。",
-			"tier": "soft",
-			"expectedRegex": "\\d+"
-		},
-		{
-			"slug": "ask-ai",
-			"type": "ask-ai",
-			"title": "问 AI：节流结果代表真实用户吗",
-			"intro": "你亲身体验了 react.dev 在节流下的加载速度。现在让 AI 帮你理解这些数字的含义，以及如何用它们改进网站。",
-			"template": "我在 Chrome DevTools 里同时开启了 Network 的 Slow 3G（400Kbps/400ms RTT）和 Performance 的 4× CPU slowdown，然后刷新 react.dev。加载时间从正常的不到 1 秒变成了好几秒，白屏时间明显变长。\n\n请帮我解释：\n1. Slow 3G 的 400Kbps 下载速率和 400ms 往返延迟（RTT）各自影响加载的哪个阶段？\n2. 4× CPU slowdown 主要拖慢什么——是 JavaScript 解析执行、样式计算、还是渲染绘制？\n3. 这种模拟和真实用户在地铁上用 4G 手机访问网站有多大差距？哪些因素是模拟不出来的？\n4. 做完节流测试后发现加载太慢，应该优先优化哪个指标——减少请求数量、压缩资源体积、还是优化关键渲染路径？"
-		}
-	]
+  "id": "l8-5",
+  "level": 8,
+  "sublevel": 5,
+  "categoryIcon": "📱",
+  "categoryName": "响应式与移动端",
+  "title": "弱网弱机模拟（Throttling）",
+  "time": 5,
+  "track": "core",
+  "needsLab": false,
+  "stuck": "Performance 面板找不到 CPU throttling 选项？新版本 Chrome 里它在 Performance 面板 → 右上角 Capture Settings (⚙) → CPU 下拉列表中。如果找不到，只做 Network throttling 也行。",
+  "steps": [
+    {
+      "slug": "concept",
+      "type": "concept",
+      "title": "你的 Mac 太快了，慢下来才看得见问题",
+      "hook": "react.dev 在你的 MacBook 上刷新只要 0.4 秒，但你在地铁上用 4G 手机打开它要多长时间？",
+      "body": [
+        "开发者用高配电脑 + 光纤网络开发网站，天然看不到性能问题。但真实用户可能用的是 300 美元的手机 + 拥挤的 3G 信号——加载体验天差地别。",
+        "Chrome DevTools 提供双重节流：Network 面板的 Slow 3G 限制网速（下载 400Kbps、延迟 400ms），Performance 面板的 4× slowdown 限制 CPU（每个任务耗时 4 倍）。",
+        "两者叠加能模拟低端安卓机在弱网下的真实体验——你会发现 react.dev 这样高度优化的网站，在节流下加载时间也可能从 0.5 秒暴增到 5 秒以上。"
+      ],
+      "bullets": [
+        {
+          "emoji": "🐢",
+          "title": "Slow 3G",
+          "body": "下载 400Kbps、上传 400Kbps、延迟 400ms"
+        },
+        {
+          "emoji": "🔻",
+          "title": "4× slowdown",
+          "body": "CPU 每个任务耗时乘 4，模拟低端芯片"
+        },
+        {
+          "emoji": "⏱️",
+          "title": "Finish 时间",
+          "body": "Network 面板底部显示所有资源加载完成的总时间"
+        }
+      ],
+      "takeaway": "下一步：同时开启 Slow 3G 和 4× CPU slowdown，刷新 react.dev，记录加载完成时间。"
+    },
+    {
+      "slug": "practice",
+      "type": "practice",
+      "title": "双重节流下刷新 react.dev，对比加载时间",
+      "intro": "react.dev 在现代设备上加载极快。用 Network 和 Performance 面板同时施加减速，你会看到完全不同的加载体验——这是真实弱网用户的日常。",
+      "steps": [
+        "打开 react.dev。",
+        "按 `⌘+⌥+I` (Mac) / `F12` (Win/Linux) 打开 DevTools。",
+        "切换到 **Network** 面板。找到面板顶部的节流下拉框（默认显示 **No throttling**），点击它并从列表中选择 **Slow 3G**。",
+        "切换到 **Performance** 面板。点击面板右上角的齿轮图标（Capture Settings ⚙），在 **CPU** 下拉中选择 **4× slowdown**。",
+        "关闭设置面板。现在 Network 面板里节流是 Slow 3G，Performance 面板里 CPU 是 4× slowdown——双节流已开启。",
+        "按 `⌘+R` (Mac) / `F5` (Win/Linux) 刷新页面。注意观察页面加载时的白屏时间——文字和样式是一点一点出来的。",
+        "加载完成后，看 Network 面板底部的状态栏，记住 **Finish** 旁边的时间（如 `Finish: 4.3 s`）。",
+        "把 Network 节流设回 **No throttling**，Performance 的 CPU 设回 **No throttling**，再按 `⌘+R` / `F5` 刷新一次。对比两次加载速度的差异。"
+      ],
+      "shortcuts": [
+        {
+          "label": "DevTools",
+          "mac": "⌘+⌥+I",
+          "win": "F12"
+        },
+        {
+          "label": "刷新页面",
+          "mac": "⌘+R",
+          "win": "F5"
+        }
+      ],
+      "expectedOutcome": "Slow 3G + 4× slowdown 下，react.dev 的 Finish 时间从 < 1 秒变为若干秒（通常在 3-8 秒之间），页面加载过程明显可感知——白屏、文字逐块出现。"
+    },
+    {
+      "slug": "verify",
+      "type": "verify",
+      "title": "双节流下 react.dev 加载了多少秒？",
+      "prompt": "上一步你在 Slow 3G + 4× CPU slowdown 下刷新了 react.dev。请在 Network 面板底部找到 Finish 时间，写下它的秒数（只写数字，如 4.3）。",
+      "tier": "soft",
+      "expectedRegex": "\\d+"
+    },
+    {
+      "slug": "ask-ai",
+      "type": "ask-ai",
+      "title": "问 AI：节流结果代表真实用户吗",
+      "intro": "你亲身体验了 react.dev 在节流下的加载速度。现在让 AI 帮你理解这些数字的含义，以及如何用它们改进网站。",
+      "template": "我在 Chrome DevTools 里同时开启了 Network 的 Slow 3G（400Kbps/400ms RTT）和 Performance 的 4× CPU slowdown，然后刷新 react.dev。加载时间从正常的不到 1 秒变成了好几秒，白屏时间明显变长。\n\n请帮我解释：\n1. Slow 3G 的 400Kbps 下载速率和 400ms 往返延迟（RTT）各自影响加载的哪个阶段？\n2. 4× CPU slowdown 主要拖慢什么——是 JavaScript 解析执行、样式计算、还是渲染绘制？\n3. 这种模拟和真实用户在地铁上用 4G 手机访问网站有多大差距？哪些因素是模拟不出来的？\n4. 做完节流测试后发现加载太慢，应该优先优化哪个指标——减少请求数量、压缩资源体积、还是优化关键渲染路径？"
+    }
+  ]
 }

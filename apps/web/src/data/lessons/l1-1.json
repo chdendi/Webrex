@@ -1,93 +1,93 @@
 {
-	"id": "l1-1",
-	"level": 1,
-	"sublevel": 1,
-	"categoryIcon": "🧭",
-	"categoryName": "开发者工具概览",
-	"title": "HTML / CSS / JS —— 三件事，三件衣服",
-	"time": 5,
-	"track": "core",
-	"needsLab": false,
-	"stuck": "找不到命令面板？在 DevTools 里按 Cmd+Shift+P (Mac) / Ctrl+Shift+P (Win/Linux)，然后直接打 Disable JavaScript。",
-	"steps": [
-		{
-			"slug": "concept",
-			"type": "concept",
-			"title": "三件事，三件衣服",
-			"hook": "你打开任何一个网页，浏览器同时在干三件事。如果只让其中一件工作，会发生什么？",
-			"body": [
-				"浏览器把每个页面拆成三层叠在一起：HTML 决定页面有什么（结构），CSS 决定它长什么样（样式），JS 决定它能做什么（行为）。",
-				"三层各管一摊，互相不抢活：HTML 不会自己变样式，CSS 不会自己响应点击，JS 也不能凭空造出页面——它必须改 DOM。",
-				"下一步用 DevTools 的「Disable JavaScript」开关临时关掉 JS，看 react.dev 缺了哪些能力，留下了哪些。这是分清三件事最快的实验。"
-			],
-			"bullets": [
-				{
-					"emoji": "🦴",
-					"title": "HTML",
-					"body": "结构——页面里有什么节点"
-				},
-				{
-					"emoji": "👔",
-					"title": "CSS",
-					"body": "样式——节点长什么样、放哪里"
-				},
-				{
-					"emoji": "⚡",
-					"title": "JS",
-					"body": "行为——点了之后做什么、动态改 DOM"
-				}
-			],
-			"takeaway": "下一步：在 react.dev 上关掉 JS，对比 Search 按钮在「JS 开 vs 关」两种状态下的行为差异。"
-		},
-		{
-			"slug": "practice",
-			"type": "practice",
-			"title": "在 react.dev 上关掉 JS 看会少什么",
-			"intro": "react.dev 是 React 官方文档站。Hero 区有一行固定标题、顶部有一个 Search 按钮——这两个元素就是我们的对比锚点。",
-			"steps": [
-				"在新标签页打开 [react.dev](https://react.dev/)。",
-				"确认看到 hero 区的标题：**The library for web and native user interfaces**。看到了说明加载完成。",
-				"点击页面右上角的 **Search** 按钮（放大镜图标，旁边有 `Ctrl K` 提示）。应该弹出一个搜索面板。点页面任意空白处关掉它。",
-				"按 `F12` (Win/Linux) 或 `⌘+⌥+I` (Mac) 打开 DevTools。",
-				"在 DevTools 里按 `⌘+⇧+P` (Mac) / `Ctrl+Shift+P` (Win/Linux) 打开命令面板。",
-				"输入 `disable javascript`（不区分大小写），下拉里第一项就是 **Disable JavaScript**。回车选中。命令面板自动关闭。",
-				"保持 DevTools 开着，按 `⌘+R` / `F5` 刷新页面。",
-				"现在 JS 已关。逐项对照下表，亲眼比较「JS 开」时和「JS 关」时的差异：\n\n| 你做的事 | JS 开（之前） | JS 关（现在） |\n| --- | --- | --- |\n| 看 hero 标题 *The library for web and native user interfaces* | 还在 ✓ | 还在 ✓ |\n| 点右上角 **Search** 按钮 | 弹出搜索框 ✓ | 没反应 ✗ |\n| 看「Create user interfaces from components」段里的 Sandpack 代码块 | 能编辑、能运行 ✓ | 不能编辑、不能运行 ✗ |\n\n看到差异在于哪一栏，就是 JS 在背后做的事。",
-				"再次按 `⌘+⇧+P` / `Ctrl+Shift+P` → 输入 `enable javascript` → 回车 → `⌘+R` 刷新。一切恢复。"
-			],
-			"shortcuts": [
-				{
-					"label": "DevTools",
-					"mac": "⌘+⌥+I",
-					"win": "F12"
-				},
-				{
-					"label": "命令面板（在 DevTools 里）",
-					"mac": "⌘+⇧+P",
-					"win": "Ctrl+Shift+P"
-				},
-				{
-					"label": "刷新页面",
-					"mac": "⌘+R",
-					"win": "F5"
-				}
-			],
-			"expectedOutcome": "对照上表：**没变化的部分**（文字、布局、配色）由 HTML+CSS 提供；**变化的部分**（搜索弹窗、可运行代码块）全部由 JS 提供。这就是三层的边界——它们各管一摊，互不替代。"
-		},
-		{
-			"slug": "verify",
-			"type": "verify",
-			"title": "JS 关掉后，Search 按钮还能弹出搜索框吗？",
-			"prompt": "上一步你已经把 JS 关掉并刷新了页面，然后点了右上角的 **Search** 按钮。\n\n它弹出了搜索框吗？回答 **「会」** 或 **「不会」**。",
-			"tier": "soft",
-			"expectedRegex": "(不会|不能|不弹|不出|没.{0,3}弹|没.{0,3}出|没.{0,3}反应|没动静|无反应|nothing|no\\b)"
-		},
-		{
-			"slug": "ask-ai",
-			"type": "ask-ai",
-			"title": "问 AI：这告诉我什么",
-			"intro": "你刚才亲眼看到：JS 关掉后，文字和样式都在，但交互全没了。把这个观察转成问题，让 AI 帮你把概念固化下来。",
-			"template": "我刚在 react.dev 做了一个实验：在 DevTools 命令面板里 Disable JavaScript 后刷新页面。\n\n观察到：\n- Hero 区的标题文字 \"The library for web and native user interfaces\" 还在\n- 配色、布局、字体都正常\n- 但点击右上角的 Search 按钮没反应\n- 页面上的可运行代码块（Sandpack）也无法交互\n\n请帮我把这个观察整理成一个清晰的解释：\n1. 为什么文字和样式在 JS 关掉后还在？\n2. 为什么 Search 按钮和代码块需要 JS 才能用？\n3. 这能用来判断一个网站是不是「重度依赖 JS」吗？怎么判断？"
-		}
-	]
+  "id": "l1-1",
+  "level": 1,
+  "sublevel": 1,
+  "categoryIcon": "🧭",
+  "categoryName": "开发者工具概览",
+  "title": "HTML / CSS / JS —— 三层分工",
+  "time": 5,
+  "track": "core",
+  "needsLab": false,
+  "stuck": "找不到命令面板？在 DevTools 里按 Cmd+Shift+P (Mac) / Ctrl+Shift+P (Win/Linux)，然后直接输入 Disable JavaScript。",
+  "steps": [
+    {
+      "slug": "concept",
+      "type": "concept",
+      "title": "三层分工",
+      "hook": "你打开任何一个网页，浏览器同时承担三项职责。如果只让其中一层工作，会发生什么？",
+      "body": [
+        "浏览器将每个页面拆分为协同工作的三层：HTML 决定页面有什么（结构），CSS 决定它的外观（样式），JS 决定它能做什么（行为）。",
+        "三层各司其职，互不越界：HTML 不会自己变样式，CSS 不会自己响应点击，JS 也不能凭空生成页面——它必须修改 DOM。",
+        "下一步用 DevTools 的「Disable JavaScript」开关临时禁用 JS，观察 react.dev 缺了哪些能力，留下了哪些。这是理解三层分工最直观的实验。"
+      ],
+      "bullets": [
+        {
+          "emoji": "🦴",
+          "title": "HTML",
+          "body": "结构——页面里有什么节点"
+        },
+        {
+          "emoji": "👔",
+          "title": "CSS",
+          "body": "样式——节点呈现的外观与位置"
+        },
+        {
+          "emoji": "⚡",
+          "title": "JS",
+          "body": "行为——点击之后做什么、动态修改 DOM"
+        }
+      ],
+      "takeaway": "下一步：在 react.dev 上禁用 JavaScript，对比 Search 按钮在「JS 开 vs 关」两种状态下的行为差异。"
+    },
+    {
+      "slug": "practice",
+      "type": "practice",
+      "title": "在 react.dev 上禁用 JavaScript 看会少什么",
+      "intro": "react.dev 是 React 官方文档站。Hero 区有一行固定标题，顶部有一个 Search 按钮，以二者作为对比锚点。",
+      "steps": [
+        "在新标签页打开 [react.dev](https://react.dev/)。",
+        "确认看到 hero 区的标题：**The library for web and native user interfaces**。确认可见即表示页面已加载完成。",
+        "点击页面右上角的 **Search** 按钮（放大镜图标，旁边有 `Ctrl K` 提示）。应该弹出一个搜索面板。点击页面空白区域关闭搜索面板。",
+        "按 `F12` (Win/Linux) 或 `⌘+⌥+I` (Mac) 打开 DevTools。",
+        "在 DevTools 里按 `⌘+⇧+P` (Mac) / `Ctrl+Shift+P` (Win/Linux) 打开命令面板。",
+        "输入 `disable javascript`（不区分大小写），下拉列表中第一项即为 **Disable JavaScript**。按 Enter 键确认。命令面板自动关闭。",
+        "保持 DevTools 开着，按 `⌘+R` / `F5` 刷新页面。",
+        "此时 JavaScript 已被禁用。逐项对照下表，对比「JS 开」时和「JS 关」时的差异：\n\n| 你做的事 | JS 开（之前） | JS 关（现在） |\n| --- | --- | --- |\n| 看 hero 标题 *The library for web and native user interfaces* | 还在 ✓ | 还在 ✓ |\n| 点右上角 **Search** 按钮 | 弹出搜索框 ✓ | 没反应 ✗ |\n| 看「Create user interfaces from components」段里的 Sandpack 代码块 | 能编辑、能运行 ✓ | 不能编辑、不能运行 ✗ |\n\n在「JS 关」一栏观察到的差异，即为 JavaScript 所负责的功能。",
+        "再次按 `⌘+⇧+P` / `Ctrl+Shift+P` → 输入 `enable javascript` → 按 Enter → `⌘+R` 刷新。一切恢复正常。"
+      ],
+      "shortcuts": [
+        {
+          "label": "DevTools",
+          "mac": "⌘+⌥+I",
+          "win": "F12"
+        },
+        {
+          "label": "命令面板（在 DevTools 里）",
+          "mac": "⌘+⇧+P",
+          "win": "Ctrl+Shift+P"
+        },
+        {
+          "label": "刷新页面",
+          "mac": "⌘+R",
+          "win": "F5"
+        }
+      ],
+      "expectedOutcome": "对照上表：**没变化的部分**（文字、布局、配色）由 HTML+CSS 提供；**变化的部分**（搜索弹窗、可运行代码块）全部由 JS 提供。这就是三层的边界——它们各司其职，互不替代。"
+    },
+    {
+      "slug": "verify",
+      "type": "verify",
+      "title": "JavaScript 禁用后，Search 按钮还能弹出搜索框吗？",
+      "prompt": "上一步你已经禁用 JavaScript 并刷新了页面，然后点击了右上角的 **Search** 按钮。\n\n它弹出了搜索框吗？回答 **「会」** 或 **「不会」**。",
+      "tier": "soft",
+      "expectedRegex": "(不会|不能|不弹|不出|没.{0,3}弹|没.{0,3}出|没.{0,3}反应|没动静|无反应|nothing|no\\b)"
+    },
+    {
+      "slug": "ask-ai",
+      "type": "ask-ai",
+      "title": "问 AI：这告诉我什么",
+      "intro": "你刚才通过实验观察到：JavaScript 禁用后，文字和样式都在，但交互功能全部失效。把这个观察转成问题，让 AI 帮你把概念固化下来。",
+      "template": "我刚在 react.dev 做了一个实验：在 DevTools 命令面板里 Disable JavaScript 后刷新页面。\n\n观察到：\n- Hero 区的标题文字 \"The library for web and native user interfaces\" 仍然存在\n- 配色、布局、字体都正常\n- 但点击右上角的 Search 按钮没有反应\n- 页面上的可运行代码块（Sandpack）也无法交互\n\n请帮我把这个观察整理成一个清晰的解释：\n1. 为什么文字和样式在 JavaScript 禁用后仍然存在？\n2. 为什么 Search 按钮和代码块依赖 JavaScript 才能工作？\n3. 这能用来判断一个网站是否「重度依赖 JavaScript」吗？如何判断？"
+    }
+  ]
 }

@@ -82,4 +82,4 @@ A small dependency-free library that scans free-form text (think: a chunk of HAR
 
 ## License
 
-TBD — currently private, all rights reserved by the author until a license is chosen.
+[MIT](./LICENSE) © 2026 chenhao-dendi

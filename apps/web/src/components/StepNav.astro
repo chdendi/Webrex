@@ -1,0 +1,59 @@
+---
+interface Props {
+  prevHref?: string;
+  nextHref?: string;
+  nextLabel?: string;
+  prevLabel?: string;
+  isLastStep?: boolean;
+  nextLessonHref?: string;
+  nextLessonTitle?: string;
+}
+
+const {
+  prevHref,
+  nextHref,
+  nextLabel = "Continue",
+  prevLabel = "Back",
+  isLastStep = false,
+  nextLessonHref,
+  nextLessonTitle,
+} = Astro.props;
+---
+
+<div class="flex items-center justify-between gap-4 pt-8 mt-4 border-t" style="border-color: var(--color-border);">
+  {
+    prevHref ? (
+      <a
+        href={prevHref}
+        class="text-sm transition-colors flex items-center gap-1.5 px-3 py-2 rounded-md"
+        style="color: var(--color-text-muted);"
+      >
+        ← {prevLabel}
+      </a>
+    ) : (
+      <div />
+    )
+  }
+
+  {
+    isLastStep && nextLessonHref ? (
+      <a
+        href={nextLessonHref}
+        class="inline-flex items-center gap-2 px-5 py-3 rounded-md text-sm font-medium text-white transition-all hover:opacity-90"
+        style="background: var(--color-accent);"
+      >
+        Next lesson — {nextLessonTitle} →
+      </a>
+    ) : nextHref ? (
+      <a
+        href={nextHref}
+        class="inline-flex items-center gap-2 px-5 py-3 rounded-md text-sm font-medium text-white transition-all hover:opacity-90"
+        style="background: var(--color-accent);"
+      >
+        {nextLabel} →
+      </a>
+    ) : (
+      <div />
+    )
+  }
+</div>

@@ -1,0 +1,42 @@
+---
+interface Props {
+  prevId?: string;
+  nextId?: string;
+  index: number;
+  total: number;
+}
+const { prevId, nextId, index, total } = Astro.props;
+---
+
+<footer
+  class="fixed bottom-0 left-0 right-0 z-50 h-16 px-6 flex items-center justify-between border-t backdrop-blur-md"
+  style="background: color-mix(in srgb, var(--color-bg) 90%, transparent); border-color: var(--color-border);"
+>
+  {prevId ? (
+    <a
+      href={`/lessons/${prevId}`}
+      class="flex items-center gap-2 px-3 py-2 rounded-md border text-sm hover:bg-[color:var(--color-surface-muted)] transition-colors"
+      style="border-color: var(--color-border); color: var(--color-text);"
+    >
+      ← Previous
+    </a>
+  ) : (
+    <div></div>
+  )}
+
+  <span class="text-xs" style="color: var(--color-text-muted);">
+    Step {index} of {total}
+  </span>
+
+  {nextId ? (
+    <a
+      href={`/lessons/${nextId}`}
+      class="flex items-center gap-2 px-3 py-2 rounded-md text-sm font-medium text-white transition-colors"
+      style="background: var(--color-accent);"
+    >
+      Next →
+    </a>
+  ) : (
+    <div></div>
+  )}
+</footer>

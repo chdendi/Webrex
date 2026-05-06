@@ -1,0 +1,51 @@
+---
+import { getCollection } from "astro:content";
+import LessonLayout from "~/layouts/LessonLayout.astro";
+import LessonHeader from "~/components/LessonHeader.astro";
+import Card from "~/components/Card.astro";
+
+export async function getStaticPaths() {
+  const lessons = await getCollection("lessons");
+  lessons.sort((a, b) => a.data.level - b.data.level || a.data.sublevel - b.data.sublevel);
+  return lessons.map((lesson, i) => ({
+    params: { id: lesson.id },
+    props: {
+      lesson,
+      allLessons: lessons,
+      index: i + 1,
+      total: lessons.length,
+      prevId: i > 0 ? lessons[i - 1].id : undefined,
+      nextId: i < lessons.length - 1 ? lessons[i + 1].id : undefined,
+    },
+  }));
+}
+
+const { lesson, allLessons, index, total, prevId, nextId } = Astro.props;
+const d = lesson.data;
+
+// If the lesson has steps, redirect to the first one
+if (d.steps && d.steps.length > 0) {
+  return Astro.redirect(`/lessons/${lesson.id}/${d.steps[0].slug}`, 302);
+}
+---
+
+<LessonLayout
+  current={lesson}
+  allLessons={allLessons}
+  prevId={prevId}
+  nextId={nextId}
+  index={index}
+  total={total}
+>
+  <LessonHeader lesson={lesson} />
+
+  <Card title="Coming soon" icon="🚧">
+    <p class="text-base leading-relaxed" style="color: var(--color-text-muted);">
+      这一关在路线图里，但内容还没写。<strong>L1.1</strong> 是 MVP 优先项，已经能完整跑通——
+      点侧栏的 L1.1 看一下当前的学习体验长什么样。
+    </p>
+    <p class="text-sm" style="color: var(--color-text-faint);">
+      Phase 1 会把 L1–L3 共 14 关全部写完；Phase 2+ 才会推进其他章节。
+    </p>
+  </Card>
+</LessonLayout>

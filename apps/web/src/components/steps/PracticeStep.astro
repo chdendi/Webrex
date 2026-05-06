@@ -1,0 +1,93 @@
+---
+import Shortcut from "../Shortcut.astro";
+import { mdGlossary as md } from "~/lib/markdown";
+
+interface ShortcutItem { label: string; mac: string; win: string }
+interface Props {
+  title: string;
+  intro?: string;
+  steps: string[];
+  shortcuts?: ShortcutItem[];
+  expectedOutcome?: string;
+  labUrl?: string;
+}
+const { title, intro, steps, shortcuts, expectedOutcome, labUrl } = Astro.props;
+---
+
+<article class="flex flex-col gap-7">
+  <header class="flex flex-col gap-3">
+    <h1 class="text-[2.25rem] leading-[1.2] font-semibold tracking-tight" style="color: var(--color-text);">
+      {title}
+    </h1>
+    {intro && (
+      <div
+        class="prose-step text-[1.0625rem] leading-[1.75]"
+        style="color: var(--color-text-muted);"
+        set:html={md(intro)}
+      />
+    )}
+  </header>
+
+  {shortcuts && shortcuts.length > 0 && (
+    <div
+      class="rounded-[10px] p-4 flex flex-col gap-3"
+      style="background: var(--color-surface-muted);"
+    >
+      <div class="text-[10px] font-semibold uppercase tracking-wider" style="color: var(--color-text-faint);">
+        Keyboard shortcuts you'll use
+      </div>
+      {shortcuts.map((s) => (
+        <div class="flex items-center gap-3 flex-wrap">
+          <span class="text-sm font-medium min-w-[160px]" style="color: var(--color-text);">{s.label}</span>
+          <Shortcut mac={s.mac} win={s.win} />
+        </div>
+      ))}
+    </div>
+  )}
+
+  <ol class="flex flex-col gap-5 list-none p-0 m-0">
+    {steps.map((s, i) => (
+      <li class="flex gap-4">
+        <div
+          class="shrink-0 w-8 h-8 rounded-full flex items-center justify-center text-sm font-semibold mt-0.5"
+          style="background: var(--color-accent); color: white;"
+        >
+          {i + 1}
+        </div>
+        <div
+          class="prose-step flex-1 text-[1.0625rem] leading-[1.75] pt-0.5"
+          style="color: var(--color-text);"
+          set:html={md(s)}
+        />
+      </li>
+    ))}
+  </ol>
+
+  {labUrl && (
+    <a
+      href={labUrl}
+      target="_blank"
+      rel="noopener"
+      class="inline-flex items-center gap-2 px-4 py-2.5 rounded-md text-sm font-medium text-white w-fit"
+      style="background: var(--color-accent);"
+    >
+      Open demo lab page ↗
+    </a>
+  )}
+
+  {expectedOutcome && (
+    <div
+      class="rounded-[10px] p-5 mt-2"
+      style="background: var(--color-surface-muted); border-left: 3px solid var(--color-success);"
+    >
+      <div class="text-[10px] font-semibold uppercase tracking-wider mb-2" style="color: var(--color-text-faint);">
+        你应该看到
+      </div>
+      <div
+        class="prose-step text-[0.97rem] leading-[1.65]"
+        style="color: var(--color-text);"
+        set:html={md(expectedOutcome)}
+      />
+    </div>
+  )}
+</article>

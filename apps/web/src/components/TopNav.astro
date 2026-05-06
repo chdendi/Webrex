@@ -1,0 +1,55 @@
+---
+interface Props {
+  breadcrumb: string;
+  progressIndex: number;
+  progressTotal: number;
+}
+const { breadcrumb, progressIndex, progressTotal } = Astro.props;
+const pct = Math.round((progressIndex / progressTotal) * 100);
+---
+
+<header
+  class="fixed top-0 left-0 right-0 z-50 h-14 px-4 flex items-center justify-between border-b backdrop-blur-md"
+  style="background: color-mix(in srgb, var(--color-bg) 80%, transparent); border-color: var(--color-border);"
+>
+  <div class="flex items-center gap-4">
+    <a href="/" class="font-bold text-lg tracking-tight" style="color: var(--color-text);">
+      Webrex
+    </a>
+    <span class="text-sm" style="color: var(--color-text-muted);">{breadcrumb}</span>
+    <span
+      class="hidden md:flex items-center gap-1.5 text-xs px-2 py-1 rounded-full"
+      style="background: var(--color-surface-muted); color: var(--color-text-muted);"
+    >
+      <span class="w-1.5 h-1.5 rounded-full" style="background: var(--color-success);"></span>
+      Lab connected
+    </span>
+  </div>
+
+  <div class="flex items-center gap-4">
+    <div class="flex flex-col items-end gap-1">
+      <span class="text-xs" style="color: var(--color-text-muted);">
+        Step {progressIndex} of {progressTotal}
+      </span>
+      <div class="w-32 h-1 rounded-full" style="background: var(--color-surface-muted);">
+        <div
+          class="h-full rounded-full transition-all"
+          style={`width: ${pct}%; background: var(--color-accent);`}
+        ></div>
+      </div>
+    </div>
+    <button
+      id="redact-trigger"
+      class="text-sm px-3 py-1.5 rounded-md font-medium border transition-colors"
+      style="border-color: var(--color-border); color: var(--color-text);"
+    >
+      🛡 Redact
+    </button>
+    <div
+      class="w-8 h-8 rounded-full flex items-center justify-center text-sm font-medium"
+      style="background: var(--color-surface-muted); color: var(--color-text-muted);"
+    >
+      D
+    </div>
+  </div>
+</header>

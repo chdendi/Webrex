@@ -1,0 +1,28 @@
+---
+import VerifyCard from "../VerifyCard.tsx";
+import { md } from "~/lib/markdown";
+
+interface Props {
+  title: string;
+  prompt: string;
+  tier: "hard" | "soft" | "self";
+  expectedRegex?: string;
+  labCheckEndpoint?: string;
+}
+const { title, prompt, tier, expectedRegex, labCheckEndpoint } = Astro.props;
+const promptHtml = md(prompt);
+---
+
+<article class="flex flex-col gap-7">
+  <h1 class="text-[2.25rem] leading-[1.2] font-semibold tracking-tight" style="color: var(--color-text);">
+    {title}
+  </h1>
+
+  <VerifyCard
+    client:load
+    tier={tier}
+    promptHtml={promptHtml}
+    expectedRegex={expectedRegex}
+    labEndpoint={labCheckEndpoint}
+  />
+</article>

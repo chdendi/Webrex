@@ -1,0 +1,28 @@
+---
+import AiPromptCard from "../AiPromptCard.astro";
+import { md } from "~/lib/markdown";
+
+interface Props {
+  title: string;
+  intro?: string;
+  template: string;
+}
+const { title, intro, template } = Astro.props;
+---
+
+<article class="flex flex-col gap-7">
+  <header class="flex flex-col gap-3">
+    <h1 class="text-[2.25rem] leading-[1.2] font-semibold tracking-tight" style="color: var(--color-text);">
+      {title}
+    </h1>
+    {intro && (
+      <div
+        class="prose-step text-[1.0625rem] leading-[1.75]"
+        style="color: var(--color-text-muted);"
+        set:html={md(intro)}
+      />
+    )}
+  </header>
+
+  <AiPromptCard template={template} />
+</article>

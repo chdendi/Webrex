@@ -1,0 +1,76 @@
+# --- Webrex local-only files (not for git) ---
+# Local execution plan — kept on disk as the source of truth for AI work,
+# but never committed.
+*.local.md
+webrex-plan.local.md
+.notes/
+.scratch/
+
+# --- AI tooling local state ---
+# Claude Code / Codex / Cursor per-project scratch state (locks, sessions, etc.)
+.claude/
+.codex/
+.cursor/
+
+# --- Dependencies ---
+node_modules/
+.pnp
+.pnp.js
+.yarn/cache
+.yarn/unplugged
+.yarn/build-state.yml
+.yarn/install-state.gz
+
+# --- Build output ---
+dist/
+build/
+out/
+.next/
+.nuxt/
+.svelte-kit/
+.vercel/
+.turbo/
+.cache/
+.parcel-cache/
+
+# --- Env & secrets ---
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+
+# --- Logs ---
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+lerna-debug.log*
+logs/
+
+# --- Test & coverage ---
+coverage/
+.nyc_output/
+*.lcov
+
+# --- Editor / OS ---
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/*
+!.vscode/settings.json
+!.vscode/extensions.json
+*.swp
+*.swo
+*~
+
+# --- Misc ---
+.eslintcache
+.stylelintcache
+*.tsbuildinfo
+
+# --- Astro / Wrangler ---
+.astro/
+.wrangler/
+.dev.vars

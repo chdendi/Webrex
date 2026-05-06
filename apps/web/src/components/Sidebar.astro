@@ -1,0 +1,100 @@
+---
+import type { CollectionEntry } from "astro:content";
+
+interface Props {
+  lessons: CollectionEntry<"lessons">[];
+  currentId: string;
+}
+
+const { lessons, currentId } = Astro.props;
+
+// Group by level
+const byLevel = new Map<number, CollectionEntry<"lessons">[]>();
+for (const l of lessons) {
+  const arr = byLevel.get(l.data.level) ?? [];
+  arr.push(l);
+  byLevel.set(l.data.level, arr);
+}
+// Sort lessons within each level
+for (const arr of byLevel.values()) {
+  arr.sort((a, b) => a.data.sublevel - b.data.sublevel);
+}
+const sortedLevels = [...byLevel.entries()].sort((a, b) => a[0] - b[0]);
+
+// Compute total time per level
+function levelTime(arr: CollectionEntry<"lessons">[]): number {
+  return arr.reduce((sum, l) => sum + l.data.time, 0);
+}
+---
+
+<aside
+  class="hidden md:flex fixed left-0 top-14 bottom-0 w-[280px] flex-col border-r overflow-y-auto"
+  style="background: var(--color-surface); border-color: var(--color-border);"
+>
+  <nav class="flex-1 py-2">
+    {
+      sortedLevels.map(([level, arr]) => {
+        const first = arr[0];
+        return (
+          <div class="px-3 py-1">
+            <div
+              class="flex items-center gap-2 px-2 py-2 text-xs font-semibold uppercase tracking-wider"
+              style="color: var(--color-text-muted);"
+            >
+              <span class="text-base">{first.data.categoryIcon}</span>
+              <span>L{level} {first.data.categoryName}</span>
+              <span class="ml-auto text-[10px] font-normal opacity-60">
+                {levelTime(arr)} min
+              </span>
+            </div>
+
+            <ul class="ml-4 border-l pl-3 flex flex-col gap-0.5" style="border-color: var(--color-border);">
+              {
+                arr.map((lesson) => {
+                  const isCurrent = lesson.id === currentId;
+                  const isExtension = lesson.data.track === "extension";
+                  return (
+                    <li>
+                      <a
+                        href={`/lessons/${lesson.id}`}
+                        class={`flex items-center gap-2 px-2 py-1.5 rounded-md text-sm transition-colors ${
+                          isCurrent ? "font-medium" : "hover:bg-[color:var(--color-surface-muted)]"
+                        }`}
+                        style={
+                          isCurrent
+                            ? "background: var(--color-accent-soft); color: var(--color-accent);"
+                            : "color: var(--color-text-muted);"
+                        }
+                      >
+                        <span
+                          class="w-1.5 h-1.5 rounded-full flex-shrink-0"
+                          style={
+                            isCurrent
+                              ? "background: var(--color-accent);"
+                              : "background: var(--color-text-faint); opacity: 0.5;"
+                          }
+                        ></span>
+                        <span class="flex-1 truncate">
+                          L{lesson.data.level}.{lesson.data.sublevel} {lesson.data.title}
+                        </span>
+                        <span class="text-[10px] opacity-60 flex-shrink-0">{lesson.data.time}m</span>
+                        {isExtension && (
+                          <span
+                            class="text-[9px] px-1 rounded border"
+                            style="border-color: var(--color-border); color: var(--color-text-faint);"
+                          >
+                            ext
+                          </span>
+                        )}
+                      </a>
+                    </li>
+                  );
+                })
+              }
+            </ul>
+          </div>
+        );
+      })
+    }
+  </nav>
+</aside>

@@ -1,0 +1,74 @@
+---
+import Card from "./Card.astro";
+interface Props { template: string }
+const { template } = Astro.props;
+---
+
+<Card title="Ask AI" icon="🤖" numeral="④">
+  <pre
+    class="rounded-md p-4 font-mono text-[13px] leading-relaxed overflow-x-auto whitespace-pre-wrap"
+    style="background: var(--color-surface-muted); color: var(--color-text);"
+  >{template}</pre>
+
+  <div class="flex flex-wrap items-center justify-between gap-3">
+    <div class="flex gap-2">
+      <button
+        class="ai-redact-copy px-3 py-2 rounded-md text-sm font-medium text-white transition-colors"
+        style="background: var(--color-accent);"
+        data-template={template}
+      >
+        🛡 Redact &amp; Copy
+      </button>
+      <button
+        class="ai-copy-raw px-3 py-2 rounded-md text-sm border transition-colors"
+        style="border-color: var(--color-border); color: var(--color-text-muted);"
+        data-template={template}
+        title="May contain sensitive data"
+      >
+        Copy raw
+      </button>
+    </div>
+    <div class="flex gap-3 text-xs" style="color: var(--color-text-faint);">
+      <a href="https://claude.ai/new" target="_blank" rel="noopener" class="hover:underline">Claude</a>
+      <a href="https://chat.openai.com/" target="_blank" rel="noopener" class="hover:underline">ChatGPT</a>
+      <a href="https://github.com/copilot" target="_blank" rel="noopener" class="hover:underline">Copilot</a>
+    </div>
+  </div>
+
+  <p
+    id="ai-toast"
+    class="hidden text-xs"
+    style="color: var(--color-success);"
+  ></p>
+</Card>
+
+<script>
+  import { redact } from "@webrex/redact";
+  const toast = document.getElementById("ai-toast");
+  function show(msg: string, kind: "ok" | "warn" = "ok") {
+    if (!toast) return;
+    toast.textContent = msg;
+    toast.classList.remove("hidden");
+    toast.style.color = kind === "ok" ? "var(--color-success)" : "var(--color-warning)";
+    setTimeout(() => toast.classList.add("hidden"), 4000);
+  }
+  document.querySelectorAll<HTMLButtonElement>(".ai-redact-copy").forEach((btn) => {
+    btn.addEventListener("click", async () => {
+      const text = btn.dataset.template ?? "";
+      const result = redact(text);
+      await navigator.clipboard.writeText(result.redacted);
+      const hits = result.summary.filter((s) => s.count > 0);
+      const detail = hits.length
+        ? hits.map((s) => `${s.count} ${s.label}`).join(", ")
+        : "no sensitive fields detected — copied as-is";
+      show(`Copied. Redacted: ${detail}`);
+    });
+  });
+  document.querySelectorAll<HTMLButtonElement>(".ai-copy-raw").forEach((btn) => {
+    btn.addEventListener("click", async () => {
+      const text = btn.dataset.template ?? "";
+      await navigator.clipboard.writeText(text);
+      show("Copied raw — be careful what you paste", "warn");
+    });
+  });
+</script>

@@ -1,0 +1,35 @@
+---
+interface Props {
+  mac: string;
+  win: string;
+}
+const { mac, win } = Astro.props;
+
+function renderKeys(s: string) {
+  return s.split("+").map((k) => k.trim());
+}
+const macKeys = renderKeys(mac);
+const winKeys = renderKeys(win);
+---
+
+<span class="inline-flex flex-wrap items-center gap-2 text-sm" style="color: var(--color-text-muted);">
+  <span class="inline-flex items-center gap-1">
+    {macKeys.map((k, i) => (
+      <>
+        {i > 0 && <span class="opacity-50">+</span>}
+        <kbd>{k}</kbd>
+      </>
+    ))}
+    <span class="text-[10px] opacity-70">Mac</span>
+  </span>
+  <span class="opacity-40">·</span>
+  <span class="inline-flex items-center gap-1">
+    {winKeys.map((k, i) => (
+      <>
+        {i > 0 && <span class="opacity-50">+</span>}
+        <kbd>{k}</kbd>
+      </>
+    ))}
+    <span class="text-[10px] opacity-70">Win/Linux</span>
+  </span>
+</span>

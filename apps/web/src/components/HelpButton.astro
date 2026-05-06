@@ -1,0 +1,44 @@
+---
+interface Props { hint?: string }
+const { hint } = Astro.props;
+if (!hint) return null as any;
+---
+
+<button
+  id="help-toggle"
+  type="button"
+  class="fixed bottom-24 right-6 w-12 h-12 rounded-full text-xl font-bold shadow-lg z-40 transition-all hover:scale-105"
+  style="background: var(--color-surface); border: 1px solid var(--color-border); color: var(--color-text); box-shadow: 0 4px 12px rgba(0,0,0,0.15);"
+  aria-label="Stuck? See fallback"
+  title="Stuck?"
+>
+  ?
+</button>
+
+<div
+  id="help-popover"
+  class="hidden fixed bottom-40 right-6 max-w-sm rounded-[10px] p-4 z-40 text-sm leading-relaxed"
+  style="background: var(--color-surface); border: 1px solid var(--color-border); box-shadow: 0 8px 24px rgba(0,0,0,0.18); color: var(--color-text);"
+>
+  <div class="text-[10px] font-semibold uppercase tracking-wider mb-2" style="color: var(--color-text-faint);">
+    🆘 Stuck? Try this fallback
+  </div>
+  <div>{hint}</div>
+</div>
+
+<script>
+  const btn = document.getElementById("help-toggle");
+  const pop = document.getElementById("help-popover");
+  if (btn && pop) {
+    btn.addEventListener("click", (e) => {
+      e.stopPropagation();
+      pop.classList.toggle("hidden");
+    });
+    document.addEventListener("click", (e) => {
+      const target = e.target as Node;
+      if (!pop.classList.contains("hidden") && !pop.contains(target) && !btn.contains(target)) {
+        pop.classList.add("hidden");
+      }
+    });
+  }
+</script>

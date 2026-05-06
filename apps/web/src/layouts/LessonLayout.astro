@@ -1,0 +1,57 @@
+---
+import "~/styles/global.css";
+import TopNav from "~/components/TopNav.astro";
+import Sidebar from "~/components/Sidebar.astro";
+import Footer from "~/components/Footer.astro";
+import type { CollectionEntry } from "astro:content";
+
+interface Props {
+  current: CollectionEntry<"lessons">;
+  allLessons: CollectionEntry<"lessons">[];
+  prevId?: string;
+  nextId?: string;
+  index: number;
+  total: number;
+}
+
+const { current, allLessons, prevId, nextId, index, total } = Astro.props;
+const data = current.data;
+const pageTitle = `L${data.level}.${data.sublevel} ${data.title} · Webrex`;
+---
+
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap"
+      rel="stylesheet"
+    />
+    <title>{pageTitle}</title>
+  </head>
+  <body class="min-h-screen flex flex-col">
+    <TopNav
+      breadcrumb={`L${data.level} ${data.categoryName} ▸ L${data.level}.${data.sublevel}`}
+      progressIndex={index}
+      progressTotal={total}
+    />
+
+    <div class="flex flex-1 pt-14 pb-16">
+      <Sidebar lessons={allLessons} currentId={current.id} />
+
+      <main
+        class="flex-1 md:ml-[280px] px-6 py-12 flex justify-center"
+      >
+        <div class="w-full max-w-[680px] flex flex-col gap-8">
+          <slot />
+        </div>
+      </main>
+    </div>
+
+    <Footer prevId={prevId} nextId={nextId} index={index} total={total} />
+  </body>
+</html>

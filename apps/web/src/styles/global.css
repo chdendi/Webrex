@@ -1,0 +1,222 @@
+@import "tailwindcss";
+
+/* Webrex design tokens — Linear/Vercel/Stripe aesthetic, NOT Material */
+@theme {
+  /* Surfaces (light) */
+  --color-bg: #FAFAFA;
+  --color-surface: #FFFFFF;
+  --color-surface-muted: #F4F4F5;
+  --color-border: #E5E7EB;
+  --color-border-strong: #D4D4D8;
+
+  /* Text (light) */
+  --color-text: #1F2937;
+  --color-text-muted: #6B7280;
+  --color-text-faint: #9CA3AF;
+
+  /* Brand */
+  --color-accent: #3B82F6;
+  --color-accent-hover: #2563EB;
+  --color-accent-soft: #DBEAFE;
+
+  /* Status */
+  --color-success: #10B981;
+  --color-warning: #F59E0B;
+  --color-danger: #EF4444;
+  --color-redact-bg: #FEF3C7;
+  --color-redact-border: #FDE68A;
+  --color-redact-text: #42370E;
+
+  /* Typography */
+  --font-sans: "Inter", "Geist Sans", system-ui, -apple-system, sans-serif;
+  --font-mono: "JetBrains Mono", "Geist Mono", ui-monospace, "SF Mono", monospace;
+
+  /* Radii */
+  --radius-card: 10px;
+  --radius-button: 6px;
+  --radius-chip: 4px;
+
+  /* Shadows */
+  --shadow-card: 0 1px 2px rgba(0, 0, 0, 0.04);
+  --shadow-pop: 0 4px 12px rgba(0, 0, 0, 0.08);
+}
+
+/* Dark mode — true near-black like Chrome DevTools dark theme */
+@media (prefers-color-scheme: dark) {
+  @theme {
+    --color-bg: #0A0A0A;
+    --color-surface: #141414;
+    --color-surface-muted: #1F1F1F;
+    --color-border: #262626;
+    --color-border-strong: #3F3F46;
+
+    --color-text: #F4F4F5;
+    --color-text-muted: #A1A1AA;
+    --color-text-faint: #71717A;
+
+    --color-accent: #60A5FA;
+    --color-accent-hover: #3B82F6;
+    --color-accent-soft: #1E3A8A;
+
+    --color-redact-bg: #422006;
+    --color-redact-border: #92400E;
+    --color-redact-text: #FCD34D;
+  }
+}
+
+/* Manual dark mode toggle (data-theme="dark" on <html>) */
+html[data-theme="dark"] {
+  --color-bg: #0A0A0A;
+  --color-surface: #141414;
+  --color-surface-muted: #1F1F1F;
+  --color-border: #262626;
+  --color-border-strong: #3F3F46;
+
+  --color-text: #F4F4F5;
+  --color-text-muted: #A1A1AA;
+  --color-text-faint: #71717A;
+
+  --color-accent: #60A5FA;
+  --color-accent-hover: #3B82F6;
+  --color-accent-soft: #1E3A8A;
+
+  --color-redact-bg: #422006;
+  --color-redact-border: #92400E;
+  --color-redact-text: #FCD34D;
+}
+
+html, body {
+  background: var(--color-bg);
+  color: var(--color-text);
+  font-family: var(--font-sans);
+  font-size: 17px;
+  line-height: 1.65;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+/* Inline emphasis inside body prose */
+strong { font-weight: 600; color: var(--color-text); }
+em { font-style: italic; }
+
+/* Code spans inline */
+code {
+  font-family: var(--font-mono);
+  font-size: 0.92em;
+  padding: 0.1em 0.35em;
+  border-radius: 4px;
+  background: var(--color-surface-muted);
+  color: var(--color-text);
+}
+
+/* Markdown content inside step bodies */
+.prose-step > :first-child { margin-top: 0; }
+.prose-step > :last-child { margin-bottom: 0; }
+.prose-step p { margin: 0.5em 0; }
+.prose-step ul,
+.prose-step ol {
+  margin: 0.6em 0;
+  padding-left: 1.4em;
+}
+.prose-step ul { list-style: disc; }
+.prose-step ol { list-style: decimal; }
+.prose-step li { margin: 0.3em 0; padding-left: 0.2em; }
+.prose-step li::marker { color: var(--color-text-faint); }
+.prose-step a {
+  color: var(--color-accent);
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+.prose-step pre {
+  margin: 0.8em 0;
+  padding: 0.9em 1em;
+  background: var(--color-surface-muted);
+  border: 1px solid var(--color-border);
+  border-radius: 8px;
+  overflow-x: auto;
+  font-size: 0.92em;
+  line-height: 1.5;
+}
+.prose-step pre code {
+  background: transparent;
+  padding: 0;
+  font-size: inherit;
+}
+.prose-step blockquote {
+  border-left: 3px solid var(--color-border);
+  margin: 0.8em 0;
+  padding: 0.2em 0 0.2em 1em;
+  color: var(--color-text-muted);
+}
+.prose-step hr {
+  border: none;
+  border-top: 1px solid var(--color-border);
+  margin: 1.2em 0;
+}
+
+/* Markdown tables */
+.prose-step table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 0.8em 0;
+  font-size: 0.95em;
+  border: 1px solid var(--color-border);
+  border-radius: 8px;
+  overflow: hidden;
+}
+.prose-step thead {
+  background: var(--color-surface-muted);
+}
+.prose-step th,
+.prose-step td {
+  padding: 0.6em 0.85em;
+  text-align: left;
+  border-bottom: 1px solid var(--color-border);
+  vertical-align: top;
+  line-height: 1.55;
+}
+.prose-step th {
+  font-weight: 600;
+  font-size: 0.85em;
+  text-transform: none;
+  color: var(--color-text-muted);
+  letter-spacing: 0.01em;
+}
+.prose-step tr:last-child td { border-bottom: 0; }
+.prose-step tbody tr:hover { background: var(--color-surface-muted); }
+
+/* Inline glossary tooltips: dotted underline */
+.glossary {
+  border-bottom: 1px dotted var(--color-text-faint);
+  cursor: help;
+  transition: background 0.15s, border-color 0.15s;
+}
+.glossary:hover {
+  background: rgba(59, 130, 246, 0.08);
+  border-bottom-color: var(--color-accent);
+  border-radius: 2px;
+}
+
+/* <kbd> styling for shortcut display */
+kbd {
+  font-family: var(--font-mono);
+  font-size: 0.8125rem;
+  padding: 0.125rem 0.375rem;
+  border: 1px solid var(--color-border);
+  border-bottom-width: 2px;
+  border-radius: 4px;
+  background: var(--color-surface-muted);
+  color: var(--color-text);
+  display: inline-block;
+  line-height: 1;
+}
+
+@keyframes confidencePop {
+  0% { transform: scale(1); }
+  50% { transform: scale(1.08); }
+  100% { transform: scale(1); }
+}
+
+.confidence-pop {
+  animation: confidencePop 0.4s ease-out;
+}

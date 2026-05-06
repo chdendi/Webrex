@@ -1,0 +1,21 @@
+---
+interface Props { hint?: string }
+const { hint } = Astro.props;
+if (!hint) return null as any;
+---
+
+<details class="rounded-[10px] border" style="background: var(--color-surface); border-color: var(--color-border);">
+  <summary
+    class="px-6 py-4 cursor-pointer flex items-center justify-between text-sm font-medium select-none"
+    style="color: var(--color-text);"
+  >
+    <span class="flex items-center gap-2">
+      <span>🆘</span>
+      <span>Stuck? See fallback</span>
+    </span>
+    <span class="text-xs" style="color: var(--color-text-faint);">expand</span>
+  </summary>
+  <div class="px-6 pb-4 text-sm" style="color: var(--color-text-muted);">
+    {hint}
+  </div>
+</details>

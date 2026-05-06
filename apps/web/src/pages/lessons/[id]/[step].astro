@@ -1,0 +1,138 @@
+---
+import { getCollection } from "astro:content";
+import LessonLayout from "~/layouts/LessonLayout.astro";
+import StepProgress from "~/components/StepProgress.astro";
+import StepNav from "~/components/StepNav.astro";
+import HelpButton from "~/components/HelpButton.astro";
+import RedactionPanel from "~/components/RedactionPanel.tsx";
+import AiChatPanel from "~/components/AiChatPanel.tsx";
+import ConceptStep from "~/components/steps/ConceptStep.astro";
+import PracticeStep from "~/components/steps/PracticeStep.astro";
+import VerifyStep from "~/components/steps/VerifyStep.astro";
+import AskAiStep from "~/components/steps/AskAiStep.astro";
+
+export async function getStaticPaths() {
+  const lessons = await getCollection("lessons");
+  lessons.sort((a, b) => a.data.level - b.data.level || a.data.sublevel - b.data.sublevel);
+
+  const paths: any[] = [];
+  lessons.forEach((lesson, lessonIdx) => {
+    if (!lesson.data.steps) return;
+    lesson.data.steps.forEach((step, stepIdx) => {
+      paths.push({
+        params: { id: lesson.id, step: step.slug },
+        props: {
+          lesson,
+          step,
+          stepIndex: stepIdx,
+          stepCount: lesson.data.steps!.length,
+          allLessons: lessons,
+          lessonIndex: lessonIdx + 1,
+          totalLessons: lessons.length,
+          prevId: lessonIdx > 0 ? lessons[lessonIdx - 1].id : undefined,
+          nextId: lessonIdx < lessons.length - 1 ? lessons[lessonIdx + 1].id : undefined,
+        },
+      });
+    });
+  });
+  return paths;
+}
+
+const {
+  lesson,
+  step,
+  stepIndex,
+  stepCount,
+  allLessons,
+  lessonIndex,
+  totalLessons,
+  prevId,
+  nextId,
+} = Astro.props;
+
+const steps = lesson.data.steps!;
+const prevStep = stepIndex > 0 ? steps[stepIndex - 1] : null;
+const nextStep = stepIndex < steps.length - 1 ? steps[stepIndex + 1] : null;
+const isLastStep = stepIndex === steps.length - 1;
+
+const stepKindLabel: Record<string, string> = {
+  concept: "Concept",
+  practice: "Practice",
+  verify: "Verify",
+  "ask-ai": "Ask AI",
+};
+
+const nextLessonTitle = nextId
+  ? allLessons.find((l: any) => l.id === nextId)?.data.title.split("——")[0].trim()
+  : undefined;
+---
+
+<LessonLayout
+  current={lesson}
+  allLessons={allLessons}
+  prevId={prevId}
+  nextId={nextId}
+  index={lessonIndex}
+  total={totalLessons}
+>
+  <StepProgress
+    current={stepIndex + 1}
+    total={stepCount}
+    stepTitle={step.title}
+    stepKind={stepKindLabel[step.type] ?? step.type}
+  />
+
+  {step.type === "concept" && (
+    <ConceptStep
+      title={step.title}
+      hook={step.hook}
+      body={step.body}
+      bullets={step.bullets}
+      takeaway={step.takeaway}
+    />
+  )}
+  {step.type === "practice" && (
+    <PracticeStep
+      title={step.title}
+      intro={step.intro}
+      steps={step.steps}
+      shortcuts={step.shortcuts}
+      expectedOutcome={step.expectedOutcome}
+      labUrl={step.labUrl}
+    />
+  )}
+  {step.type === "verify" && (
+    <VerifyStep
+      title={step.title}
+      prompt={step.prompt}
+      tier={step.tier}
+      expectedRegex={step.expectedRegex}
+      labCheckEndpoint={step.labCheckEndpoint}
+    />
+  )}
+  {step.type === "ask-ai" && (
+    <AskAiStep title={step.title} intro={step.intro} template={step.template} />
+  )}
+
+  <StepNav
+    prevHref={prevStep ? `/lessons/${lesson.id}/${prevStep.slug}` : undefined}
+    nextHref={nextStep ? `/lessons/${lesson.id}/${nextStep.slug}` : undefined}
+    prevLabel={prevStep ? stepKindLabel[prevStep.type] : undefined}
+    nextLabel={nextStep ? `Continue to ${stepKindLabel[nextStep.type]}` : undefined}
+    isLastStep={isLastStep}
+    nextLessonHref={isLastStep && nextId ? `/lessons/${nextId}` : undefined}
+    nextLessonTitle={nextLessonTitle}
+  />
+
+  <RedactionPanel client:load />
+  <AiChatPanel
+    client:load
+    lessonId={lesson.id}
+    lessonTitle={lesson.data.title}
+    stepType={step.type}
+    stepTitle={step.title}
+    lessonLevel={lesson.data.level}
+    lessonSublevel={lesson.data.sublevel}
+  />
+  <HelpButton hint={lesson.data.stuck} />
+</LessonLayout>

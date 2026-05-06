@@ -1,0 +1,74 @@
+---
+import { mdGlossary as md, mdInlineGlossary as mdInline } from "~/lib/markdown";
+
+interface BulletItem { emoji?: string; title: string; body?: string }
+interface Props {
+  title: string;
+  hook?: string;
+  body: string[];
+  bullets?: BulletItem[];
+  takeaway?: string;
+}
+const { title, hook, body, bullets, takeaway } = Astro.props;
+---
+
+<article class="flex flex-col gap-7">
+  <h1 class="text-[2.25rem] leading-[1.2] font-semibold tracking-tight" style="color: var(--color-text);">
+    {title}
+  </h1>
+
+  {hook && (
+    <div
+      class="prose-step text-[1.125rem] leading-[1.7] pl-4 border-l-4 italic"
+      style="color: var(--color-text); border-color: var(--color-accent);"
+      set:html={md(hook)}
+    />
+  )}
+
+  <div class="flex flex-col gap-4">
+    {body.map((p) => (
+      <div
+        class="prose-step text-[1.0625rem] leading-[1.75]"
+        style="color: var(--color-text);"
+        set:html={md(p)}
+      />
+    ))}
+  </div>
+
+  {bullets && bullets.length > 0 && (
+    <div class="grid gap-3 mt-2 sm:grid-cols-3">
+      {bullets.map((b) => (
+        <div
+          class="rounded-[10px] border p-4 flex flex-col gap-2"
+          style="background: var(--color-surface); border-color: var(--color-border);"
+        >
+          {b.emoji && <span class="text-3xl leading-none">{b.emoji}</span>}
+          <div class="text-base font-semibold" style="color: var(--color-text);">{b.title}</div>
+          {b.body && (
+            <div
+              class="prose-step text-sm leading-relaxed"
+              style="color: var(--color-text-muted);"
+              set:html={mdInline(b.body)}
+            />
+          )}
+        </div>
+      ))}
+    </div>
+  )}
+
+  {takeaway && (
+    <div
+      class="rounded-[10px] p-4 mt-2"
+      style="background: var(--color-surface-muted); border-left: 3px solid var(--color-accent);"
+    >
+      <div class="text-[10px] font-semibold uppercase tracking-wider mb-2" style="color: var(--color-text-faint);">
+        Takeaway
+      </div>
+      <div
+        class="prose-step text-[0.97rem] leading-[1.65]"
+        style="color: var(--color-text);"
+        set:html={md(takeaway)}
+      />
+    </div>
+  )}
+</article>

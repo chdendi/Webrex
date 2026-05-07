@@ -42,7 +42,7 @@ export default function RedactionPanel() {
             color: 'var(--color-redact-text)',
             border: '1px solid var(--color-redact-border)',
             padding: '0 4px',
-            borderRadius: '3px',
+            borderRadius: '4px',
             fontWeight: 500,
           }}
         >
@@ -86,7 +86,8 @@ export default function RedactionPanel() {
           <h2 className="text-sm font-semibold uppercase tracking-wider" style={{ color: 'var(--color-text)' }}>
             🛡 Redact before sharing with AI
           </h2>
-          <button type="button"
+          <button
+            type="button"
             onClick={() => setOpen(false)}
             className="text-xl leading-none"
             style={{ color: 'var(--color-text-muted)' }}
@@ -127,7 +128,8 @@ export default function RedactionPanel() {
               {result.summary.map((s) => {
                 const active = enabled[s.category] && s.count > 0;
                 return (
-                  <button type="button"
+                  <button
+                    type="button"
                     key={s.category}
                     onClick={() =>
                       setEnabled((p) => ({
@@ -201,7 +203,8 @@ export default function RedactionPanel() {
         </div>
 
         <footer className="border-t p-4 flex flex-col gap-2" style={{ borderColor: 'var(--color-border)' }}>
-          <button type="button"
+          <button
+            type="button"
             onClick={copyRedacted}
             disabled={!text}
             className="w-full px-4 py-2.5 rounded-md text-sm font-semibold text-white transition-colors disabled:opacity-50"
@@ -209,7 +212,8 @@ export default function RedactionPanel() {
           >
             Copy redacted
           </button>
-          <button type="button"
+          <button
+            type="button"
             onClick={copyOriginal}
             disabled={!text}
             className="w-full px-4 py-2 rounded-md text-sm border transition-colors disabled:opacity-50"

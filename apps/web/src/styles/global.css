@@ -1,97 +1,56 @@
 @import "tailwindcss";
 
-/* Webrex design tokens — Linear/Vercel/Stripe aesthetic, NOT Material */
+/* Webrex design tokens — Apple Human Interface aesthetic */
 @theme {
   /* Surfaces (light) */
-  --color-bg: #FAFAFA;
+  --color-bg: #F5F5F7;
   --color-surface: #FFFFFF;
-  --color-surface-muted: #F4F4F5;
-  --color-border: #E5E7EB;
-  --color-border-strong: #D4D4D8;
+  --color-surface-muted: #F0F0F3;
+  --color-border: #E5E5EA;
+  --color-border-strong: #D1D1D6;
 
   /* Text (light) */
-  --color-text: #1F2937;
-  --color-text-muted: #6B7280;
-  --color-text-faint: #9CA3AF;
+  --color-text: #1D1D1F;
+  --color-text-muted: #86868B;
+  --color-text-faint: #AEAEB2;
 
   /* Brand */
-  --color-accent: #3B82F6;
-  --color-accent-hover: #2563EB;
-  --color-accent-soft: #DBEAFE;
+  --color-accent: #0071E3;
+  --color-accent-hover: #0077ED;
+  --color-accent-soft: #E8F0FE;
 
   /* Status */
-  --color-success: #10B981;
-  --color-warning: #F59E0B;
-  --color-danger: #EF4444;
-  --color-redact-bg: #FEF3C7;
-  --color-redact-border: #FDE68A;
-  --color-redact-text: #42370E;
+  --color-success: #34C759;
+  --color-warning: #FF9500;
+  --color-danger: #FF3B30;
+  --color-redact-bg: #FFF9E6;
+  --color-redact-border: #FFE08C;
+  --color-redact-text: #5C4100;
 
-  /* Typography */
-  --font-sans: "Inter", "Geist Sans", system-ui, -apple-system, sans-serif;
-  --font-mono: "JetBrains Mono", "Geist Mono", ui-monospace, "SF Mono", monospace;
+  /* Typography — SF Pro on Apple devices, graceful fallback everywhere */
+  --font-sans: -apple-system, BlinkMacSystemFont, "SF Pro Display", "SF Pro Text", "Inter", system-ui, sans-serif;
+  --font-mono: "SF Mono", ui-monospace, "JetBrains Mono", "Geist Mono", monospace;
 
-  /* Radii */
-  --radius-card: 10px;
-  --radius-button: 6px;
-  --radius-chip: 4px;
+  /* Radii — more generous, Apple-style */
+  --radius-card: 16px;
+  --radius-button: 10px;
+  --radius-chip: 6px;
 
-  /* Shadows */
-  --shadow-card: 0 1px 2px rgba(0, 0, 0, 0.04);
-  --shadow-pop: 0 4px 12px rgba(0, 0, 0, 0.08);
+  /* Shadows — soft, diffused, elegant */
+  --shadow-card: 0 2px 16px rgba(0, 0, 0, 0.06);
+  --shadow-pop: 0 8px 40px rgba(0, 0, 0, 0.12);
 }
 
-/* Dark mode — true near-black like Chrome DevTools dark theme */
-@media (prefers-color-scheme: dark) {
-  @theme {
-    --color-bg: #0A0A0A;
-    --color-surface: #141414;
-    --color-surface-muted: #1F1F1F;
-    --color-border: #262626;
-    --color-border-strong: #3F3F46;
-
-    --color-text: #F4F4F5;
-    --color-text-muted: #A1A1AA;
-    --color-text-faint: #71717A;
-
-    --color-accent: #60A5FA;
-    --color-accent-hover: #3B82F6;
-    --color-accent-soft: #1E3A8A;
-
-    --color-redact-bg: #422006;
-    --color-redact-border: #92400E;
-    --color-redact-text: #FCD34D;
-  }
-}
-
-/* Manual dark mode toggle (data-theme="dark" on <html>) */
-html[data-theme="dark"] {
-  --color-bg: #0A0A0A;
-  --color-surface: #141414;
-  --color-surface-muted: #1F1F1F;
-  --color-border: #262626;
-  --color-border-strong: #3F3F46;
-
-  --color-text: #F4F4F5;
-  --color-text-muted: #A1A1AA;
-  --color-text-faint: #71717A;
-
-  --color-accent: #60A5FA;
-  --color-accent-hover: #3B82F6;
-  --color-accent-soft: #1E3A8A;
-
-  --color-redact-bg: #422006;
-  --color-redact-border: #92400E;
-  --color-redact-text: #FCD34D;
-}
 
 html, body {
   background: var(--color-bg);
   color: var(--color-text);
   font-family: var(--font-sans);
   font-size: 17px;
-  line-height: 1.65;
+  line-height: 1.6;
+  letter-spacing: -0.011em;
   -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
   text-rendering: optimizeLegibility;
 }
 
@@ -102,40 +61,45 @@ em { font-style: italic; }
 /* Code spans inline */
 code {
   font-family: var(--font-mono);
-  font-size: 0.92em;
-  padding: 0.1em 0.35em;
-  border-radius: 4px;
+  font-size: 0.9em;
+  padding: 0.15em 0.4em;
+  border-radius: 6px;
   background: var(--color-surface-muted);
-  color: var(--color-text);
+  color: var(--color-accent);
+  font-weight: 500;
 }
 
 /* Markdown content inside step bodies */
 .prose-step > :first-child { margin-top: 0; }
 .prose-step > :last-child { margin-bottom: 0; }
-.prose-step p { margin: 0.5em 0; }
+.prose-step p { margin: 0.6em 0; }
 .prose-step ul,
 .prose-step ol {
-  margin: 0.6em 0;
-  padding-left: 1.4em;
+  margin: 0.7em 0;
+  padding-left: 1.5em;
 }
 .prose-step ul { list-style: disc; }
 .prose-step ol { list-style: decimal; }
-.prose-step li { margin: 0.3em 0; padding-left: 0.2em; }
+.prose-step li { margin: 0.4em 0; padding-left: 0.25em; }
 .prose-step li::marker { color: var(--color-text-faint); }
 .prose-step a {
   color: var(--color-accent);
+  text-decoration: none;
+  transition: text-decoration 0.15s;
+}
+.prose-step a:hover {
   text-decoration: underline;
-  text-underline-offset: 2px;
+  text-underline-offset: 3px;
 }
 .prose-step pre {
-  margin: 0.8em 0;
-  padding: 0.9em 1em;
+  margin: 0.9em 0;
+  padding: 1em 1.2em;
   background: var(--color-surface-muted);
   border: 1px solid var(--color-border);
-  border-radius: 8px;
+  border-radius: var(--radius-card);
   overflow-x: auto;
-  font-size: 0.92em;
-  line-height: 1.5;
+  font-size: 0.9em;
+  line-height: 1.55;
 }
 .prose-step pre code {
   background: transparent;
@@ -143,25 +107,27 @@ code {
   font-size: inherit;
 }
 .prose-step blockquote {
-  border-left: 3px solid var(--color-border);
-  margin: 0.8em 0;
-  padding: 0.2em 0 0.2em 1em;
+  border-left: 3px solid var(--color-accent-soft);
+  margin: 0.9em 0;
+  padding: 0.3em 0 0.3em 1.2em;
   color: var(--color-text-muted);
+  border-radius: 0 8px 8px 0;
 }
 .prose-step hr {
   border: none;
   border-top: 1px solid var(--color-border);
-  margin: 1.2em 0;
+  margin: 1.4em 0;
 }
 
 /* Markdown tables */
 .prose-step table {
   width: 100%;
-  border-collapse: collapse;
+  border-collapse: separate;
+  border-spacing: 0;
   margin: 0.8em 0;
   font-size: 0.95em;
   border: 1px solid var(--color-border);
-  border-radius: 8px;
+  border-radius: var(--radius-card);
   overflow: hidden;
 }
 .prose-step thead {
@@ -169,7 +135,7 @@ code {
 }
 .prose-step th,
 .prose-step td {
-  padding: 0.6em 0.85em;
+  padding: 0.7em 0.9em;
   text-align: left;
   border-bottom: 1px solid var(--color-border);
   vertical-align: top;
@@ -187,12 +153,12 @@ code {
 
 /* Inline glossary tooltips: dotted underline */
 .glossary {
-  border-bottom: 1px dotted var(--color-text-faint);
+  border-bottom: 1.5px dotted var(--color-text-faint);
   cursor: help;
-  transition: background 0.15s, border-color 0.15s;
+  transition: background 0.2s, border-color 0.2s;
 }
 .glossary:hover {
-  background: rgba(59, 130, 246, 0.08);
+  background: rgba(0, 113, 227, 0.06);
   border-bottom-color: var(--color-accent);
   border-radius: 2px;
 }
@@ -201,14 +167,15 @@ code {
 kbd {
   font-family: var(--font-mono);
   font-size: 0.8125rem;
-  padding: 0.125rem 0.375rem;
+  padding: 0.15rem 0.45rem;
   border: 1px solid var(--color-border);
-  border-bottom-width: 2px;
-  border-radius: 4px;
+  border-bottom-width: 2.5px;
+  border-radius: var(--radius-chip);
   background: var(--color-surface-muted);
   color: var(--color-text);
   display: inline-block;
   line-height: 1;
+  box-shadow: 0 1px 0 var(--color-border-strong);
 }
 
 @keyframes confidencePop {

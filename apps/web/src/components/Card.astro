@@ -9,8 +9,8 @@ const { title, icon, numeral, class: extra = '' } = Astro.props;
 ---
 
 <section
-  class={`rounded-[10px] border p-6 flex flex-col gap-4 ${extra}`}
-  style="background: var(--color-surface); border-color: var(--color-border); box-shadow: var(--shadow-card);"
+  class={`border p-6 flex flex-col gap-5 ${extra}`}
+  style="background: var(--color-surface); border-color: var(--color-border); border-radius: var(--radius-card); box-shadow: var(--shadow-card);"
 >
   {(title || numeral) && (
     <header class="flex items-center gap-2">

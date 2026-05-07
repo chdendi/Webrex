@@ -170,7 +170,7 @@ export default function VerifyCard({ tier, prompt, promptHtml, labEndpoint, expe
 
   return (
     <div
-      className="rounded-[10px] border p-6 flex flex-col gap-4"
+      className="rounded-2xl border p-6 flex flex-col gap-4"
       style={{
         background: 'var(--color-surface)',
         borderColor: 'var(--color-border)',
@@ -228,7 +228,8 @@ export default function VerifyCard({ tier, prompt, promptHtml, labEndpoint, expe
           />
           <div className="flex justify-end gap-2 flex-wrap">
             {confidence && confidence !== 'high' && (
-              <button type="button"
+              <button
+                type="button"
                 onClick={askAI}
                 disabled={aiLoading}
                 className="px-4 py-2 rounded-md text-sm font-medium border transition-colors"
@@ -240,7 +241,8 @@ export default function VerifyCard({ tier, prompt, promptHtml, labEndpoint, expe
                 🤖 Ask AI to verify
               </button>
             )}
-            <button type="button"
+            <button
+              type="button"
               onClick={checkSoft}
               className="px-4 py-2 rounded-md text-sm font-medium text-white transition-colors"
               style={{ background: 'var(--color-accent)' }}
@@ -297,7 +299,8 @@ export default function VerifyCard({ tier, prompt, promptHtml, labEndpoint, expe
                   >
                     {aiFeedback}
                   </pre>
-                  <button type="button"
+                  <button
+                    type="button"
                     onClick={copyPrompt}
                     className="px-3 py-1.5 rounded-md text-xs border self-start transition-colors"
                     style={{
@@ -341,7 +344,8 @@ export default function VerifyCard({ tier, prompt, promptHtml, labEndpoint, expe
               {labStatus === 'ok' && '✅ confirmed by lab'}
               {labStatus === 'fail' && '❌ lab not satisfied'}
             </span>
-            <button type="button"
+            <button
+              type="button"
               onClick={checkHard}
               className="px-3 py-1.5 rounded-md text-sm border transition-colors"
               style={{
@@ -352,7 +356,8 @@ export default function VerifyCard({ tier, prompt, promptHtml, labEndpoint, expe
               Check with lab
             </button>
             {labStatus === 'fail' && (
-              <button type="button"
+              <button
+                type="button"
                 onClick={checkHard}
                 className="px-3 py-1.5 rounded-md text-sm border transition-colors"
                 style={{

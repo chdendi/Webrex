@@ -31,7 +31,7 @@ export default class ErrorBoundary extends Component<Props, State> {
           style={{
             padding: '16px',
             margin: '8px 0',
-            borderRadius: '8px',
+            borderRadius: '12px',
             background: 'var(--color-surface-muted, #f4f4f5)',
             border: '1px solid var(--color-border, #e5e7eb)',
             color: 'var(--color-text-muted, #6b7280)',
@@ -39,9 +39,7 @@ export default class ErrorBoundary extends Component<Props, State> {
           }}
         >
           <p style={{ fontWeight: 600, margin: '0 0 8px' }}>Something went wrong</p>
-          <p style={{ margin: 0, fontFamily: 'monospace', fontSize: '12px' }}>
-            {this.state.error.message}
-          </p>
+          <p style={{ margin: 0, fontFamily: 'monospace', fontSize: '12px' }}>{this.state.error.message}</p>
         </div>
       );
     }

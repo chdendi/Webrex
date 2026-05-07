@@ -1,12 +1,10 @@
 ---
 import { getCollection } from 'astro:content';
-import AiChatPanel from '~/components/AiChatPanel.tsx';
 import ErrorBoundary from '~/components/ErrorBoundary.tsx';
 import HelpButton from '~/components/HelpButton.astro';
 import RedactionPanel from '~/components/RedactionPanel.tsx';
 import StepNav from '~/components/StepNav.astro';
 import StepProgress from '~/components/StepProgress.astro';
-import AskAiStep from '~/components/steps/AskAiStep.astro';
 import ConceptStep from '~/components/steps/ConceptStep.astro';
 import PracticeStep from '~/components/steps/PracticeStep.astro';
 import VerifyStep from '~/components/steps/VerifyStep.astro';
@@ -50,7 +48,6 @@ const stepKindLabel: Record<string, string> = {
   concept: 'Concept',
   practice: 'Practice',
   verify: 'Verify',
-  'ask-ai': 'Ask AI',
 };
 
 const nextLessonTitle = nextId
@@ -104,9 +101,6 @@ const nextLessonTitle = nextId
       labCheckEndpoint={step.labCheckEndpoint}
     />
   )}
-  {step.type === "ask-ai" && (
-    <AskAiStep title={step.title} intro={step.intro} template={step.template} />
-  )}
 
   <StepNav
     prevHref={prevStep ? `/lessons/${lesson.id}/${prevStep.slug}` : undefined}
@@ -121,16 +115,6 @@ const nextLessonTitle = nextId
   <ErrorBoundary client:load>
     <RedactionPanel client:load />
   </ErrorBoundary>
-  <ErrorBoundary client:load>
-    <AiChatPanel
-      client:only="react"
-      lessonId={lesson.id}
-      lessonTitle={lesson.data.title}
-      stepType={step.type}
-      stepTitle={step.title}
-      lessonLevel={lesson.data.level}
-      lessonSublevel={lesson.data.sublevel}
-    />
-  </ErrorBoundary>
+
   <HelpButton hint={lesson.data.stuck} />
 </LessonLayout>

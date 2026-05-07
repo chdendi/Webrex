@@ -15,8 +15,8 @@ const { prevId, nextId, index, total } = Astro.props;
   {prevId ? (
     <a
       href={`/lessons/${prevId}`}
-      class="flex items-center gap-2 px-3 py-2 rounded-md border text-sm hover:bg-[color:var(--color-surface-muted)] transition-colors"
-      style="border-color: var(--color-border); color: var(--color-text);"
+      class="flex items-center gap-2 px-4 py-2 border text-sm transition-all hover:shadow-sm"
+      style="border-color: var(--color-border); color: var(--color-text); border-radius: var(--radius-button);"
     >
       ← Previous
     </a>
@@ -31,8 +31,8 @@ const { prevId, nextId, index, total } = Astro.props;
   {nextId ? (
     <a
       href={`/lessons/${nextId}`}
-      class="flex items-center gap-2 px-3 py-2 rounded-md text-sm font-medium text-white transition-colors"
-      style="background: var(--color-accent);"
+      class="flex items-center gap-2 px-4 py-2 text-sm font-medium text-white transition-all hover:shadow-md"
+      style="background: var(--color-accent); border-radius: var(--radius-button);"
     >
       Next →
     </a>

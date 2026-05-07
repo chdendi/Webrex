@@ -34,7 +34,7 @@ const { title, intro, steps, shortcuts, expectedOutcome, labUrl } = Astro.props;
 
   {shortcuts && shortcuts.length > 0 && (
     <div
-      class="rounded-[10px] p-4 flex flex-col gap-3"
+      class="rounded-2xl p-4 flex flex-col gap-3"
       style="background: var(--color-surface-muted);"
     >
       <div class="text-[10px] font-semibold uppercase tracking-wider" style="color: var(--color-text-faint);">
@@ -72,8 +72,8 @@ const { title, intro, steps, shortcuts, expectedOutcome, labUrl } = Astro.props;
       href={labUrl}
       target="_blank"
       rel="noopener"
-      class="inline-flex items-center gap-2 px-4 py-2.5 rounded-md text-sm font-medium text-white w-fit"
-      style="background: var(--color-accent);"
+      class="inline-flex items-center gap-2 px-5 py-2.5 text-sm font-medium text-white w-fit transition-all hover:shadow-md"
+      style="background: var(--color-accent); border-radius: var(--radius-button);"
     >
       Open demo lab page ↗
     </a>
@@ -81,7 +81,7 @@ const { title, intro, steps, shortcuts, expectedOutcome, labUrl } = Astro.props;
 
   {expectedOutcome && (
     <div
-      class="rounded-[10px] p-5 mt-2"
+      class="rounded-2xl p-5 mt-2"
       style="background: var(--color-surface-muted); border-left: 3px solid var(--color-success);"
     >
       <div class="text-[10px] font-semibold uppercase tracking-wider mb-2" style="color: var(--color-text-faint);">

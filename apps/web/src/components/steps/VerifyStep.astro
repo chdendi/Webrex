@@ -3,14 +3,21 @@ import { md } from '~/lib/markdown';
 import VerifyCard from '../VerifyCard.tsx';
 import ErrorBoundary from '../ErrorBoundary.tsx';
 
+interface ChoiceOption {
+  label: string;
+  correct: boolean;
+}
+
 interface Props {
   title: string;
   prompt: string;
-  tier: 'hard' | 'soft' | 'self';
+  tier: 'hard' | 'soft' | 'self' | 'choice';
   expectedRegex?: string;
   labCheckEndpoint?: string;
+  options?: ChoiceOption[];
+  nextStepHref?: string;
 }
-const { title, prompt, tier, expectedRegex, labCheckEndpoint } = Astro.props;
+const { title, prompt, tier, expectedRegex, labCheckEndpoint, options, nextStepHref } = Astro.props;
 const promptHtml = md(prompt);
 ---
 
@@ -26,6 +33,8 @@ const promptHtml = md(prompt);
       promptHtml={promptHtml}
       expectedRegex={expectedRegex}
       labEndpoint={labCheckEndpoint}
+      options={options}
+      nextStepHref={nextStepHref}
     />
   </ErrorBoundary>
 </article>

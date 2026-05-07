@@ -2,57 +2,59 @@
   "id": "l7-3",
   "level": 7,
   "sublevel": 3,
-  "categoryIcon": "⚡",
-  "categoryName": "Performance 面板基础",
-  "title": "Paint Flashing——看哪些区域在重绘",
-  "time": 3,
+  "categoryIcon": "🔐",
+  "categoryName": "安全与权限基础",
+  "title": "第三方 Cookie 与「为什么登录态丢了」",
+  "time": 5,
   "track": "core",
-  "needsLab": false,
-  "stuck": "找不到 Rendering 标签页？在 DevTools 里按 Cmd+Shift+P (Mac) / Ctrl+Shift+P (Win)，输入 Show Rendering，回车。如果还是看不到，点 DevTools 右上角 ⋮ → More tools → Rendering。",
+  "needsLab": true,
+  "stuck": "Application 面板看不到 Cookie？确认左栏选了 Cookies → localhost，不是其他域。",
   "steps": [
     {
       "slug": "concept",
       "type": "concept",
-      "title": "每次重绘都在烧性能",
-      "hook": "你滚动一个页面时，浏览器在幕后疯狂重绘像素。如果能把每次重绘的区域用绿色标出来，你觉得会看到什么？",
+      "title": "Cookie 的生存法则",
+      "hook": "用户说「昨天还能用，今天又要重新登录」，答案可能藏在 Cookie 里。",
       "body": [
-        "Paint Flashing 是一个诊断开关：页面任何区域被重绘时，它就把那块涂成绿色。",
-        "绿色闪得越多，说明浏览器在做越多不必要的重绘工作，性能就越差。"
+        "第三方 Cookie 是当前页面之外的域设置的 Cookie，2020 年代起浏览器在系统性地封堵它们。",
+        "SameSite 属性是 Cookie 跨站行为的总开关，CHIPS 则把第三方 Cookie 按顶层站点隔离。"
       ],
       "bullets": [
         {
-          "emoji": "🟢",
-          "title": "绿色 = 重绘",
-          "body": "闪烁的绿色区域就是浏览器刚重新画过的像素"
+          "emoji": "🔓",
+          "title": "SameSite=None",
+          "body": "所有请求都发，但必须配合 Secure 属性"
         },
         {
-          "emoji": "⚠",
-          "title": "大面积绿色 = 问题",
-          "body": "一整片绿说明整个页面都在重绘，而不是仅更新变化的部分"
+          "emoji": "🔐",
+          "title": "SameSite=Lax",
+          "body": "跨站 GET 带 Cookie，跨站 POST / iframe 不带"
         },
         {
-          "emoji": "🔧",
-          "title": "Rendering 面板",
-          "body": "通过命令面板打开 Rendering 标签页，勾选开关"
+          "emoji": "🔒",
+          "title": "SameSite=Strict",
+          "body": "任何跨站请求都不带 Cookie，从链接点进来也要重新登录"
+        },
+        {
+          "emoji": "🧩",
+          "title": "Partitioned (CHIPS)",
+          "body": "按顶层站点隔离存储，不同顶层站点各自一份 Cookie"
         }
       ],
-      "takeaway": "下一步打开 Paint Flashing 亲自观察。"
+      "takeaway": "记住 Lax — 它是最常见的默认值，也是「邮件链接跳转后登录态还在」的原因。"
     },
     {
       "slug": "practice",
       "type": "practice",
-      "title": "看哪些区域在闪绿",
-      "intro": "react.dev 页面结构复杂，滚动时的重绘行为很有代表性。",
+      "title": "检查 Cookie 属性与 SameSite 行为",
+      "intro": "用本地 Lab 页面观察 Cookie 的字段和 iframe 里的隔离现象。",
       "steps": [
-        "打开 react.dev。",
-        "打开 DevTools。",
-        "按 **Cmd+Shift+P** (Mac) 或 **Ctrl+Shift+P** (Win) 打开命令面板。",
-        "输入 **Rendering** → 选择 **Show Rendering**。",
-        "DevTools 底部出现 Rendering 面板。",
-        "勾选 **Paint Flashing** 复选框。",
-        "在页面上滚动、悬停导航菜单、点击链接。",
-        "观察哪些区域闪绿光。注意对比：\n\n| 操作 | 闪绿区域 |\n| --- | --- |\n| 慢速滚动 | 整个页面大面积闪绿 |\n| 鼠标悬停菜单 | 仅菜单区域闪绿 |\n| 点击 Search 按钮 | 搜索弹出层区域闪绿 |",
-        "完成后取消勾选 Paint Flashing 关闭诊断。"
+        "打开 http://localhost:8787/lessons/l10-cookie。",
+        "打开 DevTools → Application → Cookies → localhost。",
+        "查看 webrex_session Cookie：Name、Value、HttpOnly、SameSite 属性。",
+        "在 Console 中输入 document.cookie — HttpOnly Cookie 不会出现在输出中。",
+        "观察页面中的 iframe，理解第三方 Cookie 在跨域子页中的隔离行为。",
+        "对照下表理解 SameSite 的影响：\n\n| SameSite 值 | 跨站 GET | 跨站 POST | iframe | 典型场景 |\n| --- | --- | --- | --- | --- |\n| None | 带 | 带 | 带 | 第三方嵌入、跨站支付 |\n| Lax | 带 | 不带 | 不带 | 站内导航保持登录 |\n| Strict | 不带 | 不带 | 不带 | 银行等高安全场景 |"
       ],
       "shortcuts": [
         {
@@ -61,27 +63,28 @@
           "win": "F12"
         },
         {
-          "label": "命令面板",
-          "mac": "⌘+⇧+P",
-          "win": "Ctrl+Shift+P"
+          "label": "Application",
+          "mac": "⌘+⌥+A",
+          "win": "Ctrl+Shift+A"
         }
       ],
-      "expectedOutcome": "滚动时整个页面闪绿；局部交互仅相关区域闪绿。"
+      "labUrl": "http://localhost:8787/lessons/l10-cookie",
+      "expectedOutcome": "Application 面板中看到 Cookie 的 SameSite 属性，Console 中 document.cookie 不返回 HttpOnly Cookie。"
     },
     {
       "slug": "verify",
       "type": "verify",
       "title": "验证",
-      "prompt": "打开 Paint Flashing 后滚动 react.dev 页面，哪些区域出现了绿色闪烁？A) 只有滚动条 B) 整个页面都在闪 C) 只有新进入视口的区域 D) 完全没有绿色",
+      "prompt": "SameSite=Lax 的 Cookie，用户从邮件点链接跳转到你的网站时，Cookie 会带上吗？回答「会」或「不会」。",
       "tier": "soft",
-      "expectedRegex": "(B|整个|都.{0,3}闪|全|全部|all|处处)"
+      "expectedRegex": "(会|能|可以|带.{0,3}上|send|yes|是)"
     },
     {
       "slug": "ask-ai",
       "type": "ask-ai",
       "title": "问 AI",
-      "intro": "把观察转成问题。",
-      "template": "我在 react.dev 打开了 Chrome DevTools 的 Paint Flashing 功能：\n- 滚动页面时整个屏幕都在闪绿色\n- 鼠标悬停菜单时只有菜单区域闪绿色\n\n请解释：\n1. 为什么滚动会导致全页面重绘？浏览器的合成（compositing）机制能避免这种重绘吗？\n2. Paint Flashing 看到的绿色面积越大，对性能的影响具体有多大？\n3. 开发者该用什么策略减少不必要的重绘区域？"
+      "intro": "把登录态丢失问题变成排查流程。",
+      "template": "用户反馈「从一个页面跳转到另一个页面后登录态丢了」：\n- 两个页面是同域还是跨域？\n- SameSite 是什么值？\n- Set-Cookie 有没有 Secure 属性？\n请帮我：\n1. 列出排查登录态丢失的完整步骤\n2. 解释 SameSite=Lax 和 None 在不同浏览器里的实际行为\n3. 给出一个生产环境安全的 Cookie 设置方案"
     }
   ]
 }

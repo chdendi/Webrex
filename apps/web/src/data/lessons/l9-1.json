@@ -52,7 +52,8 @@
         "现在闭上眼想一个场景：\n\n| 测试环境 | 引擎 | 结论 |\n| --- | --- | --- |\n| 桌面 Chrome 上测试通过 | Blink + V8 | 仅代表 Blink 没问题 |\n| iPhone 上 Chrome 打开同一页面 | WebKit + JavaScriptCore | 完全不同的一组引擎 |\n| iPhone 上 Safari 打开同一页面 | WebKit + JavaScriptCore | 和 iPhone Chrome 用的是同一套 |\n\n结论：桌面 Chrome 测试通过 ≠ iPhone Chrome 没问题。它们是两个不同的浏览器，只是穿着同一件外套。"
       ],
       "shortcuts": [],
-      "expectedOutcome": "你能说出三个主流渲染引擎的名字（Blink / WebKit / Gecko），并解释为什么「桌面 Chrome 正常 ≠ iPhone Chrome 正常」。"
+      "expectedOutcome": "你能说出三个主流渲染引擎的名字（Blink / WebKit / Gecko），并解释为什么「桌面 Chrome 正常 ≠ iPhone Chrome 正常」。",
+      "externalSite": "react.dev"
     },
     {
       "slug": "verify",

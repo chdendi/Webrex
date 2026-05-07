@@ -1,85 +1,77 @@
 {
-	"id": "l10-4",
-	"level": 10,
-	"sublevel": 4,
-	"categoryIcon": "🔐",
-	"categoryName": "安全与权限基础",
-	"title": "XSS / CSRF 一句话听得懂",
-	"time": 4,
-	"track": "core",
-	"needsLab": true,
-	"stuck": "打了 XSS payload 没弹窗？确认在「危险的输出（innerHTML）」那个框里输入并点输出，不是在安全的那个框。",
-	"steps": [
-		{
-			"slug": "concept",
-			"type": "concept",
-			"title": "XSS 与 CSRF：两句话区分",
-			"hook": "前端安全有两大坑，名字很像，但原理完全不同。",
-			"body": [
-				"XSS = 攻击者把恶意脚本注入你的页面，脚本在用户的浏览器里执行。",
-				"CSRF = 攻击者诱导用户浏览器向你的站点发请求，利用用户已登录的身份。"
-			],
-			"bullets": [
-				{
-					"emoji": "💉",
-					"title": "XSS — 代码不该跑到这",
-					"body": "<img src=x onerror=alert(1)> 在 innerHTML 里会执行，在 textContent 里只是文字"
-				},
-				{
-					"emoji": "🎭",
-					"title": "CSRF — 请求不该由他发起",
-					"body": "攻击者构造一个 form，用户打开后自动提交到你的银行站点"
-				},
-				{
-					"emoji": "🛡️",
-					"title": "一句话记忆",
-					"body": "XSS = 代码跑错了地方；CSRF = 请求跑错了地方"
-				}
-			],
-			"takeaway": "防止 XSS → 永远用 textContent；防止 CSRF → 加 anti-CSRF token。"
-		},
-		{
-			"slug": "practice",
-			"type": "practice",
-			"title": "危险输出 vs 安全输出",
-			"intro": "同一个 payload，在不同的输出方式下，一个弹窗一个不弹。",
-			"steps": [
-				"打开 http://localhost:8787/lessons/l10-xss。",
-				"在「危险的输出（innerHTML）」输入框中输入 <img src=x onerror=alert('XSS')> 并点击输出按钮。",
-				"观察：弹窗出现，说明恶意脚本被执行了。",
-				"在「安全的输出（textContent）」输入框中输入同样的 payload 并点击输出按钮。",
-				"观察：没有弹窗，HTML 标签被当作文本直接显示。",
-				"右键 → 检查，找到页面上两个输出区域对应的元素，确认 unsafe 用了 innerHTML，safe 用了 textContent：\n\n| 输出方式 | XSS payload 行为 | 为什么 |\n| --- | --- | --- |\n| innerHTML | 弹窗（被攻击） | 浏览器按 HTML 解析并执行 |\n| textContent | 显示为文本 | 浏览器把内容当作纯文本 |"
-			],
-			"shortcuts": [
-				{
-					"label": "DevTools",
-					"mac": "⌘+⌥+I",
-					"win": "F12"
-				},
-				{
-					"label": "检查元素",
-					"mac": "⌘+⇧+C",
-					"win": "Ctrl+Shift+C"
-				}
-			],
-			"labUrl": "http://localhost:8787/lessons/l10-xss",
-			"expectedOutcome": "innerHTML 触发 XSS 弹窗，textContent 安全显示纯文本。"
-		},
-		{
-			"slug": "verify",
-			"type": "verify",
-			"title": "验证",
-			"prompt": "要防止 XSS，输出用户输入时应该用 `textContent` 还是 `innerHTML`？",
-			"tier": "soft",
-			"expectedRegex": "(textContent|text|textContent|安全|safe|前者)"
-		},
-		{
-			"slug": "ask-ai",
-			"type": "ask-ai",
-			"title": "问 AI",
-			"intro": "把实验结论迁移到真实项目。",
-			"template": "我在一个 Lab 里验证了 XSS 攻击：\n- 用 innerHTML 输出用户输入时，<img src=x onerror=alert(1)> 被成功执行\n- 用 textContent 时，同样的输入被安全渲染为纯文本\n请告诉我：\n1. React/Vue 框架里用 dangerouslySetInnerHTML / v-html 时有哪些常见的 XSS 误区？\n2. 除了 textContent，还有哪些有效的 XSS 防护手段（CSP、DOMPurify 等）？\n3. CSRF 防护：anti-CSRF token 的工作流程是怎样的？"
-		}
-	]
+  "id": "l10-4",
+  "level": 10,
+  "sublevel": 4,
+  "categoryIcon": "🏗️",
+  "categoryName": "现代前端架构常识",
+  "title": "dev / staging / prod 差异排查",
+  "time": 5,
+  "track": "core",
+  "needsLab": false,
+  "stuck": "看不到 React DevTools 提示？在 Console 里输入 `__REACT_DEVTOOLS_GLOBAL_HOOK__` —— 如果有输出说明 React 在运行。",
+  "steps": [
+    {
+      "slug": "concept",
+      "type": "concept",
+      "title": "同一个代码，三个世界",
+      "hook": "页面报错了，先别改代码——你确定看的是哪个环境吗？",
+      "body": [
+        "Dev、Staging、Production 三个环境的代码相同，但构建配置、基础设施和监控配置截然不同。",
+        "Dev 环境：source map 完整、React DevTools 显示 development build 警告、API 指向本地或开发服务器、日志级别 verbose。",
+        "Staging 环境：source map 通常在（方便调试）、API 指向 staging 后端、错误追踪开启（Sentry staging project）、数据是模拟或脱敏的。",
+        "Production 环境：无 source map（或仅错误时上传）、React 用 production build（无 DevTools 警告）、API 指向生产域名、错误追踪全量开启、日志精简。",
+        "排查线上问题时第一件事不是看代码——是先确认你打开的是哪个环境的页面，避免对着 prod 的 Console 找 dev 才有的信息。"
+      ],
+      "bullets": [
+        {
+          "emoji": "🔧",
+          "title": "Dev",
+          "body": "source map 完整、开发警告、热更新、本地 API。"
+        },
+        {
+          "emoji": "🧪",
+          "title": "Staging",
+          "body": "预发布验证、真实后端、脱敏数据、错误追踪开启。"
+        },
+        {
+          "emoji": "🚀",
+          "title": "Prod",
+          "body": "代码压缩、无 source map、production build、日志精简。"
+        }
+      ],
+      "takeaway": "排查错误前，先确认环境。Dev 有提示，Prod 没有——这不是 bug，是设计。"
+    },
+    {
+      "slug": "practice",
+      "type": "practice",
+      "title": "建一份环境检查清单",
+      "intro": "打开 react.dev，对照生产环境的特征逐一检查，建立自己的环境识别能力。",
+      "steps": [
+        "打开 react.dev → DevTools，按以下清单逐项检查：",
+        "Console 面板：有没有 React DevTools 提示？production 环境下通常看不到 'This page is using the production build' 这类显式提示，但也不会出现 development 警告。",
+        "Sources 面板：搜索 JS 文件，source map 是否加载？（production 一般不上传 source map 到公开 CDN。）",
+        "Network 面板：观察 API 请求域名——是 react.dev 自身还是单独的 API 服务？记录域名规律。",
+        "Application 面板：Cookies / Local Storage 中有没有环境标识（如 `env=production` 之类的标记）？",
+        "执行一遍检查后，在脑中对比：如果你在看一个 dev 环境页面，Console 会多出哪些东西？Source 面板会多出什么？",
+        "对照下表建立环境识别直觉：\n\n| 检查项 | Dev | Staging | Prod |\n| --- | --- | --- | --- |\n| React DevTools 图标 | 红色（开发模式） | 红色或正常 | 正常（无标记） |\n| Source Map | 完整加载 | 通常加载 | 一般不加载 |\n| Console 警告 | 详细的 React 警告 | 可能有 | 无开发警告 |\n| JS 代码格式 | 未压缩、可读 | 可能压缩 | 压缩混淆 |\n| API 域名 | localhost 或 dev 域名 | staging 域名 | 生产域名 |\n| 错误追踪 | 通常关闭 | 开启（staging 项目） | 开启（prod 项目） |"
+      ],
+      "expectedOutcome": "react.dev 的 Console 里没有 React 开发警告，Sources 没有 source map，API 指向生产域名——符合生产环境特征。",
+      "externalSite": "react.dev"
+    },
+    {
+      "slug": "verify",
+      "type": "verify",
+      "title": "验证",
+      "prompt": "生产环境的 React 页面在 Console 里通常会看到什么提示？\nA) 'development build' 警告\nB) 'production build' 或没有提示\nC) 红色报错\nD) React 版本号",
+      "tier": "soft",
+      "expectedRegex": "(B|production|生产|prod|没有|no|无)"
+    },
+    {
+      "slug": "ask-ai",
+      "type": "ask-ai",
+      "title": "问 AI",
+      "intro": "从环境差异延伸到发布流程。",
+      "template": "前端项目的 dev、staging、prod 三个环境各有哪些典型特征？在排查线上问题时，如何快速确认当前看到的是哪个环境？另外，请解释 feature flag 和灰度发布（canary release）如何在 staging 和 prod 之间提供更细粒度的控制。"
+    }
+  ]
 }

@@ -1,7 +1,12 @@
 import { useEffect, useRef, useState } from 'react';
 
-type Tier = 'hard' | 'soft' | 'self';
+type Tier = 'hard' | 'soft' | 'self' | 'choice';
 type Confidence = 'high' | 'mid' | 'low' | null;
+
+interface ChoiceOption {
+  label: string;
+  correct: boolean;
+}
 
 interface Props {
   tier: Tier;
@@ -9,10 +14,21 @@ interface Props {
   promptHtml?: string;
   labEndpoint?: string;
   expectedRegex?: string;
+  options?: ChoiceOption[];
+  nextStepHref?: string;
   onConfidence?: (tier: string, confidence: string) => void;
 }
 
-export default function VerifyCard({ tier, prompt, promptHtml, labEndpoint, expectedRegex, onConfidence }: Props) {
+export default function VerifyCard({
+  tier,
+  prompt,
+  promptHtml,
+  labEndpoint,
+  expectedRegex,
+  options,
+  nextStepHref,
+  onConfidence,
+}: Props) {
   const [value, setValue] = useState('');
   const [confidence, setConfidence] = useState<Confidence>(null);
   const [feedback, setFeedback] = useState<string | null>(null);
@@ -24,6 +40,8 @@ export default function VerifyCard({ tier, prompt, promptHtml, labEndpoint, expe
   const [copiedPrompt, setCopiedPrompt] = useState(false);
   const [reflection, setReflection] = useState('');
   const [animating, setAnimating] = useState(false);
+  const [shakeIdx, setShakeIdx] = useState<number | null>(null);
+  const [correctIdx, setCorrectIdx] = useState<number | null>(null);
   const prevConfidence = useRef(confidence);
   const hasChromeAI = typeof window !== 'undefined' && (window as any).ai?.createTextSession;
 
@@ -36,7 +54,41 @@ export default function VerifyCard({ tier, prompt, promptHtml, labEndpoint, expe
     }
   }, [confidence]);
 
+  // Clear shake after animation
+  useEffect(() => {
+    if (shakeIdx !== null) {
+      const t = setTimeout(() => setShakeIdx(null), 600);
+      return () => clearTimeout(t);
+    }
+  }, [shakeIdx]);
+
+  // Auto-advance after correct choice + checkmark animation
+  useEffect(() => {
+    if (correctIdx !== null && nextStepHref) {
+      const t = setTimeout(() => {
+        window.location.href = nextStepHref;
+      }, 900);
+      return () => clearTimeout(t);
+    }
+  }, [correctIdx, nextStepHref]);
+
   const emitConfidence = (conf: string) => onConfidence?.(tier, conf);
+
+  const handleChoice = (idx: number) => {
+    if (correctIdx !== null) return; // Already answered correctly
+    const opt = options?.[idx];
+    if (!opt) return;
+
+    if (opt.correct) {
+      setCorrectIdx(idx);
+      setConfidence('high');
+      setFeedback('✅ Correct!');
+      emitConfidence('high');
+    } else {
+      setShakeIdx(idx);
+      setFeedback('❌ Not quite — try again.');
+    }
+  };
 
   const checkSoft = () => {
     if (!value.trim()) {
@@ -60,7 +112,6 @@ export default function VerifyCard({ tier, prompt, promptHtml, labEndpoint, expe
       emitConfidence('mid');
       return;
     }
-    // No regex => accept any non-trivial paste with mid confidence
     const conf = value.length > 20 ? 'mid' : 'low';
     setConfidence(conf as Confidence);
     setFeedback(
@@ -177,6 +228,22 @@ export default function VerifyCard({ tier, prompt, promptHtml, labEndpoint, expe
         boxShadow: 'var(--shadow-card)',
       }}
     >
+      <style>{`
+        @keyframes vc-shake {
+          0%, 100% { transform: translateX(0); }
+          20% { transform: translateX(-6px); }
+          40% { transform: translateX(6px); }
+          60% { transform: translateX(-4px); }
+          80% { transform: translateX(4px); }
+        }
+        @keyframes vc-check {
+          0% { transform: scale(1); }
+          50% { transform: scale(1.3); }
+          100% { transform: scale(1); }
+        }
+        .vc-shake { animation: vc-shake 0.4s ease-in-out; }
+        .vc-check { animation: vc-check 0.4s ease-out; }
+      `}</style>
       <header className="flex items-center justify-between gap-3">
         <div className="flex items-center gap-2">
           <span className="text-xs font-mono" style={{ color: 'var(--color-text-faint)' }}>
@@ -192,7 +259,13 @@ export default function VerifyCard({ tier, prompt, promptHtml, labEndpoint, expe
               color: 'var(--color-text-muted)',
             }}
           >
-            {tier === 'hard' ? 'hard verify' : tier === 'soft' ? 'soft verify' : 'self-check'}
+            {tier === 'hard'
+              ? 'hard verify'
+              : tier === 'soft'
+                ? 'soft verify'
+                : tier === 'choice'
+                  ? 'quick check'
+                  : 'self-check'}
           </span>
         </div>
         <ConfidencePill />
@@ -210,6 +283,66 @@ export default function VerifyCard({ tier, prompt, promptHtml, labEndpoint, expe
           {prompt}
         </p>
       ) : null}
+
+      {/* Choice tier: radio-style buttons with shake/check animations */}
+      {tier === 'choice' && options && (
+        <div className="flex flex-col gap-3">
+          {options.map((opt, i) => {
+            const isCorrectChoice = correctIdx === i;
+            const isShaking = shakeIdx === i;
+            const isDimmed = correctIdx !== null && !isCorrectChoice;
+
+            return (
+              <button
+                key={i}
+                type="button"
+                onClick={() => handleChoice(i)}
+                disabled={correctIdx !== null}
+                className={`flex items-center gap-3 p-4 rounded-xl border-2 text-left transition-all ${
+                  isShaking ? 'vc-shake' : ''
+                }`}
+                style={{
+                  borderColor: isCorrectChoice
+                    ? 'var(--color-success)'
+                    : isShaking
+                      ? 'var(--color-danger)'
+                      : 'var(--color-border)',
+                  background: isCorrectChoice
+                    ? 'color-mix(in srgb, var(--color-success) 8%, transparent)'
+                    : isShaking
+                      ? 'color-mix(in srgb, var(--color-danger) 6%, transparent)'
+                      : 'var(--color-surface)',
+                  opacity: isDimmed ? 0.35 : 1,
+                  cursor: correctIdx !== null ? 'default' : 'pointer',
+                }}
+              >
+                <span
+                  className={`shrink-0 w-6 h-6 rounded-full border-2 flex items-center justify-center text-sm font-bold ${
+                    isCorrectChoice ? 'vc-check' : ''
+                  }`}
+                  style={{
+                    borderColor: isCorrectChoice
+                      ? 'var(--color-success)'
+                      : isShaking
+                        ? 'var(--color-danger)'
+                        : 'var(--color-border)',
+                    background: isCorrectChoice ? 'var(--color-success)' : 'transparent',
+                    color: isCorrectChoice ? '#fff' : 'var(--color-text-muted)',
+                  }}
+                >
+                  {isCorrectChoice ? '✓' : String.fromCharCode(65 + i)}
+                </span>
+                <span
+                  className="text-[15px] font-medium"
+                  style={{ color: isCorrectChoice ? 'var(--color-success)' : 'var(--color-text)' }}
+                >
+                  {opt.label}
+                </span>
+              </button>
+            );
+          })}
+        </div>
+      )}
 
       {tier === 'soft' && (
         <>
@@ -399,7 +532,10 @@ export default function VerifyCard({ tier, prompt, promptHtml, labEndpoint, expe
       )}
 
       {feedback && (
-        <p className="text-sm" style={{ color: 'var(--color-text-muted)' }}>
+        <p
+          className="text-sm"
+          style={{ color: correctIdx !== null ? 'var(--color-success)' : 'var(--color-text-muted)' }}
+        >
           {feedback}
         </p>
       )}

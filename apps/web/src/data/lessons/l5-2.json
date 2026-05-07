@@ -1,97 +1,98 @@
 {
-	"id": "l5-2",
-	"level": 5,
-	"sublevel": 2,
-	"categoryIcon": "📄",
-	"categoryName": "Sources —— 看代码在哪执行",
-	"title": "打断点——在行号上点一下",
-	"time": 4,
-	"track": "core",
-	"needsLab": false,
-	"stuck": "在 Sources 面板打开任意 .js 文件，直接点行号左边的空白区域就会出现蓝色箭头。再点一下取消。",
-	"steps": [
-		{
-			"slug": "concept",
-			"type": "concept",
-			"title": "点一个行号，暂停整个世界",
-			"hook": "代码跑得飞快，你能让它停在你指定的那一行吗？",
-			"body": [
-				"**断点（Breakpoint）** 是 Sources 面板最核心的调试能力：在行号上点一下，当 JS 执行到这一行时，DevTools 会把整个页面「暂停」，把执行权交给你。",
-				"断点触发后，DevTools 同时给你三样东西：**当前行黄色高亮**告诉你停在哪里；**右侧 Scope 面板**显示所有局部变量和闭包变量的实时值；**Call Stack 面板**展示从入口函数到当前行的完整调用链条。",
-				"控制执行节奏的快捷键：**F8**（Resume）继续执行直到下一个断点；**F10**（Step Over）执行当前行但不进入函数调用；**F11**（Step Into）进入当前行调用的函数内部。"
-			],
-			"bullets": [
-				{
-					"emoji": "🔵",
-					"title": "蓝色箭头",
-					"body": "点击行号添加断点，该行对应的 JS 语句执行前暂停"
-				},
-				{
-					"emoji": "🟡",
-					"title": "黄色高亮",
-					"body": "断点触发时，当前行高亮为黄色，表示即将执行但尚未执行"
-				},
-				{
-					"emoji": "📊",
-					"title": "Scope 面板",
-					"body": "实时显示当前作用域内所有变量的值（Local、Closure、Global）"
-				}
-			],
-			"takeaway": "下一步：在 react.dev 的 Sources 里打一个断点，然后点页面上的按钮触发它。"
-		},
-		{
-			"slug": "practice",
-			"type": "practice",
-			"title": "在 react.dev 上打断点并触发",
-			"intro": "在 react.dev 的任意 JS 文件上设一个断点，然后点击页面的 Search 按钮看看断点是否触发。",
-			"steps": [
-				"打开 react.dev，按 `F12`（Win/Linux）或 `⌘+⌥+I`（Mac）打开 DevTools，切换到 **Sources** 面板。",
-				"在左侧文件树里找一个 JS 文件（优先选 `_next/static/chunks/pages/...` 下面的文件，这类更倾向业务代码而非压缩包），点击打开。",
-				"在代码编辑器的行号区域（左侧数字列），点击任意有代码的行号。该行号会变成蓝色，右侧 Breakpoints 列表会出现这一条。",
-				"现在回到 react.dev 页面，点击页面右上角的 **Search** 按钮（放大镜图标，旁边有 `Ctrl K` 提示）。",
-				"如果断点所在代码被执行到了，页面会暂停，该行背景变为黄色，DevTools 顶部出现调试控制栏。",
-				"如果没有命中，换个文件换一行再试——优先找包含 `onClick`、`handleClick`、`search` 等关键字的行（用 Cmd+Shift+F 全局搜索 `onClick`，找到后去那个文件设断点）。",
-				"命中断点后，观察右侧 **Scope** 面板——展开 **Local** 和 **Closure** 节点，看看当前有哪些变量可用，它们的值是什么。",
-				"按 `F10` 一次，Step Over 当前行。观察黄色高亮移到下一行，Scope 面板里的变量值可能变化。",
-				"按 `F8` 恢复执行，页面恢复正常交互。"
-			],
-			"shortcuts": [
-				{
-					"label": "DevTools",
-					"mac": "⌘+⌥+I",
-					"win": "F12"
-				},
-				{
-					"label": "Step Over",
-					"mac": "F10",
-					"win": "F10"
-				},
-				{
-					"label": "Step Into",
-					"mac": "F11",
-					"win": "F11"
-				},
-				{
-					"label": "Resume",
-					"mac": "F8",
-					"win": "F8"
-				}
-			],
-			"expectedOutcome": "断点触发时能看到黄色高亮行、右侧 Scope 面板显示的变量值，以及调试控制栏的 F8/F10/F11 按钮。"
-		},
-		{
-			"slug": "verify",
-			"type": "verify",
-			"title": "断点触发后看到了什么？",
-			"prompt": "断点触发后，DevTools 帮你暂停在了哪一行？右侧面板显示了哪些变量或状态？简述两种你看到的变量或状态。",
-			"tier": "self"
-		},
-		{
-			"slug": "ask-ai",
-			"type": "ask-ai",
-			"title": "问 AI：断点到底给了我什么信息",
-			"intro": "你已经亲手让代码停在了某一行。现在让 AI 帮你理解断点透露出的全部信息。",
-			"template": "我在 Chrome DevTools 的 Sources 面板里给 react.dev 的 JS 代码设了一个断点。点击页面按钮后，JS 在断点处暂停了。我看到：\n- 当前行变成黄色高亮\n- Scope 面板里有 Local、Closure、Global 三层变量\n- Call Stack 面板里有一串函数调用\n- 调试控制栏有 F8（继续）、F10（逐行）、F11（进入函数）\n\n请帮我解释：\n1. 断点停在的那一行，代码是「已经执行了」还是「即将执行」？\n2. Local、Closure、Global 这三层 Scope 各代表什么作用域？哪些变量值得重点关注？\n3. F10（Step Over）和 F11（Step Into）的区别是什么？什么时候该用哪个？"
-		}
-	]
+  "id": "l5-2",
+  "level": 5,
+  "sublevel": 2,
+  "categoryIcon": "📄",
+  "categoryName": "Sources —— 看代码在哪执行",
+  "title": "打断点——在行号上点一下",
+  "time": 4,
+  "track": "core",
+  "needsLab": false,
+  "stuck": "在 Sources 面板打开任意 .js 文件，直接点行号左边的空白区域就会出现蓝色箭头。再点一下取消。",
+  "steps": [
+    {
+      "slug": "concept",
+      "type": "concept",
+      "title": "点一个行号，暂停整个世界",
+      "hook": "代码跑得飞快，你能让它停在你指定的那一行吗？",
+      "body": [
+        "**断点（Breakpoint）** 是 Sources 面板最核心的调试能力：在行号上点一下，当 JS 执行到这一行时，DevTools 会把整个页面「暂停」，把执行权交给你。",
+        "断点触发后，DevTools 同时给你三样东西：**当前行黄色高亮**告诉你停在哪里；**右侧 Scope 面板**显示所有局部变量和闭包变量的实时值；**Call Stack 面板**展示从入口函数到当前行的完整调用链条。",
+        "控制执行节奏的快捷键：**F8**（Resume）继续执行直到下一个断点；**F10**（Step Over）执行当前行但不进入函数调用；**F11**（Step Into）进入当前行调用的函数内部。"
+      ],
+      "bullets": [
+        {
+          "emoji": "🔵",
+          "title": "蓝色箭头",
+          "body": "点击行号添加断点，该行对应的 JS 语句执行前暂停"
+        },
+        {
+          "emoji": "🟡",
+          "title": "黄色高亮",
+          "body": "断点触发时，当前行高亮为黄色，表示即将执行但尚未执行"
+        },
+        {
+          "emoji": "📊",
+          "title": "Scope 面板",
+          "body": "实时显示当前作用域内所有变量的值（Local、Closure、Global）"
+        }
+      ],
+      "takeaway": "下一步：在 react.dev 的 Sources 里打一个断点，然后点页面上的按钮触发它。"
+    },
+    {
+      "slug": "practice",
+      "type": "practice",
+      "title": "在 react.dev 上打断点并触发",
+      "intro": "在 react.dev 的任意 JS 文件上设一个断点，然后点击页面的 Search 按钮看看断点是否触发。",
+      "steps": [
+        "打开 react.dev，按 `F12`（Win/Linux）或 `⌘+⌥+I`（Mac）打开 DevTools，切换到 **Sources** 面板。",
+        "在左侧文件树里找一个 JS 文件（优先选 `_next/static/chunks/pages/...` 下面的文件，这类更倾向业务代码而非压缩包），点击打开。",
+        "在代码编辑器的行号区域（左侧数字列），点击任意有代码的行号。该行号会变成蓝色，右侧 Breakpoints 列表会出现这一条。",
+        "现在回到 react.dev 页面，点击页面右上角的 **Search** 按钮（放大镜图标，旁边有 `Ctrl K` 提示）。",
+        "如果断点所在代码被执行到了，页面会暂停，该行背景变为黄色，DevTools 顶部出现调试控制栏。",
+        "如果没有命中，换个文件换一行再试——优先找包含 `onClick`、`handleClick`、`search` 等关键字的行（用 Cmd+Shift+F 全局搜索 `onClick`，找到后去那个文件设断点）。",
+        "命中断点后，观察右侧 **Scope** 面板——展开 **Local** 和 **Closure** 节点，看看当前有哪些变量可用，它们的值是什么。",
+        "按 `F10` 一次，Step Over 当前行。观察黄色高亮移到下一行，Scope 面板里的变量值可能变化。",
+        "按 `F8` 恢复执行，页面恢复正常交互。"
+      ],
+      "shortcuts": [
+        {
+          "label": "DevTools",
+          "mac": "⌘+⌥+I",
+          "win": "F12"
+        },
+        {
+          "label": "Step Over",
+          "mac": "F10",
+          "win": "F10"
+        },
+        {
+          "label": "Step Into",
+          "mac": "F11",
+          "win": "F11"
+        },
+        {
+          "label": "Resume",
+          "mac": "F8",
+          "win": "F8"
+        }
+      ],
+      "expectedOutcome": "断点触发时能看到黄色高亮行、右侧 Scope 面板显示的变量值，以及调试控制栏的 F8/F10/F11 按钮。",
+      "externalSite": "react.dev"
+    },
+    {
+      "slug": "verify",
+      "type": "verify",
+      "title": "断点触发后看到了什么？",
+      "prompt": "断点触发后，DevTools 帮你暂停在了哪一行？右侧面板显示了哪些变量或状态？简述两种你看到的变量或状态。",
+      "tier": "self"
+    },
+    {
+      "slug": "ask-ai",
+      "type": "ask-ai",
+      "title": "问 AI：断点到底给了我什么信息",
+      "intro": "你已经亲手让代码停在了某一行。现在让 AI 帮你理解断点透露出的全部信息。",
+      "template": "我在 Chrome DevTools 的 Sources 面板里给 react.dev 的 JS 代码设了一个断点。点击页面按钮后，JS 在断点处暂停了。我看到：\n- 当前行变成黄色高亮\n- Scope 面板里有 Local、Closure、Global 三层变量\n- Call Stack 面板里有一串函数调用\n- 调试控制栏有 F8（继续）、F10（逐行）、F11（进入函数）\n\n请帮我解释：\n1. 断点停在的那一行，代码是「已经执行了」还是「即将执行」？\n2. Local、Closure、Global 这三层 Scope 各代表什么作用域？哪些变量值得重点关注？\n3. F10（Step Over）和 F11（Step Into）的区别是什么？什么时候该用哪个？"
+    }
+  ]
 }

@@ -69,7 +69,8 @@
           "win": "Ctrl+Shift+J"
         }
       ],
-      "expectedOutcome": "重新打开标签页后，localStorage 的 key 依然存在，sessionStorage 的 key 已经消失。"
+      "expectedOutcome": "重新打开标签页后，localStorage 的 key 依然存在，sessionStorage 的 key 已经消失。",
+      "externalSite": "react.dev"
     },
     {
       "slug": "verify",

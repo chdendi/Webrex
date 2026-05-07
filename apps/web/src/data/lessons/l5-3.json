@@ -1,94 +1,95 @@
 {
-	"id": "l5-3",
-	"level": 5,
-	"sublevel": 3,
-	"categoryIcon": "📄",
-	"categoryName": "Sources —— 看代码在哪执行",
-	"title": "条件断点 & Logpoints",
-	"time": 4,
-	"track": "core",
-	"needsLab": false,
-	"stuck": "在 Sources 面板里右键点击行号，弹出菜单里就有 'Add conditional breakpoint' 和 'Add logpoint' 两个选项。",
-	"steps": [
-		{
-			"slug": "concept",
-			"type": "concept",
-			"title": "断点的两种高级形态",
-			"hook": "普通断点每次都停——但如果某行被调用了 1000 次而你只想在特定条件下停呢？",
-			"body": [
-				"**条件断点（Conditional Breakpoint）**：右键行号选「Add conditional breakpoint」，输入一个 JS 表达式（如 `i > 100`）。只有当这个表达式为 `true` 时，断点才会触发暂停。这对调试循环、高频事件非常有用——你不会在第 1 次就停，而是在条件满足的那一刻才停。",
-				"**Logpoint**：右键行号选「Add logpoint」，输入一段文本或表达式。它不会暂停代码执行，而是在 Console 里打印一条日志——效果等同于 `console.log()`，但你**不需要修改源代码文件**。在生产代码或第三方库中尤其有用。",
-				"两者的共同点：都不需要改动源文件。区别在于：条件断点满足条件时**暂停**执行，Logpoint 永远**不暂停**，只在 Console 留一条记录。"
-			],
-			"bullets": [
-				{
-					"emoji": "⏸️",
-					"title": "条件断点",
-					"body": "表达式为 true 时才暂停，适合循环和反复触发的场景"
-				},
-				{
-					"emoji": "📝",
-					"title": "Logpoint",
-					"body": "不暂停但打印日志到 Console，等同于零侵入式 console.log"
-				},
-				{
-					"emoji": "🔑",
-					"title": "核心优势",
-					"body": "两者都不需要修改源代码——纯 DevTools 操作"
-				}
-			],
-			"takeaway": "下一步：在 react.dev 的 Sources 里先打一个 Logpoint，再打一个条件断点，分别体验。"
-		},
-		{
-			"slug": "practice",
-			"type": "practice",
-			"title": "在 react.dev 上试用 Logpoint 和条件断点",
-			"intro": "分别打一个 Logpoint 和一个条件断点，体验两者行为差异。",
-			"steps": [
-				"打开 react.dev，按 `F12`（Win/Linux）或 `⌘+⌥+I`（Mac）打开 DevTools，切换到 **Sources** 面板。",
-				"在左侧文件树中打开一个 JS 文件。建议用 `⌘+⇧+F` / `Ctrl+Shift+F` 全局搜索 `onClick`，从结果中选一个文件打开。",
-				"在某个包含 `onClick` 或事件处理的代码行上**右键点击行号**。在弹出的菜单里选择 **Add logpoint**。",
-				"在弹出的输入框里输入：`'Search button clicked at ' + new Date().toLocaleTimeString()`，按回车确认。行号左侧出现一个橙色标记。",
-				"现在切换到 DevTools 的 **Console** 面板，保持在可见状态。",
-				"回到 react.dev 页面，点击页面右上角的 **Search** 按钮。观察 Console 面板——应该出现你刚才写的那条日志，带有时间戳。重点：页面完全没有暂停，交互一切正常。",
-				"回到 Sources 面板。在同一个文件（或其他文件）的另一行上**右键点击行号**，选择 **Add conditional breakpoint**。",
-				"输入条件表达式：`event.type === 'click'`，按回车。行号变为橙色（橙色表示条件断点，蓝色是普通断点）。",
-				"再次点击页面的 Search 按钮——这次断点触发了，页面暂停。说明条件 `event.type === 'click'` 为 true 时才会停。",
-				"按 `F8` 恢复执行。右键点击刚才的两个断点标记，选择 **Remove breakpoint** 清除。"
-			],
-			"shortcuts": [
-				{
-					"label": "DevTools",
-					"mac": "⌘+⌥+I",
-					"win": "F12"
-				},
-				{
-					"label": "全局搜索",
-					"mac": "⌘+⇧+F",
-					"win": "Ctrl+Shift+F"
-				},
-				{
-					"label": "Resume",
-					"mac": "F8",
-					"win": "F8"
-				}
-			],
-			"expectedOutcome": "Logpoint 只在 Console 打印日志不暂停页面，条件断点只在条件满足时才暂停。两者都不需要改动源文件。"
-		},
-		{
-			"slug": "verify",
-			"type": "verify",
-			"title": "Logpoint 和 console.log 的区别是什么？",
-			"prompt": "Logpoint 和 console.log 有什么区别？本质区别是 Logpoint 不需要 ___ 源代码。填一个词。",
-			"tier": "soft",
-			"expectedRegex": "(修改|改|编辑|触动|改过|touch|edit|modify|change|改动|动)"
-		},
-		{
-			"slug": "ask-ai",
-			"type": "ask-ai",
-			"title": "问 AI：什么时候用断点 vs Logpoint vs console.log",
-			"intro": "你现在有三个调试工具：普通断点、条件断点、Logpoint、console.log。让 AI 帮你梳理选型逻辑。",
-			"template": "我在 Chrome DevTools 中学习了三种调试手段：\n1. 普通断点：在行号上点击，每次执行到该行都暂停\n2. 条件断点：右键行号添加 JS 表达式，只有表达式为 true 时才暂停\n3. Logpoint：右键行号添加日志，不暂停执行，只在 Console 输出\n4. 传统 console.log：在源代码中插入 log 语句\n\n请帮我分析：\n1. 在什么场景下 Logpoint 优于 console.log？什么场景下 console.log 反而更合适？\n2. 调试一个循环 10000 次的 for 循环，第 5000 次左右出 bug——应该用哪种断点？为什么？\n3. 调试第三方库（node_modules 里的代码）时，Logpoint 有哪些 console.log 无法替代的优势？"
-		}
-	]
+  "id": "l5-3",
+  "level": 5,
+  "sublevel": 3,
+  "categoryIcon": "📄",
+  "categoryName": "Sources —— 看代码在哪执行",
+  "title": "条件断点 & Logpoints",
+  "time": 4,
+  "track": "core",
+  "needsLab": false,
+  "stuck": "在 Sources 面板里右键点击行号，弹出菜单里就有 'Add conditional breakpoint' 和 'Add logpoint' 两个选项。",
+  "steps": [
+    {
+      "slug": "concept",
+      "type": "concept",
+      "title": "断点的两种高级形态",
+      "hook": "普通断点每次都停——但如果某行被调用了 1000 次而你只想在特定条件下停呢？",
+      "body": [
+        "**条件断点（Conditional Breakpoint）**：右键行号选「Add conditional breakpoint」，输入一个 JS 表达式（如 `i > 100`）。只有当这个表达式为 `true` 时，断点才会触发暂停。这对调试循环、高频事件非常有用——你不会在第 1 次就停，而是在条件满足的那一刻才停。",
+        "**Logpoint**：右键行号选「Add logpoint」，输入一段文本或表达式。它不会暂停代码执行，而是在 Console 里打印一条日志——效果等同于 `console.log()`，但你**不需要修改源代码文件**。在生产代码或第三方库中尤其有用。",
+        "两者的共同点：都不需要改动源文件。区别在于：条件断点满足条件时**暂停**执行，Logpoint 永远**不暂停**，只在 Console 留一条记录。"
+      ],
+      "bullets": [
+        {
+          "emoji": "⏸️",
+          "title": "条件断点",
+          "body": "表达式为 true 时才暂停，适合循环和反复触发的场景"
+        },
+        {
+          "emoji": "📝",
+          "title": "Logpoint",
+          "body": "不暂停但打印日志到 Console，等同于零侵入式 console.log"
+        },
+        {
+          "emoji": "🔑",
+          "title": "核心优势",
+          "body": "两者都不需要修改源代码——纯 DevTools 操作"
+        }
+      ],
+      "takeaway": "下一步：在 react.dev 的 Sources 里先打一个 Logpoint，再打一个条件断点，分别体验。"
+    },
+    {
+      "slug": "practice",
+      "type": "practice",
+      "title": "在 react.dev 上试用 Logpoint 和条件断点",
+      "intro": "分别打一个 Logpoint 和一个条件断点，体验两者行为差异。",
+      "steps": [
+        "打开 react.dev，按 `F12`（Win/Linux）或 `⌘+⌥+I`（Mac）打开 DevTools，切换到 **Sources** 面板。",
+        "在左侧文件树中打开一个 JS 文件。建议用 `⌘+⇧+F` / `Ctrl+Shift+F` 全局搜索 `onClick`，从结果中选一个文件打开。",
+        "在某个包含 `onClick` 或事件处理的代码行上**右键点击行号**。在弹出的菜单里选择 **Add logpoint**。",
+        "在弹出的输入框里输入：`'Search button clicked at ' + new Date().toLocaleTimeString()`，按回车确认。行号左侧出现一个橙色标记。",
+        "现在切换到 DevTools 的 **Console** 面板，保持在可见状态。",
+        "回到 react.dev 页面，点击页面右上角的 **Search** 按钮。观察 Console 面板——应该出现你刚才写的那条日志，带有时间戳。重点：页面完全没有暂停，交互一切正常。",
+        "回到 Sources 面板。在同一个文件（或其他文件）的另一行上**右键点击行号**，选择 **Add conditional breakpoint**。",
+        "输入条件表达式：`event.type === 'click'`，按回车。行号变为橙色（橙色表示条件断点，蓝色是普通断点）。",
+        "再次点击页面的 Search 按钮——这次断点触发了，页面暂停。说明条件 `event.type === 'click'` 为 true 时才会停。",
+        "按 `F8` 恢复执行。右键点击刚才的两个断点标记，选择 **Remove breakpoint** 清除。"
+      ],
+      "shortcuts": [
+        {
+          "label": "DevTools",
+          "mac": "⌘+⌥+I",
+          "win": "F12"
+        },
+        {
+          "label": "全局搜索",
+          "mac": "⌘+⇧+F",
+          "win": "Ctrl+Shift+F"
+        },
+        {
+          "label": "Resume",
+          "mac": "F8",
+          "win": "F8"
+        }
+      ],
+      "expectedOutcome": "Logpoint 只在 Console 打印日志不暂停页面，条件断点只在条件满足时才暂停。两者都不需要改动源文件。",
+      "externalSite": "react.dev"
+    },
+    {
+      "slug": "verify",
+      "type": "verify",
+      "title": "Logpoint 和 console.log 的区别是什么？",
+      "prompt": "Logpoint 和 console.log 有什么区别？本质区别是 Logpoint 不需要 ___ 源代码。填一个词。",
+      "tier": "soft",
+      "expectedRegex": "(修改|改|编辑|触动|改过|touch|edit|modify|change|改动|动)"
+    },
+    {
+      "slug": "ask-ai",
+      "type": "ask-ai",
+      "title": "问 AI：什么时候用断点 vs Logpoint vs console.log",
+      "intro": "你现在有三个调试工具：普通断点、条件断点、Logpoint、console.log。让 AI 帮你梳理选型逻辑。",
+      "template": "我在 Chrome DevTools 中学习了三种调试手段：\n1. 普通断点：在行号上点击，每次执行到该行都暂停\n2. 条件断点：右键行号添加 JS 表达式，只有表达式为 true 时才暂停\n3. Logpoint：右键行号添加日志，不暂停执行，只在 Console 输出\n4. 传统 console.log：在源代码中插入 log 语句\n\n请帮我分析：\n1. 在什么场景下 Logpoint 优于 console.log？什么场景下 console.log 反而更合适？\n2. 调试一个循环 10000 次的 for 循环，第 5000 次左右出 bug——应该用哪种断点？为什么？\n3. 调试第三方库（node_modules 里的代码）时，Logpoint 有哪些 console.log 无法替代的优势？"
+    }
+  ]
 }

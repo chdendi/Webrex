@@ -2,59 +2,60 @@
   "id": "l3-4",
   "level": 3,
   "sublevel": 4,
-  "categoryIcon": "🧱",
-  "categoryName": "Elements",
-  "title": "元素截图给 AI（脱敏第三次练）",
-  "time": 4,
+  "categoryIcon": "💬",
+  "categoryName": "Console 控制台",
+  "title": "copy() —— 把任何对象复制成 JSON（脱敏第二次练）",
+  "time": 3,
   "track": "core",
-  "needsLab": false,
-  "stuck": "右键 DOM 节点没看到 **Capture node screenshot**？滚动右键菜单到底部，它在分隔线下方靠后位置。如果 react.dev 改版了菜单顺序，可以用命令面板：`⌘+⇧+P` → 输入 `node screenshot`。",
+  "needsLab": true,
+  "stuck": "`copy()` 没反应？它只在 DevTools Console 里有用，是 DevTools 注入的全局函数，不是 JS 标准 API。如果你在自己代码里写 `copy(...)` 是没用的。另外 `copy()` 没有返回值，但**剪贴板里已经有内容了**——直接 `⌘+V` / `Ctrl+V` 粘到别处验证。",
   "steps": [
     {
       "slug": "concept",
       "type": "concept",
-      "title": "DevTools 截图按 DOM 边界裁剪，比系统截图准；配脱敏 outerHTML 是给 AI 的黄金组合",
-      "hook": "你想让 AI 帮你看一个网页 H1 的视觉设计。截屏工具截一下贴给它？AI 看到的是一张糊掉的 PNG，左右还有一堆无关元素干扰。有更好的办法。",
+      "title": "copy() —— 一行把任何 JS 值塞进剪贴板",
+      "hook": "你在 Console 里 `console.log` 出一个嵌套很深的对象，想把它发给同事。展开 → 选中 → 复制？复制出来还是 `[object Object]`。怎么办？",
       "body": [
-        "DevTools 内置 3 种截图：**元素截图**（精确包裹一个 DOM 节点，含子节点）、**视窗截图**（当前可见区域）、**整页截图**（含滚动到底所有内容）。三种都是按 DOM 像素裁剪，不会有缩放糊化、不会有多余留白。",
-        "给 AI 看 UI 问题的黄金组合：**元素截图（这个东西长啥样）+ 它的 outerHTML（结构、class、属性都在这）**。AI 同时看到「视觉」和「代码」，分析质量直接升一档。",
-        "但 outerHTML 经常带敏感信息：用户名、邮箱、订单号、内部 ID、token。这是你第三次练脱敏——把 outerHTML 粘进 Webrex 顶栏的 🛡 Redact 面板，看检测出哪些字段，养成「截图必脱敏」的肌肉记忆。"
+        "`copy(value)` 是 Chrome DevTools 内置的工具函数。传任何东西进去——对象、数组、字符串、DOM 元素——它会自动把这个值序列化（对象数组走 `JSON.stringify` 美化版）然后塞进系统剪贴板。",
+        "比 `JSON.stringify(obj, null, 2)` + 在 Console 输出里手工选中复制要快得多，而且不会因为 Console 截断显示而丢字段。",
+        "但便利意味着风险：如果你 `copy()` 了一个含 `token` / `cookie` / 用户信息的对象，剪贴板里就是裸数据。下一步贴到聊天 / AI / 工单前，必须再过一次 Webrex 的 🛡 Redact。这次刚好用 lab 里一份预设的「像真的」用户数据来练第二遍脱敏。",
+        "下一步打开 lab，它会在 `localStorage[\"webrex.sample\"]` 里塞一个对象（含 email、JWT-like token、内网 URL），你用 `copy()` 一行拿到它，再走 Redact。"
       ],
       "bullets": [
         {
-          "emoji": "🎯",
-          "title": "元素截图",
-          "body": "右键 DOM 节点 → Capture node screenshot，按节点边界精确裁剪"
+          "emoji": "📋",
+          "title": "copy(x)",
+          "body": "DevTools 内置函数，把 x 序列化后放进剪贴板"
         },
         {
-          "emoji": "📜",
-          "title": "整页截图",
-          "body": "命令面板 → Capture full size screenshot，含滚动到底"
+          "emoji": "🚫",
+          "title": "无返回值",
+          "body": "Console 显示 `undefined`，但剪贴板里已经有内容"
         },
         {
           "emoji": "🛡",
-          "title": "outerHTML 必脱敏",
-          "body": "粘到 🛡 Redact 面板，命中即清理；养成肌肉记忆比这次有没有命中重要"
+          "title": "敏感数据先脱敏",
+          "body": "复制 token / cookie / 用户对象后，先过 Webrex Redact 再外发"
         }
       ],
-      "takeaway": "下一步：去 react.dev 抓那个超大 H1 「React」的元素截图、整页截图，再 Copy outerHTML 走一遍脱敏。"
+      "takeaway": "下一步：在 lab 用 `copy(JSON.parse(localStorage.getItem('webrex.sample')))` 一行拿到一个含 email / token / 内网 URL 的对象，然后到 Webrex 顶栏 🛡 Redact 走第二遍脱敏。"
     },
     {
       "slug": "practice",
       "type": "practice",
-      "title": "在 react.dev 抓 H1 元素截图 + 整页截图 + 脱敏 outerHTML",
-      "intro": "react.dev 首页有一个超大的 H1 「React」（视觉上是 logo 风格的大字）和一个副标题段落。我们用三种方式都截一遍，对比差异，最后练脱敏。",
+      "title": "copy() lab 数据 → Webrex Redact → 验证三类被替换",
+      "intro": "lab 页面在加载时把一个对象塞到 `localStorage[\"webrex.sample\"]`，含字段：`user`（一个 email）、`token`（以 `eyJ` 开头的 JWT 串）、`preferences`（一个偏好对象）、`internalUrl`（内网 URL）。我们用 `copy()` 一行把它整个拷走，然后过 Redact。",
       "steps": [
-        "在新标签页打开 [react.dev](https://react.dev/)。看到首屏巨大的 **React** 字样和它下方的副标题 **The library for web and native user interfaces**。",
-        "按 `F12` / `⌘+⌥+I` 打开 DevTools，切到 **Elements** 面板。",
-        "在 Elements 里按 `⌘+F` (Mac) / `Ctrl+F` (Win/Linux)，输入 `>React<` 回车（这个搜法直接命中标签内容是 \"React\" 的节点）。光标跳到 `<h1 ...>React</h1>` 那一行，被蓝色高亮。",
-        "**右键这个 H1 节点**（在 Elements 面板的 DOM 树里右键，不是右键页面上的文字）→ 滚到底部找到 **Capture node screenshot** → 点击。浏览器自动下载一张 PNG（文件名一般是 `react.dev.com-NNNN.png`），打开看：**精确包裹「React」这几个字，没有任何多余像素**。",
-        "现在抓整页截图。按 `⌘+⇧+P` (Mac) / `Ctrl+Shift+P` (Win/Linux) 打开命令面板（在 DevTools 里按）。输入 `screenshot`，下拉列表中看到三项：**Capture screenshot** / **Capture full size screenshot** / **Capture node screenshot**。",
-        "选 **Capture full size screenshot** → 浏览器下载一张 PNG，打开看：**从页面顶部滚到最底部所有内容都在一张图里**（很长）。",
-        "再 `⌘+⇧+P` → `screenshot` → 选 **Capture screenshot**（不带 full size）→ 下载的是当前可见区域的视窗截图（你滚到哪它截到哪）。",
-        "三种截图对照：\n\n| 截图类型 | 怎么触发 | 包含什么 | 适合的场景 |\n| --- | --- | --- | --- |\n| 元素截图 | 右键 DOM 节点 → Capture node screenshot | 只有这一个节点（含子节点）的精确像素 | 给 AI / 设计师看「这个组件长啥样」 |\n| 视窗截图 | 命令面板 → Capture screenshot | 当前可见区域 | 描述「用户首屏看到什么」 |\n| 整页截图 | 命令面板 → Capture full size screenshot | 从顶滚到底全部内容 | 给 PM / 设计师看完整流程或长文档 |",
-        "回到 Elements 面板里那个 H1 「React」节点，**右键 → Copy → Copy outerHTML**。得到 `<h1 class=\"...\">React</h1>` 形态的 HTML 片段（class 名一长串，是 Tailwind utility）。",
-        "**第三次脱敏练习**：粘到 Webrex 顶栏的 🛡 **Redact** 面板，看它检测出什么。react.dev 的公开页面 outerHTML 里大概率没有真正的敏感字段（这是好事），但**这次重要的不是命中，而是你养成「outerHTML 出门前先过一遍 Redact」的肌肉记忆**。如果哪天你抓的是公司内部系统的 outerHTML（带用户邮箱、订单号、employee_id），这一步会救你的命。"
+        "在新标签页打开 lab：[http://localhost:8787/lessons/l2-4](http://localhost:8787/lessons/l2-4)。等页面加载完。",
+        "按 `F12` / `⌘+⌥+I` 打开 DevTools，切到 **Console** 面板。",
+        "先看一眼这个对象长啥样——输入 `JSON.parse(localStorage.getItem('webrex.sample'))` 回车。Console 会展开一个对象，里面应该有 `user`、`token`、`preferences`、`internalUrl` 四个字段。点左侧三角 **▶** 展开确认。",
+        "现在用一行把它复制到剪贴板：输入 `copy(JSON.parse(localStorage.getItem('webrex.sample')))` 回车。Console 显示 `undefined`——别慌，`copy()` 没有返回值，但**剪贴板里已经有完整 JSON 了**。",
+        "（可选验证）打开一个文本编辑器（系统自带的「文本编辑」/ Notepad / VS Code 都行），按 `⌘+V` / `Ctrl+V` 粘出来看一眼。你应该看到一个格式化好的 JSON，包含 `\"user\": \"demo@webrex.dev\"`、`\"token\": \"eyJ...\"`、`\"internalUrl\": \"https://internal.webrex.dev/admin/dashboard\"`。",
+        "切回 Webrex 这个学习页面，点顶栏 **🛡 Redact** 按钮打开脱敏面板。",
+        "在上半区 **Paste original** 文本框里 `⌘+V` / `Ctrl+V` 粘贴。",
+        "粘贴完立即对照下表核对脱敏结果：\n\n| 原始字段 | 原始值大概样子 | 下半区脱敏后应替换为 |\n| --- | --- | --- |\n| `user` | `\"alice@example.com\"` | `<REDACTED_EMAIL>` |\n| `token` | `\"eyJhbGciOiJIUzI1NiIs...\"` | `<REDACTED_BEARER>` |\n| `internalUrl` | `\"https://internal.company.com/...\"` | `<REDACTED_INTERNAL_URL>` |\n| `preferences` | 一个普通偏好对象 | **保留原样**（不是敏感字段） |",
+        "顶部 chips 应至少出现 **3 个不同的标签**：`Email`、`Bearer`、`Internal URL`（顺序可能不同，可能还多出 chip）。",
+        "点下半区右上角 **Copy** 按钮，把脱敏后版本复制下来——下一步问 AI 用这一份。"
       ],
       "shortcuts": [
         {
@@ -63,32 +64,32 @@
           "win": "F12"
         },
         {
-          "label": "命令面板（在 DevTools 里）",
-          "mac": "⌘+⇧+P",
-          "win": "Ctrl+Shift+P"
+          "label": "粘贴",
+          "mac": "⌘+V",
+          "win": "Ctrl+V"
         },
         {
-          "label": "Elements 内搜索 DOM",
-          "mac": "⌘+F",
-          "win": "Ctrl+F"
+          "label": "Console 清屏",
+          "mac": "⌘+K",
+          "win": "Ctrl+L"
         }
       ],
-      "expectedOutcome": "你下载到了 3 张 PNG（H1 元素截图 / 视窗截图 / 整页截图），每张内容范围都精确符合预期；并把 H1 的 outerHTML 过了一遍 Redact 面板。下次给 AI / 设计师 / 同事发 UI 问题，你的标准动作变成：**元素截图 + 脱敏 outerHTML**，而不是糊掉的系统截图。"
+      "expectedOutcome": "你用一行 `copy()` 把一个真实形态的用户数据对象拿到剪贴板，并通过 Redact 看到 `token` → `<REDACTED_BEARER>`、email → `<REDACTED_EMAIL>`、内网 URL → `<REDACTED_INTERNAL_URL>` 三类被自动替换，而非敏感的 `preferences` 字段被原样保留。这就是「拿数据 → 脱敏 → 外发」的标准动作。"
     },
     {
       "slug": "verify",
       "type": "verify",
-      "title": "你下载的 H1 元素截图，文件大小大概多少 KB？",
-      "prompt": "打开你刚下载的那张 H1 「React」元素截图 PNG（文件管理器或访达里看属性即可）。\n\n它的文件大小大约是多少 KB？只填数字即可（带不带 `KB` 单位都行）。",
+      "title": "粘贴脱敏后 JSON 的一段，证明你走过了 Redact",
+      "prompt": "把 Redact 面板下半区 **Copy** 出来的**脱敏后** JSON，粘贴一段（哪怕只一两行也行）到下面。\n\n关键是文本里**必须包含 `<REDACTED_` 占位符**——这证明你确实走过了脱敏流程，而不是直接把原始数据贴出来。",
       "tier": "soft",
-      "expectedRegex": "\\d+\\s*(K|k|kb|KB|Kb)?"
+      "expectedRegex": "<REDACTED_"
     },
     {
       "slug": "ask-ai",
       "type": "ask-ai",
-      "title": "问 AI：评论这个 H1 的设计意图 + 给 1-2 个优化方向",
-      "intro": "你已经有了「元素截图 + 脱敏后的 outerHTML」。把它一起喂给 AI，让 AI 同时基于视觉和代码做评论——这是任何单独一份信息都做不到的分析深度。",
-      "template": "我用 Chrome DevTools 抓了 react.dev 首页 H1 「React」的元素截图（已上传），同时复制了它的 outerHTML（已用 Webrex Redact 脱敏，公开页面无敏感字段）：\n\n```html\n[在这里粘贴你 Copy outerHTML 出来的 H1 标签内容]\n```\n\n请同时基于截图（视觉）和 HTML（结构、class、可能的 CSS）回答：\n\n1. **设计意图分析**：这个 H1 选择了什么字号、字重、颜色、布局位置？这些选择背后传递了什么品牌信息？为什么 React 官方要把首屏 H1 做这么大？\n2. **代码 ↔ 视觉的对应**：从 outerHTML 的 class 名能推测出他们用的是 Tailwind / CSS Modules / 还是别的？哪些 class 大概率对应了视觉上的字号 / 颜色 / 间距？\n3. **优化方向**：给 1-2 个可能的优化点（比如：移动端是否会过大、对比度是否在 WCAG AAA 范围内、对屏幕阅读器是否友好），并说明判断依据。"
+      "title": "问 AI：从脱敏 JSON 反推业务结构",
+      "intro": "脱敏并不会丢失结构信息——字段名、嵌套层级都还在，只是值被替换成占位符。这就足够 AI 帮你分析「这个对象在业务上代表什么」。把脱敏后版本贴进下面模板。",
+      "template": "我从一个网页的 `localStorage` 里拿到一个 JSON 对象。我已经用脱敏工具处理过——文本里所有 `<REDACTED_EMAIL>` `<REDACTED_BEARER>` `<REDACTED_INTERNAL_URL>` 等占位符表示原本的敏感值（邮箱、token、内网 URL），结构和字段名是真实的。\n\n脱敏后 JSON 如下：\n\n```json\n（在这里粘贴 Redact 下半区 Copy 出来的脱敏版本）\n```\n\n请帮我分析：\n1. 按字段名和值类型，把这些字段分成几类：**用户身份类**、**会话/凭证类**、**用户偏好类**、**其他**。\n2. 这个对象整体看像是什么用途？（登录态缓存？用户配置？追踪数据？）\n3. 如果我是 QA / PM，从这个结构能猜到这个产品有哪些功能模块？\n4. 这种数据放在 `localStorage` 里有什么风险？哪些字段更适合放 `httpOnly` cookie？"
     }
   ]
 }

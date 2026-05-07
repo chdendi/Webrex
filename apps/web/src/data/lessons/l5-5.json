@@ -66,7 +66,8 @@
           "win": "F12"
         }
       ],
-      "expectedOutcome": "点击 {} 后代码从单行变多行，有了缩进结构和行号。可以正常打断点。文件标签出现 `:formatted` 后缀。"
+      "expectedOutcome": "点击 {} 后代码从单行变多行，有了缩进结构和行号。可以正常打断点。文件标签出现 `:formatted` 后缀。",
+      "externalSite": "react.dev"
     },
     {
       "slug": "verify",

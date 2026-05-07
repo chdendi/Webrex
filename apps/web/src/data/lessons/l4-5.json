@@ -4,84 +4,91 @@
   "sublevel": 5,
   "categoryIcon": "🌍",
   "categoryName": "网络 (Network)",
-  "title": "Network Overrides —— 就地改响应",
+  "title": "看懂 CORS 报错",
   "time": 5,
   "track": "core",
-  "needsLab": false,
-  "stuck": "Network 面板里找不到 Overrides 标签？确认你已开启了 Local Overrides（Sources → Overrides → Select folder for overrides）。",
+  "needsLab": true,
+  "stuck": "Console 里没看到红色报错？确认你访问的是 http://localhost:8787/lessons/l4-7（注意是 8787 端口），不是 Webrex 的 4321 端口。",
   "steps": [
     {
       "slug": "concept",
       "type": "concept",
-      "title": "不用改服务器代码，就能改服务器返回的内容",
-      "hook": "线上 Bug 需要改一个 JS 返回值才能验证修复效果，但你进不了服务器。怎么办？",
+      "title": "CORS 是浏览器警察，不是服务器锁",
+      "hook": "你写的请求服务器明明回了数据，浏览器却把它扔掉了。谁在替你做主？",
       "body": [
-        "Network 面板的 Local Overrides 功能可以拦截网络响应，用本地文件替换服务器返回的内容。你在 DevTools 里改什么，浏览器就用什么——服务器完全不知道。",
-        "适用场景：线上调试（替换一个 API 响应看 UI 是否正常修复）、A/B 测试模拟、第三方脚本替换、CSS/JS 热修复。",
-        "覆盖是持久的——刷新页面后仍然生效，直到你在 Sources → Overrides 里关闭或删除对应的覆盖规则。"
+        "CORS（跨域资源共享）是浏览器的安全机制。关键认知：服务器照常接收请求、照常返回响应，但浏览器检查响应头里有没有 Access-Control-Allow-Origin，没有就直接丢弃。",
+        "请求分为两种：简单请求（GET/POST 带有限几种 Content-Type）直接发，浏览器只看响应头；非简单请求浏览器会先发一个 OPTIONS「预检」请求，预检没通过，真正的请求根本不会发。",
+        "所以遇到两种 CORS 报错：Console 里 'has been blocked by CORS policy: No Access-Control-Allow-Origin header' 说明响应回来了但被丢弃；'has been blocked by CORS policy: Response to preflight' 说明预检阶段就被拒绝了。",
+        "下一步你在 lab 页面里会看到：一个请求被 CORS 拦截（红色）、一个请求正常通过（绿色）。两个请求的区别只在响应头，不在你写的代码。"
       ],
       "bullets": [
         {
-          "emoji": "✏️",
-          "title": "直接编辑",
-          "body": "在 Network 面板里右键任意请求 → Override content，DevTools 自动打开编辑器"
+          "emoji": "🚔",
+          "title": "浏览器把关",
+          "body": "服务器不拒绝跨域请求——是浏览器在拦截响应"
         },
         {
-          "emoji": "💾",
-          "title": "持久生效",
-          "body": "刷新后覆盖依然有效，等于在浏览器里架了一层本地代理"
+          "emoji": "📋",
+          "title": "OPTIONS 预检",
+          "body": "非简单请求会先发预检，预检失败请求根本不发出"
         },
         {
-          "emoji": "🔄",
-          "title": "随时回退",
-          "body": "Sources → Overrides 面板里可以单独禁用某条覆盖，不影响其他"
+          "emoji": "🔑",
+          "title": "Access-Control-Allow-Origin",
+          "body": "这个响应头是唯一的关键——有它则通，无它则堵"
         }
       ],
-      "takeaway": "下一步：在 react.dev 上覆盖一个 API 响应，把返回的 JSON 里某个字段改成你想要的值，观察页面变化。"
+      "takeaway": "下一步：在 lab 页面上直接观察到红色报错和绿色成功，再去 Network 面板对比两者的响应头差异。"
     },
     {
       "slug": "practice",
       "type": "practice",
-      "title": "在 react.dev 上用 Overrides 改一个 API 响应",
-      "intro": "react.dev 首页有一个搜索 API。我们拦截它的响应，把返回结果改成我们自定义的内容。",
+      "title": "在 lab 页面对比 CORS 拦截 vs 放行",
+      "intro": "这个 lab 页面会同时发两个跨域请求：一个被 CORS 拦截，一个被 CORS 放行。你要做的就是在 Console 和 Network 面板里对比两者。",
       "steps": [
-        "打开 [react.dev](https://react.dev/)",
-        "按 F12 / ⌘+⌥+I 打开 DevTools，切换到 Network 面板",
-        "点击页面顶部的 Search 按钮（放大镜图标），触发搜索 API 请求",
-        "在 Network 面板找到搜索相关的请求（通常是 search-index.json 或类似名称）",
-        "右键该请求 → 选择 Override content",
-        "DevTools 会提示你选择一个本地文件夹来保存覆盖文件——选一个你记得的位置",
-        "文件自动打开编辑器。修改 JSON 内容（比如把某个标题改成自定义文字），按 ⌘+S / Ctrl+S 保存",
-        "点击 Search 按钮再次触发搜索，观察返回结果是否变成了你修改的内容",
-        "到 Sources → Overrides 面板，确认你创建了一条覆盖规则。可以在这里禁用或删除它"
+        "在新标签页打开 http://localhost:8787/lessons/l4-7。",
+        "按 `⌘+⌥+I` (Mac) / `F12` (Win/Linux) 打开 DevTools。",
+        "切换到 **Console** 面板。你应该看到一行红色报错和一 print green success 消息。红色报错包含 'has been blocked by CORS policy' 字样。如果没有，按 `⌘+R` / `F5` 刷新。",
+        "切换到 **Network** 面板。如果面板是空的，按 `⌘+R` / `F5` 刷新页面让它重新记录请求。",
+        "在 Network 列表里找到名为 `/api/cors-blocked` 的请求（红色/失败状态）和 `/api/cors-allowed` 的请求（绿色/成功状态）。如果列表太长，用顶部的 Filter 输入框过滤 'cors'。",
+        "点击 `/api/cors-blocked` 请求 → 右侧面板切换到 **Headers** 选项卡 → 查看 **Response Headers** 区域。",
+        "点击 `/api/cors-allowed` 请求 → 同样查看 **Response Headers** 区域。",
+        "对照下表：\n\n| 对比维度 | /api/cors-blocked | /api/cors-allowed |\n| --- | --- | --- |\n| HTTP 状态码 | 200（服务器正常返回） | 200 |\n| 响应体内容 | 有数据（但 Console 看不到） | 有数据（Console 打印了） |\n| Access-Control-Allow-Origin | **没有** ✗ | **有** ✓ |\n| Console 结果 | 红色 CORS 报错 ✗ | 绿色 success ✓ |\n\n看到差异在哪一列，就是 CORS 在做什么。"
       ],
       "shortcuts": [
-        {
-          "label": "保存覆盖",
-          "mac": "⌘+S",
-          "win": "Ctrl+S"
-        },
         {
           "label": "DevTools",
           "mac": "⌘+⌥+I",
           "win": "F12"
+        },
+        {
+          "label": "刷新页面",
+          "mac": "⌘+R",
+          "win": "F5"
+        },
+        {
+          "label": "Network 面板",
+          "mac": "⌘+⌥+N",
+          "win": "Ctrl+Shift+N"
         }
       ],
-      "expectedOutcome": "第二次搜索时，API 返回的内容变成了你修改的值。确认 Sources → Overrides 面板里有对应的覆盖规则。这就是 Local Overrides 的核心：浏览器优先使用本地文件，拦截了真实的网络响应。"
+      "labUrl": "http://localhost:8787/lessons/l4-7",
+      "expectedOutcome": "Console 里一条红色 CORS 报错 + 一条绿色 success；Network 里 /api/cors-blocked 的 Response Headers 缺少 Access-Control-Allow-Origin，/api/cors-allowed 有这个头。"
     },
     {
       "slug": "verify",
       "type": "verify",
-      "title": "覆盖后的搜索结果和真实结果一样吗？",
-      "prompt": "你在 react.dev 上对搜索 API 的返回内容做了 Override。\n\n第二次搜索时，返回的是你修改的内容，还是原始内容？\n\n回答「修改的」或「原始的」。",
-      "tier": "self"
+      "title": "Console 里的 CORS 报错关键字是什么？",
+      "prompt": "上一步你在 Console 里看到了红色 CORS 报错。把那段报错里你能看到的英文关键词写下来（复制、凭记忆都行）。",
+      "tier": "soft",
+      "expectedRegex": "(Access-Control-Allow-Origin|CORS.{0,5}policy|has been blocked|blocked|缺少|不允许|跨域|No.{0,3}Access)"
     },
     {
       "slug": "ask-ai",
       "type": "ask-ai",
-      "title": "问 AI：Local Overrides 能做什么、不能做什么",
-      "intro": "你刚体验了在浏览器里就地修改服务器返回的内容。把这次的体验转成问题，让 AI 帮你梳理 Overrides 的实用场景和边界。",
-      "template": "我在 Chrome DevTools 里用 Network 面板的 Local Overrides 功能，对一个 API 请求的返回 JSON 做了本地覆盖。刷新后覆盖仍然生效。\n\n请帮我梳理：\n1. Local Overrides 适合哪些调试场景？（举例 3-5 个）\n2. 它有哪些限制？（哪些内容不能覆盖、覆盖的范围是什么）\n3. 和 Charles/Fiddler/mitmproxy 这类抓包工具的 rewrite 功能相比，Overrides 的优缺点是什么？\n4. 覆盖的文件存在哪里？如果我换了 Chrome 用户配置文件，覆盖还在吗？"
+      "title": "问 AI：这是前端问题还是后端问题？",
+      "intro": "你刚才通过实验观察到：两个请求都返回了 200，区别只是一个响应头的有无。把这个发现和报错原文一起喂给 AI，让它帮你分清责任边界。",
+      "template": "我在 lab 页面上做了 CORS 实验：\n- /api/cors-blocked 返回 200，有响应体，但 Console 报错：'has been blocked by CORS policy: No Access-Control-Allow-Origin header is present'\n- /api/cors-allowed 返回 200，有响应体，Console 正常打印 success\n- 两者的唯一区别是 Response Headers 里有没有 Access-Control-Allow-Origin\n\n请帮我回答：\n1. 这个 CORS 报错需要前端改代码还是后端加响应头？为什么？\n2. OPTIONS 预检和简单请求的报错在 Console 里有什么不同？\n3. 如果后端没权限加 Access-Control-Allow-Origin，前端有没有办法绕过（比如代理）？"
     }
   ]
 }

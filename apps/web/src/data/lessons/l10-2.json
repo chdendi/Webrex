@@ -1,84 +1,81 @@
 {
-	"id": "l10-2",
-	"level": 10,
-	"sublevel": 2,
-	"categoryIcon": "🔐",
-	"categoryName": "安全与权限基础",
-	"title": "CSP 报错——「为什么我的脚本被 block 了」",
-	"time": 5,
-	"track": "core",
-	"needsLab": true,
-	"stuck": "Console 里没看到 CSP 报错？确认你打开的是 http://localhost:8787/lessons/l10-csp（注意端口是 8787）。",
-	"steps": [
-		{
-			"slug": "concept",
-			"type": "concept",
-			"title": "Content-Security-Policy 是什么",
-			"hook": "有时你的脚本明明写了，浏览器却说「我不执行」。",
-			"body": [
-				"CSP 是服务器返回的一个响应头，告诉浏览器哪些来源的脚本/样式/图片可以加载。",
-				"违反 CSP 的策略会在 Console 中以红色错误出现，Network 面板里可以直接看 Response Headers。"
-			],
-			"bullets": [
-				{
-					"emoji": "🔑",
-					"title": "script-src 'self'",
-					"body": "只允许同源脚本，内联 <script> 和 eval 全部被 block"
-				},
-				{
-					"emoji": "⚠️",
-					"title": "script-src 'self' 'unsafe-inline'",
-					"body": "允许同源脚本 + 页面内联 <script>，安全性降低"
-				},
-				{
-					"emoji": "🌐",
-					"title": "script-src 'self' https://cdn.example.com",
-					"body": "允许同源脚本 + 指定第三方 CDN"
-				}
-			],
-			"takeaway": "CSP 是服务器说的「规矩」，Console 里的红色报错就是犯规了。"
-		},
-		{
-			"slug": "practice",
-			"type": "practice",
-			"title": "对比严格与宽松 CSP",
-			"intro": "两个本地页面，同一种内联脚本，一个跑得通一个跑不通。",
-			"steps": [
-				"打开 http://localhost:8787/lessons/l10-csp（严格 CSP，内联脚本被 block）。",
-				"打开 DevTools → Console，观察红色 CSP violation 报错。",
-				"打开 http://localhost:8787/lessons/l10-csp-lax（宽松 CSP，含 'unsafe-inline'）。",
-				"检查 Console — 没有报错，内联脚本正常执行。",
-				"在 Network 面板中选中页面请求，查看 Response Headers → Content-Security-Policy，对比两个值：\n\n| 策略 | script-src 值 | 内联脚本 | eval | 报错 |\n| --- | --- | --- | --- | --- |\n| 严格 CSP | 'self' | block | block | Console 红色错误 |\n| 宽松 CSP | 'self' 'unsafe-inline' | 允许 | block | 无错误 |"
-			],
-			"shortcuts": [
-				{
-					"label": "DevTools",
-					"mac": "⌘+⌥+I",
-					"win": "F12"
-				},
-				{
-					"label": "Network",
-					"mac": "⌘+⌥+N",
-					"win": "Ctrl+Shift+N"
-				}
-			],
-			"labUrl": "http://localhost:8787/lessons/l10-csp",
-			"expectedOutcome": "严格 CSP 下内联脚本被 block，Console 出现 CSP violation 错误。"
-		},
-		{
-			"slug": "verify",
-			"type": "verify",
-			"title": "验证",
-			"prompt": "CSP 里 `script-src 'self'` 允许执行哪种脚本？\nA) 只有同源的脚本\nB) 所有脚本\nC) 只有内联脚本\nD) 所有脚本都禁止",
-			"tier": "soft",
-			"expectedRegex": "(A|同源|只.{0,2}同|same.{0,3}origin|self)"
-		},
-		{
-			"slug": "ask-ai",
-			"type": "ask-ai",
-			"title": "问 AI",
-			"intro": "把 CSP 报错变成可执行的配置方案。",
-			"template": "我的网站在 Console 里报了 CSP violation：\n- Refused to execute inline script\n- 当前 script-src 是 'self'\n- 我需要加载 Google Analytics 和 Stripe 的第三方脚本\n请帮我：\n1. 解释为什么内联脚本被 block\n2. 写一个允许这些第三方脚本的完整 Content-Security-Policy 头\n3. 告诉我 'nonce' 和 'unsafe-inline' 的区别"
-		}
-	]
+  "id": "l10-2",
+  "level": 10,
+  "sublevel": 2,
+  "categoryIcon": "🏗️",
+  "categoryName": "现代前端架构常识",
+  "title": "SSR / CSR / 水合错误",
+  "time": 5,
+  "track": "core",
+  "needsLab": false,
+  "stuck": "看不懂 View Source？在地址栏输入 `view-source:https://react.dev` 直接查看。",
+  "steps": [
+    {
+      "slug": "concept",
+      "type": "concept",
+      "title": "三兄弟——HTML 从哪来",
+      "hook": "同样是 HTML，出生的地方完全不同。",
+      "body": [
+        "SSR：HTML 在服务器上生成，完整发送到浏览器。用户看到内容快，SEO 友好。",
+        "CSR：服务器只发一个空壳 HTML（如 `<div id='root'></div>`），浏览器下载 JS 后在客户端构建整个 DOM。首屏白屏时间长。",
+        "SSG：HTML 在构建时就生成好了，部署的是纯静态文件。适合内容不常变的站点（博客、文档站）。",
+        "水合是 React 在 SSR HTML 上挂载事件监听器的过程（`hydrateRoot`）。服务器生成的 HTML 和客户端渲染结果不同时，就会报水合错误。"
+      ],
+      "bullets": [
+        {
+          "emoji": "🖥️",
+          "title": "SSR",
+          "body": "HTML 在服务器生成，首屏快，SEO 好。"
+        },
+        {
+          "emoji": "🌍",
+          "title": "CSR",
+          "body": "空壳 HTML + JS 渲染，首屏白屏，SEO 差。"
+        },
+        {
+          "emoji": "📦",
+          "title": "SSG",
+          "body": "构建时生成 HTML，纯静态，速度最快。"
+        },
+        {
+          "emoji": "💧",
+          "title": "水合",
+          "body": "React 把事件绑定到服务端 HTML，不一致就报错。"
+        }
+      ],
+      "takeaway": "SSR 快在首屏，CSR 灵活在前端，SSG 稳在静态。看 View Source 就能分出来。"
+    },
+    {
+      "slug": "practice",
+      "type": "practice",
+      "title": "三招辨 SSR 和 CSR",
+      "intro": "用三个简单的浏览器操作，区分页面属于哪种渲染模式。",
+      "steps": [
+        "打开 react.dev，右键 → 查看页面源代码。",
+        "搜索页面里的文本内容（如 React）——源码里能直接搜到吗？能就说明是 SSR 或 SSG。",
+        "再打开 DevTools → Elements 面板——和 View Source 内容几乎一致，说明 react.dev 是预渲染的。",
+        "打开 http://localhost:8787/lessons/l12-spa，查看页面源代码——内容很少，搜索不到页面上的文本。",
+        "对比 react.dev 的 View Source 和该 SPA 页面的 View Source，差异一目了然。",
+        "打开 react.dev 的 DevTools → Console——留意有没有水合相关的警告（react.dev 维护得很好，通常不会出现）。",
+        "对照下表，判断一个页面属于哪种渲染模式：\n\n| 特性 | SSR | CSR | SSG | 判断方式 |\n| --- | --- | --- | --- |\n| View Source 有无内容 | 有完整 HTML | 只有空壳 | 有完整 HTML | view-source:URL |\n| 首屏速度 | 快 | 慢（白屏） | 最快 | Performance 面板 |\n| 是否需要服务器 | 是 | 否（可用 CDN） | 否（纯静态文件） | 看请求头 |\n| JS 禁用后能否显示 | 能（基础内容） | 不能 | 能（完整内容） | disable JS 测试 |"
+      ],
+      "expectedOutcome": "react.dev 的 View Source 有完整 HTML 内容（SSR/SSG），本地 SPA 页面只有空壳（CSR）。",
+      "externalSite": "react.dev"
+    },
+    {
+      "slug": "verify",
+      "type": "verify",
+      "title": "验证",
+      "prompt": "查看页面源代码时只看到一个空的 `<div id='app'></div>`，这是 SSR 还是 CSR？",
+      "tier": "soft",
+      "expectedRegex": "(CSR|客户端|client|SPA|不是SSR)"
+    },
+    {
+      "slug": "ask-ai",
+      "type": "ask-ai",
+      "title": "问 AI",
+      "intro": "把今天看到的差异转成一个架构问题。",
+      "template": "SSR 和 CSR 各自的优缺点和适用场景分别是什么？水合错误的常见原因有哪些（比如浏览器扩展注入 DOM、服务器与客户端时区不一致等），应该如何排查和修复？Next.js 和 Remix 分别在这套体系里扮演什么角色？"
+    }
+  ]
 }

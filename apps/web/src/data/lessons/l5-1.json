@@ -76,7 +76,8 @@
           "win": "Esc"
         }
       ],
-      "expectedOutcome": "重点区分：文件名搜索只匹配文件名（搜内容找不到），全局搜索遍历所有文件内容（搜什么都能到）。"
+      "expectedOutcome": "重点区分：文件名搜索只匹配文件名（搜内容找不到），全局搜索遍历所有文件内容（搜什么都能到）。",
+      "externalSite": "react.dev"
     },
     {
       "slug": "verify",

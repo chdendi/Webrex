@@ -1,85 +1,84 @@
 {
-	"id": "l7-2",
-	"level": 7,
-	"sublevel": 2,
-	"categoryIcon": "⚡",
-	"categoryName": "Performance 面板基础",
-	"title": "看懂火焰图",
-	"time": 5,
-	"track": "core",
-	"needsLab": false,
-	"stuck": "火焰图里找不到宽的色块？确认录制的 trace 包含用户交互（点击、滚动），空白页面的 trace 会很窄。另外试试在 Main 那一行里找——它通常在面板中部，颜色最丰富。",
-	"steps": [
-		{
-			"slug": "concept",
-			"type": "concept",
-			"title": "火焰图是性能的 X 光片",
-			"hook": "录完 trace 后你会看到一张五颜六色的图——像倒过来的火焰，又像叠起来的积木。这张图怎么读？",
-			"body": [
-				"火焰图横轴是时间，纵轴是调用栈深度。",
-				"每条色块是一个函数调用。色块越宽，函数执行越久。",
-				"点一下色块就能钻进这个函数的子调用里看细节。"
-			],
-			"bullets": [
-				{
-					"emoji": "↔",
-					"title": "宽度 = 耗时",
-					"body": "最宽的块就是性能瓶颈"
-				},
-				{
-					"emoji": "↕",
-					"title": "高度 = 调用深度",
-					"body": "上层调下层，层层堆叠"
-				},
-				{
-					"emoji": "🔍",
-					"title": "点击放大",
-					"body": "点色块进入子调用，滚轮缩放时间轴"
-				}
-			],
-			"takeaway": "下一步在火焰图里找到最宽的色块。"
-		},
-		{
-			"slug": "practice",
-			"type": "practice",
-			"title": "找到最宽的色块",
-			"intro": "继续用 react.dev 的 trace，或者新录一条。",
-			"steps": [
-				"打开 react.dev → DevTools → Performance 面板。",
-				"录制一段简短的交互：点击 Search 按钮，等待 2 秒，点 Stop。",
-				"看 **Main** 这一行——这是主线程上的所有任务。",
-				"在 Main 行里找到**最宽的那个色块**——它是耗时最长的任务。",
-				"鼠标悬停在这个色块上，看弹出信息里的函数名和耗时。",
-				"点击这个色块，底部 Summary 标签页会显示详细耗时分解。",
-				"用鼠标滚轮在火焰图上缩放，或用拖拽选中一段区域放大。"
-			],
-			"shortcuts": [
-				{
-					"label": "DevTools",
-					"mac": "⌘+⌥+I",
-					"win": "F12"
-				},
-				{
-					"label": "录制 Performance",
-					"mac": "⌘+E",
-					"win": "Ctrl+E"
-				}
-			],
-			"expectedOutcome": "找到最宽的色块，记住它的函数名。"
-		},
-		{
-			"slug": "verify",
-			"type": "verify",
-			"title": "验证",
-			"prompt": "在你录制的火焰图里，最宽的那个色块（耗时最长的任务）的函数大致叫什么名字？把看到的名字写下来。",
-			"tier": "self"
-		},
-		{
-			"slug": "ask-ai",
-			"type": "ask-ai",
-			"title": "问 AI",
-			"intro": "把观察转成问题。",
-			"template": "我在 Chrome DevTools Performance 面板的火焰图里看到：\n- 有些色块很宽（耗时几百毫秒）\n- 有些色块很窄（几毫秒就结束）\n- 宽的色块下面还叠着更小的子色块\n\n请解释：\n1. 火焰图里色块宽度代表什么？为什么宽色块就是瓶颈？\n2. \"调用栈深度\"在火焰图里怎么看出来？\n3. 怎么快速定位一个页面最值得优化的函数？"
-		}
-	]
+  "id": "l7-2",
+  "level": 7,
+  "sublevel": 2,
+  "categoryIcon": "🔐",
+  "categoryName": "安全与权限基础",
+  "title": "CSP 报错——「为什么我的脚本被 block 了」",
+  "time": 5,
+  "track": "core",
+  "needsLab": true,
+  "stuck": "Console 里没看到 CSP 报错？确认你打开的是 http://localhost:8787/lessons/l10-csp（注意端口是 8787）。",
+  "steps": [
+    {
+      "slug": "concept",
+      "type": "concept",
+      "title": "Content-Security-Policy 是什么",
+      "hook": "有时你的脚本明明写了，浏览器却说「我不执行」。",
+      "body": [
+        "CSP 是服务器返回的一个响应头，告诉浏览器哪些来源的脚本/样式/图片可以加载。",
+        "违反 CSP 的策略会在 Console 中以红色错误出现，Network 面板里可以直接看 Response Headers。"
+      ],
+      "bullets": [
+        {
+          "emoji": "🔑",
+          "title": "script-src 'self'",
+          "body": "只允许同源脚本，内联 <script> 和 eval 全部被 block"
+        },
+        {
+          "emoji": "⚠️",
+          "title": "script-src 'self' 'unsafe-inline'",
+          "body": "允许同源脚本 + 页面内联 <script>，安全性降低"
+        },
+        {
+          "emoji": "🌐",
+          "title": "script-src 'self' https://cdn.example.com",
+          "body": "允许同源脚本 + 指定第三方 CDN"
+        }
+      ],
+      "takeaway": "CSP 是服务器说的「规矩」，Console 里的红色报错就是犯规了。"
+    },
+    {
+      "slug": "practice",
+      "type": "practice",
+      "title": "对比严格与宽松 CSP",
+      "intro": "两个本地页面，同一种内联脚本，一个跑得通一个跑不通。",
+      "steps": [
+        "打开 http://localhost:8787/lessons/l10-csp（严格 CSP，内联脚本被 block）。",
+        "打开 DevTools → Console，观察红色 CSP violation 报错。",
+        "打开 http://localhost:8787/lessons/l10-csp-lax（宽松 CSP，含 'unsafe-inline'）。",
+        "检查 Console — 没有报错，内联脚本正常执行。",
+        "在 Network 面板中选中页面请求，查看 Response Headers → Content-Security-Policy，对比两个值：\n\n| 策略 | script-src 值 | 内联脚本 | eval | 报错 |\n| --- | --- | --- | --- | --- |\n| 严格 CSP | 'self' | block | block | Console 红色错误 |\n| 宽松 CSP | 'self' 'unsafe-inline' | 允许 | block | 无错误 |"
+      ],
+      "shortcuts": [
+        {
+          "label": "DevTools",
+          "mac": "⌘+⌥+I",
+          "win": "F12"
+        },
+        {
+          "label": "Network",
+          "mac": "⌘+⌥+N",
+          "win": "Ctrl+Shift+N"
+        }
+      ],
+      "labUrl": "http://localhost:8787/lessons/l10-csp",
+      "expectedOutcome": "严格 CSP 下内联脚本被 block，Console 出现 CSP violation 错误。"
+    },
+    {
+      "slug": "verify",
+      "type": "verify",
+      "title": "验证",
+      "prompt": "CSP 里 `script-src 'self'` 允许执行哪种脚本？\nA) 只有同源的脚本\nB) 所有脚本\nC) 只有内联脚本\nD) 所有脚本都禁止",
+      "tier": "soft",
+      "expectedRegex": "(A|同源|只.{0,2}同|same.{0,3}origin|self)"
+    },
+    {
+      "slug": "ask-ai",
+      "type": "ask-ai",
+      "title": "问 AI",
+      "intro": "把 CSP 报错变成可执行的配置方案。",
+      "template": "我的网站在 Console 里报了 CSP violation：\n- Refused to execute inline script\n- 当前 script-src 是 'self'\n- 我需要加载 Google Analytics 和 Stripe 的第三方脚本\n请帮我：\n1. 解释为什么内联脚本被 block\n2. 写一个允许这些第三方脚本的完整 Content-Security-Policy 头\n3. 告诉我 'nonce' 和 'unsafe-inline' 的区别"
+    }
+  ]
 }

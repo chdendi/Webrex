@@ -45,7 +45,7 @@
       "title": "在 react.dev 上禁用 JavaScript 看会少什么",
       "intro": "react.dev 是 React 官方文档站。Hero 区有一行固定标题，顶部有一个 Search 按钮，以二者作为对比锚点。",
       "steps": [
-        "在新标签页打开 [react.dev](https://react.dev/)。",
+        "点击上方 **Open react.dev** 按钮，在新标签页打开 react.dev。",
         "确认看到 hero 区的标题：**The library for web and native user interfaces**。确认可见即表示页面已加载完成。",
         "点击页面右上角的 **Search** 按钮（放大镜图标，旁边有 `Ctrl K` 提示）。应该弹出一个搜索面板。点击页面空白区域关闭搜索面板。",
         "按 `F12` (Win/Linux) 或 `⌘+⌥+I` (Mac) 打开 DevTools。",
@@ -72,15 +72,25 @@
           "win": "F5"
         }
       ],
-      "expectedOutcome": "对照上表：**没变化的部分**（文字、布局、配色）由 HTML+CSS 提供；**变化的部分**（搜索弹窗、可运行代码块）全部由 JS 提供。这就是三层的边界——它们各司其职，互不替代。"
+      "expectedOutcome": "对照上表：**没变化的部分**（文字、布局、配色）由 HTML+CSS 提供；**变化的部分**（搜索弹窗、可运行代码块）全部由 JS 提供。这就是三层的边界——它们各司其职，互不替代。",
+      "externalSite": "react.dev"
     },
     {
       "slug": "verify",
       "type": "verify",
       "title": "JavaScript 禁用后，Search 按钮还能弹出搜索框吗？",
-      "prompt": "上一步你已经禁用 JavaScript 并刷新了页面，然后点击了右上角的 **Search** 按钮。\n\n它弹出了搜索框吗？回答 **「会」** 或 **「不会」**。",
-      "tier": "soft",
-      "expectedRegex": "(不会|不能|不弹|不出|没.{0,3}弹|没.{0,3}出|没.{0,3}反应|没动静|无反应|nothing|no\\b)"
+      "prompt": "上一步你已经禁用 JavaScript 并刷新了页面，然后点击了右上角的 **Search** 按钮。\n\n它弹出了搜索框吗？请选择：",
+      "tier": "choice",
+      "options": [
+        {
+          "label": "会",
+          "correct": false
+        },
+        {
+          "label": "不会",
+          "correct": true
+        }
+      ]
     },
     {
       "slug": "ask-ai",

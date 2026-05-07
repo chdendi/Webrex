@@ -44,6 +44,10 @@ const {
       >
         Next lesson — {nextLessonTitle} →
       </a>
+    ) : isLastStep && !nextLessonHref ? (
+      <script is:inline>
+        window.location.replace('/lessons/l1-1');
+      </script>
     ) : nextHref ? (
       <a
         href={nextHref}

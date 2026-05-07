@@ -3,6 +3,7 @@ import { getCollection } from 'astro:content';
 import ErrorBoundary from '~/components/ErrorBoundary.tsx';
 import HelpButton from '~/components/HelpButton.astro';
 import RedactionPanel from '~/components/RedactionPanel.tsx';
+import StepGuidePanel from '~/components/StepGuidePanel.tsx';
 import StepNav from '~/components/StepNav.astro';
 import StepProgress from '~/components/StepProgress.astro';
 import ConceptStep from '~/components/steps/ConceptStep.astro';
@@ -56,6 +57,12 @@ const nextLessonTitle = nextId
       ?.data.title.split('——')[0]
       .trim()
   : undefined;
+
+const nextStepHref = isLastStep
+  ? nextId
+    ? `/lessons/${nextId}`
+    : undefined
+  : `/lessons/${lesson.id}/${nextStep!.slug}`;
 ---
 
 <LessonLayout
@@ -90,6 +97,9 @@ const nextLessonTitle = nextId
       shortcuts={step.shortcuts}
       expectedOutcome={step.expectedOutcome}
       labUrl={step.labUrl}
+      externalSite={step.externalSite}
+      lessonId={lesson.id}
+      stepSlug={step.slug}
     />
   )}
   {step.type === "verify" && (
@@ -99,6 +109,8 @@ const nextLessonTitle = nextId
       tier={step.tier}
       expectedRegex={step.expectedRegex}
       labCheckEndpoint={step.labCheckEndpoint}
+      options={step.options}
+      nextStepHref={nextStepHref}
     />
   )}
 
@@ -116,5 +128,39 @@ const nextLessonTitle = nextId
     <RedactionPanel client:load />
   </ErrorBoundary>
 
+  {step.type === "practice" && (
+    <ErrorBoundary client:load>
+      <StepGuidePanel
+        client:load
+        steps={step.steps}
+        stepTitle={step.title}
+        lessonId={lesson.id}
+        stepSlug={step.slug}
+        externalSite={step.externalSite}
+        nextStepHref={nextStepHref}
+      />
+    </ErrorBoundary>
+  )}
+
   <HelpButton hint={lesson.data.stuck} />
+
+  {step.slug === 'ask-ai' && (
+    <span id="lesson-complete-marker" data-id={lesson.id} hidden></span>
+    <script is:inline>
+      (function() {
+        var KEY = 'webrex_completed_lessons';
+        try {
+          var el = document.getElementById('lesson-complete-marker');
+          if (!el) return;
+          var id = el.getAttribute('data-id');
+          var raw = localStorage.getItem(KEY);
+          var done = raw ? new Set(JSON.parse(raw)) : new Set();
+          done.add(id);
+          var arr = [];
+          done.forEach(function(v) { arr.push(v); });
+          localStorage.setItem(KEY, JSON.stringify(arr));
+        } catch(e) {}
+      })();
+    </script>
+  )}
 </LessonLayout>

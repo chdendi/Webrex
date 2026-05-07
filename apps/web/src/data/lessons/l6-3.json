@@ -1,89 +1,90 @@
 {
-	"id": "l6-3",
-	"level": 6,
-	"sublevel": 3,
-	"categoryIcon": "🗄️",
-	"categoryName": "Application —— 看数据存哪里",
-	"title": "IndexedDB——浏览器里的数据库",
-	"time": 4,
-	"track": "core",
-	"needsLab": false,
-	"stuck": "找不到 IndexedDB？在 Application 面板左侧 Storage 区域往下滚动，IndexedDB 在 Local/Session Storage 下面。",
-	"steps": [
-		{
-			"slug": "concept",
-			"type": "concept",
-			"title": "浏览器内置了一个 NoSQL 数据库",
-			"hook": "localStorage 只能存 5MB 字符串。真要在浏览器里存结构化数据、做索引查询怎么办？浏览器其实藏了一个完整的数据库。",
-			"body": [
-				"IndexedDB 是浏览器内置的事务型 NoSQL 数据库，存储上限远超 localStorage（可达几百 MB 甚至更多）。",
-				"数据结构：数据库（Database）→ 对象仓库（Object Store，相当于表）→ 键值对记录。",
-				"支持索引（Index）加速查询，支持事务（Transaction）保证数据一致性。",
-				"所有操作都是异步的（基于事件/回调或 Promise 封装），不会阻塞主线程。",
-				"Application → IndexedDB 展开可看到所有数据库和对象仓库，点击可浏览记录数据。"
-			],
-			"bullets": [
-				{
-					"emoji": "🗃️",
-					"title": "Object Store",
-					"body": "相当于关系数据库里的表，存同类型对象"
-				},
-				{
-					"emoji": "🔍",
-					"title": "Index",
-					"body": "给字段建索引，支持按值快速查找记录"
-				},
-				{
-					"emoji": "🔄",
-					"title": "Transaction",
-					"body": "一组操作要么全成功要么全回滚，保证一致性"
-				}
-			],
-			"takeaway": "下一步：在 Application 面板里探索 react.dev 是否有 IndexedDB 数据库，看看里面存了什么数据。"
-		},
-		{
-			"slug": "practice",
-			"type": "practice",
-			"title": "浏览 react.dev 的 IndexedDB 数据",
-			"intro": "react.dev 及其他站可能用 IndexedDB 存离线数据或缓存。用 Application 面板找到并浏览它们。",
-			"steps": [
-				"在新标签页打开 react.dev。",
-				"按 `⌘+⌥+I` / `F12` 打开 DevTools，切换到 **Application** 面板。",
-				"在左侧边栏找到 **IndexedDB**，点击前面的三角箭头展开。",
-				"查看展开的数据库列表，常见的包括 `firebase-heartbeat-database`、由 localforage 创建的库等。",
-				"点击某个数据库名称展开，再点击下面的 **Object Store**（对象仓库）。",
-				"观察右侧显示的记录列表，每条记录由 Key（主键）和 Value（数据对象）组成。",
-				"点击某条记录，查看 Value 里存储的完整结构化数据（DevTools 会以树形展开 JSON 对象）。",
-				"注意看 Value 中的数据类型——可以是字符串、数字、对象、数组，不像 localStorage 只能存字符串。"
-			],
-			"shortcuts": [
-				{
-					"label": "DevTools",
-					"mac": "⌘+⌥+I",
-					"win": "F12"
-				},
-				{
-					"label": "Application 面板",
-					"mac": "⌘+⌥+A",
-					"win": "Ctrl+Shift+A"
-				}
-			],
-			"expectedOutcome": "IndexedDB 里存储的是结构化数据（对象/数组），比 localStorage 只能存字符串要丰富得多。"
-		},
-		{
-			"slug": "verify",
-			"type": "verify",
-			"title": "IndexedDB 独有的能力是什么？",
-			"prompt": "IndexedDB 和 localStorage 相比，IndexedDB 支持什么 localStorage 不支持的特性？\nA) 存储 JSON\nB) 索引和事务\nC) 跨域访问\nD) 自动同步",
-			"tier": "soft",
-			"expectedRegex": "(B|索引|事务|index|transaction)"
-		},
-		{
-			"slug": "ask-ai",
-			"type": "ask-ai",
-			"title": "问 AI：什么时候用 IndexedDB",
-			"intro": "localStorage 简单但局限，IndexedDB 强大但复杂。学会在两者之间做选择。",
-			"template": "我对比了 localStorage 和 IndexedDB 的差异：\n- localStorage：同步 API，5MB 上限，只能存字符串\n- IndexedDB：异步 API，容量大，支持索引和事务，可存任意结构化数据\n\n请帮我分析：\n1. 什么场景下必须用 IndexedDB 而不能用 localStorage？举 2 个实际例子。\n2. IndexedDB 的 API 比较原始，常用的封装库有哪些（如 localforage）？\n3. PWA 离线应用中 IndexedDB 承担什么角色？和 Cache Storage 有什么分工？"
-		}
-	]
+  "id": "l6-3",
+  "level": 6,
+  "sublevel": 3,
+  "categoryIcon": "🗄️",
+  "categoryName": "Application —— 看数据存哪里",
+  "title": "IndexedDB——浏览器里的数据库",
+  "time": 4,
+  "track": "core",
+  "needsLab": false,
+  "stuck": "找不到 IndexedDB？在 Application 面板左侧 Storage 区域往下滚动，IndexedDB 在 Local/Session Storage 下面。",
+  "steps": [
+    {
+      "slug": "concept",
+      "type": "concept",
+      "title": "浏览器内置了一个 NoSQL 数据库",
+      "hook": "localStorage 只能存 5MB 字符串。真要在浏览器里存结构化数据、做索引查询怎么办？浏览器其实藏了一个完整的数据库。",
+      "body": [
+        "IndexedDB 是浏览器内置的事务型 NoSQL 数据库，存储上限远超 localStorage（可达几百 MB 甚至更多）。",
+        "数据结构：数据库（Database）→ 对象仓库（Object Store，相当于表）→ 键值对记录。",
+        "支持索引（Index）加速查询，支持事务（Transaction）保证数据一致性。",
+        "所有操作都是异步的（基于事件/回调或 Promise 封装），不会阻塞主线程。",
+        "Application → IndexedDB 展开可看到所有数据库和对象仓库，点击可浏览记录数据。"
+      ],
+      "bullets": [
+        {
+          "emoji": "🗃️",
+          "title": "Object Store",
+          "body": "相当于关系数据库里的表，存同类型对象"
+        },
+        {
+          "emoji": "🔍",
+          "title": "Index",
+          "body": "给字段建索引，支持按值快速查找记录"
+        },
+        {
+          "emoji": "🔄",
+          "title": "Transaction",
+          "body": "一组操作要么全成功要么全回滚，保证一致性"
+        }
+      ],
+      "takeaway": "下一步：在 Application 面板里探索 react.dev 是否有 IndexedDB 数据库，看看里面存了什么数据。"
+    },
+    {
+      "slug": "practice",
+      "type": "practice",
+      "title": "浏览 react.dev 的 IndexedDB 数据",
+      "intro": "react.dev 及其他站可能用 IndexedDB 存离线数据或缓存。用 Application 面板找到并浏览它们。",
+      "steps": [
+        "在新标签页打开 react.dev。",
+        "按 `⌘+⌥+I` / `F12` 打开 DevTools，切换到 **Application** 面板。",
+        "在左侧边栏找到 **IndexedDB**，点击前面的三角箭头展开。",
+        "查看展开的数据库列表，常见的包括 `firebase-heartbeat-database`、由 localforage 创建的库等。",
+        "点击某个数据库名称展开，再点击下面的 **Object Store**（对象仓库）。",
+        "观察右侧显示的记录列表，每条记录由 Key（主键）和 Value（数据对象）组成。",
+        "点击某条记录，查看 Value 里存储的完整结构化数据（DevTools 会以树形展开 JSON 对象）。",
+        "注意看 Value 中的数据类型——可以是字符串、数字、对象、数组，不像 localStorage 只能存字符串。"
+      ],
+      "shortcuts": [
+        {
+          "label": "DevTools",
+          "mac": "⌘+⌥+I",
+          "win": "F12"
+        },
+        {
+          "label": "Application 面板",
+          "mac": "⌘+⌥+A",
+          "win": "Ctrl+Shift+A"
+        }
+      ],
+      "expectedOutcome": "IndexedDB 里存储的是结构化数据（对象/数组），比 localStorage 只能存字符串要丰富得多。",
+      "externalSite": "react.dev"
+    },
+    {
+      "slug": "verify",
+      "type": "verify",
+      "title": "IndexedDB 独有的能力是什么？",
+      "prompt": "IndexedDB 和 localStorage 相比，IndexedDB 支持什么 localStorage 不支持的特性？\nA) 存储 JSON\nB) 索引和事务\nC) 跨域访问\nD) 自动同步",
+      "tier": "soft",
+      "expectedRegex": "(B|索引|事务|index|transaction)"
+    },
+    {
+      "slug": "ask-ai",
+      "type": "ask-ai",
+      "title": "问 AI：什么时候用 IndexedDB",
+      "intro": "localStorage 简单但局限，IndexedDB 强大但复杂。学会在两者之间做选择。",
+      "template": "我对比了 localStorage 和 IndexedDB 的差异：\n- localStorage：同步 API，5MB 上限，只能存字符串\n- IndexedDB：异步 API，容量大，支持索引和事务，可存任意结构化数据\n\n请帮我分析：\n1. 什么场景下必须用 IndexedDB 而不能用 localStorage？举 2 个实际例子。\n2. IndexedDB 的 API 比较原始，常用的封装库有哪些（如 localforage）？\n3. PWA 离线应用中 IndexedDB 承担什么角色？和 Cache Storage 有什么分工？"
+    }
+  ]
 }

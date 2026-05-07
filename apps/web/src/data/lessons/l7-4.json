@@ -1,86 +1,85 @@
 {
-	"id": "l7-4",
-	"level": 7,
-	"sublevel": 4,
-	"categoryIcon": "⚡",
-	"categoryName": "Performance 面板基础",
-	"title": "CPU 节流模拟低端设备",
-	"time": 4,
-	"track": "core",
-	"needsLab": false,
-	"stuck": "找不到 CPU 节流选项？确认 Performance 面板顶部工具栏里有 ⚙ Capture Settings 齿轮图标，点击后 CPU 下拉菜单位于 Network 下拉旁边。如果面板顶部看不到齿轮，先把 DevTools 窗口拉宽一些。",
-	"steps": [
-		{
-			"slug": "concept",
-			"type": "concept",
-			"title": "你的电脑快 ≠ 用户电脑快",
-			"hook": "你的 MacBook Pro 跑页面丝滑流畅——但用户的 2018 年 Android 机呢？怎么在不买一堆真机的情况下测出差距？",
-			"body": [
-				"Chrome DevTools 可以在 Performance 面板里模拟慢速 CPU。",
-				"开启 4x/6x 减速后，同一个操作执行更久，火焰图里的色块按比例拉宽，瓶颈一目了然。"
-			],
-			"bullets": [
-				{
-					"emoji": "🐢",
-					"title": "4x slowdown",
-					"body": "每条 JS 指令执行速度降为 1/4"
-				},
-				{
-					"emoji": "⚙",
-					"title": "Capture Settings",
-					"body": "齿轮图标里的 CPU 下拉菜单"
-				},
-				{
-					"emoji": "📶",
-					"title": "搭配 Network 节流",
-					"body": "同时模拟慢网速，还原真实低端环境"
-				}
-			],
-			"takeaway": "下一步在节流模式下录一条 trace 对比。"
-		},
-		{
-			"slug": "practice",
-			"type": "practice",
-			"title": "对比正常 vs 4x 减速",
-			"intro": "同样操作、两种 CPU 模式、对比效果。",
-			"steps": [
-				"打开 react.dev → DevTools → Performance 面板。",
-				"先确保 CPU 下拉为 **No throttling**，录制一次：点击 Search 按钮，等待 2 秒，点 Stop。",
-				"记下 Summary 里的 Scripting 耗时。",
-				"点击 Performance 面板顶部的 **⚙ Capture Settings** 齿轮图标。",
-				"CPU 下拉菜单选择 **4x slowdown**。",
-				"再次录制完全相同的操作：点击 Search 按钮，等待 2 秒，点 Stop。",
-				"对比两次 Summary：\n\n| 模式 | Scripting 耗时 |\n| --- | --- |\n| No throttling | ~X ms |\n| 4x slowdown | ~4X ms |",
-				"观察火焰图：4x 模式下的色块明显更宽。"
-			],
-			"shortcuts": [
-				{
-					"label": "DevTools",
-					"mac": "⌘+⌥+I",
-					"win": "F12"
-				},
-				{
-					"label": "录制 Performance",
-					"mac": "⌘+E",
-					"win": "Ctrl+E"
-				}
-			],
-			"expectedOutcome": "4x slowdown 下同操作的耗时约为正常模式的 4 倍。"
-		},
-		{
-			"slug": "verify",
-			"type": "verify",
-			"title": "验证",
-			"prompt": "在 CPU 4x slowdown 模式下，同一次 Search 按钮点击的 JS 执行时间大约是正常模式下的几倍？",
-			"tier": "soft",
-			"expectedRegex": "(4|四|几倍|倍|multiple|around).{0,5}(4|four)"
-		},
-		{
-			"slug": "ask-ai",
-			"type": "ask-ai",
-			"title": "问 AI",
-			"intro": "把观察转成问题。",
-			"template": "我在 react.dev 用 Performance 面板做了对比实验：\n- No throttling 下 JS 运行很快\n- 4x slowdown 下同样的操作耗时约 4 倍\n\n请解释：\n1. CPU 节流具体是怎么模拟低端设备的？它真的和真机性能一致吗？\n2. 如果 4x 模式下某个操作耗时 300ms，在正常模式下只有 75ms——这两个数值对用户体验分别意味着什么？\n3. 拿到节流模式的数据后，应该如何排优化优先级？"
-		}
-	]
+  "id": "l7-4",
+  "level": 7,
+  "sublevel": 4,
+  "categoryIcon": "🔐",
+  "categoryName": "安全与权限基础",
+  "title": "XSS / CSRF 一句话听得懂",
+  "time": 4,
+  "track": "core",
+  "needsLab": true,
+  "stuck": "打了 XSS payload 没弹窗？确认在「危险的输出（innerHTML）」那个框里输入并点输出，不是在安全的那个框。",
+  "steps": [
+    {
+      "slug": "concept",
+      "type": "concept",
+      "title": "XSS 与 CSRF：两句话区分",
+      "hook": "前端安全有两大坑，名字很像，但原理完全不同。",
+      "body": [
+        "XSS = 攻击者把恶意脚本注入你的页面，脚本在用户的浏览器里执行。",
+        "CSRF = 攻击者诱导用户浏览器向你的站点发请求，利用用户已登录的身份。"
+      ],
+      "bullets": [
+        {
+          "emoji": "💉",
+          "title": "XSS — 代码不该跑到这",
+          "body": "<img src=x onerror=alert(1)> 在 innerHTML 里会执行，在 textContent 里只是文字"
+        },
+        {
+          "emoji": "🎭",
+          "title": "CSRF — 请求不该由他发起",
+          "body": "攻击者构造一个 form，用户打开后自动提交到你的银行站点"
+        },
+        {
+          "emoji": "🛡️",
+          "title": "一句话记忆",
+          "body": "XSS = 代码跑错了地方；CSRF = 请求跑错了地方"
+        }
+      ],
+      "takeaway": "防止 XSS → 永远用 textContent；防止 CSRF → 加 anti-CSRF token。"
+    },
+    {
+      "slug": "practice",
+      "type": "practice",
+      "title": "危险输出 vs 安全输出",
+      "intro": "同一个 payload，在不同的输出方式下，一个弹窗一个不弹。",
+      "steps": [
+        "打开 http://localhost:8787/lessons/l10-xss。",
+        "在「危险的输出（innerHTML）」输入框中输入 <img src=x onerror=alert('XSS')> 并点击输出按钮。",
+        "观察：弹窗出现，说明恶意脚本被执行了。",
+        "在「安全的输出（textContent）」输入框中输入同样的 payload 并点击输出按钮。",
+        "观察：没有弹窗，HTML 标签被当作文本直接显示。",
+        "右键 → 检查，找到页面上两个输出区域对应的元素，确认 unsafe 用了 innerHTML，safe 用了 textContent：\n\n| 输出方式 | XSS payload 行为 | 为什么 |\n| --- | --- | --- |\n| innerHTML | 弹窗（被攻击） | 浏览器按 HTML 解析并执行 |\n| textContent | 显示为文本 | 浏览器把内容当作纯文本 |"
+      ],
+      "shortcuts": [
+        {
+          "label": "DevTools",
+          "mac": "⌘+⌥+I",
+          "win": "F12"
+        },
+        {
+          "label": "检查元素",
+          "mac": "⌘+⇧+C",
+          "win": "Ctrl+Shift+C"
+        }
+      ],
+      "labUrl": "http://localhost:8787/lessons/l10-xss",
+      "expectedOutcome": "innerHTML 触发 XSS 弹窗，textContent 安全显示纯文本。"
+    },
+    {
+      "slug": "verify",
+      "type": "verify",
+      "title": "验证",
+      "prompt": "要防止 XSS，输出用户输入时应该用 `textContent` 还是 `innerHTML`？",
+      "tier": "soft",
+      "expectedRegex": "(textContent|text|textContent|安全|safe|前者)"
+    },
+    {
+      "slug": "ask-ai",
+      "type": "ask-ai",
+      "title": "问 AI",
+      "intro": "把实验结论迁移到真实项目。",
+      "template": "我在一个 Lab 里验证了 XSS 攻击：\n- 用 innerHTML 输出用户输入时，<img src=x onerror=alert(1)> 被成功执行\n- 用 textContent 时，同样的输入被安全渲染为纯文本\n请告诉我：\n1. React/Vue 框架里用 dangerouslySetInnerHTML / v-html 时有哪些常见的 XSS 误区？\n2. 除了 textContent，还有哪些有效的 XSS 防护手段（CSP、DOMPurify 等）？\n3. CSRF 防护：anti-CSRF token 的工作流程是怎样的？"
+    }
+  ]
 }

@@ -1,7 +1,7 @@
 {
-  "id": "l4-8",
+  "id": "l4-2",
   "level": 4,
-  "sublevel": 8,
+  "sublevel": 2,
   "categoryIcon": "🌍",
   "categoryName": "网络 (Network)",
   "title": "缓存与“为什么我改了没生效”",
@@ -84,9 +84,26 @@
       "slug": "verify",
       "type": "verify",
       "title": "第二次刷新时 /api/cache/short.json 的 Size 列写什么？",
-      "prompt": "你在第二步刷新后，Network 面板里 /api/cache/short.json 的 Size 列显示的是什么？把那个词写下来。",
-      "tier": "soft",
-      "expectedRegex": "(memory|disk|cache|304|200|缓存|从)"
+      "prompt": "第二次刷新时 /api/cache/short.json 的 Size 列显示什么？",
+      "tier": "choice",
+      "options": [
+        {
+          "label": "disk cache",
+          "correct": true
+        },
+        {
+          "label": "memory cache",
+          "correct": false
+        },
+        {
+          "label": "304",
+          "correct": false
+        },
+        {
+          "label": "200（重新下载）",
+          "correct": false
+        }
+      ]
     },
     {
       "slug": "ask-ai",

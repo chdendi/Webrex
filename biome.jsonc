@@ -14,7 +14,8 @@
       },
       "suspicious": {
         "noExplicitAny": "off",
-        "noAssignInExpressions": "warn"
+        "noAssignInExpressions": "warn",
+        "noArrayIndexKey": "warn"
       },
       "a11y": {
         "noStaticElementInteractions": "warn",

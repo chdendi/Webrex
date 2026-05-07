@@ -26,6 +26,12 @@ const pageTitle = `L${data.level}.${data.sublevel} ${data.title} · Webrex`;
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <title>{pageTitle}</title>
+    <script>
+      (function () {
+        var p = navigator.platform || '';
+        document.documentElement.setAttribute('data-os', /Mac/i.test(p) ? 'mac' : 'win');
+      })();
+    </script>
   </head>
   <body class="min-h-screen flex flex-col">
     <TopNav

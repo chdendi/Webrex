@@ -15,9 +15,8 @@ export const onRequest = defineMiddleware(async (context, next) => {
     const supabase = createSupabaseServerClient({ request, cookies });
     const { data } = await supabase.auth.getUser();
     if (!data.user) {
-      const loginUrl = new URL('/login', url.origin);
-      loginUrl.searchParams.set('next', pathname + url.search);
-      return context.redirect(loginUrl.toString(), 302);
+      const target = '/login?next=' + encodeURIComponent(pathname + url.search);
+      return context.redirect(target, 302);
     }
   }
 

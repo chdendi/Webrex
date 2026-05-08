@@ -1,0 +1,36 @@
+name: DB migrations
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'apps/web/supabase/migrations/**'
+      - '.github/workflows/db-migrations.yml'
+  workflow_dispatch:
+
+concurrency:
+  group: db-migrations-prod
+  cancel-in-progress: false
+
+jobs:
+  push:
+    name: supabase db push (prod)
+    runs-on: ubuntu-latest
+    env:
+      SUPABASE_ACCESS_TOKEN: ${{ secrets.SUPABASE_ACCESS_TOKEN }}
+      SUPABASE_DB_PASSWORD: ${{ secrets.SUPABASE_DB_PASSWORD }}
+      SUPABASE_PROJECT_REF: ${{ secrets.SUPABASE_PROJECT_REF }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: supabase/setup-cli@v1
+        with:
+          version: latest
+
+      - name: Link project
+        working-directory: apps/web
+        run: supabase link --project-ref "$SUPABASE_PROJECT_REF"
+
+      - name: Push migrations
+        working-directory: apps/web
+        run: supabase db push

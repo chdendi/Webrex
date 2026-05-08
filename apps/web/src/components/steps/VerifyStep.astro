@@ -16,8 +16,10 @@ interface Props {
   labCheckEndpoint?: string;
   options?: ChoiceOption[];
   nextStepHref?: string;
+  lessonId: string;
+  stepId: string;
 }
-const { title, prompt, tier, expectedRegex, labCheckEndpoint, options, nextStepHref } = Astro.props;
+const { title, prompt, tier, expectedRegex, labCheckEndpoint, options, nextStepHref, lessonId, stepId } = Astro.props;
 const promptHtml = md(prompt);
 ---
 
@@ -35,6 +37,8 @@ const promptHtml = md(prompt);
       labEndpoint={labCheckEndpoint}
       options={options}
       nextStepHref={nextStepHref}
+      lessonId={lessonId}
+      stepId={stepId}
     />
   </ErrorBoundary>
 </article>

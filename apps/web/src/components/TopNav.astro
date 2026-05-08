@@ -1,11 +1,19 @@
 ---
+import type { Locale } from '~/i18n/types';
+import { t as translate } from '~/i18n';
+import UserMenu from '~/components/UserMenu.tsx';
+import { I18nProvider } from '~/components/I18nProvider.tsx';
+
 interface Props {
   breadcrumb: string;
   progressIndex: number;
   progressTotal: number;
+  locale: Locale;
 }
-const { breadcrumb, progressIndex, progressTotal } = Astro.props;
+
+const { breadcrumb, progressIndex, progressTotal, locale } = Astro.props;
 const pct = Math.round((progressIndex / progressTotal) * 100);
+const __ = (key: string) => translate(locale, key);
 ---
 
 <header
@@ -22,14 +30,14 @@ const pct = Math.round((progressIndex / progressTotal) * 100);
       style="background: var(--color-surface-muted); color: var(--color-text-muted);"
     >
       <span class="w-1.5 h-1.5 rounded-full" style="background: var(--color-success);"></span>
-      Lab connected
+      {__('common.labConnected')}
     </span>
   </div>
 
   <div class="flex items-center gap-4">
     <div class="flex flex-col items-end gap-1">
       <span class="text-xs" style="color: var(--color-text-muted);">
-        Step {progressIndex} of {progressTotal}
+        {__('common.step')} {progressIndex} {__('common.of')} {progressTotal}
       </span>
       <div class="w-32 h-1 rounded-full" style="background: var(--color-surface-muted);">
         <div
@@ -43,13 +51,10 @@ const pct = Math.round((progressIndex / progressTotal) * 100);
       class="text-sm px-3 py-1.5 rounded-full font-medium border transition-all hover:shadow-sm"
       style="border-color: var(--color-border); color: var(--color-text);"
     >
-      🛡 Redact
+      {__('common.redact')}
     </button>
-    <div
-      class="w-8 h-8 rounded-full flex items-center justify-center text-sm font-medium"
-      style="background: var(--color-surface-muted); color: var(--color-text-muted);"
-    >
-      D
-    </div>
+    <I18nProvider client:load initialLocale={locale}>
+      <UserMenu client:load />
+    </I18nProvider>
   </div>
 </header>

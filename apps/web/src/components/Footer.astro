@@ -1,11 +1,17 @@
 ---
+import type { Locale } from '~/i18n/types';
+import { t as translate } from '~/i18n';
+
 interface Props {
   prevId?: string;
   nextId?: string;
   index: number;
   total: number;
+  locale: Locale;
 }
-const { prevId, nextId, index, total } = Astro.props;
+
+const { prevId, nextId, index, total, locale } = Astro.props;
+const __ = (key: string) => translate(locale, key);
 ---
 
 <footer
@@ -18,14 +24,14 @@ const { prevId, nextId, index, total } = Astro.props;
       class="flex items-center gap-2 px-4 py-2 border text-sm transition-all hover:shadow-sm"
       style="border-color: var(--color-border); color: var(--color-text); border-radius: var(--radius-button);"
     >
-      ← Previous
+      {__('footer.previous')}
     </a>
   ) : (
     <div></div>
   )}
 
   <span class="text-xs" style="color: var(--color-text-muted);">
-    Step {index} of {total}
+    {__('footer.step')} {index} {__('common.of')} {total}
   </span>
 
   {nextId ? (
@@ -34,7 +40,7 @@ const { prevId, nextId, index, total } = Astro.props;
       class="flex items-center gap-2 px-4 py-2 text-sm font-medium text-white transition-all hover:shadow-md"
       style="background: var(--color-accent); border-radius: var(--radius-button);"
     >
-      Next →
+      {__('footer.next')}
     </a>
   ) : (
     <div></div>

@@ -63,6 +63,8 @@ const nextStepHref = isLastStep
     ? `/lessons/${nextId}`
     : undefined
   : `/lessons/${lesson.id}/${nextStep!.slug}`;
+
+const locale = 'zh-CN' as const;
 ---
 
 <LessonLayout
@@ -78,6 +80,7 @@ const nextStepHref = isLastStep
     total={stepCount}
     stepTitle={step.title}
     stepKind={stepKindLabel[step.type] ?? step.type}
+    locale={locale}
   />
 
   {step.type === "concept" && (

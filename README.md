@@ -1,6 +1,8 @@
 # Webrex
 
-> **Web + Cortex** — a hands-on learning platform for browser DevTools and effective AI collaboration.
+> **You can't out‑prompt what you can't see.**
+>
+> A curriculum on mastering the DevTools as your primary sensory organ, and AI as your secondary brain.
 
 Webrex teaches the front-end fundamentals you need to debug, profile, and reason about real web pages — and then teaches you how to bring an AI pair into that loop without losing context (or leaking secrets).
 

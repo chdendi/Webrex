@@ -37,9 +37,20 @@ if (user) {
 
       <LoginButtons client:load next={next} initialError={errorParam} />
 
-      <p class="text-xs text-center" style="color: var(--color-text-faint);">
-        You can also keep using Webrex anonymously — your progress just won't be saved.
-      </p>
+      <div class="flex flex-col items-center gap-1.5">
+        <a
+          href={next}
+          class="text-sm underline underline-offset-4 transition-colors"
+          style="color: var(--color-text-muted);"
+          onmouseover="this.style.color='var(--color-text)'"
+          onmouseout="this.style.color='var(--color-text-muted)'"
+        >
+          Continue without an account
+        </a>
+        <p class="text-xs" style="color: var(--color-text-faint);">
+          Your progress just won't be saved.
+        </p>
+      </div>
     </main>
   </body>
 </html>

@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState } from 'react';
+import AchievementCard from './AchievementCard';
 
 type Tier = 'hard' | 'soft' | 'self' | 'choice';
 type Confidence = 'high' | 'mid' | 'low' | null;
@@ -16,6 +17,8 @@ interface Props {
   expectedRegex?: string;
   options?: ChoiceOption[];
   nextStepHref?: string;
+  lessonId?: string;
+  stepId?: string;
   onConfidence?: (tier: string, confidence: string) => void;
 }
 
@@ -27,6 +30,8 @@ export default function VerifyCard({
   expectedRegex,
   options,
   nextStepHref,
+  lessonId,
+  stepId,
   onConfidence,
 }: Props) {
   const [value, setValue] = useState('');
@@ -43,7 +48,35 @@ export default function VerifyCard({
   const [shakeIdx, setShakeIdx] = useState<number | null>(null);
   const [correctIdx, setCorrectIdx] = useState<number | null>(null);
   const prevConfidence = useRef(confidence);
+  const startedAt = useRef<number>(typeof performance !== 'undefined' ? performance.now() : Date.now());
+  const recordedPass = useRef(false);
+  const [showAchievement, setShowAchievement] = useState(false);
   const hasChromeAI = typeof window !== 'undefined' && (window as any).ai?.createTextSession;
+
+  const recordAttempt = (passed: boolean, conf: Confidence) => {
+    if (!lessonId || !stepId) return;
+    const durationMs = Math.round(
+      (typeof performance !== 'undefined' ? performance.now() : Date.now()) - startedAt.current,
+    );
+    fetch('/api/attempts', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        lessonId,
+        stepId,
+        tier,
+        confidence: conf,
+        passed,
+        durationMs,
+      }),
+    }).catch(() => {
+      // Non-blocking — UI does not depend on success.
+    });
+    if (passed && !recordedPass.current) {
+      recordedPass.current = true;
+      setShowAchievement(true);
+    }
+  };
 
   useEffect(() => {
     if (confidence && confidence !== prevConfidence.current) {
@@ -62,15 +95,16 @@ export default function VerifyCard({
     }
   }, [shakeIdx]);
 
-  // Auto-advance after correct choice + checkmark animation
+  // Auto-advance after correct choice + checkmark animation. Skip when an
+  // achievement card is rendering — the learner needs time to see it.
   useEffect(() => {
-    if (correctIdx !== null && nextStepHref) {
+    if (correctIdx !== null && nextStepHref && !showAchievement) {
       const t = setTimeout(() => {
         window.location.href = nextStepHref;
       }, 900);
       return () => clearTimeout(t);
     }
-  }, [correctIdx, nextStepHref]);
+  }, [correctIdx, nextStepHref, showAchievement]);
 
   const emitConfidence = (conf: string) => onConfidence?.(tier, conf);
 
@@ -84,9 +118,11 @@ export default function VerifyCard({
       setConfidence('high');
       setFeedback('✅ Correct!');
       emitConfidence('high');
+      recordAttempt(true, 'high');
     } else {
       setShakeIdx(idx);
       setFeedback('❌ Not quite — try again.');
+      recordAttempt(false, null);
     }
   };
 
@@ -105,11 +141,13 @@ export default function VerifyCard({
         setConfidence('high');
         setFeedback('✅ Matched — looks like the real thing.');
         emitConfidence('high');
+        recordAttempt(true, 'high');
         return;
       }
       setConfidence('mid');
       setFeedback('🟡 Partially matched — got something, but not exactly what we expected. Re-attempt to upgrade.');
       emitConfidence('mid');
+      recordAttempt(true, 'mid');
       return;
     }
     const conf = value.length > 20 ? 'mid' : 'low';
@@ -120,6 +158,7 @@ export default function VerifyCard({
         : '🟠 Accepted with low confidence — paste more for stronger verification.',
     );
     emitConfidence(conf);
+    recordAttempt(conf !== 'low', conf as Confidence);
   };
 
   const askAI = async () => {
@@ -141,6 +180,7 @@ export default function VerifyCard({
         setAiFeedback(result);
         setConfidence(isYes ? 'high' : 'mid');
         emitConfidence(isYes ? 'high' : 'mid');
+        recordAttempt(true, isYes ? 'high' : 'mid');
       } catch {
         setAiFeedback('Chrome AI failed. Try the copy-prompt option below.');
         setAiResult(null);
@@ -176,15 +216,18 @@ export default function VerifyCard({
         setConfidence('high');
         setFeedback(`✅ Confirmed by lab: ${data.message ?? 'verified'}`);
         emitConfidence('high');
+        recordAttempt(true, 'high');
       } else {
         setLabStatus('fail');
         setFeedback(`❌ Lab says no: ${data.message ?? 'try again'}`);
         emitConfidence('low');
+        recordAttempt(false, 'low');
       }
     } catch (e) {
       setLabStatus('fail');
       setFeedback(`❌ Couldn't reach lab. Is it running on the expected port?`);
       emitConfidence('low');
+      recordAttempt(false, null);
     }
   };
 
@@ -192,6 +235,7 @@ export default function VerifyCard({
     setConfidence('low');
     setFeedback('Marked as self-attested (low confidence). You can re-attempt later.');
     emitConfidence('low');
+    recordAttempt(true, 'low');
   };
 
   const ConfidencePill = () =>
@@ -539,6 +583,8 @@ export default function VerifyCard({
           {feedback}
         </p>
       )}
+
+      {showAchievement && lessonId && <AchievementCard lessonId={lessonId} />}
     </div>
   );
 }

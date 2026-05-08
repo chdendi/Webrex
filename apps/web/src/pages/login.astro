@@ -1,0 +1,45 @@
+---
+import '~/styles/global.css';
+import LoginButtons from '~/components/LoginButtons.tsx';
+import { getCurrentUser } from '~/lib/supabase/server';
+
+export const prerender = false;
+
+const next = Astro.url.searchParams.get('next') ?? '/';
+const errorParam = Astro.url.searchParams.get('error');
+
+// If the user is already signed in, bounce them to `next`.
+const user = await getCurrentUser({ request: Astro.request, cookies: Astro.cookies });
+if (user) {
+  return Astro.redirect(next, 302);
+}
+---
+
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <title>Sign in · Webrex</title>
+  </head>
+  <body class="min-h-screen flex items-center justify-center px-6" style="background: var(--color-bg);">
+    <main class="w-full max-w-sm flex flex-col gap-8">
+      <header class="flex flex-col gap-2 text-center">
+        <a href="/" class="text-sm" style="color: var(--color-text-faint);">← Webrex</a>
+        <h1 class="text-2xl font-semibold tracking-tight" style="color: var(--color-text);">
+          Sign in to save progress
+        </h1>
+        <p class="text-sm" style="color: var(--color-text-muted);">
+          Track which lessons you've passed and see how you rank against other learners.
+        </p>
+      </header>
+
+      <LoginButtons client:load next={next} initialError={errorParam} />
+
+      <p class="text-xs text-center" style="color: var(--color-text-faint);">
+        You can also keep using Webrex anonymously — your progress just won't be saved.
+      </p>
+    </main>
+  </body>
+</html>

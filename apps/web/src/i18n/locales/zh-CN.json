@@ -2,11 +2,11 @@
   "common": {
     "appName": "Webrex",
     "labConnected": "Lab 已连接",
-    "redact": "🛡 脱敏",
-    "step": "步骤",
-    "of": "/",
-    "previous": "← 上一步",
-    "next": "下一步 →",
+    "redact": "🛡 Redact",
+    "step": "Step",
+    "of": "of",
+    "previous": "← Previous",
+    "next": "Next →",
     "loading": "加载中...",
     "close": "关闭",
     "signIn": "登录",
@@ -60,11 +60,11 @@
     "pressEscToReturn": "按 Esc 或关闭窗口返回"
   },
   "footer": {
-    "previous": "← 上一步",
-    "next": "下一步 →",
-    "step": "步骤"
+    "previous": "← Previous",
+    "next": "Next →",
+    "step": "Step"
   },
   "stepProgress": {
-    "step": "步骤"
+    "step": "Step"
   }
 }

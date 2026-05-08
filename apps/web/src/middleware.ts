@@ -5,6 +5,11 @@ export const onRequest = defineMiddleware(async (context, next) => {
   const { url, request, cookies } = context;
   const pathname = url.pathname;
 
+  // Skip auth when Supabase env vars aren't configured (e.g. CI build)
+  if (!import.meta.env.PUBLIC_SUPABASE_URL) {
+    return next();
+  }
+
   // Protect /lessons/* routes
   if (pathname.startsWith('/lessons')) {
     const supabase = createSupabaseServerClient({ request, cookies });

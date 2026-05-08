@@ -1,79 +1,78 @@
 {
-	"id": "l7-1",
-	"level": 7,
-	"sublevel": 1,
-	"categoryIcon": "⚡",
-	"categoryName": "Performance 面板基础",
-	"title": "录制性能 trace",
-	"time": 5,
-	"track": "core",
-	"needsLab": false,
-	"stuck": "找不到录制按钮？打开 DevTools 后点击 Performance 标签页，左上角有一个 ● 圆形按钮就是录制键。如果面板显示空白，点左上角 ● 即可。",
-	"steps": [
-		{
-			"slug": "concept",
-			"type": "concept",
-			"title": "Performance 面板录下了什么",
-			"hook": "浏览器在你看网页的每一秒都在做大量工作——跑 JS、算布局、画像素。如果把这些事像拍电影一样录下来，会发生什么？",
-			"body": [
-				"Performance 面板是一个时间线录像机。",
-				"点录制 → 操作页面 → 停止 → 得到一张火焰图，每一帧发生了什么全都列出来。"
-			],
-			"bullets": [
-				{
-					"emoji": "⏺",
-					"title": "录制",
-					"body": "点击 ● 开始，点击 Stop 结束"
-				},
-				{
-					"emoji": "🔥",
-					"title": "火焰图",
-					"body": "每条色块代表浏览器做的一件事"
-				},
-				{
-					"emoji": "📊",
-					"title": "Summary",
-					"body": "底部汇总：JS 耗时、渲染耗时、绘制耗时"
-				}
-			],
-			"takeaway": "下一步亲手录一条 trace。"
-		},
-		{
-			"slug": "practice",
-			"type": "practice",
-			"title": "录制第一条 trace",
-			"intro": "react.dev 是 React 官方文档站。",
-			"steps": [
-				"打开 react.dev。",
-				"打开 DevTools → Performance 面板。",
-				"点击左上角 **● 录制按钮** 开始录制。",
-				"操作页面：点击顶部 Search 按钮，向下滚动一段，等待 3 秒。",
-				"点击 **Stop** 结束录制。",
-				"页面自动生成一张火焰图。",
-				"找到底部的 **Summary** 标签页，查看：\n\n| 活动类型 | 含义 |\n| --- | --- |\n| Scripting | JS 执行时间 |\n| Rendering | 样式计算 + 布局 |\n| Painting | 像素绘制 |"
-			],
-			"shortcuts": [
-				{
-					"label": "DevTools",
-					"mac": "⌘+⌥+I",
-					"win": "F12"
-				}
-			],
-			"expectedOutcome": "Summary 标签页显示三类活动的时间分配，其中 Scripting 通常占最大。"
-		},
-		{
-			"slug": "verify",
-			"type": "verify",
-			"title": "验证",
-			"prompt": "录制一次 react.dev 的 Performance trace 后，Summary 标签页里显示的总时间中，哪类活动占比最大？简要描述你看到的。",
-			"tier": "self"
-		},
-		{
-			"slug": "ask-ai",
-			"type": "ask-ai",
-			"title": "问 AI",
-			"intro": "把观察转成问题。",
-			"template": "我在 react.dev 用 Chrome DevTools Performance 面板录了一条 trace：\n- Summary 显示 Scripting 占了大部分时间\n- Rendering 和 Painting 也有占比\n\n请解释：\n1. Scripting、Rendering、Painting 分别代表浏览器在做什么？\n2. 如何根据 Summary 数据判断性能瓶颈在哪一层？"
-		}
-	]
+  "id": "l7-1",
+  "level": 7,
+  "sublevel": 1,
+  "categoryIcon": "🔐",
+  "categoryName": "安全与权限基础",
+  "title": "HTTPS、地址栏图标与 Mixed Content",
+  "time": 5,
+  "track": "core",
+  "needsLab": true,
+  "stuck": "地址栏图标找不到？Chrome 117 以后不再是锁 icon，点地址栏左侧的 tune 图标 → Connection is secure。",
+  "steps": [
+    {
+      "slug": "concept",
+      "type": "concept",
+      "title": "地址栏的三个秘密",
+      "hook": "地址栏左边那个小图标，远不止装饰。",
+      "body": [
+        "Chrome 117+ 把「锁」换成了「tune」图标，点开能看到连接详情。",
+        "Mixed Content 指 HTTPS 页面加载了 HTTP 资源，浏览器对不同类型的处理策略完全不同。"
+      ],
+      "bullets": [
+        {
+          "emoji": "🔒",
+          "title": "被动 Mixed Content",
+          "body": "img/audio/video — 浏览器警告但会加载"
+        },
+        {
+          "emoji": "🚫",
+          "title": "主动 Mixed Content",
+          "body": "script/iframe/css — 浏览器直接 block"
+        }
+      ],
+      "takeaway": "主动内容被 block，被动内容被警告，动手看看。"
+    },
+    {
+      "slug": "practice",
+      "type": "practice",
+      "title": "检查地址栏与 Console",
+      "intro": "用 HTTPS 站点观察 Chrome 的安全提示。",
+      "steps": [
+        "打开 https://react.dev。",
+        "点击地址栏左侧 tune 图标，查看「Connection is secure」详情。",
+        "打开 DevTools → Console，观察是否有 Mixed Content 警告。",
+        "对比下表，理解两种 Mixed Content 的浏览器行为：\n\n| 类型 | 包含哪些 | 浏览器行为 | 原因 |\n| --- | --- | --- | --- |\n| 主动（Active） | script, iframe, css, xhr | 完全 block | 可篡改页面逻辑 |\n| 被动（Passive） | img, audio, video | 警告但加载 | 不影响页面执行 |"
+      ],
+      "shortcuts": [
+        {
+          "label": "DevTools",
+          "mac": "⌘+⌥+I",
+          "win": "F12"
+        },
+        {
+          "label": "Console",
+          "mac": "⌘+⌥+J",
+          "win": "Ctrl+Shift+J"
+        }
+      ],
+      "expectedOutcome": "Console 可能出现被动 Mixed Content 警告；主动 Mixed Content 则直接被 block。",
+      "externalSite": "react.dev"
+    },
+    {
+      "slug": "verify",
+      "type": "verify",
+      "title": "验证",
+      "prompt": "Mixed Content 中的主动内容（Active）和被动内容（Passive）哪种会被浏览器直接 block？\nA) 主动\nB) 被动\nC) 都会\nD) 都不会",
+      "tier": "soft",
+      "expectedRegex": "(A|主动|active|script|block)"
+    },
+    {
+      "slug": "ask-ai",
+      "type": "ask-ai",
+      "title": "问 AI",
+      "intro": "把今天的发现整理成修复清单。",
+      "template": "我在 HTTPS 站点上发现了 Mixed Content 警告：\n- 主动内容（script/iframe/css）被浏览器直接 block\n- 被动内容（img/audio/video）被警告但仍加载\n请告诉我：\n1. 如何用 Chrome DevTools 定位所有 Mixed Content 资源？\n2. 修复 Mixed Content 的几种方案分别是什么？"
+    }
+  ]
 }

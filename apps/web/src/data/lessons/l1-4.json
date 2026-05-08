@@ -71,7 +71,8 @@
           "win": "Ctrl+Shift+M"
         }
       ],
-      "expectedOutcome": "3 个键都按过，每个都把 DevTools 直接送到了对的地方。从此你看到「报错来了」会下意识按 J，看到「这个布局怪」会下意识按 C，要测「手机上长啥样」会下意识按 M。"
+      "expectedOutcome": "3 个键都按过，每个都把 DevTools 直接送到了对的地方。从此你看到「报错来了」会下意识按 J，看到「这个布局怪」会下意识按 C，要测「手机上长啥样」会下意识按 M。",
+      "externalSite": "react.dev"
     },
     {
       "slug": "verify",

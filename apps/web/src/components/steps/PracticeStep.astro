@@ -14,8 +14,11 @@ interface Props {
   shortcuts?: ShortcutItem[];
   expectedOutcome?: string;
   labUrl?: string;
+  externalSite?: string;
+  lessonId?: string;
+  stepSlug?: string;
 }
-const { title, intro, steps, shortcuts, expectedOutcome, labUrl } = Astro.props;
+const { title, intro, steps, shortcuts, expectedOutcome, labUrl, externalSite, lessonId, stepSlug } = Astro.props;
 ---
 
 <article class="flex flex-col gap-7">
@@ -47,6 +50,62 @@ const { title, intro, steps, shortcuts, expectedOutcome, labUrl } = Astro.props;
         </div>
       ))}
     </div>
+  )}
+
+  {externalSite && (
+    <>
+    <button
+      type="button"
+      class="inline-flex items-center gap-3 px-6 py-3.5 text-base font-semibold text-white w-fit transition-all hover:shadow-lg active:scale-[0.98] rounded-2xl"
+      style="background: linear-gradient(135deg, var(--color-accent), #005BB5); box-shadow: 0 4px 20px rgba(0,113,227,0.3);"
+      id="launch-external-btn"
+      data-site={externalSite}
+    >
+      <span class="text-xl">🌐</span>
+      <span>Open {externalSite}</span>
+      <span class="text-lg opacity-70">↗</span>
+    </button>
+    <script>
+      // @ts-nocheck
+      (function() {
+        var btn = document.getElementById('launch-external-btn');
+        if (!btn) return;
+        var site = btn.getAttribute('data-site');
+        var url = 'https://' + site + '/';
+
+        btn.addEventListener('click', function() {
+          window.__webrexOpenGuide = true;
+
+          // Call PiP FIRST — window.open() consumes user activation
+          var dpip = documentPictureInPicture;
+          if (dpip && dpip.requestWindow) {
+            dpip.requestWindow({ width: 380, height: 480 }).then(function(w) {
+              window.__webrexPiPWindow = w;
+              if (window.__webrexOpenGuideFn) {
+                window.__webrexOpenGuideFn();
+              }
+            }).catch(function(e) {
+              console.warn('PiP failed:', e.message || e);
+              fallback();
+            });
+          } else {
+            fallback();
+          }
+
+          // Open external site (after PiP call to preserve user activation)
+          window.open(url, '_blank', 'noopener');
+
+          function fallback() {
+            if (window.__webrexOpenGuideFn) {
+              window.__webrexOpenGuideFn();
+            } else {
+              window.dispatchEvent(new CustomEvent('webrex:open-guide'));
+            }
+          }
+        });
+      })();
+    </script>
+    </>
   )}
 
   <ol class="flex flex-col gap-5 list-none p-0 m-0">

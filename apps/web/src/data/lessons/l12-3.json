@@ -1,80 +1,88 @@
 {
-	"id": "l12-3",
-	"level": 12,
-	"sublevel": 3,
-	"categoryIcon": "🏗️",
-	"categoryName": "现代前端架构常识",
-	"title": "构建产物、文件 hash 与 CDN 缓存",
-	"time": 4,
-	"track": "core",
-	"needsLab": false,
-	"stuck": "找不到带 hash 的 JS 文件名？刷新 react.dev，Network 面板的 JS 过滤器下找名称里包含随机字符串的文件。",
-	"steps": [
-		{
-			"slug": "concept",
-			"type": "concept",
-			"title": "文件名里那串乱码是故意的",
-			"hook": "生产环境的 JS 文件名不是给人看的——是给浏览器和 CDN 看的。",
-			"body": [
-				"生产环境的 JS/CSS 文件名里那串随机字符叫 content hash，由构建工具（Webpack/Vite/Rollup）根据文件内容自动生成。",
-				"文件内容变了 → hash 变了 → 文件名变了 → 浏览器认为这是个新资源 → 自动下载最新版本。这叫 cache busting。",
-				"核心策略：index.html 设短缓存或不缓存（每次验证是否有新版本），带 hash 的 JS/CSS/图片 设长缓存（如一年），因为 hash 已经保证了唯一性。",
-				"配合 CDN 部署时，新版本发布后旧文件不被覆盖——新 hash 的新文件上传到 CDN，旧文件留着给还在用旧版 HTML 的用户继续服务。"
-			],
-			"bullets": [
-				{
-					"emoji": "🔢",
-					"title": "Content Hash",
-					"body": "文件名 hash = 文件内容的指纹，一变俱变。"
-				},
-				{
-					"emoji": "♻️",
-					"title": "Cache Busting",
-					"body": "文件名变了 = 强制浏览器拉新文件，不需要手动清缓存。"
-				},
-				{
-					"emoji": "⏳",
-					"title": "分层缓存",
-					"body": "HTML 短缓存 + 静态资源长缓存 = 最佳实践。"
-				},
-				{
-					"emoji": "☁️",
-					"title": "CDN 兼容",
-					"body": "新 hash = 新 URL，CDN 上不会出现文件被覆盖的问题。"
-				}
-			],
-			"takeaway": "hash 不是随机字符串——它是内容指纹。hash 变了 = 内容变了 = 浏览器自动拿新文件。"
-		},
-		{
-			"slug": "practice",
-			"type": "practice",
-			"title": "从 Network 面板追踪缓存策略",
-			"intro": "打开 react.dev，观察真正的生产环境缓存配置。",
-			"steps": [
-				"打开 react.dev → DevTools → Network 面板。",
-				"刷新页面，在筛选栏选择 JS，观察文件名列表。",
-				"找到文件名中带有 hash 片段的 JS 文件，格式为 `framework-abc123.js` 或 chunk 文件中包含随机字符串。",
-				"点击某个 JS 文件 → Headers 标签 → 查看 Response Headers 中的 Cache-Control。",
-				"它大概率显示 `public, max-age=31536000, immutable`，意思是缓存一年且永不过期。",
-				"回到列表，筛选 Doc 类型，点击主文档请求，查看它的 Cache-Control——很可能不同（更短或 no-store）。",
-				"对比下表理解不同文件的缓存策略：\n\n| 文件类型 | 缓存策略 | 原因 |\n| --- | --- | --- |\n| index.html | max-age=0 / no-cache | 需要每次验证版本，确保拿到最新的资源引用 |\n| *.a3f8b2.js | max-age=31536000, immutable | hash 保证唯一性，可放心长缓存 |\n| *.d4e5f6.css | max-age=31536000, immutable | 同 JS，hash 变了自动更新 |\n| 图片/字体 | max-age=31536000 | 静态资源变动少，长缓存即可 |"
-			],
-			"expectedOutcome": "JS 文件有长缓存（一年的 max-age），HTML 文档缓存短或无缓存。文件名中的随机字符串就是 content hash。"
-		},
-		{
-			"slug": "verify",
-			"type": "verify",
-			"title": "验证",
-			"prompt": "为什么生产环境的 JS 文件名里要带 hash？",
-			"tier": "soft",
-			"expectedRegex": "(缓存|更新|新版本|自动|cache|bust|hash|版本|version|刷新|换)"
-		},
-		{
-			"slug": "ask-ai",
-			"type": "ask-ai",
-			"title": "问 AI",
-			"intro": "从缓存策略延伸到部署架构。",
-			"template": "前端项目的缓存策略通常分两层：HTML 短缓存，静态资源长缓存。请解释为什么这样设计、content hash 如何实现可靠的 cache busting，以及部署到 CDN 时需要注意哪些问题（如新旧版本共存期间的非原子性发布）。"
-		}
-	]
+  "id": "l12-3",
+  "level": 12,
+  "sublevel": 3,
+  "categoryIcon": "⚡",
+  "categoryName": "Performance 面板基础",
+  "title": "Paint Flashing——看哪些区域在重绘",
+  "time": 3,
+  "track": "core",
+  "needsLab": false,
+  "stuck": "找不到 Rendering 标签页？在 DevTools 里按 Cmd+Shift+P (Mac) / Ctrl+Shift+P (Win)，输入 Show Rendering，回车。如果还是看不到，点 DevTools 右上角 ⋮ → More tools → Rendering。",
+  "steps": [
+    {
+      "slug": "concept",
+      "type": "concept",
+      "title": "每次重绘都在烧性能",
+      "hook": "你滚动一个页面时，浏览器在幕后疯狂重绘像素。如果能把每次重绘的区域用绿色标出来，你觉得会看到什么？",
+      "body": [
+        "Paint Flashing 是一个诊断开关：页面任何区域被重绘时，它就把那块涂成绿色。",
+        "绿色闪得越多，说明浏览器在做越多不必要的重绘工作，性能就越差。"
+      ],
+      "bullets": [
+        {
+          "emoji": "🟢",
+          "title": "绿色 = 重绘",
+          "body": "闪烁的绿色区域就是浏览器刚重新画过的像素"
+        },
+        {
+          "emoji": "⚠",
+          "title": "大面积绿色 = 问题",
+          "body": "一整片绿说明整个页面都在重绘，而不是仅更新变化的部分"
+        },
+        {
+          "emoji": "🔧",
+          "title": "Rendering 面板",
+          "body": "通过命令面板打开 Rendering 标签页，勾选开关"
+        }
+      ],
+      "takeaway": "下一步打开 Paint Flashing 亲自观察。"
+    },
+    {
+      "slug": "practice",
+      "type": "practice",
+      "title": "看哪些区域在闪绿",
+      "intro": "react.dev 页面结构复杂，滚动时的重绘行为很有代表性。",
+      "steps": [
+        "打开 react.dev。",
+        "打开 DevTools。",
+        "按 **Cmd+Shift+P** (Mac) 或 **Ctrl+Shift+P** (Win) 打开命令面板。",
+        "输入 **Rendering** → 选择 **Show Rendering**。",
+        "DevTools 底部出现 Rendering 面板。",
+        "勾选 **Paint Flashing** 复选框。",
+        "在页面上滚动、悬停导航菜单、点击链接。",
+        "观察哪些区域闪绿光。注意对比：\n\n| 操作 | 闪绿区域 |\n| --- | --- |\n| 慢速滚动 | 整个页面大面积闪绿 |\n| 鼠标悬停菜单 | 仅菜单区域闪绿 |\n| 点击 Search 按钮 | 搜索弹出层区域闪绿 |",
+        "完成后取消勾选 Paint Flashing 关闭诊断。"
+      ],
+      "shortcuts": [
+        {
+          "label": "DevTools",
+          "mac": "⌘+⌥+I",
+          "win": "F12"
+        },
+        {
+          "label": "命令面板",
+          "mac": "⌘+⇧+P",
+          "win": "Ctrl+Shift+P"
+        }
+      ],
+      "expectedOutcome": "滚动时整个页面闪绿；局部交互仅相关区域闪绿。",
+      "externalSite": "react.dev"
+    },
+    {
+      "slug": "verify",
+      "type": "verify",
+      "title": "验证",
+      "prompt": "打开 Paint Flashing 后滚动 react.dev 页面，哪些区域出现了绿色闪烁？A) 只有滚动条 B) 整个页面都在闪 C) 只有新进入视口的区域 D) 完全没有绿色",
+      "tier": "soft",
+      "expectedRegex": "(B|整个|都.{0,3}闪|全|全部|all|处处)"
+    },
+    {
+      "slug": "ask-ai",
+      "type": "ask-ai",
+      "title": "问 AI",
+      "intro": "把观察转成问题。",
+      "template": "我在 react.dev 打开了 Chrome DevTools 的 Paint Flashing 功能：\n- 滚动页面时整个屏幕都在闪绿色\n- 鼠标悬停菜单时只有菜单区域闪绿色\n\n请解释：\n1. 为什么滚动会导致全页面重绘？浏览器的合成（compositing）机制能避免这种重绘吗？\n2. Paint Flashing 看到的绿色面积越大，对性能的影响具体有多大？\n3. 开发者该用什么策略减少不必要的重绘区域？"
+    }
+  ]
 }

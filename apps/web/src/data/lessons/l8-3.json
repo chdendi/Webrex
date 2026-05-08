@@ -71,7 +71,8 @@
           "win": "Ctrl+Shift+M"
         }
       ],
-      "expectedOutcome": "在某个宽度（通常在 640px 到 800px 之间），顶部导航栏的链接文字会从完整显示切换为菜单图标（或反过来）。这个宽度就是 react.dev 的导航栏响应式断点。"
+      "expectedOutcome": "在某个宽度（通常在 640px 到 800px 之间），顶部导航栏的链接文字会从完整显示切换为菜单图标（或反过来）。这个宽度就是 react.dev 的导航栏响应式断点。",
+      "externalSite": "react.dev"
     },
     {
       "slug": "verify",

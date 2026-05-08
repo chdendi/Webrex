@@ -1,90 +1,81 @@
 {
-	"id": "l10-3",
-	"level": 10,
-	"sublevel": 3,
-	"categoryIcon": "🔐",
-	"categoryName": "安全与权限基础",
-	"title": "第三方 Cookie 与「为什么登录态丢了」",
-	"time": 5,
-	"track": "core",
-	"needsLab": true,
-	"stuck": "Application 面板看不到 Cookie？确认左栏选了 Cookies → localhost，不是其他域。",
-	"steps": [
-		{
-			"slug": "concept",
-			"type": "concept",
-			"title": "Cookie 的生存法则",
-			"hook": "用户说「昨天还能用，今天又要重新登录」，答案可能藏在 Cookie 里。",
-			"body": [
-				"第三方 Cookie 是当前页面之外的域设置的 Cookie，2020 年代起浏览器在系统性地封堵它们。",
-				"SameSite 属性是 Cookie 跨站行为的总开关，CHIPS 则把第三方 Cookie 按顶层站点隔离。"
-			],
-			"bullets": [
-				{
-					"emoji": "🔓",
-					"title": "SameSite=None",
-					"body": "所有请求都发，但必须配合 Secure 属性"
-				},
-				{
-					"emoji": "🔐",
-					"title": "SameSite=Lax",
-					"body": "跨站 GET 带 Cookie，跨站 POST / iframe 不带"
-				},
-				{
-					"emoji": "🔒",
-					"title": "SameSite=Strict",
-					"body": "任何跨站请求都不带 Cookie，从链接点进来也要重新登录"
-				},
-				{
-					"emoji": "🧩",
-					"title": "Partitioned (CHIPS)",
-					"body": "按顶层站点隔离存储，不同顶层站点各自一份 Cookie"
-				}
-			],
-			"takeaway": "记住 Lax — 它是最常见的默认值，也是「邮件链接跳转后登录态还在」的原因。"
-		},
-		{
-			"slug": "practice",
-			"type": "practice",
-			"title": "检查 Cookie 属性与 SameSite 行为",
-			"intro": "用本地 Lab 页面观察 Cookie 的字段和 iframe 里的隔离现象。",
-			"steps": [
-				"打开 http://localhost:8787/lessons/l10-cookie。",
-				"打开 DevTools → Application → Cookies → localhost。",
-				"查看 webrex_session Cookie：Name、Value、HttpOnly、SameSite 属性。",
-				"在 Console 中输入 document.cookie — HttpOnly Cookie 不会出现在输出中。",
-				"观察页面中的 iframe，理解第三方 Cookie 在跨域子页中的隔离行为。",
-				"对照下表理解 SameSite 的影响：\n\n| SameSite 值 | 跨站 GET | 跨站 POST | iframe | 典型场景 |\n| --- | --- | --- | --- | --- |\n| None | 带 | 带 | 带 | 第三方嵌入、跨站支付 |\n| Lax | 带 | 不带 | 不带 | 站内导航保持登录 |\n| Strict | 不带 | 不带 | 不带 | 银行等高安全场景 |"
-			],
-			"shortcuts": [
-				{
-					"label": "DevTools",
-					"mac": "⌘+⌥+I",
-					"win": "F12"
-				},
-				{
-					"label": "Application",
-					"mac": "⌘+⌥+A",
-					"win": "Ctrl+Shift+A"
-				}
-			],
-			"labUrl": "http://localhost:8787/lessons/l10-cookie",
-			"expectedOutcome": "Application 面板中看到 Cookie 的 SameSite 属性，Console 中 document.cookie 不返回 HttpOnly Cookie。"
-		},
-		{
-			"slug": "verify",
-			"type": "verify",
-			"title": "验证",
-			"prompt": "SameSite=Lax 的 Cookie，用户从邮件点链接跳转到你的网站时，Cookie 会带上吗？回答「会」或「不会」。",
-			"tier": "soft",
-			"expectedRegex": "(会|能|可以|带.{0,3}上|send|yes|是)"
-		},
-		{
-			"slug": "ask-ai",
-			"type": "ask-ai",
-			"title": "问 AI",
-			"intro": "把登录态丢失问题变成排查流程。",
-			"template": "用户反馈「从一个页面跳转到另一个页面后登录态丢了」：\n- 两个页面是同域还是跨域？\n- SameSite 是什么值？\n- Set-Cookie 有没有 Secure 属性？\n请帮我：\n1. 列出排查登录态丢失的完整步骤\n2. 解释 SameSite=Lax 和 None 在不同浏览器里的实际行为\n3. 给出一个生产环境安全的 Cookie 设置方案"
-		}
-	]
+  "id": "l10-3",
+  "level": 10,
+  "sublevel": 3,
+  "categoryIcon": "🏗️",
+  "categoryName": "现代前端架构常识",
+  "title": "构建产物、文件 hash 与 CDN 缓存",
+  "time": 4,
+  "track": "core",
+  "needsLab": false,
+  "stuck": "找不到带 hash 的 JS 文件名？刷新 react.dev，Network 面板的 JS 过滤器下找名称里包含随机字符串的文件。",
+  "steps": [
+    {
+      "slug": "concept",
+      "type": "concept",
+      "title": "文件名里那串乱码是故意的",
+      "hook": "生产环境的 JS 文件名不是给人看的——是给浏览器和 CDN 看的。",
+      "body": [
+        "生产环境的 JS/CSS 文件名里那串随机字符叫 content hash，由构建工具（Webpack/Vite/Rollup）根据文件内容自动生成。",
+        "文件内容变了 → hash 变了 → 文件名变了 → 浏览器认为这是个新资源 → 自动下载最新版本。这叫 cache busting。",
+        "核心策略：index.html 设短缓存或不缓存（每次验证是否有新版本），带 hash 的 JS/CSS/图片 设长缓存（如一年），因为 hash 已经保证了唯一性。",
+        "配合 CDN 部署时，新版本发布后旧文件不被覆盖——新 hash 的新文件上传到 CDN，旧文件留着给还在用旧版 HTML 的用户继续服务。"
+      ],
+      "bullets": [
+        {
+          "emoji": "🔢",
+          "title": "Content Hash",
+          "body": "文件名 hash = 文件内容的指纹，一变俱变。"
+        },
+        {
+          "emoji": "♻️",
+          "title": "Cache Busting",
+          "body": "文件名变了 = 强制浏览器拉新文件，不需要手动清缓存。"
+        },
+        {
+          "emoji": "⏳",
+          "title": "分层缓存",
+          "body": "HTML 短缓存 + 静态资源长缓存 = 最佳实践。"
+        },
+        {
+          "emoji": "☁️",
+          "title": "CDN 兼容",
+          "body": "新 hash = 新 URL，CDN 上不会出现文件被覆盖的问题。"
+        }
+      ],
+      "takeaway": "hash 不是随机字符串——它是内容指纹。hash 变了 = 内容变了 = 浏览器自动拿新文件。"
+    },
+    {
+      "slug": "practice",
+      "type": "practice",
+      "title": "从 Network 面板追踪缓存策略",
+      "intro": "打开 react.dev，观察真正的生产环境缓存配置。",
+      "steps": [
+        "打开 react.dev → DevTools → Network 面板。",
+        "刷新页面，在筛选栏选择 JS，观察文件名列表。",
+        "找到文件名中带有 hash 片段的 JS 文件，格式为 `framework-abc123.js` 或 chunk 文件中包含随机字符串。",
+        "点击某个 JS 文件 → Headers 标签 → 查看 Response Headers 中的 Cache-Control。",
+        "它大概率显示 `public, max-age=31536000, immutable`，意思是缓存一年且永不过期。",
+        "回到列表，筛选 Doc 类型，点击主文档请求，查看它的 Cache-Control——很可能不同（更短或 no-store）。",
+        "对比下表理解不同文件的缓存策略：\n\n| 文件类型 | 缓存策略 | 原因 |\n| --- | --- | --- |\n| index.html | max-age=0 / no-cache | 需要每次验证版本，确保拿到最新的资源引用 |\n| *.a3f8b2.js | max-age=31536000, immutable | hash 保证唯一性，可放心长缓存 |\n| *.d4e5f6.css | max-age=31536000, immutable | 同 JS，hash 变了自动更新 |\n| 图片/字体 | max-age=31536000 | 静态资源变动少，长缓存即可 |"
+      ],
+      "expectedOutcome": "JS 文件有长缓存（一年的 max-age），HTML 文档缓存短或无缓存。文件名中的随机字符串就是 content hash。",
+      "externalSite": "react.dev"
+    },
+    {
+      "slug": "verify",
+      "type": "verify",
+      "title": "验证",
+      "prompt": "为什么生产环境的 JS 文件名里要带 hash？",
+      "tier": "soft",
+      "expectedRegex": "(缓存|更新|新版本|自动|cache|bust|hash|版本|version|刷新|换)"
+    },
+    {
+      "slug": "ask-ai",
+      "type": "ask-ai",
+      "title": "问 AI",
+      "intro": "从缓存策略延伸到部署架构。",
+      "template": "前端项目的缓存策略通常分两层：HTML 短缓存，静态资源长缓存。请解释为什么这样设计、content hash 如何实现可靠的 cache busting，以及部署到 CDN 时需要注意哪些问题（如新旧版本共存期间的非原子性发布）。"
+    }
+  ]
 }

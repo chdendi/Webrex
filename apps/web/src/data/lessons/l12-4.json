@@ -1,76 +1,87 @@
 {
-	"id": "l12-4",
-	"level": 12,
-	"sublevel": 4,
-	"categoryIcon": "🏗️",
-	"categoryName": "现代前端架构常识",
-	"title": "dev / staging / prod 差异排查",
-	"time": 5,
-	"track": "core",
-	"needsLab": false,
-	"stuck": "看不到 React DevTools 提示？在 Console 里输入 `__REACT_DEVTOOLS_GLOBAL_HOOK__` —— 如果有输出说明 React 在运行。",
-	"steps": [
-		{
-			"slug": "concept",
-			"type": "concept",
-			"title": "同一个代码，三个世界",
-			"hook": "页面报错了，先别改代码——你确定看的是哪个环境吗？",
-			"body": [
-				"Dev、Staging、Production 三个环境的代码相同，但构建配置、基础设施和监控配置截然不同。",
-				"Dev 环境：source map 完整、React DevTools 显示 development build 警告、API 指向本地或开发服务器、日志级别 verbose。",
-				"Staging 环境：source map 通常在（方便调试）、API 指向 staging 后端、错误追踪开启（Sentry staging project）、数据是模拟或脱敏的。",
-				"Production 环境：无 source map（或仅错误时上传）、React 用 production build（无 DevTools 警告）、API 指向生产域名、错误追踪全量开启、日志精简。",
-				"排查线上问题时第一件事不是看代码——是先确认你打开的是哪个环境的页面，避免对着 prod 的 Console 找 dev 才有的信息。"
-			],
-			"bullets": [
-				{
-					"emoji": "🔧",
-					"title": "Dev",
-					"body": "source map 完整、开发警告、热更新、本地 API。"
-				},
-				{
-					"emoji": "🧪",
-					"title": "Staging",
-					"body": "预发布验证、真实后端、脱敏数据、错误追踪开启。"
-				},
-				{
-					"emoji": "🚀",
-					"title": "Prod",
-					"body": "代码压缩、无 source map、production build、日志精简。"
-				}
-			],
-			"takeaway": "排查错误前，先确认环境。Dev 有提示，Prod 没有——这不是 bug，是设计。"
-		},
-		{
-			"slug": "practice",
-			"type": "practice",
-			"title": "建一份环境检查清单",
-			"intro": "打开 react.dev，对照生产环境的特征逐一检查，建立自己的环境识别能力。",
-			"steps": [
-				"打开 react.dev → DevTools，按以下清单逐项检查：",
-				"Console 面板：有没有 React DevTools 提示？production 环境下通常看不到 'This page is using the production build' 这类显式提示，但也不会出现 development 警告。",
-				"Sources 面板：搜索 JS 文件，source map 是否加载？（production 一般不上传 source map 到公开 CDN。）",
-				"Network 面板：观察 API 请求域名——是 react.dev 自身还是单独的 API 服务？记录域名规律。",
-				"Application 面板：Cookies / Local Storage 中有没有环境标识（如 `env=production` 之类的标记）？",
-				"执行一遍检查后，在脑中对比：如果你在看一个 dev 环境页面，Console 会多出哪些东西？Source 面板会多出什么？",
-				"对照下表建立环境识别直觉：\n\n| 检查项 | Dev | Staging | Prod |\n| --- | --- | --- | --- |\n| React DevTools 图标 | 红色（开发模式） | 红色或正常 | 正常（无标记） |\n| Source Map | 完整加载 | 通常加载 | 一般不加载 |\n| Console 警告 | 详细的 React 警告 | 可能有 | 无开发警告 |\n| JS 代码格式 | 未压缩、可读 | 可能压缩 | 压缩混淆 |\n| API 域名 | localhost 或 dev 域名 | staging 域名 | 生产域名 |\n| 错误追踪 | 通常关闭 | 开启（staging 项目） | 开启（prod 项目） |"
-			],
-			"expectedOutcome": "react.dev 的 Console 里没有 React 开发警告，Sources 没有 source map，API 指向生产域名——符合生产环境特征。"
-		},
-		{
-			"slug": "verify",
-			"type": "verify",
-			"title": "验证",
-			"prompt": "生产环境的 React 页面在 Console 里通常会看到什么提示？\nA) 'development build' 警告\nB) 'production build' 或没有提示\nC) 红色报错\nD) React 版本号",
-			"tier": "soft",
-			"expectedRegex": "(B|production|生产|prod|没有|no|无)"
-		},
-		{
-			"slug": "ask-ai",
-			"type": "ask-ai",
-			"title": "问 AI",
-			"intro": "从环境差异延伸到发布流程。",
-			"template": "前端项目的 dev、staging、prod 三个环境各有哪些典型特征？在排查线上问题时，如何快速确认当前看到的是哪个环境？另外，请解释 feature flag 和灰度发布（canary release）如何在 staging 和 prod 之间提供更细粒度的控制。"
-		}
-	]
+  "id": "l12-4",
+  "level": 12,
+  "sublevel": 4,
+  "categoryIcon": "⚡",
+  "categoryName": "Performance 面板基础",
+  "title": "CPU 节流模拟低端设备",
+  "time": 4,
+  "track": "core",
+  "needsLab": false,
+  "stuck": "找不到 CPU 节流选项？确认 Performance 面板顶部工具栏里有 ⚙ Capture Settings 齿轮图标，点击后 CPU 下拉菜单位于 Network 下拉旁边。如果面板顶部看不到齿轮，先把 DevTools 窗口拉宽一些。",
+  "steps": [
+    {
+      "slug": "concept",
+      "type": "concept",
+      "title": "你的电脑快 ≠ 用户电脑快",
+      "hook": "你的 MacBook Pro 跑页面丝滑流畅——但用户的 2018 年 Android 机呢？怎么在不买一堆真机的情况下测出差距？",
+      "body": [
+        "Chrome DevTools 可以在 Performance 面板里模拟慢速 CPU。",
+        "开启 4x/6x 减速后，同一个操作执行更久，火焰图里的色块按比例拉宽，瓶颈一目了然。"
+      ],
+      "bullets": [
+        {
+          "emoji": "🐢",
+          "title": "4x slowdown",
+          "body": "每条 JS 指令执行速度降为 1/4"
+        },
+        {
+          "emoji": "⚙",
+          "title": "Capture Settings",
+          "body": "齿轮图标里的 CPU 下拉菜单"
+        },
+        {
+          "emoji": "📶",
+          "title": "搭配 Network 节流",
+          "body": "同时模拟慢网速，还原真实低端环境"
+        }
+      ],
+      "takeaway": "下一步在节流模式下录一条 trace 对比。"
+    },
+    {
+      "slug": "practice",
+      "type": "practice",
+      "title": "对比正常 vs 4x 减速",
+      "intro": "同样操作、两种 CPU 模式、对比效果。",
+      "steps": [
+        "打开 react.dev → DevTools → Performance 面板。",
+        "先确保 CPU 下拉为 **No throttling**，录制一次：点击 Search 按钮，等待 2 秒，点 Stop。",
+        "记下 Summary 里的 Scripting 耗时。",
+        "点击 Performance 面板顶部的 **⚙ Capture Settings** 齿轮图标。",
+        "CPU 下拉菜单选择 **4x slowdown**。",
+        "再次录制完全相同的操作：点击 Search 按钮，等待 2 秒，点 Stop。",
+        "对比两次 Summary：\n\n| 模式 | Scripting 耗时 |\n| --- | --- |\n| No throttling | ~X ms |\n| 4x slowdown | ~4X ms |",
+        "观察火焰图：4x 模式下的色块明显更宽。"
+      ],
+      "shortcuts": [
+        {
+          "label": "DevTools",
+          "mac": "⌘+⌥+I",
+          "win": "F12"
+        },
+        {
+          "label": "录制 Performance",
+          "mac": "⌘+E",
+          "win": "Ctrl+E"
+        }
+      ],
+      "expectedOutcome": "4x slowdown 下同操作的耗时约为正常模式的 4 倍。",
+      "externalSite": "react.dev"
+    },
+    {
+      "slug": "verify",
+      "type": "verify",
+      "title": "验证",
+      "prompt": "在 CPU 4x slowdown 模式下，同一次 Search 按钮点击的 JS 执行时间大约是正常模式下的几倍？",
+      "tier": "soft",
+      "expectedRegex": "(4|四|几倍|倍|multiple|around).{0,5}(4|four)"
+    },
+    {
+      "slug": "ask-ai",
+      "type": "ask-ai",
+      "title": "问 AI",
+      "intro": "把观察转成问题。",
+      "template": "我在 react.dev 用 Performance 面板做了对比实验：\n- No throttling 下 JS 运行很快\n- 4x slowdown 下同样的操作耗时约 4 倍\n\n请解释：\n1. CPU 节流具体是怎么模拟低端设备的？它真的和真机性能一致吗？\n2. 如果 4x 模式下某个操作耗时 300ms，在正常模式下只有 75ms——这两个数值对用户体验分别意味着什么？\n3. 拿到节流模式的数据后，应该如何排优化优先级？"
+    }
+  ]
 }

@@ -2,60 +2,60 @@
   "id": "l2-3",
   "level": 2,
   "sublevel": 3,
-  "categoryIcon": "💬",
-  "categoryName": "Console",
-  "title": "$0 —— 引用你刚选中的元素",
+  "categoryIcon": "🧱",
+  "categoryName": "Elements 元素面板",
+  "title": "H 键隐藏元素 + Cmd+F 搜 DOM",
   "time": 3,
   "track": "core",
-  "needsLab": false,
-  "stuck": "在 Elements 树里找不到 `<h1>React</h1>`？按 `⌘+F` / `Ctrl+F` 在 Elements 面板顶部弹出搜索框，输入 `React`，回车跳到第一个匹配。或者直接在页面上右键那个超大的「React」字样 → **Inspect**，DevTools 会自动定位到它。",
+  "needsLab": true,
+  "stuck": "按 H 键没反应？确认焦点在 Elements 面板里（先单击一下你要操作的 DOM 节点，让它变蓝高亮），不能在页面正文里按 H——那只会在搜索框里输入字母。",
   "steps": [
     {
       "slug": "concept",
       "type": "concept",
-      "title": "$0 = 「我刚在 Elements 里点的那个元素」",
-      "hook": "你在 Elements 面板里点中了一个按钮，想立刻在 Console 里改它的样式或读它的属性——怎么把这个「眼睛看到的元素」拿到代码手里？答：`$0`。",
+      "title": "H 键 = 调试覆盖问题的「二分法」；Cmd+F = 在 DOM 里搜节点",
+      "hook": "页面上一个按钮看着好好的，但点了没反应。第一直觉是「JS 没绑事件」？错——更常见的原因是有个透明 div 挡在它上面。怎么 1 分钟内证明这件事？",
       "body": [
-        "`$0` 是 Chrome DevTools 内置的一个特殊变量。它永远指向你**最近一次在 Elements 面板里选中的那个 DOM 元素**。不需要 `document.querySelector`，不需要 ID，不需要 class——选中即引用。",
-        "它是「从 UI 到代码」最高效的桥梁。点中元素 → 切到 Console → 输入 `$0` → 这个元素就在你手里了，能读属性、能临时改样式、能调用方法。",
-        "DevTools 还顺带提供了几个朋友：`$1` 是上一次选中的（再上一次是 `$2`、`$3`、`$4`），`$$('selector')` 是 `document.querySelectorAll` 的简写并且返回真数组，`$_` 是上一条命令的结果。",
-        "下一步在 react.dev 上，用首页那个超大的 `<h1>React</h1>` 当靶子，把 `$0` 玩一遍。"
+        "**H 键** 选中元素后按 H，DevTools 给它加一行 `visibility: hidden`。这是一个**可逆的二分实验**：怀疑某个元素挡住了点击 → H 一下藏掉 → 再点目标 → 能点了就坐实。再 H 一下还原。",
+        "**Cmd+F**（在 Elements 面板里）按文字、CSS 选择器、或 XPath 搜当前 DOM。下一步会让你搜 `data-testid=\"ghost-overlay\"` 直接定位到那个透明 div。",
+        "**关键区分**：Elements 里的 `⌘+F` 只搜**当前 DOM 树**（运行时的 HTML 快照）。要搜源码（所有 .js / .css 文件全文），是 **Sources 面板**里的 `⌘+⌥+F` / `Ctrl+Shift+F`。两者别混。"
       ],
       "bullets": [
         {
-          "emoji": "🎯",
-          "title": "$0",
-          "body": "Elements 面板里最近选中的那个元素"
-        },
-        {
-          "emoji": "🕓",
-          "title": "$1 / $2 / $3 / $4",
-          "body": "上一次、再上一次⋯⋯选中的元素"
+          "emoji": "🙈",
+          "title": "H 键",
+          "body": "选中元素 → 按 H → 加 visibility:hidden → 再按 H 还原"
         },
         {
           "emoji": "🔍",
-          "title": "$$('selector')",
-          "body": "querySelectorAll 简写，直接返回数组"
+          "title": "Cmd+F (Elements)",
+          "body": "搜 DOM 节点：文字 / 选择器 / XPath"
+        },
+        {
+          "emoji": "🆚",
+          "title": "别和 Sources 搜混",
+          "body": "搜源码全文是 Sources 面板的 Cmd+Opt+F"
         }
       ],
-      "takeaway": "下一步：在 react.dev 选中 `<h1>React</h1>`，在 Console 里依次跑 `$0`、`$0.tagName`、`$0.style.color = 'red'`，直接观察页面上的「React」字样变红。"
+      "takeaway": "下一步：在练习页有个透明遮罩挡住了 **解锁按钮**，用 Cmd+F 找到它、用 H 藏掉、再点按钮——直接看到 alert 弹出。"
     },
     {
       "slug": "practice",
       "type": "practice",
-      "title": "选中 react.dev 的 `<h1>React</h1>` 然后在 Console 玩 $0",
-      "intro": "react.dev 首页正中央有一个超大的 **React** 字样，那就是 `<h1>React</h1>`。我们用它当 `$0` 的靶子，因为它够大、变红立即能看到。",
+      "title": "用 Cmd+F + H 让一个「点不动」的按钮变得可点",
+      "intro": "练习页有一个写着 **解锁按钮** 的按钮，正常情况下点它会弹 alert `按钮被点击了`。但页面上盖了一层 `rgba(0,0,0,0.001)` 的全屏透明 div——肉眼看不见，但接住了所有点击。我们来抓出这个真凶。",
+      "labUrl": "http://localhost:8787/lessons/l3-3",
       "steps": [
-        "在新标签页打开 [react.dev](https://react.dev/)。",
-        "等页面加载完，看到正中央超大的 **React** 字样和下面那行 **The library for web and native user interfaces**。",
-        "在页面上的超大 **React** 字样上**右键** → 选 **Inspect**（或 **检查**）。DevTools 会打开并自动停在 Elements 面板，高亮选中那个 `<h1 ...>React</h1>` 节点。",
-        "确认 Elements 树里被选中的就是 `<h1>` 节点（行首是 `<h1`，里面文本是 `React`）。如果你点偏了选到了内层 `<span>` 之类的，往上点一层 `<h1>`。",
-        "切到 **Console** 面板（顶部 tab）。",
-        "在 Console 提示符后输入 `$0`，回车。输出应该是 `<h1 class=\"...\">React</h1>` 这样的元素引用——hover 它，页面上的「React」字样会被高亮。",
-        "依次输入下面的命令，每一行回车后核对输出：\n\n| 输入 | 预期输出 | 含义 |\n| --- | --- | --- |\n| `$0.tagName` | `'H1'` | 标签名（注意是大写） |\n| `$0.textContent` | `'React'` | 元素内的纯文本 |\n| `$0.style.color = 'red'` | `'red'` | 页面上「React」字样**立刻变红** |\n| `$0.outerHTML` | `'<h1 class=\"...\" style=\"color: red;\">React</h1>'` | 元素的完整 HTML（含刚加的红色） |",
-        "回到页面，确认那个超大的 **React** 字样**真的变红了**。这是临时改动，刷新页面就还原。",
-        "再玩一个：在 Console 输入 `$$('h2')`。它返回页面上**所有** `<h2>` 节点的数组。展开看看，第一个应该是 `<h2>Create user interfaces from components</h2>`。",
-        "（可选）回到 Elements 面板，再点一个别的元素（顶部导航的 **Learn** 链接）。然后切回 Console 输 `$0`——它现在指 Learn 链接了；输 `$1` 仍指刚才那个 `<h1>React</h1>`。"
+        "在新标签页打开 [http://localhost:8787/lessons/l3-3](http://localhost:8787/lessons/l3-3)。看到标题 **L3.3 遮罩演示** 和一个写着 **解锁按钮** 的按钮。",
+        "**先点一下** 那个 **解锁按钮**。**没反应**——没有 alert 弹出来，按钮像死的一样。这就是我们要解决的「灵异事件」。",
+        "按 `F12` / `⌘+⌥+I` 打开 DevTools，切到 **Elements** 面板。",
+        "在 Elements 里按 `⌘+F` (Mac) / `Ctrl+F` (Win/Linux) 打开 Elements 搜索框（注意：要在 Elements 面板里按，不是在页面里按）。",
+        "在搜索框里输入 `data-testid=\"ghost-overlay\"` 回车。光标跳到一个 `<div data-testid=\"ghost-overlay\" ...>` 节点上，它被高亮选中。",
+        "看这个 div 右侧的 **Styles** 面板：能看到 `position: fixed; inset: 0; z-index: 9999; background: rgba(0,0,0,0.001);`——一个全屏、置顶、几乎全透明的覆盖层。**这就是嫌疑犯**。",
+        "确保这个 div 节点在 Elements 面板里**仍然是蓝色高亮选中**状态，按键盘 **H 键**。这个 div 节点上方出现一个紫色小圆点（DevTools 表示「这个元素被加了 visibility:hidden」的标记）。",
+        "**回到页面，再点 解锁按钮**。这次弹出 alert **按钮被点击了**——证明刚才就是这个 ghost-overlay 在挡。点击 alert 的「确定」关闭。",
+        "再回 Elements 面板，**ghost-overlay 节点仍然选中** → 再按一次 **H** → 紫色小圆点消失，遮罩恢复 → 再点 **解锁按钮** → 又点不动了。",
+        "用一张表对照三个状态：\n\n| 状态 | 按钮看起来 | 按钮能点吗 | overlay 在 DOM | overlay 视觉上 |\n| --- | --- | --- | --- | --- |\n| H 之前（初始） | 正常 | 不能 ✗ | 在 | 透明（看不见但挡着） |\n| 第一次 H 之后 | 正常 | 能 ✓ 弹 alert | 在 | 隐藏 (visibility:hidden) |\n| 第二次 H 之后 | 正常 | 不能 ✗ | 在 | 透明（恢复初始） |\n\n看到了吗？H 键不是「删元素」（DOM 里还在），是「让它视觉+交互上消失」——这就是它适合做「二分实验」的原因：随时可逆。"
       ],
       "shortcuts": [
         {
@@ -64,32 +64,32 @@
           "win": "F12"
         },
         {
-          "label": "Inspect 元素（页面右键菜单里）",
-          "mac": "⌘+⇧+C",
-          "win": "Ctrl+Shift+C"
-        },
-        {
-          "label": "Elements 内搜索",
+          "label": "Elements 内搜索 DOM",
           "mac": "⌘+F",
           "win": "Ctrl+F"
+        },
+        {
+          "label": "Sources 全文搜源码（区分用）",
+          "mac": "⌘+⌥+F",
+          "win": "Ctrl+Shift+F"
         }
       ],
-      "expectedOutcome": "你已经在 Console 里把 `<h1>React</h1>` 当成 JS 对象操作了：读到了 `tagName === 'H1'`，并且通过 `$0.style.color = 'red'` 让页面上的字样**真的变红**。这个反馈环（点 → `$0` → 改 → 看见变化）就是后续所有「在线调样式 / 临时改 DOM」的基础。"
+      "expectedOutcome": "你用「Cmd+F 找嫌疑节点 → H 藏掉 → 重试目标动作」三步，10 秒内坐实了「点击失效是被透明 overlay 挡住」这个假设。这套流程能复用到你以后遇到的几乎所有「为啥点不动」类 bug。"
     },
     {
       "slug": "verify",
       "type": "verify",
-      "title": "$0.tagName 输出的是什么？",
-      "prompt": "在 Console 里输入 `$0.tagName` 回车（前提：你刚才在 Elements 选中了 `<h1>React</h1>`）。\n\n它输出的是什么？把输出**原样**复制粘贴下来（含引号也行、不含也行）：",
+      "title": "按 H 之后点解锁按钮，弹出的 alert 文字是什么？",
+      "prompt": "你藏掉 ghost-overlay 之后，再点了一次 **解锁按钮**，浏览器弹了一个 alert 提示框。\n\n这个 alert 里的文字是什么？（中文原文，不用包含「确定」按钮）",
       "tier": "soft",
-      "expectedRegex": "['\"]?[Hh]1['\"]?"
+      "expectedRegex": "按钮.{0,3}被.{0,3}点击|按钮.{0,3}点击|被点击"
     },
     {
       "slug": "ask-ai",
       "type": "ask-ai",
-      "title": "问 AI：$0 / $1 / $$ / $_ 这一家人各干啥",
-      "intro": "你已经会用 `$0` 和 `$$()` 了。趁热把 DevTools 这一整套「美元符号变量」都问清楚，下次见到不慌。",
-      "template": "我刚在 Chrome DevTools Console 学会了 `$0`——它指向 Elements 面板里最近选中的元素。现在我想把这一家「美元符号变量」搞清楚。\n\n请帮我对比说明下面这几个 DevTools 内置变量/函数：\n\n1. `$0`、`$1`、`$2`、`$3`、`$4`——分别是什么？\n2. `$_`——它和上面那几个有什么区别？\n3. `$('selector')`——它等价于什么标准 API？返回单个还是多个？\n4. `$$('selector')`——它等价于什么标准 API？返回的和原生有什么不一样？\n5. `$x('xpath')`——这个不常用，但是干啥的？\n\n每个都给一个**最短的实战使用场景**（一句话即可）。最后告诉我：这些只在 DevTools Console 里能用，对吗？我能在自己的代码里用 `$0` 吗？为什么？"
+      "title": "问 AI：H 键 vs 改 CSS，分别什么时候用",
+      "intro": "H 键和 Styles 面板里手动改 `display: none` / `visibility: hidden` 表面看一样，但用法定位完全不同。让 AI 给你拆 3 个真实场景。",
+      "template": "我在 Chrome DevTools 里学了两种「让元素消失」的方法：\n\n**方法 A**：选中元素后按 H 键 → DevTools 自动加 `visibility: hidden`，再按 H 还原。\n\n**方法 B**：在 Styles 面板手动给元素加 `display: none;` 或 `visibility: hidden;`。\n\n请给我 3 个真实工作场景，并指出每个场景应该用 A 还是 B：\n1. QA 怀疑某个浮层挡住了主按钮，要快速验证假设。\n2. PM 给设计师看「如果隐藏侧边栏，主内容区会不会塌掉」。\n3. 前端要给 PR 提一个「这个广告位先临时下掉」的 CSS 方案。\n\n顺便解释：H 键加的 `visibility:hidden` 和手动加的 `display:none`，在「布局是否塌缩」上有什么区别？什么时候这个区别会害到我？"
     }
   ]
 }

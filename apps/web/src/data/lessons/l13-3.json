@@ -1,88 +1,78 @@
 {
-	"id": "l13-3",
-	"level": 13,
-	"sublevel": 3,
-	"categoryIcon": "🔌",
-	"categoryName": "接口协议与数据流",
-	"title": "WebSocket Frames——看实时通信怎么发",
-	"time": 5,
-	"track": "core",
-	"needsLab": true,
-	"stuck": "Messages 面板是空的？先点一下页面上的「发送」按钮发一条消息，帧才会出现。如果连接断了，刷新一下 lab 页面。",
-	"steps": [
-		{
-			"slug": "concept",
-			"type": "concept",
-			"title": "WebSocket 帧是什么",
-			"hook": "HTTP 请求是一次一问一答。WebSocket 不同——建好连接后，双方可以随时发消息，每条消息就是一个帧。",
-			"body": [
-				"WebSocket 是持久连接，连接建立后客户端和服务器可以随时互发数据。",
-				"每一条发送的数据叫一个帧（Frame），在 DevTools 中通过 WS 过滤器 → Messages 面板查看。",
-				"绿色 ↑ 表示客户端发出的帧，红色 ↓ 表示服务器返回的帧。",
-				"帧可以是 JSON 文本也可以是二进制数据，常见的还有心跳 ping/pong 维持连接。"
-			],
-			"bullets": [
-				{
-					"emoji": "🟢",
-					"title": "绿色上行",
-					"body": "客户端发出的消息帧，箭头向上"
-				},
-				{
-					"emoji": "🔴",
-					"title": "红色下行",
-					"body": "服务器返回的消息帧，箭头向下"
-				},
-				{
-					"emoji": "💬",
-					"title": "文本帧",
-					"body": "JSON 等可读文本数据"
-				},
-				{
-					"emoji": "❤️",
-					"title": "心跳帧",
-					"body": "短小的 ping/pong 帧维持连接不超时"
-				}
-			],
-			"takeaway": "WebSocket 帧在 Messages 面板中实时出现，绿色 ↑ 是发出的，红色 ↓ 是收到的。"
-		},
-		{
-			"slug": "practice",
-			"type": "practice",
-			"title": "观察 WebSocket 实时帧",
-			"intro": "打开 WebSocket echo 页面，亲自收发消息并观察帧。",
-			"steps": [
-				"打开 http://localhost:8787/api/ws —— 这是一个 WebSocket echo 交互页面。",
-				"打开 DevTools → Network 面板 → 点击 **WS** 过滤器。",
-				"在连接列表中找到 /api/ws 这条 WebSocket 连接，点击它。",
-				"点击右侧的 **Messages** 标签，此时面板可能为空。",
-				"回到页面，在输入框里输入消息，点击「发送」按钮。",
-				"观察 Messages 面板：你的消息显示为绿色 ↑（发送），服务器的回显显示为红色 ↓（接收）。",
-				"再发送几条消息，注意每条消息的帧类型（Text/Binary）和时间戳。"
-			],
-			"shortcuts": [
-				{
-					"label": "DevTools",
-					"mac": "⌘+⌥+I",
-					"win": "F12"
-				}
-			],
-			"expectedOutcome": "绿色 ↑ 帧是你发出的消息，红色 ↓ 帧是服务器返回的响应。",
-			"labUrl": "http://localhost:8787/api/ws"
-		},
-		{
-			"slug": "verify",
-			"type": "verify",
-			"title": "验证",
-			"prompt": "在 WebSocket Messages 面板里，你发的消息显示为绿色 ↑ 还是红色 ↓？回答「绿色 ↑」或「红色 ↓」。",
-			"tier": "soft",
-			"expectedRegex": "(绿色|↑|up|发送|green|sent|发出)"
-		},
-		{
-			"slug": "ask-ai",
-			"type": "ask-ai",
-			"title": "问 AI",
-			"intro": "用这个模板了解 WebSocket 帧能揭露什么。",
-			"template": "我在调试一个 WebSocket 应用时从 DevTools Messages 面板观察到以下帧序列：\n\n[paste frames here, e.g.: T=0s ↑ ping, T=1s ↓ pong, T=5s ↑ {\"type\":\"subscribe\"}...]\n\n请帮我分析：\n1. 这些帧揭示了应用的什么行为？\n2. 如果出现长时间没有帧、或只有上行无下行，可能是什么问题？\n3. WebSocket 连接意外断开时，如何从帧序列中定位原因？"
-		}
-	]
+  "id": "l13-3",
+  "level": 13,
+  "sublevel": 3,
+  "categoryIcon": "📊",
+  "categoryName": "性能指标与 Source Map",
+  "title": "Source Map——让 minified 代码可读",
+  "time": 5,
+  "track": "core",
+  "needsLab": false,
+  "stuck": "Sources 面板看不到原始文件？确认 react.dev 加载了 source map。进 DevTools Settings → Experiments，确保「JavaScript source maps」是勾上的。",
+  "steps": [
+    {
+      "slug": "concept",
+      "type": "concept",
+      "title": "压缩代码怎么读",
+      "hook": "线上 JS 是一行天书，Source Map 是翻译官。",
+      "body": [
+        "生产环境的 JS 经过 minify——变量名缩短、所有代码挤成一行。",
+        "Source Map 是一份映射文件，把压缩后的行列号还原到原始源码。",
+        "压缩文件末尾有 `//# sourceMappingURL=xxx.map` 注释时，DevTools 自动加载对应 map。",
+        "有了 Source Map：Sources 面板展示原始代码（可读变量名、注释、TypeScript）。没有：报错指向 `main.js:1:8421`，无法定位。"
+      ],
+      "bullets": [
+        {
+          "emoji": "🗜️",
+          "title": "有 Source Map",
+          "body": "原始目录、变量名、注释全可读"
+        },
+        {
+          "emoji": "💥",
+          "title": "无 Source Map",
+          "body": "一行压缩代码，错误定位无意义"
+        }
+      ],
+      "takeaway": "Source Map 是调试生产代码的命脉。"
+    },
+    {
+      "slug": "practice",
+      "type": "practice",
+      "title": "对比有无 Source Map 的文件",
+      "intro": "在 react.dev 的 Sources 面板里找两类文件。",
+      "steps": [
+        "打开 react.dev。",
+        "打开 DevTools → **Sources** 面板。",
+        "在左侧文件树中找到有 source map 的 JS 文件——特征是能看到 `.tsx` 文件或原始目录结构（不在 `_next/static/chunks/` 里）。",
+        "点开一个有 source map 的文件：看到可读代码、TypeScript 类型标注、原始注释。",
+        "再打开 `_next/static/chunks/` 下的某个 chunk 文件（无 source map）：看到压缩后的一行代码。",
+        "在压缩文件末尾搜索 `//# sourceMappingURL=` 注释。",
+        "对比：\n\n| 有 Source Map | 无 Source Map |\n| --- | --- |\n| 显示原始 `.tsx` 文件 | 显示 `main.abc123.js:1` |\n| 变量名可读 | 变量名为 a/b/c |\n| 有注释和类型 | 无注释 |\n| 错误可定位到具体行 | 错误永远在 `:1` |"
+      ],
+      "shortcuts": [
+        {
+          "label": "DevTools",
+          "mac": "⌘+⌥+I",
+          "win": "F12"
+        }
+      ],
+      "expectedOutcome": "找到至少一个有 source map 的文件和一个没有的，感受两者差异。",
+      "externalSite": "react.dev"
+    },
+    {
+      "slug": "verify",
+      "type": "verify",
+      "title": "验证",
+      "prompt": "Source Map 的作用是让压缩后的代码恢复什么？回答你的理解。",
+      "tier": "soft",
+      "expectedRegex": "(原始|源码|source|变量|可读|readable|原代码|original|看得懂|能读)"
+    },
+    {
+      "slug": "ask-ai",
+      "type": "ask-ai",
+      "title": "问 AI",
+      "intro": "问 AI 线上部署策略。",
+      "template": "Source Map 应该部署到生产环境吗？如果 source map 泄露有什么风险？Sentry 等监控平台怎么用 source map 定位错误？请给出推荐策略。"
+    }
+  ]
 }

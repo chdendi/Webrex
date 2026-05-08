@@ -2,57 +2,60 @@
   "id": "l11-2",
   "level": 11,
   "sublevel": 2,
-  "categoryIcon": "📊",
-  "categoryName": "性能指标与 Source Map",
-  "title": "LCP / CLS / INP 看懂",
+  "categoryIcon": "🔌",
+  "categoryName": "接口协议与数据流",
+  "title": "REST / GraphQL / WebSocket / SSE 一图懂",
   "time": 5,
   "track": "core",
   "needsLab": false,
-  "stuck": "Performance 面板里看不到 LCP 标记？录制时把模式切成「page load」而不是默认的 record——刷新页面同时开始录制。",
+  "stuck": "Network 面板顶部看不到 WS 标签？过滤器栏可能折叠了，点面板左上角的漏斗图标展开全部过滤器类型。",
   "steps": [
     {
       "slug": "concept",
       "type": "concept",
-      "title": "三大核心指标",
-      "hook": "Google 用三个数字衡量页面体验。",
+      "title": "四种协议，一张图",
+      "hook": "页面上的数据从哪来？不是都走同一条路——至少有四种完全不同的通信方式在同时工作。",
       "body": [
-        "LCP（Largest Contentful Paint）：最大可见元素渲染完的时间，好阈值 < 2.5s。",
-        "CLS（Cumulative Layout Shift）：布局累积偏移量，好阈值 < 0.1。",
-        "INP（Interaction to Next Paint）：用户交互到下一帧的延迟，好阈值 < 200ms。",
-        "Performance 面板的 Timings 轨道显示 LCP 菱形标记，Experience 轨道显示红色布局偏移块。"
+        "现代 Web 应用使用多种协议通信，每种协议在 Network 面板中有独立的过滤器。",
+        "Fetch/XHR 涵盖了 REST 和 GraphQL，两者都通过 HTTP 请求传输数据。",
+        "WS（WebSocket）是持久双向连接，用 Messages 面板查看实时帧。",
+        "SSE（Server-Sent Events）是服务器单向推送，通过 EventStream 过滤器查看。"
       ],
       "bullets": [
         {
-          "emoji": "🖼️",
-          "title": "LCP",
-          "body": "最大元素何时出现"
+          "emoji": "📡",
+          "title": "REST",
+          "body": "客户端发起，CRUD 操作，Fetch/XHR 过滤"
         },
         {
-          "emoji": "📐",
-          "title": "CLS",
-          "body": "页面抖动了多少"
+          "emoji": "🎯",
+          "title": "GraphQL",
+          "body": "按需取字段，请求体含 query，同样在 Fetch/XHR"
         },
         {
-          "emoji": "👆",
-          "title": "INP",
-          "body": "点击之后响应速度"
+          "emoji": "🔁",
+          "title": "WebSocket",
+          "body": "双向实时通信，WS 过滤器 → Messages 面板"
+        },
+        {
+          "emoji": "📢",
+          "title": "SSE",
+          "body": "服务器单向推送，EventStream 过滤器"
         }
       ],
-      "takeaway": "三个指标定位页面卡在哪一环。"
+      "takeaway": "四种协议各有专用过滤器：Fetch/XHR 看 REST/GraphQL，WS 看 WebSocket，EventStream 看 SSE。"
     },
     {
       "slug": "practice",
       "type": "practice",
-      "title": "在 react.dev 上找 LCP 和布局偏移",
-      "intro": "用 Performance 面板录制一次页面加载。",
+      "title": "在 Network 面板中识别四种协议",
+      "intro": "打开 react.dev，认识 Network 面板的过滤器栏。",
       "steps": [
-        "打开 react.dev。",
-        "打开 DevTools → **Performance** 面板。",
-        "点击录制按钮左侧的下拉箭头，选择 **「Page load」** 模式。",
-        "点击录制按钮开始录制，页面自动刷新。加载完成后停止录制。",
-        "在 Timings 轨道找到 **LCP** 标记（菱形图标）。点击它——Summary 窗格显示哪个元素触发了 LCP。记录 LCP 耗时。",
-        "查看 Experience 轨道：红色方块表示布局偏移（Layout Shift）。",
-        "整理：\n\n| 指标 | 全称 | 好阈值 | 在 Performance 面板怎么看 |\n| --- | --- | --- | --- |\n| LCP | Largest Contentful Paint | < 2.5s | Timings 轨道菱形标记 |\n| CLS | Cumulative Layout Shift | < 0.1 | Experience 轨道红色方块 |\n| INP | Interaction to Next Paint | < 200ms | 需运行 Lighthouse 查看 |"
+        "打开 react.dev → DevTools → Network 面板。",
+        "观察顶部过滤器栏：All | Fetch/XHR | JS | CSS | Img | Media | Font | Doc | WS | Wasm | Manifest | Other。",
+        "点击 **Fetch/XHR** 过滤器——这些是 REST/GraphQL API 调用（传输 JSON 数据，不加载页面）。",
+        "点击 **WS** 过滤器——react.dev 可能没有 WebSocket 连接，这是正常现象。",
+        "对照下表理解四种协议的差异：\n\n| 协议 | 方向 | 典型用途 | DevTools 怎么看 |\n| --- | --- | --- | --- |\n| REST | 客户端→服务器 | CRUD 操作 | Fetch/XHR 过滤器 |\n| GraphQL | 客户端→服务器 | 按需取字段 | Fetch/XHR 过滤器（请求体含 query 字段） |\n| WebSocket | 双向实时 | 聊天、在线协作 | WS 过滤器 → Messages 面板 |\n| SSE | 服务器→客户端 | 通知推送、股票行情 | EventStream 过滤器 |"
       ],
       "shortcuts": [
         {
@@ -61,22 +64,23 @@
           "win": "F12"
         }
       ],
-      "expectedOutcome": "找到 LCP 元素和耗时，看到 Experience 轨道中的布局偏移记录。"
+      "expectedOutcome": "理解四种协议在 DevTools Network 面板中各自对应的过滤器。",
+      "externalSite": "react.dev"
     },
     {
       "slug": "verify",
       "type": "verify",
       "title": "验证",
-      "prompt": "react.dev 的 LCP 元素是什么类型？A) 大标题文字 B) 首屏大图/图标 C) 按钮 D) 视频",
+      "prompt": "聊天应用的消息推送更适合用什么协议？A) REST B) GraphQL C) WebSocket D) SSE",
       "tier": "soft",
-      "expectedRegex": "(A|文字|标题|text|hero|heading|h1|大标题)"
+      "expectedRegex": "(C|WebSocket|WS|websocket|ws|Socket)"
     },
     {
       "slug": "ask-ai",
       "type": "ask-ai",
       "title": "问 AI",
-      "intro": "把实测数据喂给 AI。",
-      "template": "我测了 react.dev：LCP 元素是 __，耗时 __ms。CLS 分数为 __。请解释这三个 Web Vitals 的含义，并给出每种指标变差时最常见的修复手段。"
+      "intro": "用这个模板咨询协议选型。",
+      "template": "我要做一个 Web 应用，需求是：[描述你的场景，例如：用户实时协作编辑文档/股票实时行情推送/管理后台 CRUD 操作]。\n\n请帮我分析：\n1. 这个场景适合用 REST、GraphQL、WebSocket 还是 SSE？\n2. 如果混合使用，各自负责什么部分？\n3. 在 DevTools Network 面板中各自如何观察和调试？"
     }
   ]
 }

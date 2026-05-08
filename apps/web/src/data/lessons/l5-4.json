@@ -1,97 +1,98 @@
 {
-	"id": "l5-4",
-	"level": 5,
-	"sublevel": 4,
-	"categoryIcon": "📄",
-	"categoryName": "Sources —— 看代码在哪执行",
-	"title": "看调用栈——到底是谁调了谁",
-	"time": 4,
-	"track": "core",
-	"needsLab": false,
-	"stuck": "断点触发后，看 DevTools 右侧的 Call Stack 面板。最上面那一行就是当前函数，往下是调用链。",
-	"steps": [
-		{
-			"slug": "concept",
-			"type": "concept",
-			"title": "调用栈：代码执行的「面包屑」",
-			"hook": "你的代码停在了某一行——但你有没有想过，是谁、从哪里调用了这个函数？",
-			"body": [
-				"**调用栈（Call Stack）** 是断点触发时 DevTools 右侧显示的函数调用链条。最上面一行是当前正在执行的函数（也就是断点所在位置），往下依次是「谁调用了当前函数」「谁又调用了调用者」……直到最底层的入口（通常是事件回调或浏览器主线程）。",
-				"每一行包含三个信息：**函数名**、**所在文件名**、**行号**。点击任意一行，DevTools 会自动跳转到那个函数对应的源码位置，同时 Scope 面板会切换为那一层调用帧的变量上下文。",
-				"调用栈的长度反映了调用深度：短栈可能意味着你在浅层业务代码中；长栈穿过了中间件、Promise 链、框架层、浏览器内部——帮你识别某个 bug 是出在你的代码里，还是被框架的某层调用「加工」过。"
-			],
-			"bullets": [
-				{
-					"emoji": "📚",
-					"title": "栈顶",
-					"body": "当前正在执行的函数——断点所在位置"
-				},
-				{
-					"emoji": "⬇️",
-					"title": "中间帧",
-					"body": "每一层都是上一层的调用者——可能是你的业务代码，也可能是 React/Vue 内部"
-				},
-				{
-					"emoji": "🪵",
-					"title": "栈底",
-					"body": "入口——通常是一个事件回调或浏览器 API 触发的起点"
-				},
-				{
-					"emoji": "🔀",
-					"title": "帧切换",
-					"body": "点击任一帧，Scope 面板即时显示那一帧的变量值"
-				}
-			],
-			"takeaway": "下一步：在 react.dev 上打一个深层断点，看调用栈从入口到断点穿过了多少层。"
-		},
-		{
-			"slug": "practice",
-			"type": "practice",
-			"title": "在 react.dev 上打深层断点看调用栈",
-			"intro": "在 React 内部代码上打断点，点击 Search 按钮触發，观察完整的调用栈链条。",
-			"steps": [
-				"打开 react.dev，按 `F12`（Win/Linux）或 `⌘+⌥+I`（Mac）打开 DevTools，切换到 **Sources** 面板。",
-				"按 `⌘+⇧+F`（Mac）/ `Ctrl+Shift+F`（Win/Linux）打开全局搜索，输入 `createElement`，按回车。",
-				"在搜索结果中找到 React 内部的 `createElement` 函数定义（通常在 `react-dom` 或 `react` 相关文件中）。点击该行跳到对应文件。",
-				"在 `createElement` 函数体内点击一个行号打上蓝色断点。（如果代码被压缩很难读懂，可以先按后面 L5.5 学的美化 `{}` 按钮格式化再打点。）",
-				"回到 react.dev 页面，点击右上角的 **Search** 按钮触发 JS 执行。DevTools 应该在 `createElement` 处暂停。",
-				"现在看 DevTools 右侧的 **Call Stack** 面板。逐项对照下表：\n\n| 栈层级 | 你看到的 | 含义 |\n| --- | --- | --- |\n| 最上面一行 | 当前文件:当前行 `createElement` | 断点所在函数，正在执行的那一行 |\n| 中间若干行 | React 内部函数名（如 `createElement` 的调用者） | React 框架逐层调用链条 |\n| 最下面一行 | 通常是匿名函数或事件回调 | 整个链条的入口——浏览器事件触发了这一切 |",
-				"点击调用栈中**不同层级**的行。每点一行，左侧代码编辑器会跳到对应帧的代码位置，右侧 Scope 面板会切换到那一帧的变量上下文。看看最上面一帧和最下面一帧的变量有什么不同。",
-				"按 `F8` 恢复执行。"
-			],
-			"shortcuts": [
-				{
-					"label": "DevTools",
-					"mac": "⌘+⌥+I",
-					"win": "F12"
-				},
-				{
-					"label": "全局搜索",
-					"mac": "⌘+⇧+F",
-					"win": "Ctrl+Shift+F"
-				},
-				{
-					"label": "Resume",
-					"mac": "F8",
-					"win": "F8"
-				}
-			],
-			"expectedOutcome": "调用栈清晰地展示了从事件回调（栈底）到 React 内部 createElement（栈顶）的完整路径。点击不同帧能切换 Scope 面板内容。"
-		},
-		{
-			"slug": "verify",
-			"type": "verify",
-			"title": "调用栈最下面一行是什么？",
-			"prompt": "调用栈最上面一行是当前函数，最下面一行是什么？A) 入口函数（如事件回调） B) 也是当前函数 C) React 框架代码 D) 浏览器的 C++ 代码",
-			"tier": "soft",
-			"expectedRegex": "(A|入口|事件|回调|最底|入口函数)"
-		},
-		{
-			"slug": "ask-ai",
-			"type": "ask-ai",
-			"title": "问 AI：怎么读调用栈找到关键帧",
-			"intro": "你现在能看到完整的调用栈了。但几十层栈里，哪一层才是你的代码？让 AI 帮你建立判断标准。",
-			"template": "我在 Chrome DevTools 调试 react.dev 时，在一个深层断点看到了很长的调用栈。从上到下几十层，有些是 React 内部函数，有些是浏览器原生代码。\n\n请帮我理解：\n1. 在调用栈几十层里，怎么快速判断「这一层是我的业务代码」还是「这一层是框架/库的代码」？\n2. 如果一个 bug 出现在框架代码那一帧（而不是我的代码），我应该怎么做——是框架的 bug 还是我用错了？\n3. 「调用栈太长」通常是坏味道吗？什么情况下这是正常现象？\n4. 如果调用栈中间有 `async/await` 或 Promise 链，栈的结构会变成什么样？"
-		}
-	]
+  "id": "l5-4",
+  "level": 5,
+  "sublevel": 4,
+  "categoryIcon": "📄",
+  "categoryName": "Sources —— 看代码在哪执行",
+  "title": "看调用栈——到底是谁调了谁",
+  "time": 4,
+  "track": "core",
+  "needsLab": false,
+  "stuck": "断点触发后，看 DevTools 右侧的 Call Stack 面板。最上面那一行就是当前函数，往下是调用链。",
+  "steps": [
+    {
+      "slug": "concept",
+      "type": "concept",
+      "title": "调用栈：代码执行的「面包屑」",
+      "hook": "你的代码停在了某一行——但你有没有想过，是谁、从哪里调用了这个函数？",
+      "body": [
+        "**调用栈（Call Stack）** 是断点触发时 DevTools 右侧显示的函数调用链条。最上面一行是当前正在执行的函数（也就是断点所在位置），往下依次是「谁调用了当前函数」「谁又调用了调用者」……直到最底层的入口（通常是事件回调或浏览器主线程）。",
+        "每一行包含三个信息：**函数名**、**所在文件名**、**行号**。点击任意一行，DevTools 会自动跳转到那个函数对应的源码位置，同时 Scope 面板会切换为那一层调用帧的变量上下文。",
+        "调用栈的长度反映了调用深度：短栈可能意味着你在浅层业务代码中；长栈穿过了中间件、Promise 链、框架层、浏览器内部——帮你识别某个 bug 是出在你的代码里，还是被框架的某层调用「加工」过。"
+      ],
+      "bullets": [
+        {
+          "emoji": "📚",
+          "title": "栈顶",
+          "body": "当前正在执行的函数——断点所在位置"
+        },
+        {
+          "emoji": "⬇️",
+          "title": "中间帧",
+          "body": "每一层都是上一层的调用者——可能是你的业务代码，也可能是 React/Vue 内部"
+        },
+        {
+          "emoji": "🪵",
+          "title": "栈底",
+          "body": "入口——通常是一个事件回调或浏览器 API 触发的起点"
+        },
+        {
+          "emoji": "🔀",
+          "title": "帧切换",
+          "body": "点击任一帧，Scope 面板即时显示那一帧的变量值"
+        }
+      ],
+      "takeaway": "下一步：在 react.dev 上打一个深层断点，看调用栈从入口到断点穿过了多少层。"
+    },
+    {
+      "slug": "practice",
+      "type": "practice",
+      "title": "在 react.dev 上打深层断点看调用栈",
+      "intro": "在 React 内部代码上打断点，点击 Search 按钮触發，观察完整的调用栈链条。",
+      "steps": [
+        "打开 react.dev，按 `F12`（Win/Linux）或 `⌘+⌥+I`（Mac）打开 DevTools，切换到 **Sources** 面板。",
+        "按 `⌘+⇧+F`（Mac）/ `Ctrl+Shift+F`（Win/Linux）打开全局搜索，输入 `createElement`，按回车。",
+        "在搜索结果中找到 React 内部的 `createElement` 函数定义（通常在 `react-dom` 或 `react` 相关文件中）。点击该行跳到对应文件。",
+        "在 `createElement` 函数体内点击一个行号打上蓝色断点。（如果代码被压缩很难读懂，可以先按后面 L5.5 学的美化 `{}` 按钮格式化再打点。）",
+        "回到 react.dev 页面，点击右上角的 **Search** 按钮触发 JS 执行。DevTools 应该在 `createElement` 处暂停。",
+        "现在看 DevTools 右侧的 **Call Stack** 面板。逐项对照下表：\n\n| 栈层级 | 你看到的 | 含义 |\n| --- | --- | --- |\n| 最上面一行 | 当前文件:当前行 `createElement` | 断点所在函数，正在执行的那一行 |\n| 中间若干行 | React 内部函数名（如 `createElement` 的调用者） | React 框架逐层调用链条 |\n| 最下面一行 | 通常是匿名函数或事件回调 | 整个链条的入口——浏览器事件触发了这一切 |",
+        "点击调用栈中**不同层级**的行。每点一行，左侧代码编辑器会跳到对应帧的代码位置，右侧 Scope 面板会切换到那一帧的变量上下文。看看最上面一帧和最下面一帧的变量有什么不同。",
+        "按 `F8` 恢复执行。"
+      ],
+      "shortcuts": [
+        {
+          "label": "DevTools",
+          "mac": "⌘+⌥+I",
+          "win": "F12"
+        },
+        {
+          "label": "全局搜索",
+          "mac": "⌘+⇧+F",
+          "win": "Ctrl+Shift+F"
+        },
+        {
+          "label": "Resume",
+          "mac": "F8",
+          "win": "F8"
+        }
+      ],
+      "expectedOutcome": "调用栈清晰地展示了从事件回调（栈底）到 React 内部 createElement（栈顶）的完整路径。点击不同帧能切换 Scope 面板内容。",
+      "externalSite": "react.dev"
+    },
+    {
+      "slug": "verify",
+      "type": "verify",
+      "title": "调用栈最下面一行是什么？",
+      "prompt": "调用栈最上面一行是当前函数，最下面一行是什么？A) 入口函数（如事件回调） B) 也是当前函数 C) React 框架代码 D) 浏览器的 C++ 代码",
+      "tier": "soft",
+      "expectedRegex": "(A|入口|事件|回调|最底|入口函数)"
+    },
+    {
+      "slug": "ask-ai",
+      "type": "ask-ai",
+      "title": "问 AI：怎么读调用栈找到关键帧",
+      "intro": "你现在能看到完整的调用栈了。但几十层栈里，哪一层才是你的代码？让 AI 帮你建立判断标准。",
+      "template": "我在 Chrome DevTools 调试 react.dev 时，在一个深层断点看到了很长的调用栈。从上到下几十层，有些是 React 内部函数，有些是浏览器原生代码。\n\n请帮我理解：\n1. 在调用栈几十层里，怎么快速判断「这一层是我的业务代码」还是「这一层是框架/库的代码」？\n2. 如果一个 bug 出现在框架代码那一帧（而不是我的代码），我应该怎么做——是框架的 bug 还是我用错了？\n3. 「调用栈太长」通常是坏味道吗？什么情况下这是正常现象？\n4. 如果调用栈中间有 `async/await` 或 Promise 链，栈的结构会变成什么样？"
+    }
+  ]
 }

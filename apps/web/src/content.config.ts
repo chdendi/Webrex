@@ -34,6 +34,7 @@ const practiceStep = z.object({
   shortcuts: z.array(shortcutSchema).optional(),
   expectedOutcome: z.string().optional(),
   labUrl: z.string().optional(),
+  externalSite: z.string().optional(),
 });
 
 const verifyStep = z.object({
@@ -41,9 +42,17 @@ const verifyStep = z.object({
   type: z.literal('verify'),
   title: z.string(),
   prompt: z.string(),
-  tier: z.enum(['hard', 'soft', 'self']),
+  tier: z.enum(['hard', 'soft', 'self', 'choice']),
   expectedRegex: z.string().optional(),
   labCheckEndpoint: z.string().optional(),
+  options: z
+    .array(
+      z.object({
+        label: z.string(),
+        correct: z.boolean(),
+      }),
+    )
+    .optional(),
 });
 
 const askAiStep = z.object({

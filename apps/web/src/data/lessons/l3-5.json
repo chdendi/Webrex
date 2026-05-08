@@ -1,9 +1,9 @@
 {
-  "id": "l2-5",
-  "level": 2,
+  "id": "l3-5",
+  "level": 3,
   "sublevel": 5,
   "categoryIcon": "💬",
-  "categoryName": "Console",
+  "categoryName": "Console 控制台",
   "title": "Live Expression —— 实时监控变量",
   "time": 3,
   "track": "extension",
@@ -73,7 +73,8 @@
           "win": "Tab"
         }
       ],
-      "expectedOutcome": "Console 顶部固定显示 2–3 个 Live Expression，分别盯着焦点元素、滚动位置（和可选的实时时钟）。你按 Tab 时第一行跟着跳，滚页面时第二行数字实时变。这种「无侵入、无刷屏」的监控比 `console.log` 更适合调任何随时间变化的值。"
+      "expectedOutcome": "Console 顶部固定显示 2–3 个 Live Expression，分别盯着焦点元素、滚动位置（和可选的实时时钟）。你按 Tab 时第一行跟着跳，滚页面时第二行数字实时变。这种「无侵入、无刷屏」的监控比 `console.log` 更适合调任何随时间变化的值。",
+      "externalSite": "react.dev"
     },
     {
       "slug": "verify",

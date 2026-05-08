@@ -2,59 +2,59 @@
   "id": "l2-1",
   "level": 2,
   "sublevel": 1,
-  "categoryIcon": "💬",
-  "categoryName": "Console",
-  "title": "打开 Console 看懂红黄蓝",
-  "time": 4,
+  "categoryIcon": "🧱",
+  "categoryName": "Elements 元素面板",
+  "title": "Inspect 找到任意元素",
+  "time": 3,
   "track": "core",
   "needsLab": true,
-  "stuck": "看不到 Filter 按钮？Console 面板顶部有一行工具栏，从左到右依次是：清空（🚫）、过滤输入框、Default levels 下拉。点 **Default levels** 下拉，就能勾选/取消 Errors / Warnings / Info / Verbose。",
+  "stuck": "按了 `⌘+⇧+C` / `Ctrl+Shift+C` 鼠标没变成探针？先按 `F12` 打开 DevTools，再按这个快捷键；Inspect 模式必须在 DevTools 已打开的前提下才能开启。",
   "steps": [
     {
       "slug": "concept",
       "type": "concept",
-      "title": "Console 是浏览器的对讲机，颜色 = 紧迫度",
-      "hook": "如果浏览器要告诉你「网页坏了」，它会去哪儿喊？答：Console。但它喊的方式有讲究——不是所有红字都同样要紧。",
+      "title": "把眼睛看到的东西，变成 DOM 里能定位的节点",
+      "hook": "你在页面上看到一个按钮颜色不对、一行字号偏小——下一步要做的事是「在 DOM 里把它找出来」。在 Elements 树里一层层翻找太慢，Inspect 模式就是干这个的。",
       "body": [
-        "Console 是浏览器和你之间唯一的「文字对讲机」。所有 JS 报错、网络异常、开发者主动打的日志，都汇到这里。",
-        "三种颜色对应三种紧迫度：**红色 Error** 表示「真出事了，某段代码崩了或请求失败了」；**黄色 Warning** 表示「能跑，但你最好看一眼，可能是 deprecated API 或潜在风险」；**蓝色 Info**（以及白色 log）表示「我只是顺便告诉你一声」。",
-        "下一步在 lab 页面里你会一次看到这三种颜色的真实样本：5 红 + 3 黄 + 2 蓝。然后用 Console 顶部的 **Default levels** 下拉框分别筛选，直接观察每个分类各包含哪些条目。"
+        "Inspect 模式开启后，鼠标变成一根「探针」：悬停页面任意元素，浮窗立刻告诉你这个元素的 tag、class、尺寸、字号、颜色、对比度。",
+        "点击锁定后，Inspect 模式自动关闭，Elements 面板里对应的 DOM 节点被高亮选中——你接下来想改样式、看属性、删节点，都从这里继续。",
+        "这是从「眼睛看到」到「DOM 里找到」最短的路径，比在 Elements 树里手动展开 `<div>` 套 `<div>` 快十倍。"
       ],
       "bullets": [
         {
-          "emoji": "🔴",
-          "title": "Error",
-          "body": "代码崩了 / 请求失败 / 必须处理"
+          "emoji": "🎯",
+          "title": "Inspect 模式",
+          "body": "鼠标变探针，悬停即看属性，点击即定位"
         },
         {
-          "emoji": "🟡",
-          "title": "Warning",
-          "body": "能跑但有隐患 / 用了过时 API"
+          "emoji": "📐",
+          "title": "浮窗信息",
+          "body": "tag.class、尺寸（W×H）、字号、颜色、对比度评分"
         },
         {
-          "emoji": "🔵",
-          "title": "Info",
-          "body": "纯提示 / 开发者主动打的状态信息"
+          "emoji": "🔗",
+          "title": "跳到 Elements",
+          "body": "点击锁定后自动在 Elements 面板高亮选中节点"
         }
       ],
-      "takeaway": "下一步：打开 lab，用 Default levels 下拉分别只显示 Errors / Warnings / Info，确认数量分别是 5 / 3 / 2。"
+      "takeaway": "下一步：在练习页里用 Inspect 模式直接点中那个 H1 「欢迎来到 Webrex」，看浮窗显示的字号是多少。"
     },
     {
       "slug": "practice",
       "type": "practice",
-      "title": "在 lab 里筛选三色 + 展开第一条 Error 的堆栈",
-      "intro": "lab 页面在加载时会主动打印 5 条红色 Error、3 条黄色 Warning、2 条蓝色 Info，每一条都以 `[lab]` 开头方便识别。第一条 Error 是模拟的网络错误：`[lab] AbortError: The fetch to api/users/me was aborted`。",
+      "title": "在练习页用 Inspect 锁定 H1 「欢迎来到 Webrex」",
+      "intro": "练习页有一个固定的 H1 「欢迎来到 Webrex」（字号 32px、颜色 #1F2937）和三个按钮。我们用 Inspect 模式直奔 H1。",
+      "labUrl": "http://localhost:8787/lessons/l3-1",
       "steps": [
-        "在新标签页打开 lab：[http://localhost:8787/lessons/l2-1](http://localhost:8787/lessons/l2-1)。",
-        "按 `F12` (Win/Linux) 或 `⌘+⌥+I` (Mac) 打开 DevTools。",
-        "点击顶部 tab 切到 **Console** 面板（如果默认不是）。",
-        "按 `⌘+R` / `F5` 刷新页面，让 lab 重新打印日志。你应该看到一片红黄蓝混在一起的 10 条 `[lab] ...` 输出。",
-        "找到 Console 顶部的 **Default levels** 下拉（在过滤输入框右侧，写着 *Default levels*、*All levels*、*Verbose* 之类）。点开它。",
-        "依次只勾选一个等级，逐项核对：\n\n| 只勾选的等级 | 应该看到的条数 | 第一条文本以什么开头 |\n| --- | --- | --- |\n| **Errors** | 5 | `[lab] AbortError: The fetch to api/users/me was aborted` |\n| **Warnings** | 3 | `[lab]` 开头的黄色三角图标行 |\n| **Info** | 2 | `[lab]` 开头的蓝色 ⓘ 图标行 |\n\n如果数字对得上，说明你已经能用筛选器区分三色。",
-        "把 **Default levels** 下拉重新勾上全部（Errors / Warnings / Info / Verbose），让所有日志都显示出来。",
-        "找到第一条红色 Error（`[lab] AbortError: The fetch to api/users/me was aborted`）。它左侧有一个小三角 **▶**。点这个三角展开。",
-        "展开后你会看到一段 **stack trace**（堆栈），每一行形如 `at functionName (file.js:行号:列号)`，最右边是文件名加行号。这告诉你「这个错是从哪个文件、哪一行抛出来的」。",
-        "把鼠标 hover 到堆栈最右边的 `file.js:12:34` 之类的链接上——它通常是可以点的，点了会跳到 Sources 面板对应的代码行。"
+        "在新标签页打开 [http://localhost:8787/lessons/l3-1](http://localhost:8787/lessons/l3-1)。",
+        "确认看到页面顶部的大标题 **欢迎来到 Webrex**，和它下方的副标题 **Webrex L3 demo · 这里的元素和样式会保持稳定，便于你练习**。",
+        "按 `F12` (Win/Linux) 或 `⌘+⌥+I` (Mac) 打开 DevTools，切到 **Elements** 面板（顶栏第一个 tab）。",
+        "按 `⌘+⇧+C` (Mac) / `Ctrl+Shift+C` (Win/Linux) 开启 Inspect 模式。鼠标会变成一个带光圈的箭头，DevTools 顶栏左上角的「箭头」图标也会变蓝。",
+        "把鼠标移到页面顶部的 **欢迎来到 Webrex** 文字上**不要点**。此时浮窗出现，最上面一行是 `h1` + 它的尺寸（`宽 × 高` 单位 px，宽度看你窗口、高度约 38px）。下面还有 **Font**（字体族 + 字号）、**Color**（文字颜色色值）、**Contrast**（对比度评分）三栏。",
+        "在浮窗里读出这几个值：**Font** 那行写的字号（应该是 `32px`），**Color** 那行写的文字颜色（应该是 `#1F2937` 或对应的 RGB）。",
+        "**点击** H1 一下。Inspect 模式自动关闭（鼠标恢复正常），同时 Elements 面板里 `<h1>欢迎来到 Webrex</h1>` 这一行被蓝色高亮选中。",
+        "看 Elements 面板右侧的 **Styles** 子面板。最上面那条 `h1` 规则里能看到 `font-size: 32px;` 和 `color: rgb(31, 41, 55);`（也就是 #1F2937）——和你刚才在浮窗里读到的完全一致。",
+        "再练一次：按 `⌘+⇧+C` / `Ctrl+Shift+C` 重新开启 Inspect，悬停三个按钮中第一个 **原型按钮 一**，看浮窗显示的背景色（蓝色）和按钮尺寸。点一下锁定到 Elements。"
       ],
       "shortcuts": [
         {
@@ -63,32 +63,32 @@
           "win": "F12"
         },
         {
-          "label": "刷新页面",
-          "mac": "⌘+R",
-          "win": "F5"
+          "label": "Inspect 模式",
+          "mac": "⌘+⇧+C",
+          "win": "Ctrl+Shift+C"
         },
         {
-          "label": "聚焦 Console 过滤框",
-          "mac": "⌘+F",
-          "win": "Ctrl+F"
+          "label": "命令面板（在 DevTools 里）",
+          "mac": "⌘+⇧+P",
+          "win": "Ctrl+Shift+P"
         }
       ],
-      "expectedOutcome": "你能用 **Default levels** 下拉单独看 Errors / Warnings / Info（数量 5/3/2），且能展开第一条 Error 看到堆栈，知道它是从哪个文件抛出来的。这两件事——**筛选** 和 **追溯来源**——是后续所有 Console 排错的基础。"
+      "expectedOutcome": "你能不展开 DOM 树，仅靠 Inspect 模式 → 鼠标悬停 → 点击，三步定位到 H1 节点；并且从浮窗读出它的字号是 `32px`、颜色是 `#1F2937`。这就是后面所有 Elements 操作的起点。"
     },
     {
       "slug": "verify",
       "type": "verify",
-      "title": "粘贴第一条红色 Error 的完整文本",
-      "prompt": "在 lab 页面 Console 里找到第一条红色 Error（最上面那条 `[lab]` 开头的红色行）。\n\n选中它的全部文本（不包含展开的堆栈，只要那一行主消息），按 `⌘+C` / `Ctrl+C` 复制，然后粘贴到下面：",
+      "title": "H1 的字号是多少？",
+      "prompt": "你刚才用 Inspect 模式悬停在 H1 **欢迎来到 Webrex** 上，浮窗的 **Font** 那行显示了它的字号。\n\n这个字号是多少？（带不带 `px` 单位都行）",
       "tier": "soft",
-      "expectedRegex": "(AbortError|api/users/me|\\[lab\\]|aborted)"
+      "expectedRegex": "32\\s*(px)?"
     },
     {
       "slug": "ask-ai",
       "type": "ask-ai",
-      "title": "问 AI：这条报错是哪一类问题",
-      "intro": "你已经看到 5 条红色 Error。挑一条你最看不懂的（推荐第一条 `AbortError`，因为它是网络类错误的典型样本），把完整文本和堆栈一起交给 AI，让它帮你判断这是网络问题、代码问题还是配置问题。",
-      "template": "我在 Chrome DevTools Console 里看到这条红色 Error：\n\n```\n[lab] AbortError: The fetch to api/users/me was aborted\n```\n\n（堆栈我也展开了，但暂时省略）\n\n请帮我判断：\n1. 这是哪一类问题？（网络 / JS 代码 / 配置 / 浏览器 API 误用）\n2. `AbortError` 是什么意思？什么情况下 fetch 会被 abort？\n3. 如果我是 PM 或 QA，看到这条报错，我应该把它派给前端、后端，还是运维？为什么？\n4. 一般遇到这种 Error，下一步应该看 DevTools 的哪个面板继续追？"
+      "title": "问 AI：Inspect 浮窗里的「对比度」是什么意思",
+      "intro": "Inspect 浮窗里除了字号、颜色，还有一个 **Contrast** 评分（一般是一个数字 + 一个 AA / AAA 标签）。这个值在无障碍设计里非常关键，让 AI 把它讲清楚。",
+      "template": "我在 Chrome DevTools 里用 Inspect 模式（Cmd+Shift+C）悬停一个网页 H1 元素，浮窗显示：\n- Font: 32px\n- Color: #1F2937\n- Contrast: 12.6 AAA\n\n请帮我解答：\n1. 这个 Contrast 12.6 是怎么算出来的？跟什么颜色对比？\n2. AAA / AA / 不及格 这几档分别对应多少分？为什么 WCAG 用这套标准？\n3. 我作为非前端（PM/QA），什么场景下应该主动看这个对比度数字？\n4. Inspect 模式（悬停定位）和直接在 Elements 树里手动展开找节点，分别什么场景用哪个更快？"
     }
   ]
 }

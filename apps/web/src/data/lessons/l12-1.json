@@ -2,77 +2,79 @@
   "id": "l12-1",
   "level": 12,
   "sublevel": 1,
-  "categoryIcon": "🏗️",
-  "categoryName": "现代前端架构常识",
-  "title": "SPA 路由——URL 变了页面没刷新",
+  "categoryIcon": "⚡",
+  "categoryName": "Performance 面板基础",
+  "title": "录制性能 trace",
   "time": 5,
   "track": "core",
-  "needsLab": true,
-  "stuck": "点击导航链接后 Network 面板没有变化？确认 Network 面板打开且没有过滤器。看 Network 面板底部的请求计数——点导航后计数不变就是 SPA。",
+  "needsLab": false,
+  "stuck": "找不到录制按钮？打开 DevTools 后点击 Performance 标签页，左上角有一个 ● 圆形按钮就是录制键。如果面板显示空白，点左上角 ● 即可。",
   "steps": [
     {
       "slug": "concept",
       "type": "concept",
-      "title": "URL 变了，浏览器却没发请求",
-      "hook": "SPA 让浏览器学会了一套变脸术。",
+      "title": "Performance 面板录下了什么",
+      "hook": "浏览器在你看网页的每一秒都在做大量工作——跑 JS、算布局、画像素。如果把这些事像拍电影一样录下来，会发生什么？",
       "body": [
-        "SPA 用 History API（pushState/replaceState）或 hash（#）路由来改变 URL，但不触发全页刷新。",
-        "点击导航链接 → JS 拦截跳转 → pushState 改 URL → JS 替换页面内容 → Network 里没有新的 HTML 请求。",
-        "MPA 完全不同：每次点击链接，浏览器都向服务器发起新的 HTML 文档请求，整页重新加载。",
-        "SPA 需要一个关键的后端配合：服务器对任何路径都返回同一个 index.html，否则用户直接访问子路由或刷新时会 404。"
+        "Performance 面板是一个时间线录像机。",
+        "点录制 → 操作页面 → 停止 → 得到一张火焰图，每一帧发生了什么全都列出来。"
       ],
       "bullets": [
         {
-          "emoji": "🔗",
-          "title": "SPA 路由",
-          "body": "前端劫持导航，history.pushState 改 URL，JS 渲染内容。"
+          "emoji": "⏺",
+          "title": "录制",
+          "body": "点击 ● 开始，点击 Stop 结束"
         },
         {
-          "emoji": "🌐",
-          "title": "MPA 路由",
-          "body": "每次点击 = 一次 HTTP 请求 = 服务器返回新 HTML 文档。"
+          "emoji": "🔥",
+          "title": "火焰图",
+          "body": "每条色块代表浏览器做的一件事"
         },
         {
-          "emoji": "⚠️",
-          "title": "关键配置",
-          "body": "服务器必须配置回退规则：所有路径指向 index.html。"
+          "emoji": "📊",
+          "title": "Summary",
+          "body": "底部汇总：JS 耗时、渲染耗时、绘制耗时"
         }
       ],
-      "takeaway": "SPA 路由 = JS 拦截 + pushState + 组件切换，Network 里看不到 document 请求。"
+      "takeaway": "下一步亲手录一条 trace。"
     },
     {
       "slug": "practice",
       "type": "practice",
-      "title": "直接观察 SPA 如何实现客户端路由",
-      "intro": "打开本地 Lab 页面，观察 Network 面板，亲自验证 SPA 路由行为。",
+      "title": "录制第一条 trace",
+      "intro": "react.dev 是 React 官方文档站。",
       "steps": [
-        "在浏览器打开 http://localhost:8787/lessons/l12-spa。",
-        "打开 DevTools → Network 面板，清空已有记录。",
-        "点击顶部导航栏的「关于」。",
-        "观察地址栏：URL 变成了 /lessons/l12-spa/about。",
-        "观察 Network 面板：有没有出现新的 document 类型请求？",
-        "点击「首页」，再次确认 Network 无新文档请求。",
-        "按 ⌘+R（Mac）/ F5（Win/Linux）刷新页面——页面正常加载，因为服务器配置了回退。",
-        "在地址栏直接输入 http://localhost:8787/lessons/l12-spa/about 并按回车——页面也正常加载，同样是服务器回退在起作用。",
-        "对照下表理解 SPA 与 MPA 的差异：\n\n| 特征 | SPA | MPA |\n| --- | --- | --- |\n| 导航时的 URL 变化 | pushState 修改，无请求 | 浏览器发起 GET 请求 |\n| Network 面板 | 无新 HTML 文档请求 | 每次出现新 document |\n| 页面加载速度 | 首次慢，后续快 | 每次都重新加载 |\n| 刷新/直接访问 | 需要服务器回退 | 天然支持 |\n| SEO | 需额外处理（SSR/预渲染） | 天然支持 |"
+        "打开 react.dev。",
+        "打开 DevTools → Performance 面板。",
+        "点击左上角 **● 录制按钮** 开始录制。",
+        "操作页面：点击顶部 Search 按钮，向下滚动一段，等待 3 秒。",
+        "点击 **Stop** 结束录制。",
+        "页面自动生成一张火焰图。",
+        "找到底部的 **Summary** 标签页，查看：\n\n| 活动类型 | 含义 |\n| --- | --- |\n| Scripting | JS 执行时间 |\n| Rendering | 样式计算 + 布局 |\n| Painting | 像素绘制 |"
       ],
-      "labUrl": "http://localhost:8787/lessons/l12-spa",
-      "expectedOutcome": "点击导航链接后 URL 变了，但 Network 面板里没有新的 document 请求。"
+      "shortcuts": [
+        {
+          "label": "DevTools",
+          "mac": "⌘+⌥+I",
+          "win": "F12"
+        }
+      ],
+      "expectedOutcome": "Summary 标签页显示三类活动的时间分配，其中 Scripting 通常占最大。",
+      "externalSite": "react.dev"
     },
     {
       "slug": "verify",
       "type": "verify",
       "title": "验证",
-      "prompt": "SPA 页面点击导航链接后，Network 面板会出现新的 HTML 文档请求吗？回答「会」或「不会」。",
-      "tier": "soft",
-      "expectedRegex": "(不会|没有|no|不会出现|不出现|没.{0,3}新的)"
+      "prompt": "录制一次 react.dev 的 Performance trace 后，Summary 标签页里显示的总时间中，哪类活动占比最大？简要描述你看到的。",
+      "tier": "self"
     },
     {
       "slug": "ask-ai",
       "type": "ask-ai",
       "title": "问 AI",
-      "intro": "把今天的发现转成一个更深入的问题。",
-      "template": "SPA 路由有 hash 模式和 history 模式两种。请解释它们的原理区别、各自的优缺点，以及为什么服务端配置回退规则对 history 模式是必须的。另外说说 SPA 的 SEO 问题有哪些解决方案（SSR、SSG、预渲染）。"
+      "intro": "把观察转成问题。",
+      "template": "我在 react.dev 用 Chrome DevTools Performance 面板录了一条 trace：\n- Summary 显示 Scripting 占了大部分时间\n- Rendering 和 Painting 也有占比\n\n请解释：\n1. Scripting、Rendering、Painting 分别代表浏览器在做什么？\n2. 如何根据 Summary 数据判断性能瓶颈在哪一层？"
     }
   ]
 }

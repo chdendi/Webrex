@@ -1,89 +1,90 @@
 {
-	"id": "l6-1",
-	"level": 6,
-	"sublevel": 1,
-	"categoryIcon": "🗄️",
-	"categoryName": "Application —— 看数据存哪里",
-	"title": "Cookies——看登录态",
-	"time": 4,
-	"track": "core",
-	"needsLab": false,
-	"stuck": "找不到 Cookies？Application 面板左侧列表展开 Storage 区域，点击 Cookies 前面的三角箭头。",
-	"steps": [
-		{
-			"slug": "concept",
-			"type": "concept",
-			"title": "Cookie 是浏览器记的小便条",
-			"hook": "浏览器每访问一个网站，都会悄悄带上一张小纸条。这张纸条上写着你的登录状态。它叫 Cookie。",
-			"body": [
-				"Cookie 是服务器让浏览器存的小段文本，每次请求都会自动附带在 HTTP 头里发送给服务器。",
-				"Application 面板 → Cookies → 点选域名，就能看到该站存了哪些 Cookie。",
-				"关键字段：Name、Value、Domain、Path、Expires / Max-Age、HttpOnly、Secure、SameSite。",
-				"会话 Cookie（Expires 为空）关浏览器就消失；持久 Cookie 会一直保留到过期时间。",
-				"HttpOnly 的 Cookie JS 读不到；Secure 的 Cookie 只在 HTTPS 下传输。"
-			],
-			"bullets": [
-				{
-					"emoji": "🍪",
-					"title": "Name / Value",
-					"body": "Cookie 的键值对，存储实际数据"
-				},
-				{
-					"emoji": "🔒",
-					"title": "HttpOnly",
-					"body": "为 true 时 JS 无法读取，防 XSS 窃取"
-				},
-				{
-					"emoji": "🛡️",
-					"title": "SameSite",
-					"body": "控制跨站请求是否携带 Cookie（Strict / Lax / None）"
-				}
-			],
-			"takeaway": "下一步：用 Application 面板查看 react.dev 的 Cookie，在 Console 里试试哪些能用 document.cookie 读到。"
-		},
-		{
-			"slug": "practice",
-			"type": "practice",
-			"title": "在 react.dev 上查看 Cookie 并用 JS 读取",
-			"intro": "react.dev 会设置一些 Cookie（如身份认证、偏好设置）。用 Application 面板查看它们，再用 Console 验证 HttpOnly 的效果。",
-			"steps": [
-				"在新标签页打开 react.dev。",
-				"按 `⌘+⌥+I` / `F12` 打开 DevTools。",
-				"点击顶部的 **Application** 面板标签。",
-				"在左侧边栏展开 **Cookies**，点击下面的 `https://react.dev`。",
-				"观察右侧表格的 8 列信息。找到 **HttpOnly** 列，注意哪些行是 `true`。",
-				"找到 **SameSite** 列，记录出现的值（Lax / Strict / None）。",
-				"找到 **Expires / Max-Age** 列，看哪些 Cookie 有日期（持久 Cookie），哪些是 `Session`（会话 Cookie）。",
-				"切换到 **Console** 面板，输入 `document.cookie` 回车，观察返回了哪些 Cookie，对比刚才看到的 HttpOnly=true 的那几个是否出现在结果里。"
-			],
-			"shortcuts": [
-				{
-					"label": "DevTools",
-					"mac": "⌘+⌥+I",
-					"win": "F12"
-				},
-				{
-					"label": "Application 面板",
-					"mac": "⌘+⌥+A",
-					"win": "Ctrl+Shift+A"
-				}
-			],
-			"expectedOutcome": "HttpOnly=true 的 Cookie 不会出现在 document.cookie 的返回结果里，其余 Cookie 可以读到。"
-		},
-		{
-			"slug": "verify",
-			"type": "verify",
-			"title": "HttpOnly Cookie 能被 JS 读到吗？",
-			"prompt": "HttpOnly 为 true 的 Cookie，能在 JavaScript 里用 `document.cookie` 读到吗？回答「能」或「不能」。",
-			"tier": "soft",
-			"expectedRegex": "(不能|不会|不可以|读不到|no|false)"
-		},
-		{
-			"slug": "ask-ai",
-			"type": "ask-ai",
-			"title": "问 AI：Cookie 的安全属性",
-			"intro": "你观察到了 HttpOnly、Secure、SameSite 三个属性。把它们串起来理解 Cookie 安全。",
-			"template": "我在 react.dev 的 Application 面板里查看了 Cookies，注意到三个安全属性：\n- HttpOnly\n- Secure\n- SameSite\n\n请帮我解释：\n1. 这三个属性各自解决什么安全问题？\n2. 如果我把一个登录 Cookie 设为 HttpOnly=true, Secure=true, SameSite=Strict，分别能防止什么攻击？\n3. SameSite=Lax 和 Strict 的区别是什么？什么场景用哪个？"
-		}
-	]
+  "id": "l6-1",
+  "level": 6,
+  "sublevel": 1,
+  "categoryIcon": "🗄️",
+  "categoryName": "Application —— 看数据存哪里",
+  "title": "Cookies——看登录态",
+  "time": 4,
+  "track": "core",
+  "needsLab": false,
+  "stuck": "找不到 Cookies？Application 面板左侧列表展开 Storage 区域，点击 Cookies 前面的三角箭头。",
+  "steps": [
+    {
+      "slug": "concept",
+      "type": "concept",
+      "title": "Cookie 是浏览器记的小便条",
+      "hook": "浏览器每访问一个网站，都会悄悄带上一张小纸条。这张纸条上写着你的登录状态。它叫 Cookie。",
+      "body": [
+        "Cookie 是服务器让浏览器存的小段文本，每次请求都会自动附带在 HTTP 头里发送给服务器。",
+        "Application 面板 → Cookies → 点选域名，就能看到该站存了哪些 Cookie。",
+        "关键字段：Name、Value、Domain、Path、Expires / Max-Age、HttpOnly、Secure、SameSite。",
+        "会话 Cookie（Expires 为空）关浏览器就消失；持久 Cookie 会一直保留到过期时间。",
+        "HttpOnly 的 Cookie JS 读不到；Secure 的 Cookie 只在 HTTPS 下传输。"
+      ],
+      "bullets": [
+        {
+          "emoji": "🍪",
+          "title": "Name / Value",
+          "body": "Cookie 的键值对，存储实际数据"
+        },
+        {
+          "emoji": "🔒",
+          "title": "HttpOnly",
+          "body": "为 true 时 JS 无法读取，防 XSS 窃取"
+        },
+        {
+          "emoji": "🛡️",
+          "title": "SameSite",
+          "body": "控制跨站请求是否携带 Cookie（Strict / Lax / None）"
+        }
+      ],
+      "takeaway": "下一步：用 Application 面板查看 react.dev 的 Cookie，在 Console 里试试哪些能用 document.cookie 读到。"
+    },
+    {
+      "slug": "practice",
+      "type": "practice",
+      "title": "在 react.dev 上查看 Cookie 并用 JS 读取",
+      "intro": "react.dev 会设置一些 Cookie（如身份认证、偏好设置）。用 Application 面板查看它们，再用 Console 验证 HttpOnly 的效果。",
+      "steps": [
+        "在新标签页打开 react.dev。",
+        "按 `⌘+⌥+I` / `F12` 打开 DevTools。",
+        "点击顶部的 **Application** 面板标签。",
+        "在左侧边栏展开 **Cookies**，点击下面的 `https://react.dev`。",
+        "观察右侧表格的 8 列信息。找到 **HttpOnly** 列，注意哪些行是 `true`。",
+        "找到 **SameSite** 列，记录出现的值（Lax / Strict / None）。",
+        "找到 **Expires / Max-Age** 列，看哪些 Cookie 有日期（持久 Cookie），哪些是 `Session`（会话 Cookie）。",
+        "切换到 **Console** 面板，输入 `document.cookie` 回车，观察返回了哪些 Cookie，对比刚才看到的 HttpOnly=true 的那几个是否出现在结果里。"
+      ],
+      "shortcuts": [
+        {
+          "label": "DevTools",
+          "mac": "⌘+⌥+I",
+          "win": "F12"
+        },
+        {
+          "label": "Application 面板",
+          "mac": "⌘+⌥+A",
+          "win": "Ctrl+Shift+A"
+        }
+      ],
+      "expectedOutcome": "HttpOnly=true 的 Cookie 不会出现在 document.cookie 的返回结果里，其余 Cookie 可以读到。",
+      "externalSite": "react.dev"
+    },
+    {
+      "slug": "verify",
+      "type": "verify",
+      "title": "HttpOnly Cookie 能被 JS 读到吗？",
+      "prompt": "HttpOnly 为 true 的 Cookie，能在 JavaScript 里用 `document.cookie` 读到吗？回答「能」或「不能」。",
+      "tier": "soft",
+      "expectedRegex": "(不能|不会|不可以|读不到|no|false)"
+    },
+    {
+      "slug": "ask-ai",
+      "type": "ask-ai",
+      "title": "问 AI：Cookie 的安全属性",
+      "intro": "你观察到了 HttpOnly、Secure、SameSite 三个属性。把它们串起来理解 Cookie 安全。",
+      "template": "我在 react.dev 的 Application 面板里查看了 Cookies，注意到三个安全属性：\n- HttpOnly\n- Secure\n- SameSite\n\n请帮我解释：\n1. 这三个属性各自解决什么安全问题？\n2. 如果我把一个登录 Cookie 设为 HttpOnly=true, Secure=true, SameSite=Strict，分别能防止什么攻击？\n3. SameSite=Lax 和 Strict 的区别是什么？什么场景用哪个？"
+    }
+  ]
 }

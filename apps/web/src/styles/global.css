@@ -187,3 +187,7 @@ kbd {
 .confidence-pop {
   animation: confidencePop 0.4s ease-out;
 }
+
+/* OS-aware shortcuts: show only the relevant shortcut set */
+[data-os="mac"] .shortcut-win { display: none; }
+[data-os="win"] .shortcut-mac { display: none; }

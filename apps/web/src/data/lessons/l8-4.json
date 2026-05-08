@@ -1,87 +1,88 @@
 {
-	"id": "l8-4",
-	"level": 8,
-	"sublevel": 4,
-	"categoryIcon": "📱",
-	"categoryName": "响应式与移动端",
-	"title": "触摸、hover 与刘海安全区",
-	"time": 4,
-	"track": "core",
-	"needsLab": false,
-	"stuck": "不确定 hover 有没有生效？看链接文字颜色或下划线在鼠标悬停前后有没有变化。在真实手机上：hover 通常不存在。",
-	"steps": [
-		{
-			"slug": "concept",
-			"type": "concept",
-			"title": "手机上不存在悬浮，但 Chrome 假装有",
-			"hook": "你把鼠标悬停在按钮上，按钮变色了——这个在电脑上每天发生一百次的动作，在手机屏幕上根本不存在。",
-			"body": [
-				"CSS 的 :hover 伪类依赖「光标停留在元素上方」这个状态。手机屏幕没有光标——用户只能用手指点，不存在「悬停」这个概念。",
-				"Chrome 的 Device Toolbar 在模拟手机时保留鼠标 hover 效果，这是一个便利但不真实的妥协。真实 iPhone 上，touch 直接触发 :active 或 click，不会经过 :hover。",
-				"iPhone X 及之后的机型有刘海（notch）和底部 Home Indicator 区域。iOS Safari 提供了 env(safe-area-inset-*) 四个 CSS 环境变量，让开发者把内容避开这些被遮挡的区域。"
-			],
-			"bullets": [
-				{
-					"emoji": "👆",
-					"title": "触摸无 hover",
-					"body": "手指离开屏幕 = touch 结束，hover 状态不存在"
-				},
-				{
-					"emoji": "🖱️",
-					"title": "DevTools 模拟",
-					"body": "Device Toolbar 保留鼠标 hover，和真机行为不同"
-				},
-				{
-					"emoji": "📱",
-					"title": "safe-area-inset",
-					"body": "iOS 专用 CSS 变量，避开刘海和底部横条"
-				}
-			],
-			"takeaway": "下一步：在 iPhone 14 Pro 模拟模式下，测试鼠标 hover 效果是否还在，理解模拟与真机的差异。"
-		},
-		{
-			"slug": "practice",
-			"type": "practice",
-			"title": "在 iPhone 14 Pro 模拟模式下测试 hover",
-			"intro": "Device Toolbar 模拟手机但不关闭 hover——这道裂缝正好让你看清模拟的边界在哪里。用 react.dev 顶部导航链接做实验。",
-			"steps": [
-				"打开 react.dev。",
-				"按 `⌘+⌥+I` (Mac) / `F12` (Win/Linux) 打开 DevTools。",
-				"按 `⌘+⇧+M` (Mac) / `Ctrl+Shift+M` (Win/Linux) 打开 Device Toolbar。",
-				"在设备预设下拉框中，找到并选择 **iPhone 14 Pro**。",
-				"把鼠标光标移到顶部导航栏的 **Learn** 链接上方，保持光标静止不动。",
-				"观察 Learn 链接的颜色或下划线是否发生变化——记下你的观察结果（变了 or 没变）。",
-				"把鼠标移开，点一下空白处，再悬停到 **Reference** 链接上，重复观察。",
-				"思考：如果你拿一台真实的 iPhone 14 Pro 打开 react.dev，能用手指「悬停」在 Learn 上吗？"
-			],
-			"shortcuts": [
-				{
-					"label": "DevTools",
-					"mac": "⌘+⌥+I",
-					"win": "F12"
-				},
-				{
-					"label": "Device Toolbar",
-					"mac": "⌘+⇧+M",
-					"win": "Ctrl+Shift+M"
-				}
-			],
-			"expectedOutcome": "在 Device Toolbar 的 iPhone 14 Pro 模式下，鼠标悬停顶部导航链接时 hover 效果仍然生效（颜色/下划线变化）。但在真实 iPhone 14 Pro 上，手指触摸无法触发 :hover。"
-		},
-		{
-			"slug": "verify",
-			"type": "verify",
-			"title": "iPhone 14 Pro 模拟下，hover 还有效吗？",
-			"prompt": "上一步你在 Device Toolbar 的 iPhone 14 Pro 模式下，用鼠标悬停了顶部导航链接。请回答：hover 效果还有效吗？回答「有」或「没有」。",
-			"tier": "soft",
-			"expectedRegex": "(有|可以|有效|还在|能|yes|是|对|会)"
-		},
-		{
-			"slug": "ask-ai",
-			"type": "ask-ai",
-			"title": "问 AI：真触摸和假触摸差在哪",
-			"intro": "你刚发现了 DevTools 手机模拟的一个盲区：hover 在电脑上一直有效，但真手机没有 hover。把这个发现升级成对触摸交互的系统理解。",
-			"template": "我在 Chrome DevTools 的 Device Toolbar 里选了 iPhone 14 Pro 模拟模式，发现鼠标悬停在 react.dev 的顶部导航链接上时，链接颜色仍然会变——和桌面端一样。但我知道真实 iPhone 没有 hover。\n\n请帮我解释：\n1. 为什么真手机上 :hover 不存在？那 CSS 的 :hover 样式在手机上会怎么处理？\n2. 移动端有哪些触摸专属的 CSS 伪类（比如 :active、:focus-visible、-webkit-tap-highlight-color）可以替代 hover？\n3. iPhone 的刘海（notch）和底部横条会遮挡页面内容，env(safe-area-inset-top) 等四个 CSS 变量具体怎么用？\n4. 在真实设备上测试移动端布局，有哪些 DevTools 模拟不出来的差异需要注意？"
-		}
-	]
+  "id": "l8-4",
+  "level": 8,
+  "sublevel": 4,
+  "categoryIcon": "📱",
+  "categoryName": "响应式与移动端",
+  "title": "触摸、hover 与刘海安全区",
+  "time": 4,
+  "track": "core",
+  "needsLab": false,
+  "stuck": "不确定 hover 有没有生效？看链接文字颜色或下划线在鼠标悬停前后有没有变化。在真实手机上：hover 通常不存在。",
+  "steps": [
+    {
+      "slug": "concept",
+      "type": "concept",
+      "title": "手机上不存在悬浮，但 Chrome 假装有",
+      "hook": "你把鼠标悬停在按钮上，按钮变色了——这个在电脑上每天发生一百次的动作，在手机屏幕上根本不存在。",
+      "body": [
+        "CSS 的 :hover 伪类依赖「光标停留在元素上方」这个状态。手机屏幕没有光标——用户只能用手指点，不存在「悬停」这个概念。",
+        "Chrome 的 Device Toolbar 在模拟手机时保留鼠标 hover 效果，这是一个便利但不真实的妥协。真实 iPhone 上，touch 直接触发 :active 或 click，不会经过 :hover。",
+        "iPhone X 及之后的机型有刘海（notch）和底部 Home Indicator 区域。iOS Safari 提供了 env(safe-area-inset-*) 四个 CSS 环境变量，让开发者把内容避开这些被遮挡的区域。"
+      ],
+      "bullets": [
+        {
+          "emoji": "👆",
+          "title": "触摸无 hover",
+          "body": "手指离开屏幕 = touch 结束，hover 状态不存在"
+        },
+        {
+          "emoji": "🖱️",
+          "title": "DevTools 模拟",
+          "body": "Device Toolbar 保留鼠标 hover，和真机行为不同"
+        },
+        {
+          "emoji": "📱",
+          "title": "safe-area-inset",
+          "body": "iOS 专用 CSS 变量，避开刘海和底部横条"
+        }
+      ],
+      "takeaway": "下一步：在 iPhone 14 Pro 模拟模式下，测试鼠标 hover 效果是否还在，理解模拟与真机的差异。"
+    },
+    {
+      "slug": "practice",
+      "type": "practice",
+      "title": "在 iPhone 14 Pro 模拟模式下测试 hover",
+      "intro": "Device Toolbar 模拟手机但不关闭 hover——这道裂缝正好让你看清模拟的边界在哪里。用 react.dev 顶部导航链接做实验。",
+      "steps": [
+        "打开 react.dev。",
+        "按 `⌘+⌥+I` (Mac) / `F12` (Win/Linux) 打开 DevTools。",
+        "按 `⌘+⇧+M` (Mac) / `Ctrl+Shift+M` (Win/Linux) 打开 Device Toolbar。",
+        "在设备预设下拉框中，找到并选择 **iPhone 14 Pro**。",
+        "把鼠标光标移到顶部导航栏的 **Learn** 链接上方，保持光标静止不动。",
+        "观察 Learn 链接的颜色或下划线是否发生变化——记下你的观察结果（变了 or 没变）。",
+        "把鼠标移开，点一下空白处，再悬停到 **Reference** 链接上，重复观察。",
+        "思考：如果你拿一台真实的 iPhone 14 Pro 打开 react.dev，能用手指「悬停」在 Learn 上吗？"
+      ],
+      "shortcuts": [
+        {
+          "label": "DevTools",
+          "mac": "⌘+⌥+I",
+          "win": "F12"
+        },
+        {
+          "label": "Device Toolbar",
+          "mac": "⌘+⇧+M",
+          "win": "Ctrl+Shift+M"
+        }
+      ],
+      "expectedOutcome": "在 Device Toolbar 的 iPhone 14 Pro 模式下，鼠标悬停顶部导航链接时 hover 效果仍然生效（颜色/下划线变化）。但在真实 iPhone 14 Pro 上，手指触摸无法触发 :hover。",
+      "externalSite": "react.dev"
+    },
+    {
+      "slug": "verify",
+      "type": "verify",
+      "title": "iPhone 14 Pro 模拟下，hover 还有效吗？",
+      "prompt": "上一步你在 Device Toolbar 的 iPhone 14 Pro 模式下，用鼠标悬停了顶部导航链接。请回答：hover 效果还有效吗？回答「有」或「没有」。",
+      "tier": "soft",
+      "expectedRegex": "(有|可以|有效|还在|能|yes|是|对|会)"
+    },
+    {
+      "slug": "ask-ai",
+      "type": "ask-ai",
+      "title": "问 AI：真触摸和假触摸差在哪",
+      "intro": "你刚发现了 DevTools 手机模拟的一个盲区：hover 在电脑上一直有效，但真手机没有 hover。把这个发现升级成对触摸交互的系统理解。",
+      "template": "我在 Chrome DevTools 的 Device Toolbar 里选了 iPhone 14 Pro 模拟模式，发现鼠标悬停在 react.dev 的顶部导航链接上时，链接颜色仍然会变——和桌面端一样。但我知道真实 iPhone 没有 hover。\n\n请帮我解释：\n1. 为什么真手机上 :hover 不存在？那 CSS 的 :hover 样式在手机上会怎么处理？\n2. 移动端有哪些触摸专属的 CSS 伪类（比如 :active、:focus-visible、-webkit-tap-highlight-color）可以替代 hover？\n3. iPhone 的刘海（notch）和底部横条会遮挡页面内容，env(safe-area-inset-top) 等四个 CSS 变量具体怎么用？\n4. 在真实设备上测试移动端布局，有哪些 DevTools 模拟不出来的差异需要注意？"
+    }
+  ]
 }

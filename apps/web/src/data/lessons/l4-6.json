@@ -4,85 +4,96 @@
   "sublevel": 6,
   "categoryIcon": "🌍",
   "categoryName": "网络 (Network)",
-  "title": "Network Throttling —— 模拟慢网络",
+  "title": "缓存与“为什么我改了没生效”",
   "time": 5,
   "track": "core",
-  "needsLab": false,
-  "stuck": "找不到 Throttling 下拉？在 Network 面板顶部工具栏，有一个写着 No throttling 的下拉菜单。如果没有，可能需要点击 Network 面板右上角的齿轮图标确认工具栏未折叠。",
+  "needsLab": true,
+  "stuck": "Network 面板 Size 列看不到 disk cache？确认顶部 'Disable cache' 没有勾选，然后刷新两次。",
   "steps": [
     {
       "slug": "concept",
       "type": "concept",
-      "title": "用户的网络不是你的 Wi-Fi",
-      "hook": "你的页面在办公室 1Gbps 光纤下秒开，但用户在地铁上用 3G。你怎么知道你的页面在慢网络下是什么体验？",
+      "title": "Network Size 列的四个面孔",
+      "hook": "你改了一个文件上线了，老板刷出来还是旧的。你说「清理缓存」。谁在缓存？存了多久？",
       "body": [
-        "Network 面板的 Throttling 下拉可以模拟各种网络条件：Slow 3G、Fast 3G、Slow 4G，也可以自定义延迟、下载速度、上传速度。",
-        "慢网络会让原本不明显的性能问题暴露出来：瀑布流请求变成串行、大图片迟迟加载不出、SPA 首屏白屏时间过长。这些都是需要在慢网络下才能发现的 UX 问题。",
-        "注意：Throttling 只影响当前标签页，不影响 Chrome 其他标签页。关闭 DevTools 后 throttling 自动恢复到默认的 No throttling。"
+        "浏览器拿到服务器响应后，会根据 Cache-Control 响应头决定要不要把资源存起来、存多久。下一次请求同一个 URL 时，浏览器先看本地有没有有效缓存——有就直接用，省掉一次网络往返。",
+        "DevTools Network 面板的 Size 列就是缓存的「照妖镜」：200 表示从服务器完整下载了一遍（新鲜请求）；304 表示浏览器带着条件去问服务器「我这份过没过期」，服务器说没过期，只回个头不传内容；disk cache 表示压根没问服务器，直接从硬盘缓存拿出来用；memory cache 也是本地缓存，但存在内存里，更快，浏览器关了就没。",
+        "Cache-Control 头的常见指令：max-age=3600 意思是从下载那一刻起 3600 秒内直接用缓存不找服务器；no-cache 意思是用之前必须去服务器确认一下（发条件请求，可能收到 304）；no-store 意思是完全禁止缓存，每次必拉取新内容。",
+        "所以你改了文件、部署了，用户还看到旧内容——要么是用户的浏览器缓存没到期（max-age 还没到），要么是 CDN 边缘节点还拿着旧文件没回源更新。"
       ],
       "bullets": [
         {
-          "emoji": "🐌",
-          "title": "Slow 3G",
-          "body": "约 400ms RTT, 400kbps 下载——模拟最差的移动网络"
+          "emoji": "📥",
+          "title": "200 完整下载",
+          "body": "服务器回了一整份内容——没用到任何缓存"
         },
         {
-          "emoji": "📱",
-          "title": "Fast 3G",
-          "body": "约 150ms RTT, 1.5Mbps 下载——模拟普通移动网络"
+          "emoji": "🔄",
+          "title": "304 未修改",
+          "body": "浏览器问了服务器，服务器说没变——省了传输体"
         },
         {
-          "emoji": "⚙️",
-          "title": "自定义",
-          "body": "Add → 可配 latency/download/upload，模拟特定网络条件"
+          "emoji": "💾",
+          "title": "disk cache / memory cache",
+          "body": "浏览器直接取本地缓存——根本没发网络请求"
+        },
+        {
+          "emoji": "⏱️",
+          "title": "Cache-Control",
+          "body": "服务器通过这个头告诉浏览器：缓存策略是什么、缓存多久"
         }
       ],
-      "takeaway": "下一步：在 react.dev 上开启 Slow 3G 节流，刷新页面，对比正常网络和慢网络下的加载体验差异。重点看 Network 面板里每个请求的 Waterfall 时间线。"
+      "takeaway": "下一步：在 lab 页面上反复刷新，观察三个资源的 Size 列如何变化，亲手验证每种缓存策略的效果。"
     },
     {
       "slug": "practice",
       "type": "practice",
-      "title": "用 Slow 3G 打开 react.dev，记录加载差异",
-      "intro": "react.dev 是一个内容较多、图片丰富的文档站。正常网络下秒开，但 Slow 3G 下会暴露出加载瀑布流的问题。",
+      "title": "刷新两次，看三个资源的缓存差异",
+      "intro": "这个 lab 页面返回一个 HTML 和两个 JSON API：一个告诉浏览器「缓存 60 秒」，一个告诉浏览器「每次确认」。刷新两次之后，三行的 Size 列会有三种不同表现。",
       "steps": [
-        "打开 [react.dev](https://react.dev/)，确认正常加载完成",
-        "打开 DevTools → Network 面板。勾选上 Disable cache 复选框",
-        "切换到 Slow 3G（Network 面板顶部 No throttling 下拉 → Slow 3G）",
-        "在 Network 面板里点清空按钮（🚫），清空已有记录",
-        "按 ⌘+R / Ctrl+R 刷新页面，观察请求列表逐渐加载的过程",
-        "关注以下指标：DOMContentLoaded 时间、Load 时间、总请求数、瀑布流里是否有大量串行请求",
-        "找到最慢的几个资源（按 Time 列排序），看它们的类型：是大图片？大 JS bundle？还是字体文件？",
-        "切回 No throttling，再刷新一次，对比两次加载的 DOMContentLoaded 和 Load 时间差",
-        "思考：哪个资源是你的首屏体验的瓶颈？如果要对它做优化，你会先做什么？"
+        "在新标签页打开 http://localhost:8787/lessons/l4-8。",
+        "按 `⌘+⌥+I` (Mac) / `F12` (Win/Linux) 打开 DevTools。",
+        "切换到 **Network** 面板。确认顶部的 **Disable cache** 复选框 **没有勾选**。如果已勾选，点击取消它。",
+        "按 `⌘+R` / `F5` 刷新页面（第一次）。观察 Network 面板出现的请求。找到以下三个资源：主页面文档（l4-8）、/api/cache/short.json、/api/cache/no.json。",
+        "在列表里点击 `/api/cache/short.json`，右侧面板切换到 **Headers** 选项卡，在 **Response Headers** 区域找到 `Cache-Control` 的值，记录下来。",
+        "在列表里点击 `/api/cache/no.json`，同样在 Response Headers 里找到 `Cache-Control` 的值，记录下来。",
+        "按 `⌘+R` / `F5` 再次刷新（第二次）。现在看 Network 列表里三个资源的 **Size** 列。",
+        "对照下表确认你看到的情况：\n\n| 资源 | Cache-Control | 第一次 Size | 第二次 Size |\n| --- | --- | --- | --- |\n| l4-8 (页面文档) | 每次验证 | 实际体积（如 1.2 kB） | 304 |\n| /api/cache/short.json | max-age=60 | 实际体积 | disk cache 或 memory cache |\n| /api/cache/no.json | no-store 或 no-cache | 实际体积 | 200 |\n\n/short.json 第二次会是 disk cache 或 memory cache（完全没发网络请求）；/no.json 每次都是 200（每次都去服务器拉完整的）。"
       ],
       "shortcuts": [
-        {
-          "label": "强制刷新（忽略缓存）",
-          "mac": "⌘+⇧+R",
-          "win": "Ctrl+Shift+R"
-        },
         {
           "label": "DevTools",
           "mac": "⌘+⌥+I",
           "win": "F12"
+        },
+        {
+          "label": "刷新页面",
+          "mac": "⌘+R",
+          "win": "F5"
+        },
+        {
+          "label": "强刷（跳过缓存）",
+          "mac": "⌘+⇧+R",
+          "win": "Ctrl+Shift+R"
         }
       ],
-      "expectedOutcome": "Slow 3G 下的 DOMContentLoaded 和 Load 时间显著高于 No throttling。Network 面板的 Waterfall 瀑布流清楚地显示了资源的下载顺序和时间。你找到了至少一个加载耗时最长的资源。"
+      "labUrl": "http://localhost:8787/lessons/l4-8",
+      "expectedOutcome": "第二次刷新后：/api/cache/short.json 的 Size 列显示 disk cache 或 memory cache；/api/cache/no.json 的 Size 列显示实际体积（200）；页面文档可能显示 304 或实际体积。"
     },
     {
       "slug": "verify",
       "type": "verify",
-      "title": "Slow 3G 下加载最慢的资源是什么类型的？",
-      "prompt": "你在 react.dev 上开启了 Slow 3G 节流并刷新了页面。\n\n按 Time 列排序，加载最慢的那个资源是什么类型？\n\n回答一个词：图片 / JS / CSS / 字体 / 其他",
-      "tier": "self",
-      "expectedRegex": "(图片|JS|CSS|字体|其他|image|javascript|script|font|img|png|svg|jpg|webp|woff)"
+      "title": "第二次刷新时 /api/cache/short.json 的 Size 列写什么？",
+      "prompt": "你在第二步刷新后，Network 面板里 /api/cache/short.json 的 Size 列显示的是什么？把那个词写下来。",
+      "tier": "soft",
+      "expectedRegex": "(memory|disk|cache|304|200|缓存|从)"
     },
     {
       "slug": "ask-ai",
       "type": "ask-ai",
-      "title": "问 AI：慢网络下我的页面该怎么优化",
-      "intro": "你通过实验观察到了 Slow 3G 下页面的加载瀑布流。把这个观察喂给 AI，让它给出针对性的优化建议。",
-      "template": "我在 Chrome DevTools 的 Network 面板里对 react.dev 做了 Slow 3G 节流测试。\n\n观察结果：\n- DOMContentLoaded: [填你的数据]ms\n- Load: [填你的数据]ms\n- 总请求数: [填你的数据]\n- 最慢的资源: [填资源类型和 URL]\n\n请帮我分析：\n1. 这个加载瀑布流里，哪些请求是阻塞首屏渲染的？\n2. 针对最慢的资源，有哪些具体的优化手段？\n3. 在真实移动网络环境下，用户的实际体验会比 Slow 3G 模拟更好还是更差？为什么？\n4. 如果这个站点是我的项目，我该优先做哪 3 件事来改善慢网络体验？"
+      "title": "问 AI：改了文件为什么用户还看到旧的？",
+      "intro": "你刚才在 Network Size 列直接观察到三种缓存结果。现在把这个实验发现转成实际场景问题，让 AI 帮你把「缓存排查」变成条件反射。",
+      "template": "我在 lab 页面做了一个缓存实验：\n- 页面里有三个资源，各自有不同的 Cache-Control 头\n- /api/cache/short.json 的 Cache-Control 是 max-age=60，第二次刷新 Size 列显示 disk cache（浏览器直接从本地读了，没发请求）\n- /api/cache/no.json 的 Cache-Control 是 no-store，每次刷新 Size 列都是实际体积（每次都去服务器下载）\n\n请帮我回答：\n1. 我改了 /api/cache/short.json 的内容部署上线，为什么用户在前 60 秒内还看到旧数据？\n2. max-age=0 和 no-cache 有什么区别？什么时候用哪个？\n3. 如果我用了 CDN，用户看到的旧内容可能是浏览器缓存还是 CDN 缓存？怎么分别验证？\n4. 前端有没有办法强制用户拿到最新文件（比如给文件名加 hash）？"
     }
   ]
 }

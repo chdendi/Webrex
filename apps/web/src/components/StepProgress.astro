@@ -1,11 +1,17 @@
 ---
+import type { Locale } from '~/i18n/types';
+import { t as translate } from '~/i18n';
+
 interface Props {
   current: number;
   total: number;
   stepTitle: string;
   stepKind: string;
+  locale: Locale;
 }
-const { current, total, stepTitle, stepKind } = Astro.props;
+
+const { current, total, stepKind, locale } = Astro.props;
+const __ = (key: string) => translate(locale, key);
 ---
 
 <nav class="flex flex-col gap-3 py-2">
@@ -14,7 +20,7 @@ const { current, total, stepTitle, stepKind } = Astro.props;
       class="text-[11px] font-semibold uppercase tracking-wider"
       style="color: var(--color-text-faint);"
     >
-      Step {current} / {total} · {stepKind}
+      {__('stepProgress.step')} {current} / {total} · {stepKind}
     </span>
     <div class="flex-1 flex gap-1">
       {

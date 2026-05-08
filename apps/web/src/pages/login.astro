@@ -1,6 +1,8 @@
 ---
 import '~/styles/global.css';
+import type { Locale } from '~/i18n/types';
 import LoginButtons from '~/components/LoginButtons.tsx';
+import { I18nProvider } from '~/components/I18nProvider.tsx';
 import { getCurrentUser } from '~/lib/supabase/server';
 
 export const prerender = false;
@@ -13,10 +15,19 @@ const user = await getCurrentUser({ request: Astro.request, cookies: Astro.cooki
 if (user) {
   return Astro.redirect(next, 302);
 }
+
+function getLocaleFromRequest(request: Request): Locale {
+  const cookie = request.headers.get('Cookie') ?? '';
+  const match = cookie.match(/webrex_lang=([^;]+)/);
+  if (match && (match[1] === 'en' || match[1] === 'zh-CN')) return match[1] as Locale;
+  return 'zh-CN';
+}
+
+const locale = getLocaleFromRequest(Astro.request);
 ---
 
 <!doctype html>
-<html lang="zh-CN">
+<html lang={locale}>
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -35,7 +46,9 @@ if (user) {
         </p>
       </header>
 
-      <LoginButtons client:load next={next} initialError={errorParam} />
+      <I18nProvider client:load initialLocale={locale}>
+        <LoginButtons client:load next={next} initialError={errorParam} />
+      </I18nProvider>
 
       <div class="flex flex-col items-center gap-1.5">
         <a

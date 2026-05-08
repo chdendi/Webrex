@@ -1,0 +1,70 @@
+{
+  "common": {
+    "appName": "Webrex",
+    "labConnected": "Lab connected",
+    "redact": "🛡 Redact",
+    "step": "Step",
+    "of": "of",
+    "previous": "← Previous",
+    "next": "Next →",
+    "loading": "Loading...",
+    "close": "Close",
+    "signIn": "Sign In",
+    "signOut": "Sign Out",
+    "language": "Language"
+  },
+  "auth": {
+    "continueWithGithub": "Continue with GitHub",
+    "redirecting": "Redirecting…",
+    "signInToSave": "Sign in to save your progress",
+    "signedInAs": "Signed in as"
+  },
+  "ai": {
+    "assistant": "AI Assistant",
+    "askAi": "Ask AI",
+    "craftPrompt": "Craft Prompt",
+    "quickAnswer": "Quick Answer",
+    "configureApi": "Configure API",
+    "send": "Send",
+    "stop": "Stop",
+    "clearChat": "Clear chat",
+    "actions": "Actions",
+    "openClaude": "🛡 Open Claude",
+    "openChatgpt": "🛡 Open ChatGPT",
+    "openCopilot": "🛡 Open Copilot",
+    "redactAndCopy": "🛡 Redact & Copy",
+    "copyRaw": "Copy raw",
+    "apiKey": "API Key",
+    "endpointUrl": "Endpoint URL",
+    "saveAndTest": "Save & Test Connection",
+    "testing": "Testing...",
+    "connectionSuccess": "Connection successful",
+    "connectionFailed": "Connection failed — check your key and endpoint",
+    "noApiKeyNeeded": "No API key needed",
+    "chromeBuiltInAi": "Chrome built-in AI",
+    "apiConfigDesc": "Store your API key locally to use OpenAI-compatible endpoints. Keys are saved only in your browser.",
+    "craftPlaceholder": "Ask a question — I'll craft a prompt...",
+    "quickPlaceholder": "Ask a question about this lesson...",
+    "craftEmpty": "Ask a question about this lesson and I'll craft a prompt you can send to ChatGPT, Claude, or Copilot.",
+    "quickEmpty": "Ask a question and I'll answer using Chrome's built-in AI.",
+    "mayContainSensitive": "May contain sensitive data"
+  },
+  "guide": {
+    "steps": "Steps",
+    "allDone": "🎉 All steps completed!",
+    "imDone": "I'm done →",
+    "done": "Done",
+    "prev": "← Prev",
+    "popOut": "↗ Pop out",
+    "guideClose": "Guide ← close",
+    "pressEscToReturn": "Press Esc or close window to return"
+  },
+  "footer": {
+    "previous": "← Previous",
+    "next": "Next →",
+    "step": "Step"
+  },
+  "stepProgress": {
+    "step": "Step"
+  }
+}

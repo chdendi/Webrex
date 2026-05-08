@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { getSupabaseBrowserClient } from '~/lib/supabase/browser';
+import { useI18n } from './I18nProvider';
 
 interface Props {
   next?: string;
@@ -9,6 +10,7 @@ interface Props {
 export default function LoginButtons({ next, initialError }: Props) {
   const [pending, setPending] = useState(false);
   const [error, setError] = useState<string | null>(initialError ?? null);
+  const { t } = useI18n();
 
   const signIn = async () => {
     setPending(true);
@@ -42,7 +44,7 @@ export default function LoginButtons({ next, initialError }: Props) {
         }}
       >
         <span aria-hidden>🐙</span>
-        <span>{pending ? 'Redirecting…' : 'Continue with GitHub'}</span>
+        <span>{pending ? t('auth.redirecting') : t('auth.continueWithGithub')}</span>
       </button>
 
       {error && (

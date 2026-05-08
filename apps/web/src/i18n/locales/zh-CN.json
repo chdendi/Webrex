@@ -1,0 +1,70 @@
+{
+  "common": {
+    "appName": "Webrex",
+    "labConnected": "Lab 已连接",
+    "redact": "🛡 脱敏",
+    "step": "步骤",
+    "of": "/",
+    "previous": "← 上一步",
+    "next": "下一步 →",
+    "loading": "加载中...",
+    "close": "关闭",
+    "signIn": "登录",
+    "signOut": "退出登录",
+    "language": "语言"
+  },
+  "auth": {
+    "continueWithGithub": "使用 GitHub 继续",
+    "redirecting": "跳转中…",
+    "signInToSave": "登录以保存进度",
+    "signedInAs": "已登录"
+  },
+  "ai": {
+    "assistant": "AI 助手",
+    "askAi": "问 AI",
+    "craftPrompt": "生成提示词",
+    "quickAnswer": "快速回答",
+    "configureApi": "配置 API",
+    "send": "发送",
+    "stop": "停止",
+    "clearChat": "清空对话",
+    "actions": "操作",
+    "openClaude": "🛡 打开 Claude",
+    "openChatgpt": "🛡 打开 ChatGPT",
+    "openCopilot": "🛡 打开 Copilot",
+    "redactAndCopy": "🛡 脱敏并复制",
+    "copyRaw": "复制原文",
+    "apiKey": "API Key",
+    "endpointUrl": "接口地址",
+    "saveAndTest": "保存并测试连接",
+    "testing": "测试中...",
+    "connectionSuccess": "连接成功",
+    "connectionFailed": "连接失败 — 请检查密钥和接口地址",
+    "noApiKeyNeeded": "无需 API Key",
+    "chromeBuiltInAi": "Chrome 内置 AI",
+    "apiConfigDesc": "将 API Key 保存在本地浏览器中，用于 OpenAI 兼容的接口。",
+    "craftPlaceholder": "问一个问题 — 我会生成提示词...",
+    "quickPlaceholder": "问一个关于本课的问题...",
+    "craftEmpty": "提问当前课程，我会生成一份可以发给 ChatGPT、Claude 或 Copilot 的提示词。",
+    "quickEmpty": "提问，我会使用 Chrome 内置 AI 来回答。",
+    "mayContainSensitive": "可能包含敏感数据"
+  },
+  "guide": {
+    "steps": "操作步骤",
+    "allDone": "🎉 全部完成！",
+    "imDone": "我完成了 →",
+    "done": "完成",
+    "prev": "← 上一步",
+    "popOut": "↗ 弹出窗口",
+    "guideClose": "指南 ← 关闭",
+    "pressEscToReturn": "按 Esc 或关闭窗口返回"
+  },
+  "footer": {
+    "previous": "← 上一步",
+    "next": "下一步 →",
+    "step": "步骤"
+  },
+  "stepProgress": {
+    "step": "步骤"
+  }
+}

@@ -12,15 +12,17 @@ interface Props {
   nextId?: string;
   index: number;
   total: number;
+  locale?: import('~/i18n/types').Locale;
 }
 
-const { current, allLessons, prevId, nextId, index, total } = Astro.props;
+const { current, allLessons, prevId, nextId, index, total, locale = 'zh-CN' } = Astro.props;
 const data = current.data;
 const pageTitle = `L${data.level}.${data.sublevel} ${data.title} · Webrex`;
+const htmlLang = locale;
 ---
 
 <!doctype html>
-<html lang="zh-CN">
+<html lang={htmlLang}>
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -38,6 +40,7 @@ const pageTitle = `L${data.level}.${data.sublevel} ${data.title} · Webrex`;
       breadcrumb={`L${data.level} ${data.categoryName} ▸ L${data.level}.${data.sublevel}`}
       progressIndex={index}
       progressTotal={total}
+      locale={locale}
     />
 
     <div class="flex flex-1 pt-14 pb-16">
@@ -52,6 +55,12 @@ const pageTitle = `L${data.level}.${data.sublevel} ${data.title} · Webrex`;
       </main>
     </div>
 
-    <Footer prevId={prevId} nextId={nextId} index={index} total={total} />
+    <Footer
+      prevId={prevId}
+      nextId={nextId}
+      index={index}
+      total={total}
+      locale={locale}
+    />
   </body>
 </html>

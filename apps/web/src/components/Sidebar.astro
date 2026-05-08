@@ -25,6 +25,20 @@ const sortedLevels = [...byLevel.entries()].sort((a, b) => a[0] - b[0]);
 function levelTime(arr: CollectionEntry<'lessons'>[]): number {
   return arr.reduce((sum, l) => sum + l.data.time, 0);
 }
+
+/**
+ * Derive a concise title from the full lesson title.
+ * - If "——" present, take text after the last "——"
+ * - Else if "（" present, take text before the first "（"
+ * - Otherwise use the full title
+ */
+function shortTitle(full: string): string {
+  const emDashIdx = full.lastIndexOf('——');
+  if (emDashIdx !== -1) return full.slice(emDashIdx + 2).trim();
+  const parenIdx = full.indexOf('（');
+  if (parenIdx !== -1) return full.slice(0, parenIdx).trim();
+  return full.trim();
+}
 ---
 
 <aside
@@ -74,8 +88,8 @@ function levelTime(arr: CollectionEntry<'lessons'>[]): number {
                               : "background: var(--color-text-faint); opacity: 0.5;"
                           }
                         ></span>
-                        <span class="flex-1 truncate">
-                          L{lesson.data.level}.{lesson.data.sublevel} {lesson.data.title}
+                        <span class="flex-1 truncate" title={lesson.data.title}>
+                          L{lesson.data.level}.{lesson.data.sublevel} {shortTitle(lesson.data.title)}
                         </span>
                         <span class="text-[10px] opacity-60 flex-shrink-0">{lesson.data.time}m</span>
                         {isExtension && (

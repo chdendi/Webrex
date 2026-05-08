@@ -1,3 +1,70 @@
 ---
-return Astro.redirect('/lessons/l1-1');
+import '~/styles/global.css';
+
+export const prerender = true;
 ---
+
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <title>Webrex — You can't out-prompt what you can't see</title>
+    <meta
+      name="description"
+      content="A curriculum on mastering the DevTools as your primary sensory organ, and AI as your secondary brain."
+    />
+  </head>
+  <body
+    class="min-h-screen flex items-center justify-center px-6 py-20 antialiased"
+    style="background: var(--color-bg); color: var(--color-text);"
+  >
+    <main class="w-full max-w-[720px] flex flex-col items-start text-left">
+      <div class="mb-8">
+        <span
+          class="text-[13px] font-medium uppercase tracking-[0.15em]"
+          style="color: var(--color-text-faint);"
+        >
+          Webrex
+        </span>
+      </div>
+
+      <h1
+        class="text-[40px] sm:text-[56px] md:text-[72px] font-semibold tracking-[-0.02em] leading-[1.1] mb-6 md:mb-8"
+        style="color: var(--color-text);"
+      >
+        You can't out‑prompt what you can't see.
+      </h1>
+
+      <p
+        class="text-[18px] md:text-[20px] leading-[1.6] max-w-[560px] mb-10 md:mb-12"
+        style="color: var(--color-text-muted);"
+      >
+        A curriculum on mastering the DevTools as your primary sensory organ,
+        and AI as your secondary brain.
+      </p>
+
+      <div class="w-full max-w-[320px] sm:max-w-none flex flex-col sm:flex-row gap-3">
+        <a
+          href="/login?next=/lessons/l1-1"
+          class="w-full sm:w-auto inline-flex items-center justify-center px-6 py-3 rounded-[var(--radius-button)] text-[14px] font-medium transition-colors"
+          style="background: var(--color-accent); color: white;"
+          onmouseover="this.style.background='var(--color-accent-hover)'"
+          onmouseout="this.style.background='var(--color-accent)'"
+        >
+          Start the first lesson
+        </a>
+        <a
+          href="/login?next=/lessons/l1-1"
+          class="w-full sm:w-auto inline-flex items-center justify-center px-6 py-3 rounded-[var(--radius-button)] text-[14px] font-medium border transition-colors"
+          style="color: var(--color-text); border-color: var(--color-border-strong); background: var(--color-surface);"
+          onmouseover="this.style.background='var(--color-surface-muted)'"
+          onmouseout="this.style.background='var(--color-surface)'"
+        >
+          Browse curriculum
+        </a>
+      </div>
+    </main>
+  </body>
+</html>

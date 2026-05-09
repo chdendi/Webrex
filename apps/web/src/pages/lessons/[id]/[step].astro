@@ -11,6 +11,8 @@ import PracticeStep from '~/components/steps/PracticeStep.astro';
 import VerifyStep from '~/components/steps/VerifyStep.astro';
 import LessonLayout from '~/layouts/LessonLayout.astro';
 
+export const prerender = false;
+
 export async function getStaticPaths() {
   const lessons = await getCollection('lessons');
   lessons.sort((a, b) => a.data.level - b.data.level || a.data.sublevel - b.data.sublevel);

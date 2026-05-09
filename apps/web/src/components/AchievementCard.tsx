@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react';
+import { readCompletions } from '~/lib/progress/local-store';
 
 interface Props {
   lessonId: string;
@@ -23,9 +24,11 @@ const ordinal = (n: number) => {
 export default function AchievementCard({ lessonId }: Props) {
   const [data, setData] = useState<Payload | null>(null);
   const [error, setError] = useState<string | null>(null);
+  const [hasLocalCompletion, setHasLocalCompletion] = useState(false);
 
   useEffect(() => {
     let alive = true;
+    setHasLocalCompletion(readCompletions().some((c) => c.lessonId === lessonId));
     fetch(`/api/achievement?lesson=${encodeURIComponent(lessonId)}`)
       .then((r) => (r.ok ? r.json() : Promise.reject(new Error(`HTTP ${r.status}`))))
       .then((json) => {
@@ -132,6 +135,16 @@ export default function AchievementCard({ lessonId }: Props) {
           </li>
         ))}
       </ul>
+
+      {!data.authenticated && hasLocalCompletion && (
+        <p className="text-sm" style={{ color: 'var(--color-text-muted)' }}>
+          📍 You've completed this lesson —{' '}
+          <a href="/login" className="underline" style={{ color: 'var(--color-accent)' }}>
+            sign in
+          </a>{' '}
+          to save it permanently.
+        </p>
+      )}
 
       {!data.authenticated && (
         <p className="text-sm pt-1" style={{ color: 'var(--color-text-muted)' }}>

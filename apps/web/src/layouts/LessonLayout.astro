@@ -2,8 +2,10 @@
 import '~/styles/global.css';
 import type { CollectionEntry } from 'astro:content';
 import Footer from '~/components/Footer.astro';
+import ProgressSync from '~/components/ProgressSync.tsx';
 import Sidebar from '~/components/Sidebar.astro';
 import TopNav from '~/components/TopNav.astro';
+import { getCurrentUser } from '~/lib/supabase/server';
 
 interface Props {
   current: CollectionEntry<'lessons'>;
@@ -19,6 +21,8 @@ const { current, allLessons, prevId, nextId, index, total, locale = 'zh-CN' } = 
 const data = current.data;
 const pageTitle = `L${data.level}.${data.sublevel} ${data.title} · Webrex`;
 const htmlLang = locale;
+
+const currentUser = await getCurrentUser({ request: Astro.request, cookies: Astro.cookies });
 ---
 
 <!doctype html>
@@ -62,5 +66,12 @@ const htmlLang = locale;
       total={total}
       locale={locale}
     />
+
+    {currentUser && (
+      <Fragment>
+        <script is:inline set:html={`window.__webrexUser = ${JSON.stringify({ id: currentUser.id })};`} />
+        <ProgressSync client:idle />
+      </Fragment>
+    )}
   </body>
 </html>

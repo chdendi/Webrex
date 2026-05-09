@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState } from 'react';
+import { appendAttempt, appendCompletion } from '~/lib/progress/local-store';
 import AchievementCard from './AchievementCard';
 
 type Tier = 'hard' | 'soft' | 'self' | 'choice';
@@ -72,9 +73,23 @@ export default function VerifyCard({
     }).catch(() => {
       // Non-blocking — UI does not depend on success.
     });
-    if (passed && !recordedPass.current) {
-      recordedPass.current = true;
-      setShowAchievement(true);
+    // Mirror to localStorage unconditionally. Server drops anon writes; this
+    // is the only durable record until the user signs in and we sync.
+    appendAttempt({
+      lessonId,
+      stepId,
+      tier,
+      confidence: conf,
+      passed,
+      durationMs,
+      ts: Date.now(),
+    });
+    if (passed) {
+      appendCompletion(lessonId);
+      if (!recordedPass.current) {
+        recordedPass.current = true;
+        setShowAchievement(true);
+      }
     }
   };
 

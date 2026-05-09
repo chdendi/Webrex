@@ -13,36 +13,28 @@ import LessonLayout from '~/layouts/LessonLayout.astro';
 
 export const prerender = false;
 
-export async function getStaticPaths() {
-  const lessons = await getCollection('lessons');
-  lessons.sort((a, b) => a.data.level - b.data.level || a.data.sublevel - b.data.sublevel);
-
-  const paths: any[] = [];
-  lessons.forEach((lesson, lessonIdx) => {
-    if (!lesson.data.steps) return;
-    lesson.data.steps.forEach((step, stepIdx) => {
-      paths.push({
-        params: { id: lesson.id, step: step.slug },
-        props: {
-          lesson,
-          step,
-          stepIndex: stepIdx,
-          stepCount: lesson.data.steps!.length,
-          allLessons: lessons,
-          lessonIndex: lessonIdx + 1,
-          totalLessons: lessons.length,
-          prevId: lessonIdx > 0 ? lessons[lessonIdx - 1].id : undefined,
-          nextId: lessonIdx < lessons.length - 1 ? lessons[lessonIdx + 1].id : undefined,
-        },
-      });
-    });
-  });
-  return paths;
+const { id, step: stepSlug } = Astro.params;
+const allLessons = await getCollection('lessons');
+allLessons.sort((a, b) => a.data.level - b.data.level || a.data.sublevel - b.data.sublevel);
+const lessonIdx = allLessons.findIndex((l) => l.id === id);
+if (lessonIdx === -1) {
+  return new Response('Lesson not found', { status: 404 });
 }
-
-const { lesson, step, stepIndex, stepCount, allLessons, lessonIndex, totalLessons, prevId, nextId } = Astro.props;
-
-const steps = lesson.data.steps!;
+const lesson = allLessons[lessonIdx];
+const steps = lesson.data.steps;
+if (!steps) {
+  return new Response('Lesson has no steps', { status: 404 });
+}
+const stepIndex = steps.findIndex((s) => s.slug === stepSlug);
+if (stepIndex === -1) {
+  return new Response('Step not found', { status: 404 });
+}
+const step = steps[stepIndex];
+const stepCount = steps.length;
+const lessonIndex = lessonIdx + 1;
+const totalLessons = allLessons.length;
+const prevId = lessonIdx > 0 ? allLessons[lessonIdx - 1].id : undefined;
+const nextId = lessonIdx < allLessons.length - 1 ? allLessons[lessonIdx + 1].id : undefined;
 const prevStep = stepIndex > 0 ? steps[stepIndex - 1] : null;
 const nextStep = stepIndex < steps.length - 1 ? steps[stepIndex + 1] : null;
 const isLastStep = stepIndex === steps.length - 1;

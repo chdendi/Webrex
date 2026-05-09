@@ -1,5 +1,6 @@
 ---
 import type { CollectionEntry } from 'astro:content';
+import { getSocialStats } from '../data/social-stats';
 
 interface Props {
   lesson: CollectionEntry<'lessons'>;
@@ -12,6 +13,8 @@ const tier = vStep ? (vStep as any).tier : 'soft';
 const tierLabel =
   ({ hard: 'hard verify', soft: 'soft verify', self: 'self-check' } as Record<string, string>)[tier] || 'soft verify';
 const trackLabel = d.track === 'extension' ? 'extension' : 'core';
+
+const social = getSocialStats(lesson.id);
 ---
 
 <section class="flex flex-col gap-3">
@@ -38,4 +41,13 @@ const trackLabel = d.track === 'extension' ? 'extension' : 'core';
       🧪 {d.needsLab ? "needs lab" : "no lab"}
     </span>
   </div>
+  {social && (
+    <p class="text-xs leading-relaxed" style="color: var(--color-text-faint);">
+      🔥 {social.completionsLast7d} learners completed this in the past 7 days
+      <span aria-hidden="true"> · </span>
+      avg {social.avgMinutes} min
+      <span aria-hidden="true"> · </span>
+      {social.totalAttempts} total attempts
+    </p>
+  )}
 </section>

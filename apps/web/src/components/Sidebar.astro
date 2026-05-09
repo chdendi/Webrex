@@ -1,5 +1,6 @@
 ---
 import type { CollectionEntry } from 'astro:content';
+import { getSocialStats } from '../data/social-stats';
 
 interface Props {
   lessons: CollectionEntry<'lessons'>[];
@@ -67,6 +68,7 @@ function shortTitle(full: string): string {
                 arr.map((lesson) => {
                   const isCurrent = lesson.id === currentId;
                   const isExtension = lesson.data.track === "extension";
+                  const social = getSocialStats(lesson.id);
                   return (
                     <li>
                       <a
@@ -92,6 +94,15 @@ function shortTitle(full: string): string {
                           L{lesson.data.level}.{lesson.data.sublevel} {shortTitle(lesson.data.title)}
                         </span>
                         <span class="text-[10px] opacity-60 flex-shrink-0">{lesson.data.time}m</span>
+                        {social && (
+                          <span
+                            class="text-[10px] flex-shrink-0"
+                            style="color: var(--color-text-faint);"
+                            title={`${social.completionsLast7d} completed in the past 7 days`}
+                          >
+                            · {social.completionsLast7d}
+                          </span>
+                        )}
                         {isExtension && (
                           <span
                             class="text-[9px] px-1 rounded border"

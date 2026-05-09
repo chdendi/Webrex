@@ -4,6 +4,8 @@ import Card from '~/components/Card.astro';
 import LessonHeader from '~/components/LessonHeader.astro';
 import LessonLayout from '~/layouts/LessonLayout.astro';
 
+export const prerender = false;
+
 export async function getStaticPaths() {
   const lessons = await getCollection('lessons');
   lessons.sort((a, b) => a.data.level - b.data.level || a.data.sublevel - b.data.sublevel);

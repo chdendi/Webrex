@@ -84,4 +84,4 @@ A small dependency-free library that scans free-form text (think: a chunk of HAR
 
 ## License
 
-[MIT](./LICENSE) © 2026 chenhao-dendi
+[MIT](./LICENSE) © 2026 chdendi

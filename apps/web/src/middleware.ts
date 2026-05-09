@@ -10,14 +10,10 @@ export const onRequest = defineMiddleware(async (context, next) => {
     return next();
   }
 
-  // Protect /lessons/* routes
-  if (pathname.startsWith('/lessons')) {
-    const user = await getCurrentUser({ request, cookies });
-    if (!user) {
-      const target = '/login?next=' + encodeURIComponent(pathname + url.search);
-      return context.redirect(target, 302);
-    }
-  }
+  // /lessons/* is open to guests — progress APIs return { recorded: false }
+  // for anonymous users (see src/pages/api/attempts.ts). Gating these routes
+  // also breaks the "Continue without an account" link on /login, since the
+  // default `next` points back into /lessons and produces a redirect loop.
 
   // If visiting /login but already logged in, redirect to next or home
   if (pathname === '/login') {

@@ -1,6 +1,8 @@
 import { useEffect, useRef, useState } from 'react';
 import { appendAttempt, appendCompletion } from '~/lib/progress/local-store';
 import AchievementCard from './AchievementCard';
+import CelebrationOverlay from './CelebrationOverlay';
+import ChoiceCard from './ChoiceCard';
 
 type Tier = 'hard' | 'soft' | 'self' | 'choice';
 type Confidence = 'high' | 'mid' | 'low' | null;
@@ -46,12 +48,12 @@ export default function VerifyCard({
   const [copiedPrompt, setCopiedPrompt] = useState(false);
   const [reflection, setReflection] = useState('');
   const [animating, setAnimating] = useState(false);
-  const [shakeIdx, setShakeIdx] = useState<number | null>(null);
   const [correctIdx, setCorrectIdx] = useState<number | null>(null);
   const prevConfidence = useRef(confidence);
   const startedAt = useRef<number>(typeof performance !== 'undefined' ? performance.now() : Date.now());
   const recordedPass = useRef(false);
   const [showAchievement, setShowAchievement] = useState(false);
+  const [showCelebration, setShowCelebration] = useState(false);
   const hasChromeAI = typeof window !== 'undefined' && (window as any).ai?.createTextSession;
 
   const recordAttempt = (passed: boolean, conf: Confidence) => {
@@ -89,6 +91,7 @@ export default function VerifyCard({
       if (!recordedPass.current) {
         recordedPass.current = true;
         setShowAchievement(true);
+        setShowCelebration(true);
       }
     }
   };
@@ -102,29 +105,31 @@ export default function VerifyCard({
     }
   }, [confidence]);
 
-  // Clear shake after animation
-  useEffect(() => {
-    if (shakeIdx !== null) {
-      const t = setTimeout(() => setShakeIdx(null), 600);
-      return () => clearTimeout(t);
-    }
-  }, [shakeIdx]);
-
   // Auto-advance after correct choice + checkmark animation. Skip when an
   // achievement card is rendering — the learner needs time to see it.
   useEffect(() => {
     if (correctIdx !== null && nextStepHref && !showAchievement) {
       const t = setTimeout(() => {
         window.location.href = nextStepHref;
-      }, 900);
+      }, 1200);
       return () => clearTimeout(t);
     }
   }, [correctIdx, nextStepHref, showAchievement]);
 
+  // Auto-advance after achievement card has been shown
+  useEffect(() => {
+    if (showAchievement && nextStepHref) {
+      const t = setTimeout(() => {
+        window.location.href = nextStepHref;
+      }, 2000);
+      return () => clearTimeout(t);
+    }
+  }, [showAchievement, nextStepHref]);
+
   const emitConfidence = (conf: string) => onConfidence?.(tier, conf);
 
   const handleChoice = (idx: number) => {
-    if (correctIdx !== null) return; // Already answered correctly
+    if (correctIdx !== null) return;
     const opt = options?.[idx];
     if (!opt) return;
 
@@ -134,8 +139,8 @@ export default function VerifyCard({
       setFeedback('✅ Correct!');
       emitConfidence('high');
       recordAttempt(true, 'high');
+      launchFireworks();
     } else {
-      setShakeIdx(idx);
       setFeedback('❌ Not quite — try again.');
       recordAttempt(false, null);
     }
@@ -238,11 +243,30 @@ export default function VerifyCard({
         emitConfidence('low');
         recordAttempt(false, 'low');
       }
-    } catch (e) {
+    } catch (_e) {
       setLabStatus('fail');
       setFeedback(`❌ Couldn't reach lab. Is it running on the expected port?`);
       emitConfidence('low');
       recordAttempt(false, null);
+    }
+  };
+
+  const launchFireworks = () => {
+    const colors = ['#FF6B6B','#FFE66D','#4ECDC4','#45B7D1','#96CEB4','#FFEAA7','#DDA0DD','#F7DC6F','#BB8FCE','#85C1E9','#F8C471','#82E0AA','#F1948A','#AED6F1'];
+    for (let f = 0; f < 25; f++) {
+      setTimeout(() => {
+        const cx = 100 + Math.random() * (window.innerWidth - 200);
+        const cy = 100 + Math.random() * (window.innerHeight - 300);
+        const color = colors[Math.floor(Math.random() * colors.length)];
+        for (let i = 0; i < 30; i++) {
+          const p = document.createElement('div');
+          const a = (i / 30) * Math.PI * 2;
+          const d = 30 + Math.random() * 80;
+          p.style.cssText = `position:fixed;z-index:9998;left:${cx}px;top:${cy}px;width:6px;height:6px;border-radius:50%;background:${color};pointer-events:none;animation:fw-burst 0.8s ease-out forwards;animation-delay:${Math.random() * 0.2}s;--ftx:${Math.cos(a) * d}px;--fty:${Math.sin(a) * d}px;--fscale:${0.5 + Math.random()};`;
+          document.body.appendChild(p);
+          setTimeout(() => p.remove(), 1000);
+        }
+      }, f * 150);
     }
   };
 
@@ -288,6 +312,14 @@ export default function VerifyCard({
       }}
     >
       <style>{`
+        @keyframes confidencePop {
+          0% { transform: scale(1); }
+          50% { transform: scale(1.08); }
+          100% { transform: scale(1); }
+        }
+        .confidence-pop { animation: confidencePop 0.4s ease-out; }
+        .vc-shake { animation: vc-shake 0.4s ease-in-out; }
+        .vc-check { animation: vc-check 0.4s ease-out; }
         @keyframes vc-shake {
           0%, 100% { transform: translateX(0); }
           20% { transform: translateX(-6px); }
@@ -300,8 +332,10 @@ export default function VerifyCard({
           50% { transform: scale(1.3); }
           100% { transform: scale(1); }
         }
-        .vc-shake { animation: vc-shake 0.4s ease-in-out; }
-        .vc-check { animation: vc-check 0.4s ease-out; }
+        @keyframes fw-burst {
+          0% { transform: translateX(0) translateY(0) scale(1); opacity: 1; }
+          100% { transform: translateX(var(--ftx)) translateY(var(--fty)) scale(var(--fscale)); opacity: 0; }
+        }
       `}</style>
       <header className="flex items-center justify-between gap-3">
         <div className="flex items-center gap-2">
@@ -345,62 +379,7 @@ export default function VerifyCard({
 
       {/* Choice tier: radio-style buttons with shake/check animations */}
       {tier === 'choice' && options && (
-        <div className="flex flex-col gap-3">
-          {options.map((opt, i) => {
-            const isCorrectChoice = correctIdx === i;
-            const isShaking = shakeIdx === i;
-            const isDimmed = correctIdx !== null && !isCorrectChoice;
-
-            return (
-              <button
-                key={i}
-                type="button"
-                onClick={() => handleChoice(i)}
-                disabled={correctIdx !== null}
-                className={`flex items-center gap-3 p-4 rounded-xl border-2 text-left transition-all ${
-                  isShaking ? 'vc-shake' : ''
-                }`}
-                style={{
-                  borderColor: isCorrectChoice
-                    ? 'var(--color-success)'
-                    : isShaking
-                      ? 'var(--color-danger)'
-                      : 'var(--color-border)',
-                  background: isCorrectChoice
-                    ? 'color-mix(in srgb, var(--color-success) 8%, transparent)'
-                    : isShaking
-                      ? 'color-mix(in srgb, var(--color-danger) 6%, transparent)'
-                      : 'var(--color-surface)',
-                  opacity: isDimmed ? 0.35 : 1,
-                  cursor: correctIdx !== null ? 'default' : 'pointer',
-                }}
-              >
-                <span
-                  className={`shrink-0 w-6 h-6 rounded-full border-2 flex items-center justify-center text-sm font-bold ${
-                    isCorrectChoice ? 'vc-check' : ''
-                  }`}
-                  style={{
-                    borderColor: isCorrectChoice
-                      ? 'var(--color-success)'
-                      : isShaking
-                        ? 'var(--color-danger)'
-                        : 'var(--color-border)',
-                    background: isCorrectChoice ? 'var(--color-success)' : 'transparent',
-                    color: isCorrectChoice ? '#fff' : 'var(--color-text-muted)',
-                  }}
-                >
-                  {isCorrectChoice ? '✓' : String.fromCharCode(65 + i)}
-                </span>
-                <span
-                  className="text-[15px] font-medium"
-                  style={{ color: isCorrectChoice ? 'var(--color-success)' : 'var(--color-text)' }}
-                >
-                  {opt.label}
-                </span>
-              </button>
-            );
-          })}
-        </div>
+        <ChoiceCard options={options} disabled={correctIdx !== null} onChoose={(idx) => handleChoice(idx)} />
       )}
 
       {tier === 'soft' && (
@@ -510,58 +489,56 @@ export default function VerifyCard({
       )}
 
       {tier === 'hard' && (
-        <>
-          <div className="flex items-center gap-3 flex-wrap">
-            <span
-              className={`inline-flex items-center gap-2 px-3 py-1.5 rounded-full text-xs font-medium ${
-                labStatus === 'waiting' ? 'animate-pulse' : ''
-              }`}
-              style={{
-                background:
-                  labStatus === 'ok'
-                    ? 'color-mix(in srgb, var(--color-success) 20%, transparent)'
-                    : labStatus === 'fail'
-                      ? 'color-mix(in srgb, var(--color-danger) 20%, transparent)'
-                      : 'var(--color-surface-muted)',
-                color:
-                  labStatus === 'ok'
-                    ? 'var(--color-success)'
-                    : labStatus === 'fail'
-                      ? 'var(--color-danger)'
-                      : 'var(--color-text-muted)',
-              }}
-            >
-              {labStatus === 'idle' && '🟦 ready'}
-              {labStatus === 'waiting' && '⏳ waiting for lab…'}
-              {labStatus === 'ok' && '✅ confirmed by lab'}
-              {labStatus === 'fail' && '❌ lab not satisfied'}
-            </span>
+        <div className="flex items-center gap-3 flex-wrap">
+          <span
+            className={`inline-flex items-center gap-2 px-3 py-1.5 rounded-full text-xs font-medium ${
+              labStatus === 'waiting' ? 'animate-pulse' : ''
+            }`}
+            style={{
+              background:
+                labStatus === 'ok'
+                  ? 'color-mix(in srgb, var(--color-success) 20%, transparent)'
+                  : labStatus === 'fail'
+                    ? 'color-mix(in srgb, var(--color-danger) 20%, transparent)'
+                    : 'var(--color-surface-muted)',
+              color:
+                labStatus === 'ok'
+                  ? 'var(--color-success)'
+                  : labStatus === 'fail'
+                    ? 'var(--color-danger)'
+                    : 'var(--color-text-muted)',
+            }}
+          >
+            {labStatus === 'idle' && '🟦 ready'}
+            {labStatus === 'waiting' && '⏳ waiting for lab…'}
+            {labStatus === 'ok' && '✅ confirmed by lab'}
+            {labStatus === 'fail' && '❌ lab not satisfied'}
+          </span>
+          <button
+            type="button"
+            onClick={checkHard}
+            className="px-3 py-1.5 rounded-md text-sm border transition-colors"
+            style={{
+              borderColor: 'var(--color-border)',
+              color: 'var(--color-text)',
+            }}
+          >
+            Check with lab
+          </button>
+          {labStatus === 'fail' && (
             <button
               type="button"
               onClick={checkHard}
               className="px-3 py-1.5 rounded-md text-sm border transition-colors"
               style={{
                 borderColor: 'var(--color-border)',
-                color: 'var(--color-text)',
+                color: 'var(--color-accent)',
               }}
             >
-              Check with lab
+              Retry
             </button>
-            {labStatus === 'fail' && (
-              <button
-                type="button"
-                onClick={checkHard}
-                className="px-3 py-1.5 rounded-md text-sm border transition-colors"
-                style={{
-                  borderColor: 'var(--color-border)',
-                  color: 'var(--color-accent)',
-                }}
-              >
-                Retry
-              </button>
-            )}
-          </div>
-        </>
+          )}
+        </div>
       )}
 
       {tier === 'self' && (
@@ -600,6 +577,8 @@ export default function VerifyCard({
       )}
 
       {showAchievement && lessonId && <AchievementCard lessonId={lessonId} />}
+
+      {showCelebration && <CelebrationOverlay multiplier={5} onDone={() => setShowCelebration(false)} />}
     </div>
   );
 }

@@ -36,16 +36,15 @@
           "title": "随时回退",
           "body": "Sources → Overrides 面板里可以单独禁用某条覆盖，不影响其他"
         }
-      ],
-      "takeaway": "下一步：在 react.dev 上覆盖一个 API 响应，把返回的 JSON 里某个字段改成你想要的值，观察页面变化。"
+      ]
     },
     {
       "slug": "practice",
       "type": "practice",
-      "title": "在 react.dev 上用 Overrides 改一个 API 响应",
-      "intro": "react.dev 首页有一个搜索 API。我们拦截它的响应，把返回结果改成我们自定义的内容。",
+      "title": "在 Webrex Demo 页面上用 Overrides 改一个 API 响应",
+      "intro": "Webrex Demo 页面包含一个搜索 API。我们拦截它的响应，把返回结果改成我们自定义的内容。",
       "steps": [
-        "打开 [react.dev](https://react.dev/)",
+        "看下方嵌入式 Demo 区域",
         "按 F12 / ⌘+⌥+I 打开 DevTools，切换到 Network 面板",
         "点击页面顶部的 Search 按钮（放大镜图标），触发搜索 API 请求",
         "在 Network 面板找到搜索相关的请求（通常是 search-index.json 或类似名称）",
@@ -68,21 +67,14 @@
         }
       ],
       "expectedOutcome": "第二次搜索时，API 返回的内容变成了你修改的值。确认 Sources → Overrides 面板里有对应的覆盖规则。这就是 Local Overrides 的核心：浏览器优先使用本地文件，拦截了真实的网络响应。",
-      "externalSite": "react.dev"
+      "externalSite": "http://localhost:8787/demos/l4-3"
     },
     {
       "slug": "verify",
       "type": "verify",
       "title": "覆盖后的搜索结果和真实结果一样吗？",
-      "prompt": "你在 react.dev 上对搜索 API 的返回内容做了 Override。\n\n第二次搜索时，返回的是你修改的内容，还是原始内容？\n\n回答「修改的」或「原始的」。",
+      "prompt": "你在 Webrex Demo 页面上对搜索 API 的返回内容做了 Override。\n\n第二次搜索时，返回的是你修改的内容，还是原始内容？\n\n回答「修改的」或「原始的」。",
       "tier": "self"
-    },
-    {
-      "slug": "ask-ai",
-      "type": "ask-ai",
-      "title": "问 AI：Local Overrides 能做什么、不能做什么",
-      "intro": "你刚体验了在浏览器里就地修改服务器返回的内容。把这次的体验转成问题，让 AI 帮你梳理 Overrides 的实用场景和边界。",
-      "template": "我在 Chrome DevTools 里用 Network 面板的 Local Overrides 功能，对一个 API 请求的返回 JSON 做了本地覆盖。刷新后覆盖仍然生效。\n\n请帮我梳理：\n1. Local Overrides 适合哪些调试场景？（举例 3-5 个）\n2. 它有哪些限制？（哪些内容不能覆盖、覆盖的范围是什么）\n3. 和 Charles/Fiddler/mitmproxy 这类抓包工具的 rewrite 功能相比，Overrides 的优缺点是什么？\n4. 覆盖的文件存在哪里？如果我换了 Chrome 用户配置文件，覆盖还在吗？"
     }
   ]
 }

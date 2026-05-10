@@ -12,8 +12,10 @@ interface Props {
   body: string[];
   bullets?: BulletItem[];
   takeaway?: string;
+  nextHref?: string;
+  nextLabel?: string;
 }
-const { title, hook, body, bullets, takeaway } = Astro.props;
+const { title, hook, body, bullets, takeaway, nextHref, nextLabel } = Astro.props;
 ---
 
 <article class="flex flex-col gap-7">
@@ -73,6 +75,18 @@ const { title, hook, body, bullets, takeaway } = Astro.props;
         style="color: var(--color-text);"
         set:html={md(takeaway)}
       />
+    </div>
+  )}
+
+  {nextHref && (
+    <div class="flex justify-end pt-4 mt-2 border-t" style="border-color: var(--color-border);">
+      <a
+        href={nextHref}
+        class="inline-flex items-center gap-2 px-5 py-3 rounded-md text-sm font-medium text-white transition-all hover:opacity-90"
+        style="background: var(--color-accent);"
+      >
+        {nextLabel || 'Continue'} →
+      </a>
     </div>
   )}
 </article>

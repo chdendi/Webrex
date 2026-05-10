@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 import { readCompletions } from '~/lib/progress/local-store';
+import ConditionalCTA from './ConditionalCTA';
 
 interface Props {
   lessonId: string;
@@ -128,8 +129,8 @@ export default function AchievementCard({ lessonId }: Props) {
       </header>
 
       <ul className="flex flex-col gap-2 text-[15px]" style={{ color: 'var(--color-text)' }}>
-        {lines.map((line, i) => (
-          <li key={i} className="flex gap-2">
+        {lines.map((line, _i) => (
+          <li key={line.icon} className="flex gap-2">
             <span aria-hidden>{line.icon}</span>
             <span>{line.text}</span>
           </li>
@@ -137,22 +138,34 @@ export default function AchievementCard({ lessonId }: Props) {
       </ul>
 
       {!data.authenticated && hasLocalCompletion && (
-        <p className="text-sm" style={{ color: 'var(--color-text-muted)' }}>
-          📍 You've completed this lesson —{' '}
-          <a href="/login" className="underline" style={{ color: 'var(--color-accent)' }}>
-            sign in
-          </a>{' '}
-          to save it permanently.
-        </p>
+        <ConditionalCTA
+          authenticated={false}
+          authenticatedContent={<span className="text-sm" style={{ color: 'var(--color-text-muted)' }} />}
+          anonymousContent={
+            <p className="text-sm" style={{ color: 'var(--color-text-muted)' }}>
+              📍 You've completed this lesson —{' '}
+              <a href="/login" className="underline" style={{ color: 'var(--color-accent)' }}>
+                sign in
+              </a>{' '}
+              to save it permanently.
+            </p>
+          }
+        />
       )}
 
       {!data.authenticated && (
-        <p className="text-sm pt-1" style={{ color: 'var(--color-text-muted)' }}>
-          <a href="/login" className="underline" style={{ color: 'var(--color-accent)' }}>
-            Sign in
-          </a>{' '}
-          to save your progress and see your personal rank.
-        </p>
+        <ConditionalCTA
+          authenticated={false}
+          authenticatedContent={<span className="text-sm pt-1" style={{ color: 'var(--color-text-muted)' }} />}
+          anonymousContent={
+            <p className="text-sm pt-1" style={{ color: 'var(--color-text-muted)' }}>
+              <a href="/login" className="underline" style={{ color: 'var(--color-accent)' }}>
+                Sign in
+              </a>{' '}
+              to save your progress and see your personal rank.
+            </p>
+          }
+        />
       )}
     </div>
   );

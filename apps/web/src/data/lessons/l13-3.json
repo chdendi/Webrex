@@ -8,7 +8,7 @@
   "time": 5,
   "track": "core",
   "needsLab": false,
-  "stuck": "Sources 面板看不到原始文件？确认 react.dev 加载了 source map。进 DevTools Settings → Experiments，确保「JavaScript source maps」是勾上的。",
+  "stuck": "Sources 面板看不到原始文件？确认 Webrex Demo 加载了 source map。进 DevTools Settings → Experiments，确保「JavaScript source maps」是勾上的。",
   "steps": [
     {
       "slug": "concept",
@@ -32,22 +32,21 @@
           "title": "无 Source Map",
           "body": "一行压缩代码，错误定位无意义"
         }
-      ],
-      "takeaway": "Source Map 是调试生产代码的命脉。"
+      ]
     },
     {
       "slug": "practice",
       "type": "practice",
       "title": "对比有无 Source Map 的文件",
-      "intro": "在 react.dev 的 Sources 面板里找两类文件。",
+      "intro": "在 Webrex Demo 页面的 Sources 面板里找两类文件。",
       "steps": [
-        "打开 react.dev。",
+        "打开 Webrex Demo 页面。",
         "打开 DevTools → **Sources** 面板。",
-        "在左侧文件树中找到有 source map 的 JS 文件——特征是能看到 `.tsx` 文件或原始目录结构（不在 `_next/static/chunks/` 里）。",
-        "点开一个有 source map 的文件：看到可读代码、TypeScript 类型标注、原始注释。",
-        "再打开 `_next/static/chunks/` 下的某个 chunk 文件（无 source map）：看到压缩后的一行代码。",
+        "在左侧文件树中找到有 source map 的 JS 文件——特征是能看到原始代码结构（如 `/js/app.min.js` 会显示对应的 source map 内容，或内联 JS block 的可读代码）。",
+        "点开一个有 source map 的文件：看到可读代码、原始注释。",
+        "再打开无 source map 的压缩文件（如 `/js/app.min.js` 的原始压缩版本）：看到压缩后的一行代码。",
         "在压缩文件末尾搜索 `//# sourceMappingURL=` 注释。",
-        "对比：\n\n| 有 Source Map | 无 Source Map |\n| --- | --- |\n| 显示原始 `.tsx` 文件 | 显示 `main.abc123.js:1` |\n| 变量名可读 | 变量名为 a/b/c |\n| 有注释和类型 | 无注释 |\n| 错误可定位到具体行 | 错误永远在 `:1` |"
+        "对比：\n\n| 有 Source Map | 无 Source Map |\n| --- | --- |\n| 显示原始文件 | 显示 min.js:1 |\n| 变量名可读 | 变量名为 a/b/c |\n| 有注释和类型 | 无注释 |\n| 错误可定位到具体行 | 错误永远在 `:1` |"
       ],
       "shortcuts": [
         {
@@ -57,22 +56,24 @@
         }
       ],
       "expectedOutcome": "找到至少一个有 source map 的文件和一个没有的，感受两者差异。",
-      "externalSite": "react.dev"
+      "externalSite": "http://localhost:8787/demos/l13-3"
     },
     {
       "slug": "verify",
       "type": "verify",
       "title": "验证",
       "prompt": "Source Map 的作用是让压缩后的代码恢复什么？回答你的理解。",
-      "tier": "soft",
-      "expectedRegex": "(原始|源码|source|变量|可读|readable|原代码|original|看得懂|能读)"
-    },
-    {
-      "slug": "ask-ai",
-      "type": "ask-ai",
-      "title": "问 AI",
-      "intro": "问 AI 线上部署策略。",
-      "template": "Source Map 应该部署到生产环境吗？如果 source map 泄露有什么风险？Sentry 等监控平台怎么用 source map 定位错误？请给出推荐策略。"
+      "tier": "choice",
+      "options": [
+        {
+          "label": "是的，我看到了",
+          "correct": true
+        },
+        {
+          "label": "没有，我需要帮助",
+          "correct": false
+        }
+      ]
     }
   ]
 }

@@ -1,5 +1,6 @@
 import { useI18n } from './I18nProvider';
 import type { Locale } from '~/i18n/types';
+import { usePreference } from '~/lib/hooks/usePreference';
 
 const LOCALE_LABELS: Record<Locale, string> = {
   'zh-CN': '中文',
@@ -12,10 +13,16 @@ const FLAGS: Record<Locale, string> = {
 };
 
 export default function LanguageSwitcher() {
-  const { locale, setLocale, t } = useI18n();
+  const { setLocale, t } = useI18n();
+  const [preferredLocale, setPreferredLocale] = usePreference<Locale>({
+    key: 'webrex_lang',
+    backend: 'cookie',
+    fallback: 'zh-CN',
+  });
 
   const cycleLocale = () => {
-    const next: Locale = locale === 'zh-CN' ? 'en' : 'zh-CN';
+    const next: Locale = preferredLocale === 'zh-CN' ? 'en' : 'zh-CN';
+    setPreferredLocale(next);
     setLocale(next);
   };
 
@@ -27,8 +34,8 @@ export default function LanguageSwitcher() {
       style={{ color: 'var(--color-text-muted)' }}
       title={t('common.language')}
     >
-      <span>{FLAGS[locale]}</span>
-      <span>{LOCALE_LABELS[locale]}</span>
+      <span>{FLAGS[preferredLocale]}</span>
+      <span>{LOCALE_LABELS[preferredLocale]}</span>
     </button>
   );
 }

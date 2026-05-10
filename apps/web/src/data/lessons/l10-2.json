@@ -8,7 +8,7 @@
   "time": 5,
   "track": "core",
   "needsLab": false,
-  "stuck": "看不懂 View Source？在地址栏输入 `view-source:https://react.dev` 直接查看。",
+  "stuck": "看不懂 View Source？在下方 Demo 区域右键 → View Page Source 即可。",
   "steps": [
     {
       "slug": "concept",
@@ -42,8 +42,7 @@
           "title": "水合",
           "body": "React 把事件绑定到服务端 HTML，不一致就报错。"
         }
-      ],
-      "takeaway": "SSR 快在首屏，CSR 灵活在前端，SSG 稳在静态。看 View Source 就能分出来。"
+      ]
     },
     {
       "slug": "practice",
@@ -51,31 +50,33 @@
       "title": "三招辨 SSR 和 CSR",
       "intro": "用三个简单的浏览器操作，区分页面属于哪种渲染模式。",
       "steps": [
-        "打开 react.dev，右键 → 查看页面源代码。",
+        "打开 Webrex Demo 页面，右键 → 查看页面源代码。",
         "搜索页面里的文本内容（如 React）——源码里能直接搜到吗？能就说明是 SSR 或 SSG。",
-        "再打开 DevTools → Elements 面板——和 View Source 内容几乎一致，说明 react.dev 是预渲染的。",
-        "打开 http://localhost:8787/lessons/l12-spa，查看页面源代码——内容很少，搜索不到页面上的文本。",
-        "对比 react.dev 的 View Source 和该 SPA 页面的 View Source，差异一目了然。",
-        "打开 react.dev 的 DevTools → Console——留意有没有水合相关的警告（react.dev 维护得很好，通常不会出现）。",
+        "再打开 DevTools → Elements 面板——和 View Source 内容几乎一致，说明 Webrex Demo 是预渲染的。",
+        "看下方嵌入式 Demo 区域",
+        "对比 Webrex Demo 的 View Source 和该 SPA 页面的 View Source，差异一目了然。",
+        "打开 Webrex Demo 页面的 DevTools → Console——留意有没有水合相关的警告（Webrex Demo 维护得很好，通常不会出现）。",
         "对照下表，判断一个页面属于哪种渲染模式：\n\n| 特性 | SSR | CSR | SSG | 判断方式 |\n| --- | --- | --- | --- |\n| View Source 有无内容 | 有完整 HTML | 只有空壳 | 有完整 HTML | view-source:URL |\n| 首屏速度 | 快 | 慢（白屏） | 最快 | Performance 面板 |\n| 是否需要服务器 | 是 | 否（可用 CDN） | 否（纯静态文件） | 看请求头 |\n| JS 禁用后能否显示 | 能（基础内容） | 不能 | 能（完整内容） | disable JS 测试 |"
       ],
-      "expectedOutcome": "react.dev 的 View Source 有完整 HTML 内容（SSR/SSG），本地 SPA 页面只有空壳（CSR）。",
-      "externalSite": "react.dev"
+      "expectedOutcome": "Webrex Demo 的 View Source 有完整 HTML 内容（SSR/SSG），本地 SPA 页面只有空壳（CSR）。",
+      "externalSite": "http://localhost:8787/demos/l10-2"
     },
     {
       "slug": "verify",
       "type": "verify",
       "title": "验证",
       "prompt": "查看页面源代码时只看到一个空的 `<div id='app'></div>`，这是 SSR 还是 CSR？",
-      "tier": "soft",
-      "expectedRegex": "(CSR|客户端|client|SPA|不是SSR)"
-    },
-    {
-      "slug": "ask-ai",
-      "type": "ask-ai",
-      "title": "问 AI",
-      "intro": "把今天看到的差异转成一个架构问题。",
-      "template": "SSR 和 CSR 各自的优缺点和适用场景分别是什么？水合错误的常见原因有哪些（比如浏览器扩展注入 DOM、服务器与客户端时区不一致等），应该如何排查和修复？Next.js 和 Remix 分别在这套体系里扮演什么角色？"
+      "tier": "choice",
+      "options": [
+        {
+          "label": "是的，我看到了",
+          "correct": true
+        },
+        {
+          "label": "没有，我需要帮助",
+          "correct": false
+        }
+      ]
     }
   ]
 }

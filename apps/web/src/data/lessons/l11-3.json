@@ -8,7 +8,7 @@
   "time": 5,
   "track": "core",
   "needsLab": true,
-  "stuck": "Messages 面板是空的？先点一下页面上的「发送」按钮发一条消息，帧才会出现。如果连接断了，刷新一下 lab 页面。",
+  "stuck": "Messages 面板是空的？先点一下 Demo 区域里的「发送」按钮发一条消息，帧才会出现。如果连接断了，刷新一下 Demo 页面。",
   "steps": [
     {
       "slug": "concept",
@@ -42,8 +42,7 @@
           "title": "心跳帧",
           "body": "短小的 ping/pong 帧维持连接不超时"
         }
-      ],
-      "takeaway": "WebSocket 帧在 Messages 面板中实时出现，绿色 ↑ 是发出的，红色 ↓ 是收到的。"
+      ]
     },
     {
       "slug": "practice",
@@ -51,11 +50,11 @@
       "title": "观察 WebSocket 实时帧",
       "intro": "打开 WebSocket echo 页面，亲自收发消息并观察帧。",
       "steps": [
-        "打开 http://localhost:8787/api/ws —— 这是一个 WebSocket echo 交互页面。",
+        "看下方嵌入式 Demo 区域（这是一个 WebSocket echo 交互页面）。",
         "打开 DevTools → Network 面板 → 点击 **WS** 过滤器。",
         "在连接列表中找到 /api/ws 这条 WebSocket 连接，点击它。",
         "点击右侧的 **Messages** 标签，此时面板可能为空。",
-        "回到页面，在输入框里输入消息，点击「发送」按钮。",
+        "回到 Demo 区域，在输入框里输入消息，点击「发送」按钮。",
         "观察 Messages 面板：你的消息显示为绿色 ↑（发送），服务器的回显显示为红色 ↓（接收）。",
         "再发送几条消息，注意每条消息的帧类型（Text/Binary）和时间戳。"
       ],
@@ -67,22 +66,24 @@
         }
       ],
       "expectedOutcome": "绿色 ↑ 帧是你发出的消息，红色 ↓ 帧是服务器返回的响应。",
-      "labUrl": "http://localhost:8787/api/ws"
+      "externalSite": "http://localhost:8787/demos/l11-3"
     },
     {
       "slug": "verify",
       "type": "verify",
       "title": "验证",
       "prompt": "在 WebSocket Messages 面板里，你发的消息显示为绿色 ↑ 还是红色 ↓？回答「绿色 ↑」或「红色 ↓」。",
-      "tier": "soft",
-      "expectedRegex": "(绿色|↑|up|发送|green|sent|发出)"
-    },
-    {
-      "slug": "ask-ai",
-      "type": "ask-ai",
-      "title": "问 AI",
-      "intro": "用这个模板了解 WebSocket 帧能揭露什么。",
-      "template": "我在调试一个 WebSocket 应用时从 DevTools Messages 面板观察到以下帧序列：\n\n[paste frames here, e.g.: T=0s ↑ ping, T=1s ↓ pong, T=5s ↑ {\"type\":\"subscribe\"}...]\n\n请帮我分析：\n1. 这些帧揭示了应用的什么行为？\n2. 如果出现长时间没有帧、或只有上行无下行，可能是什么问题？\n3. WebSocket 连接意外断开时，如何从帧序列中定位原因？"
+      "tier": "choice",
+      "options": [
+        {
+          "label": "是的，我看到了",
+          "correct": true
+        },
+        {
+          "label": "没有，我需要帮助",
+          "correct": false
+        }
+      ]
     }
   ]
 }

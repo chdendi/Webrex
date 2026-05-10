@@ -36,20 +36,19 @@
           "title": "自定义",
           "body": "Add → 可配 latency/download/upload，模拟特定网络条件"
         }
-      ],
-      "takeaway": "下一步：在 react.dev 上开启 Slow 3G 节流，刷新页面，对比正常网络和慢网络下的加载体验差异。重点看 Network 面板里每个请求的 Waterfall 时间线。"
+      ]
     },
     {
       "slug": "practice",
       "type": "practice",
-      "title": "用 Slow 3G 打开 react.dev，记录加载差异",
-      "intro": "react.dev 是一个内容较多、图片丰富的文档站。正常网络下秒开，但 Slow 3G 下会暴露出加载瀑布流的问题。",
+      "title": "用 Slow 3G 打开 Webrex Demo 页面，记录加载差异",
+      "intro": "Webrex Demo 是一个内容较多、图片丰富的文档站。正常网络下秒开，但 Slow 3G 下会暴露出加载瀑布流的问题。",
       "steps": [
-        "打开 [react.dev](https://react.dev/)，确认正常加载完成",
+        "看下方嵌入式 Demo 区域",
         "打开 DevTools → Network 面板。勾选上 Disable cache 复选框",
         "切换到 Slow 3G（Network 面板顶部 No throttling 下拉 → Slow 3G）",
         "在 Network 面板里点清空按钮（🚫），清空已有记录",
-        "按 ⌘+R / Ctrl+R 刷新页面，观察请求列表逐渐加载的过程",
+        "点击下方 **刷新 Demo** 按钮，观察请求列表逐渐加载的过程",
         "关注以下指标：DOMContentLoaded 时间、Load 时间、总请求数、瀑布流里是否有大量串行请求",
         "找到最慢的几个资源（按 Time 列排序），看它们的类型：是大图片？大 JS bundle？还是字体文件？",
         "切回 No throttling，再刷新一次，对比两次加载的 DOMContentLoaded 和 Load 时间差",
@@ -57,33 +56,21 @@
       ],
       "shortcuts": [
         {
-          "label": "强制刷新（忽略缓存）",
-          "mac": "⌘+⇧+R",
-          "win": "Ctrl+Shift+R"
-        },
-        {
           "label": "DevTools",
           "mac": "⌘+⌥+I",
           "win": "F12"
         }
       ],
       "expectedOutcome": "Slow 3G 下的 DOMContentLoaded 和 Load 时间显著高于 No throttling。Network 面板的 Waterfall 瀑布流清楚地显示了资源的下载顺序和时间。你找到了至少一个加载耗时最长的资源。",
-      "externalSite": "react.dev"
+      "externalSite": "http://localhost:8787/demos/l4-4"
     },
     {
       "slug": "verify",
       "type": "verify",
       "title": "Slow 3G 下加载最慢的资源是什么类型的？",
-      "prompt": "你在 react.dev 上开启了 Slow 3G 节流并刷新了页面。\n\n按 Time 列排序，加载最慢的那个资源是什么类型？\n\n回答一个词：图片 / JS / CSS / 字体 / 其他",
+      "prompt": "你在 Webrex Demo 页面上开启了 Slow 3G 节流并刷新了页面。\n\n按 Time 列排序，加载最慢的那个资源是什么类型？\n\n回答一个词：图片 / JS / CSS / 字体 / 其他",
       "tier": "self",
       "expectedRegex": "(图片|JS|CSS|字体|其他|image|javascript|script|font|img|png|svg|jpg|webp|woff)"
-    },
-    {
-      "slug": "ask-ai",
-      "type": "ask-ai",
-      "title": "问 AI：慢网络下我的页面该怎么优化",
-      "intro": "你通过实验观察到了 Slow 3G 下页面的加载瀑布流。把这个观察喂给 AI，让它给出针对性的优化建议。",
-      "template": "我在 Chrome DevTools 的 Network 面板里对 react.dev 做了 Slow 3G 节流测试。\n\n观察结果：\n- DOMContentLoaded: [填你的数据]ms\n- Load: [填你的数据]ms\n- 总请求数: [填你的数据]\n- 最慢的资源: [填资源类型和 URL]\n\n请帮我分析：\n1. 这个加载瀑布流里，哪些请求是阻塞首屏渲染的？\n2. 针对最慢的资源，有哪些具体的优化手段？\n3. 在真实移动网络环境下，用户的实际体验会比 Slow 3G 模拟更好还是更差？为什么？\n4. 如果这个站点是我的项目，我该优先做哪 3 件事来改善慢网络体验？"
     }
   ]
 }

@@ -1,4 +1,5 @@
-import { useCallback, useEffect, useRef, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
+import { useClickOutside } from '~/lib/hooks/useClickOutside';
 import { getSupabaseBrowserClient } from '~/lib/supabase/browser';
 import { useI18n } from './I18nProvider';
 import LanguageSwitcher from './LanguageSwitcher';
@@ -12,8 +13,9 @@ export default function UserMenu() {
   const [user, setUser] = useState<UserInfo | null>(null);
   const [loading, setLoading] = useState(true);
   const [open, setOpen] = useState(false);
-  const menuRef = useRef<HTMLDivElement>(null);
   const { t } = useI18n();
+
+  const menuRef = useClickOutside<HTMLDivElement>(() => setOpen(false), open);
 
   useEffect(() => {
     const supabase = getSupabaseBrowserClient();
@@ -44,16 +46,6 @@ export default function UserMenu() {
     );
   }, []);
 
-  useEffect(() => {
-    const handleClickOutside = (e: MouseEvent) => {
-      if (menuRef.current && !menuRef.current.contains(e.target as Node)) {
-        setOpen(false);
-      }
-    };
-    document.addEventListener('mousedown', handleClickOutside);
-    return () => document.removeEventListener('mousedown', handleClickOutside);
-  }, []);
-
   const handleSignIn = useCallback(async () => {
     const supabase = getSupabaseBrowserClient();
     const callback = new URL('/api/auth/callback', window.location.origin);
@@ -76,7 +68,7 @@ export default function UserMenu() {
   }
 
   return (
-    <div ref={menuRef} className="relative">
+    <div ref={menuRef as React.RefObject<HTMLDivElement>} className="relative">
       <button
         type="button"
         onClick={() => setOpen(!open)}

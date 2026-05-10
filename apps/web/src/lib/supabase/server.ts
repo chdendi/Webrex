@@ -31,12 +31,20 @@ export function createSupabaseServerClient({ request, cookies }: Ctx) {
 /**
  * Returns the authenticated user (validated against the auth server) or null.
  * Always prefer this over getSession() in server code.
+ *
+ * Catches all errors (network failure, parse error, expired token, etc.) and
+ * returns null so callers never have to wrap this in try/catch.
  */
 export async function getCurrentUser(ctx: Ctx) {
-  const supabase = createSupabaseServerClient(ctx);
-  const { data, error } = await supabase.auth.getUser();
-  if (error || !data.user) return null;
-  return data.user;
+  try {
+    const supabase = createSupabaseServerClient(ctx);
+    const { data, error } = await supabase.auth.getUser();
+    if (error || !data.user) return null;
+    return data.user;
+  } catch (err) {
+    console.warn('[supabase] getCurrentUser failed:', err);
+    return null;
+  }
 }
 
 export { serializeCookieHeader };

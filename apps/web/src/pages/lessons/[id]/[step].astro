@@ -1,5 +1,4 @@
 ---
-import { getCollection } from 'astro:content';
 import ErrorBoundary from '~/components/ErrorBoundary.tsx';
 import HelpButton from '~/components/HelpButton.astro';
 import RedactionPanel from '~/components/RedactionPanel.tsx';
@@ -10,31 +9,26 @@ import ConceptStep from '~/components/steps/ConceptStep.astro';
 import PracticeStep from '~/components/steps/PracticeStep.astro';
 import VerifyStep from '~/components/steps/VerifyStep.astro';
 import LessonLayout from '~/layouts/LessonLayout.astro';
+import { getLessonNavContext } from '~/lib/lessons';
 
 export const prerender = false;
 
 const { id, step: stepSlug } = Astro.params;
-const allLessons = await getCollection('lessons');
-allLessons.sort((a, b) => a.data.level - b.data.level || a.data.sublevel - b.data.sublevel);
-const lessonIdx = allLessons.findIndex((l) => l.id === id);
-if (lessonIdx === -1) {
-  return new Response('Lesson not found', { status: 404 });
+const ctx = id ? await getLessonNavContext(id) : null;
+if (!ctx) {
+  return Astro.rewrite('/404');
 }
-const lesson = allLessons[lessonIdx];
+const { lesson, allLessons, prevId, nextId, index: lessonIndex, total: totalLessons } = ctx;
 const steps = lesson.data.steps;
 if (!steps) {
-  return new Response('Lesson has no steps', { status: 404 });
+  return Astro.rewrite('/404');
 }
 const stepIndex = steps.findIndex((s) => s.slug === stepSlug);
 if (stepIndex === -1) {
-  return new Response('Step not found', { status: 404 });
+  return Astro.rewrite('/404');
 }
 const step = steps[stepIndex];
 const stepCount = steps.length;
-const lessonIndex = lessonIdx + 1;
-const totalLessons = allLessons.length;
-const prevId = lessonIdx > 0 ? allLessons[lessonIdx - 1].id : undefined;
-const nextId = lessonIdx < allLessons.length - 1 ? allLessons[lessonIdx + 1].id : undefined;
 const prevStep = stepIndex > 0 ? steps[stepIndex - 1] : null;
 const nextStep = stepIndex < steps.length - 1 ? steps[stepIndex + 1] : null;
 const isLastStep = stepIndex === steps.length - 1;
@@ -142,24 +136,4 @@ const locale = 'zh-CN' as const;
   )}
 
   <HelpButton hint={lesson.data.stuck} />
-
-  {step.slug === 'ask-ai' && (
-    <span id="lesson-complete-marker" data-id={lesson.id} hidden></span>
-    <script is:inline>
-      (function() {
-        var KEY = 'webrex_completed_lessons';
-        try {
-          var el = document.getElementById('lesson-complete-marker');
-          if (!el) return;
-          var id = el.getAttribute('data-id');
-          var raw = localStorage.getItem(KEY);
-          var done = raw ? new Set(JSON.parse(raw)) : new Set();
-          done.add(id);
-          var arr = [];
-          done.forEach(function(v) { arr.push(v); });
-          localStorage.setItem(KEY, JSON.stringify(arr));
-        } catch(e) {}
-      })();
-    </script>
-  )}
 </LessonLayout>

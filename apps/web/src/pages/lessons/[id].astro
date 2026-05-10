@@ -1,23 +1,17 @@
 ---
-import { getCollection } from 'astro:content';
 import Card from '~/components/Card.astro';
 import LessonHeader from '~/components/LessonHeader.astro';
 import LessonLayout from '~/layouts/LessonLayout.astro';
+import { getLessonNavContext } from '~/lib/lessons';
 
 export const prerender = false;
 
 const { id } = Astro.params;
-const allLessons = await getCollection('lessons');
-allLessons.sort((a, b) => a.data.level - b.data.level || a.data.sublevel - b.data.sublevel);
-const i = allLessons.findIndex((l) => l.id === id);
-if (i === -1) {
-  return new Response('Lesson not found', { status: 404 });
+const ctx = id ? await getLessonNavContext(id) : null;
+if (!ctx) {
+  return Astro.rewrite('/404');
 }
-const lesson = allLessons[i];
-const index = i + 1;
-const total = allLessons.length;
-const prevId = i > 0 ? allLessons[i - 1].id : undefined;
-const nextId = i < allLessons.length - 1 ? allLessons[i + 1].id : undefined;
+const { lesson, allLessons, prevId, nextId, index, total } = ctx;
 const d = lesson.data;
 
 // If the lesson has steps, redirect to the first one

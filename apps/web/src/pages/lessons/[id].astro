@@ -9,7 +9,7 @@ export const prerender = false;
 const { id } = Astro.params;
 const ctx = id ? await getLessonNavContext(id) : null;
 if (!ctx) {
-  return new Response('Lesson not found', { status: 404 });
+  return Astro.rewrite('/404');
 }
 const { lesson, allLessons, prevId, nextId, index, total } = ctx;
 const d = lesson.data;

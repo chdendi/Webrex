@@ -5,9 +5,11 @@ import { getSocialStats } from '../data/social-stats';
 interface Props {
   lessons: CollectionEntry<'lessons'>[];
   currentId: string;
+  completedIds?: string[];
 }
 
-const { lessons, currentId } = Astro.props;
+const { lessons, currentId, completedIds = [] } = Astro.props;
+const completedSet = new Set(completedIds);
 
 // Group by level
 const byLevel = new Map<number, CollectionEntry<'lessons'>[]>();
@@ -69,27 +71,40 @@ function shortTitle(full: string): string {
                   const isCurrent = lesson.id === currentId;
                   const isExtension = lesson.data.track === "extension";
                   const social = getSocialStats(lesson.id);
+                  const isDone = completedSet.has(lesson.id);
                   return (
                     <li>
                       <a
                         href={`/lessons/${lesson.id}`}
-                        class={`flex items-center gap-2 px-2 py-1.5 rounded-md text-sm transition-colors ${
-                          isCurrent ? "font-medium" : "hover:bg-[color:var(--color-surface-muted)]"
-                        }`}
+                        data-lesson-id={lesson.id}
+                        class:list={[
+                          'flex items-center gap-2 px-2 py-1.5 rounded-md text-sm transition-colors',
+                          isCurrent ? 'font-medium' : 'hover:bg-[color:var(--color-surface-muted)]',
+                          isDone && 'lesson-done',
+                        ]}
                         style={
                           isCurrent
                             ? "background: var(--color-accent-soft); color: var(--color-accent);"
                             : "color: var(--color-text-muted);"
                         }
                       >
-                        <span
-                          class="w-1.5 h-1.5 rounded-full flex-shrink-0"
-                          style={
-                            isCurrent
-                              ? "background: var(--color-accent);"
-                              : "background: var(--color-text-faint); opacity: 0.5;"
-                          }
-                        ></span>
+                        {isDone ? (
+                          <span
+                            class="lesson-done-dot flex-shrink-0 rounded-full flex items-center justify-center text-[10px] text-white"
+                            style="background: var(--color-success); width: 16px; height: 16px;"
+                          >
+                            ✓
+                          </span>
+                        ) : (
+                          <span
+                            class="w-1.5 h-1.5 rounded-full flex-shrink-0"
+                            style={
+                              isCurrent
+                                ? "background: var(--color-accent);"
+                                : "background: var(--color-text-faint); opacity: 0.5;"
+                            }
+                          />
+                        )}
                         <span class="flex-1 truncate" title={lesson.data.title}>
                           L{lesson.data.level}.{lesson.data.sublevel} {shortTitle(lesson.data.title)}
                         </span>
@@ -124,31 +139,38 @@ function shortTitle(full: string): string {
   </nav>
 
   <script is:inline>
+    /**
+     * Client-side fallback for guests. Reads completions from the
+     * `webrex:progress:v1` local store (written by VerifyCard on a passing
+     * attempt). Logged-in users already have lessons styled by the server via
+     * the `lesson-done` class, so we skip those here to avoid double-styling.
+     */
     (function() {
-      var KEY = 'webrex_completed_lessons';
+      var KEY = 'webrex:progress:v1';
       try {
         var raw = localStorage.getItem(KEY);
-        var done = raw ? new Set(JSON.parse(raw)) : new Set();
-        document.querySelectorAll('aside a[href^="/lessons/"]').forEach(function(a) {
-          var href = a.getAttribute('href');
-          if (!href) return;
-          var parts = href.split('/');
-          var id = parts[parts.length - 1];
-          if (done.has(id)) {
-            var dot = a.querySelector('span:first-child');
-            if (dot) {
-              dot.style.background = 'var(--color-success)';
-              dot.style.opacity = '1';
-              dot.style.width = '16px';
-              dot.style.height = '16px';
-              dot.style.borderRadius = '50%';
-              dot.style.display = 'flex';
-              dot.style.alignItems = 'center';
-              dot.style.justifyContent = 'center';
-              dot.style.fontSize = '10px';
-              dot.style.color = '#fff';
-              dot.textContent = '\u2713';
-            }
+        if (!raw) return;
+        var parsed = JSON.parse(raw);
+        var completions = (parsed && Array.isArray(parsed.completions)) ? parsed.completions : [];
+        var done = new Set();
+        completions.forEach(function(c) { if (c && typeof c.lessonId === 'string') done.add(c.lessonId); });
+        document.querySelectorAll('aside a[data-lesson-id]').forEach(function(a) {
+          if (a.classList.contains('lesson-done')) return;
+          var id = a.getAttribute('data-lesson-id');
+          if (!id || !done.has(id)) return;
+          var dot = a.querySelector('span:first-child');
+          if (dot) {
+            dot.style.background = 'var(--color-success)';
+            dot.style.opacity = '1';
+            dot.style.width = '16px';
+            dot.style.height = '16px';
+            dot.style.borderRadius = '50%';
+            dot.style.display = 'flex';
+            dot.style.alignItems = 'center';
+            dot.style.justifyContent = 'center';
+            dot.style.fontSize = '10px';
+            dot.style.color = '#fff';
+            dot.textContent = '✓';
           }
         });
       } catch(e) {}

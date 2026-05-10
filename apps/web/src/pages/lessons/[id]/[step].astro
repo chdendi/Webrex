@@ -16,16 +16,16 @@ export const prerender = false;
 const { id, step: stepSlug } = Astro.params;
 const ctx = id ? await getLessonNavContext(id) : null;
 if (!ctx) {
-  return new Response('Lesson not found', { status: 404 });
+  return Astro.rewrite('/404');
 }
 const { lesson, allLessons, prevId, nextId, index: lessonIndex, total: totalLessons } = ctx;
 const steps = lesson.data.steps;
 if (!steps) {
-  return new Response('Lesson has no steps', { status: 404 });
+  return Astro.rewrite('/404');
 }
 const stepIndex = steps.findIndex((s) => s.slug === stepSlug);
 if (stepIndex === -1) {
-  return new Response('Step not found', { status: 404 });
+  return Astro.rewrite('/404');
 }
 const step = steps[stepIndex];
 const stepCount = steps.length;
@@ -136,24 +136,4 @@ const locale = 'zh-CN' as const;
   )}
 
   <HelpButton hint={lesson.data.stuck} />
-
-  {step.slug === 'ask-ai' && (
-    <span id="lesson-complete-marker" data-id={lesson.id} hidden></span>
-    <script is:inline>
-      (function() {
-        var KEY = 'webrex_completed_lessons';
-        try {
-          var el = document.getElementById('lesson-complete-marker');
-          if (!el) return;
-          var id = el.getAttribute('data-id');
-          var raw = localStorage.getItem(KEY);
-          var done = raw ? new Set(JSON.parse(raw)) : new Set();
-          done.add(id);
-          var arr = [];
-          done.forEach(function(v) { arr.push(v); });
-          localStorage.setItem(KEY, JSON.stringify(arr));
-        } catch(e) {}
-      })();
-    </script>
-  )}
 </LessonLayout>

@@ -51,6 +51,15 @@ const stepsJson = JSON.stringify(steps.map((s) => md(s)));
       )}
     </header>
 
+    <script>
+      window.addEventListener('message', function(e) {
+        if (e.data && e.data.webrexDemoHeight) {
+          var f = document.getElementById('demo-iframe');
+          if (f) f.style.height = e.data.webrexDemoHeight + 16 + 'px';
+        }
+      });
+    </script>
+
     <!-- Step tabs (above demo) -->
     <div
       id="step-tabs"
@@ -104,15 +113,6 @@ const stepsJson = JSON.stringify(steps.map((s) => md(s)));
         <div class="prose-step text-[0.875rem] leading-[1.6]" style="color: var(--color-text);" set:html={md(expectedOutcome)} />
       </div>
     )}
-
-    <script>
-      window.addEventListener('message', function(e) {
-        if (e.data && e.data.webrexDemoHeight) {
-          var f = document.getElementById('demo-iframe');
-          if (f) f.style.height = e.data.webrexDemoHeight + 16 + 'px';
-        }
-      });
-    </script>
 
     <script define:vars={{ stepsJson, nextStepHref }}>
       (function() {

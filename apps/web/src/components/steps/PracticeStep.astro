@@ -94,8 +94,8 @@ const stepsJson = JSON.stringify(steps.map((s) => md(s)));
     </div>
 
     <!-- Demo iframe -->
-    <div class="shrink-0 mt-3 rounded-xl overflow-hidden border" style="border-color: var(--color-border); background: #fff;">
-      <iframe id="demo-iframe" class="w-full border-0 block" style="height: 120px; min-height: 120px; transition: height 0.25s ease; overflow: hidden;" title="Demo" src={externalSite}></iframe>
+    <div class="shrink-0 mt-3 rounded-xl border" style="border-color: var(--color-border); background: #fff;">
+      <iframe id="demo-iframe" class="w-full border-0 block rounded-xl" style="min-height: 120px; transition: height 0.25s ease; overflow: hidden;" title="Demo" src={externalSite}></iframe>
     </div>
 
     {expectedOutcome && (

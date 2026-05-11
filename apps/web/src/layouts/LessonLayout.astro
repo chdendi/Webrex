@@ -1,7 +1,6 @@
 ---
 import '~/styles/global.css';
 import type { CollectionEntry } from 'astro:content';
-import Footer from '~/components/Footer.astro';
 import ProgressSync from '~/components/ProgressSync.tsx';
 import Sidebar from '~/components/Sidebar.astro';
 import TopNav from '~/components/TopNav.astro';
@@ -51,7 +50,7 @@ const completedIds = currentUser ? await getCompletedLessonIdsForUser(currentUse
       locale={locale}
     />
 
-    <div class="flex flex-1 pt-14 pb-16">
+    <div class="flex flex-1 pt-14">
       <Sidebar lessons={allLessons} currentId={current.id} completedIds={completedIds} />
 
       <main
@@ -62,14 +61,6 @@ const completedIds = currentUser ? await getCompletedLessonIdsForUser(currentUse
         </div>
       </main>
     </div>
-
-    <Footer
-      prevId={prevId}
-      nextId={nextId}
-      index={index}
-      total={total}
-      locale={locale}
-    />
 
     {currentUser && (
       <Fragment>

@@ -8,11 +8,7 @@ const page = (title: string, body: string) => `<!doctype html>
 <title>${title} — Webrex</title>
 <style>*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}body{font-family:system-ui,-apple-system,sans-serif;background:#f8fafc;color:#1e293b;line-height:1.5;padding:24px}</style>
 </head>
-<body>${body}<script>
-function postHeight(){parent.postMessage({webrexDemoHeight:document.documentElement.scrollHeight},'*')}
-postHeight();
-new MutationObserver(postHeight).observe(document.body,{childList:true,subtree:true,attributes:true,characterData:true});
-</script></body>
+<body>${body}<script>parent.postMessage({webrexDemoHeight:document.documentElement.scrollHeight},'*')</script></body>
 </html>`;
 
 // ── L1 ─────────────────────────────────────

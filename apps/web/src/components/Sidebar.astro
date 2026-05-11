@@ -149,7 +149,6 @@ function shortTitle(full: string): string {
       var KEY = 'webrex:progress:v1';
       try {
         var raw = localStorage.getItem(KEY);
-        var raw = localStorage.getItem(KEY);
         if (!raw) return;
         var parsed = JSON.parse(raw);
         var completions = (parsed && Array.isArray(parsed.completions)) ? parsed.completions : [];

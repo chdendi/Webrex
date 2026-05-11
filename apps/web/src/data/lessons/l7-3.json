@@ -40,8 +40,7 @@
           "title": "Partitioned (CHIPS)",
           "body": "按顶层站点隔离存储，不同顶层站点各自一份 Cookie"
         }
-      ],
-      "takeaway": "记住 Lax — 它是最常见的默认值，也是「邮件链接跳转后登录态还在」的原因。"
+      ]
     },
     {
       "slug": "practice",
@@ -49,7 +48,7 @@
       "title": "检查 Cookie 属性与 SameSite 行为",
       "intro": "用本地 Lab 页面观察 Cookie 的字段和 iframe 里的隔离现象。",
       "steps": [
-        "打开 http://localhost:8787/lessons/l10-cookie。",
+        "看下方嵌入式 Demo 区域",
         "打开 DevTools → Application → Cookies → localhost。",
         "查看 webrex_session Cookie：Name、Value、HttpOnly、SameSite 属性。",
         "在 Console 中输入 document.cookie — HttpOnly Cookie 不会出现在输出中。",
@@ -68,7 +67,7 @@
           "win": "Ctrl+Shift+A"
         }
       ],
-      "labUrl": "http://localhost:8787/lessons/l10-cookie",
+      "externalSite": "http://localhost:8787/demos/l7-3",
       "expectedOutcome": "Application 面板中看到 Cookie 的 SameSite 属性，Console 中 document.cookie 不返回 HttpOnly Cookie。"
     },
     {
@@ -76,15 +75,17 @@
       "type": "verify",
       "title": "验证",
       "prompt": "SameSite=Lax 的 Cookie，用户从邮件点链接跳转到你的网站时，Cookie 会带上吗？回答「会」或「不会」。",
-      "tier": "soft",
-      "expectedRegex": "(会|能|可以|带.{0,3}上|send|yes|是)"
-    },
-    {
-      "slug": "ask-ai",
-      "type": "ask-ai",
-      "title": "问 AI",
-      "intro": "把登录态丢失问题变成排查流程。",
-      "template": "用户反馈「从一个页面跳转到另一个页面后登录态丢了」：\n- 两个页面是同域还是跨域？\n- SameSite 是什么值？\n- Set-Cookie 有没有 Secure 属性？\n请帮我：\n1. 列出排查登录态丢失的完整步骤\n2. 解释 SameSite=Lax 和 None 在不同浏览器里的实际行为\n3. 给出一个生产环境安全的 Cookie 设置方案"
+      "tier": "choice",
+      "options": [
+        {
+          "label": "是的，我看到了",
+          "correct": true
+        },
+        {
+          "label": "没有，我需要帮助",
+          "correct": false
+        }
+      ]
     }
   ]
 }

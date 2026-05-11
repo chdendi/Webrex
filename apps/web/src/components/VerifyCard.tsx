@@ -108,13 +108,13 @@ export default function VerifyCard({
   // Auto-advance after correct choice + checkmark animation. Skip when an
   // achievement card is rendering — the learner needs time to see it.
   useEffect(() => {
-    if (correctIdx !== null && nextStepHref && !showAchievement) {
+    if (showAchievement && nextStepHref) {
       const t = setTimeout(() => {
         window.location.href = nextStepHref;
-      }, 1200);
+      }, 2000);
       return () => clearTimeout(t);
     }
-  }, [correctIdx, nextStepHref, showAchievement]);
+  }, [showAchievement, nextStepHref]);
 
   // Auto-advance after achievement card has been shown
   useEffect(() => {
@@ -268,7 +268,7 @@ export default function VerifyCard({
       '#F1948A',
       '#AED6F1',
     ];
-    for (let f = 0; f < 25; f++) {
+    for (let f = 0; f < 5; f++) {
       setTimeout(() => {
         const cx = 100 + Math.random() * (window.innerWidth - 200);
         const cy = 100 + Math.random() * (window.innerHeight - 300);

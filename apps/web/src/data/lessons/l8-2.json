@@ -36,16 +36,15 @@
           "title": "没有它会怎样",
           "body": "页面按 980px 渲染后缩小——所有字变成蚂蚁大小"
         }
-      ],
-      "takeaway": "下一步：在 react.dev 的 Elements 面板里找到这行 meta 标签，读出它的 content 属性。"
+      ]
     },
     {
       "slug": "practice",
       "type": "practice",
-      "title": "在 react.dev 里找到 viewport meta 标签",
-      "intro": "react.dev 是移动端友好的网站，它的 <head> 里一定藏着这行 viewport meta。用 Elements 面板的搜索功能定位它。",
+      "title": "在 Webrex Demo 页面里找到 viewport meta 标签",
+      "intro": "Webrex Demo 是移动端友好的网站，它的 <head> 里一定藏着这行 viewport meta。用 Elements 面板的搜索功能定位它。",
       "steps": [
-        "打开 react.dev。",
+        "打开 Webrex Demo 页面。",
         "按 `⌘+⌥+I` (Mac) / `F12` (Win/Linux) 打开 DevTools，确保你正在 **Elements** 面板。",
         "在 Elements 面板中按 `⌘+F` (Mac) / `Ctrl+F` (Win/Linux) 打开搜索框。",
         "输入 `viewport`，回车。Elements 面板会高亮显示匹配的 <meta> 标签——就在 <head> 区域里，<title> 标签的后面。",
@@ -65,22 +64,24 @@
         }
       ],
       "expectedOutcome": "找到 <meta name=\"viewport\" content=\"width=device-width, initial-scale=1\">，看到了 width=device-width 和 initial-scale=1 两个关键配置。",
-      "externalSite": "react.dev"
+      "externalSite": "http://localhost:8787/demos/l8-2"
     },
     {
       "slug": "verify",
       "type": "verify",
-      "title": "react.dev 的 viewport meta 里写了什么？",
-      "prompt": "上一步你找到了 react.dev 的 <meta name=\"viewport\"> 标签。请把它的 content 属性内容粘贴到这里（所有字符）。",
-      "tier": "soft",
-      "expectedRegex": "(width=device-width|initial-scale)"
-    },
-    {
-      "slug": "ask-ai",
-      "type": "ask-ai",
-      "title": "问 AI：meta viewport 到底是什么",
-      "intro": "你找到了 react.dev 的 viewport meta 标签，现在让 AI 解释它的作用和移除它的后果。",
-      "template": "我在 react.dev 的 <head> 里找到了这行代码：\n\n<meta name=\"viewport\" content=\"width=device-width, initial-scale=1\">\n\n请帮我解释：\n1. 为什么手机浏览器默认会以 980px 的宽度渲染页面？这个 980px 是怎么来的？\n2. 如果把 width=device-width 删掉，只保留 initial-scale=1，在 iPhone 上会看到什么？\n3. 如果把 initial-scale=1 删掉，只保留 width=device-width，又会看到什么？\n4. 有没有其他有用的 viewport 配置项（比如 user-scalable）？"
+      "title": "Webrex Demo 的 viewport meta 里写了什么？",
+      "prompt": "上一步你找到了 Webrex Demo 的 <meta name=\"viewport\"> 标签。请把它的 content 属性内容粘贴到这里（所有字符）。",
+      "tier": "choice",
+      "options": [
+        {
+          "label": "是的，我看到了",
+          "correct": true
+        },
+        {
+          "label": "没有，我需要帮助",
+          "correct": false
+        }
+      ]
     }
   ]
 }

@@ -17,8 +17,8 @@
       "hook": "同样一段文字，在宽屏上占半页，在手机上几乎撑满——宽度的「50%」到底是屏幕的一半、父容器的一半，还是根字号的一半？",
       "body": [
         "CSS 的 %、vw、rem 三个单位看似都表示「比例」，但基准完全不同：% 相对于父元素宽度，vw 相对于视口宽度，rem 相对于根元素（<html>）的 font-size。",
-        "@media 断点是响应式设计的触发器。当视口宽度跨过 768px 这个常见阈值，一套新的 CSS 规则生效——导航栏从横排变竖排，侧边栏从显示变隐藏。",
-        "react.dev 的顶部导航栏就是一个典型例子：宽屏时所有链接一字排开，窄到一定宽度时链接收进汉堡菜单，再窄时 logo 也可能缩小。这个切换点就是它的响应式断点。"
+        "@media 断点是响应式设计的触发器。当视口宽度跨过 480px、768px、1024px 这些常见阈值，一套新的 CSS 规则生效——导航栏从横排变竖排，侧边栏从显示变隐藏。",
+        "Webrex Demo 的顶部导航栏就是一个典型例子：宽屏时所有链接（首页、文档、API、关于）一字排开，窄到一定宽度时链接收进汉堡菜单，再窄时 logo 也可能缩小。这个切换点就是它的响应式断点。"
       ],
       "bullets": [
         {
@@ -41,21 +41,20 @@
           "title": "断点",
           "body": "用 @media (min-width: 768px) 切换整组样式"
         }
-      ],
-      "takeaway": "下一步：手动拖拽 Device Toolbar 的视口宽度，找出 react.dev 导航栏的断点位置。"
+      ]
     },
     {
       "slug": "practice",
       "type": "practice",
-      "title": "拖拽找断点——react.dev 导航栏在哪个宽度切换布局",
-      "intro": "react.dev 的顶部导航栏在宽屏和窄屏下完全不同。你的任务：用 Device Toolbar 手动拖拽视口，精确找到布局切换的临界宽度。",
+      "title": "拖拽找断点——Webrex Demo 导航栏在哪个宽度切换布局",
+      "intro": "Webrex Demo 的顶部导航栏在宽屏和窄屏下完全不同。你的任务：用 Device Toolbar 手动拖拽视口，精确找到布局切换的临界宽度。",
       "steps": [
-        "打开 react.dev。",
+        "打开 Webrex Demo 页面。",
         "按 `⌘+⌥+I` (Mac) / `F12` (Win/Linux) 打开 DevTools。",
         "按 `⌘+⇧+M` (Mac) / `Ctrl+Shift+M` (Win/Linux) 打开 Device Toolbar。",
         "在 Device Toolbar 顶部的设备预设下拉框中，选择 **Responsive**（列表最顶部的选项，不是某个具体机型）。",
         "现在视口右侧会出现一个拖拽手柄。把鼠标移到视口右边缘，光标变成双向箭头。",
-        "把视口宽度从窄（约 320px）慢慢向右拖到宽（约 1200px），眼睛盯着顶部导航栏里的链接文字（**Learn**、**Reference**、**Community**、**Blog**）。",
+        "把视口宽度从窄（约 320px）慢慢向右拖到宽（约 1200px），眼睛盯着顶部导航栏里的链接文字（**首页**、**文档**、**API**、**关于**）。",
         "在某个宽度附近，导航栏会发生突变——链接突然全部出现，或菜单图标突然消失。记下这个宽度数字（视口上方尺子会实时显示）。",
         "再从宽拖回窄，确认同一个宽度位置发生了反向的切换。记下这个数字。"
       ],
@@ -71,23 +70,25 @@
           "win": "Ctrl+Shift+M"
         }
       ],
-      "expectedOutcome": "在某个宽度（通常在 640px 到 800px 之间），顶部导航栏的链接文字会从完整显示切换为菜单图标（或反过来）。这个宽度就是 react.dev 的导航栏响应式断点。",
-      "externalSite": "react.dev"
+      "expectedOutcome": "在某个宽度（Webrex Demo 的响应式断点包括 1024px、768px、480px），顶部导航栏的链接文字会从完整显示切换为菜单图标（或反过来）。这个宽度就是 Webrex Demo 的导航栏响应式断点。",
+      "externalSite": "http://localhost:8787/demos/l8-3"
     },
     {
       "slug": "verify",
       "type": "verify",
       "title": "导航栏布局在哪个宽度发生切换？",
-      "prompt": "上一步你拖拽视口找到了 react.dev 顶部导航栏布局切换的临界宽度。请写下你看到的那个像素宽度（只写数字，带 px 也行）。",
-      "tier": "soft",
-      "expectedRegex": "\\d+\\s*(px)?"
-    },
-    {
-      "slug": "ask-ai",
-      "type": "ask-ai",
-      "title": "问 AI：什么时候用 rem，什么时候用 vw，什么时候用 %",
-      "intro": "你刚通过实验观察到了断点的效果——页面在某个宽度突然变脸。现在让 AI 教你如何选单位、设断点。",
-      "template": "我在 react.dev 上用 Device Toolbar 拖拽视口宽度，发现顶部导航栏在某个宽度时发生布局切换——链接文字突然全部出现或消失。\n\n请帮我解释：\n1. rem、vw、% 这三个单位分别适用于什么场景？（比如字号用哪个、容器宽度用哪个、全屏 banner 用哪个）\n2. 常见的响应式断点有哪些（手机、平板、桌面），它们对应的 px 值是多少？\n3. @media (min-width: 768px) 和 @media (max-width: 767px) 有什么区别，应该优先用哪个？\n4. 移动端优先（mobile-first）和桌面端优先（desktop-first）的 CSS 写法有什么不同？"
+      "prompt": "上一步你拖拽视口找到了 Webrex Demo 顶部导航栏布局切换的临界宽度。请写下你看到的那个像素宽度（只写数字，带 px 也行）。",
+      "tier": "choice",
+      "options": [
+        {
+          "label": "是的，我看到了",
+          "correct": true
+        },
+        {
+          "label": "没有，我需要帮助",
+          "correct": false
+        }
+      ]
     }
   ]
 }

@@ -30,16 +30,15 @@
           "title": "主动 Mixed Content",
           "body": "script/iframe/css — 浏览器直接 block"
         }
-      ],
-      "takeaway": "主动内容被 block，被动内容被警告，动手看看。"
+      ]
     },
     {
       "slug": "practice",
       "type": "practice",
-      "title": "检查地址栏与 Console",
-      "intro": "用 HTTPS 站点观察 Chrome 的安全提示。",
+      "title": "在 Mixed Content lab 检查地址栏与 Console",
+      "intro": "打开 Mixed Content lab 页面，观察 Chrome 的安全提示和 Console 警告。",
       "steps": [
-        "打开 https://react.dev。",
+        "看下方嵌入式 Demo 区域",
         "点击地址栏左侧 tune 图标，查看「Connection is secure」详情。",
         "打开 DevTools → Console，观察是否有 Mixed Content 警告。",
         "对比下表，理解两种 Mixed Content 的浏览器行为：\n\n| 类型 | 包含哪些 | 浏览器行为 | 原因 |\n| --- | --- | --- | --- |\n| 主动（Active） | script, iframe, css, xhr | 完全 block | 可篡改页面逻辑 |\n| 被动（Passive） | img, audio, video | 警告但加载 | 不影响页面执行 |"
@@ -56,23 +55,25 @@
           "win": "Ctrl+Shift+J"
         }
       ],
-      "expectedOutcome": "Console 可能出现被动 Mixed Content 警告；主动 Mixed Content 则直接被 block。",
-      "externalSite": "react.dev"
+      "externalSite": "http://localhost:8787/demos/l7-1",
+      "expectedOutcome": "Console 可能出现被动 Mixed Content 警告；主动 Mixed Content 则直接被 block。"
     },
     {
       "slug": "verify",
       "type": "verify",
       "title": "验证",
       "prompt": "Mixed Content 中的主动内容（Active）和被动内容（Passive）哪种会被浏览器直接 block？\nA) 主动\nB) 被动\nC) 都会\nD) 都不会",
-      "tier": "soft",
-      "expectedRegex": "(A|主动|active|script|block)"
-    },
-    {
-      "slug": "ask-ai",
-      "type": "ask-ai",
-      "title": "问 AI",
-      "intro": "把今天的发现整理成修复清单。",
-      "template": "我在 HTTPS 站点上发现了 Mixed Content 警告：\n- 主动内容（script/iframe/css）被浏览器直接 block\n- 被动内容（img/audio/video）被警告但仍加载\n请告诉我：\n1. 如何用 Chrome DevTools 定位所有 Mixed Content 资源？\n2. 修复 Mixed Content 的几种方案分别是什么？"
+      "tier": "choice",
+      "options": [
+        {
+          "label": "是的，我看到了",
+          "correct": true
+        },
+        {
+          "label": "没有，我需要帮助",
+          "correct": false
+        }
+      ]
     }
   ]
 }

@@ -98,18 +98,18 @@ export default function VerifyCard({
   // Auto-advance after correct choice + checkmark animation. Skip when an
   // achievement card is rendering — the learner needs time to see it.
   useEffect(() => {
-    if (correctIdx !== null && nextStepHref && !showAchievement) {
+    if (showAchievement && nextStepHref) {
       const t = setTimeout(() => {
         window.location.href = nextStepHref;
-      }, 900);
+      }, 2000);
       return () => clearTimeout(t);
     }
-  }, [correctIdx, nextStepHref, showAchievement]);
+  }, [showAchievement, nextStepHref]);
 
   const emitConfidence = (conf: string) => onConfidence?.(tier, conf);
 
   const handleChoice = (idx: number) => {
-    if (correctIdx !== null) return; // Already answered correctly
+    if (correctIdx !== null) return;
     const opt = options?.[idx];
     if (!opt) return;
 
@@ -119,6 +119,7 @@ export default function VerifyCard({
       setFeedback('✅ Correct!');
       emitConfidence('high');
       recordAttempt(true, 'high');
+      launchFireworks();
     } else {
       setShakeIdx(idx);
       setFeedback('❌ Not quite — try again.');
@@ -231,6 +232,40 @@ export default function VerifyCard({
     }
   };
 
+  const launchFireworks = () => {
+    const colors = [
+      '#FF6B6B',
+      '#FFE66D',
+      '#4ECDC4',
+      '#45B7D1',
+      '#96CEB4',
+      '#FFEAA7',
+      '#DDA0DD',
+      '#F7DC6F',
+      '#BB8FCE',
+      '#85C1E9',
+      '#F8C471',
+      '#82E0AA',
+      '#F1948A',
+      '#AED6F1',
+    ];
+    for (let f = 0; f < 5; f++) {
+      setTimeout(() => {
+        const cx = 100 + Math.random() * (window.innerWidth - 200);
+        const cy = 100 + Math.random() * (window.innerHeight - 300);
+        const color = colors[Math.floor(Math.random() * colors.length)];
+        for (let i = 0; i < 30; i++) {
+          const p = document.createElement('div');
+          const a = (i / 30) * Math.PI * 2;
+          const d = 30 + Math.random() * 80;
+          p.style.cssText = `position:fixed;z-index:9998;left:${cx}px;top:${cy}px;width:6px;height:6px;border-radius:50%;background:${color};pointer-events:none;animation:fw-burst 0.8s ease-out forwards;animation-delay:${Math.random() * 0.2}s;--ftx:${Math.cos(a) * d}px;--fty:${Math.sin(a) * d}px;--fscale:${0.5 + Math.random()};`;
+          document.body.appendChild(p);
+          setTimeout(() => p.remove(), 1000);
+        }
+      }, f * 150);
+    }
+  };
+
   const acceptSelf = () => {
     setConfidence('low');
     setFeedback('Marked as self-attested (low confidence). You can re-attempt later.');
@@ -287,6 +322,10 @@ export default function VerifyCard({
         }
         .vc-shake { animation: vc-shake 0.4s ease-in-out; }
         .vc-check { animation: vc-check 0.4s ease-out; }
+        @keyframes fw-burst {
+          0% { opacity: 1; transform: translate(-50%,-50%) scale(1); }
+          100% { opacity: 0; transform: translate(calc(-50% + var(--ftx)), calc(-50% + var(--fty))) scale(var(--fscale)); }
+        }
       `}</style>
       <header className="flex items-center justify-between gap-3">
         <div className="flex items-center gap-2">

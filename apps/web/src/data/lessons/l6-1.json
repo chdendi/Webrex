@@ -38,21 +38,20 @@
           "title": "SameSite",
           "body": "控制跨站请求是否携带 Cookie（Strict / Lax / None）"
         }
-      ],
-      "takeaway": "下一步：用 Application 面板查看 react.dev 的 Cookie，在 Console 里试试哪些能用 document.cookie 读到。"
+      ]
     },
     {
       "slug": "practice",
       "type": "practice",
-      "title": "在 react.dev 上查看 Cookie 并用 JS 读取",
-      "intro": "react.dev 会设置一些 Cookie（如身份认证、偏好设置）。用 Application 面板查看它们，再用 Console 验证 HttpOnly 的效果。",
+      "title": "在 Webrex Demo 页面上查看 Cookie 并用 JS 读取",
+      "intro": "Webrex Demo 会设置一些 Cookie（如 `webrex_session` 会话认证、`webrex_theme` 主题偏好）。用 Application 面板查看它们，再用 Console 验证 HttpOnly 的效果。",
       "steps": [
-        "在新标签页打开 react.dev。",
+        "看下方嵌入式 Demo 区域",
         "按 `⌘+⌥+I` / `F12` 打开 DevTools。",
         "点击顶部的 **Application** 面板标签。",
-        "在左侧边栏展开 **Cookies**，点击下面的 `https://react.dev`。",
-        "观察右侧表格的 8 列信息。找到 **HttpOnly** 列，注意哪些行是 `true`。",
-        "找到 **SameSite** 列，记录出现的值（Lax / Strict / None）。",
+        "在左侧边栏展开 **Cookies**，点击下面的 `http://localhost:8787`。",
+        "观察右侧表格的 8 列信息。找到 **webrex_session** 和 **webrex_theme** cookie，对比它们的属性差异。",
+        "找到 **HttpOnly** 列，注意 `webrex_session` 的 HttpOnly 值（安全相关的 session cookie 通常为 true）。",
         "找到 **Expires / Max-Age** 列，看哪些 Cookie 有日期（持久 Cookie），哪些是 `Session`（会话 Cookie）。",
         "切换到 **Console** 面板，输入 `document.cookie` 回车，观察返回了哪些 Cookie，对比刚才看到的 HttpOnly=true 的那几个是否出现在结果里。"
       ],
@@ -69,22 +68,24 @@
         }
       ],
       "expectedOutcome": "HttpOnly=true 的 Cookie 不会出现在 document.cookie 的返回结果里，其余 Cookie 可以读到。",
-      "externalSite": "react.dev"
+      "externalSite": "http://localhost:8787/demos/l6-1"
     },
     {
       "slug": "verify",
       "type": "verify",
       "title": "HttpOnly Cookie 能被 JS 读到吗？",
       "prompt": "HttpOnly 为 true 的 Cookie，能在 JavaScript 里用 `document.cookie` 读到吗？回答「能」或「不能」。",
-      "tier": "soft",
-      "expectedRegex": "(不能|不会|不可以|读不到|no|false)"
-    },
-    {
-      "slug": "ask-ai",
-      "type": "ask-ai",
-      "title": "问 AI：Cookie 的安全属性",
-      "intro": "你观察到了 HttpOnly、Secure、SameSite 三个属性。把它们串起来理解 Cookie 安全。",
-      "template": "我在 react.dev 的 Application 面板里查看了 Cookies，注意到三个安全属性：\n- HttpOnly\n- Secure\n- SameSite\n\n请帮我解释：\n1. 这三个属性各自解决什么安全问题？\n2. 如果我把一个登录 Cookie 设为 HttpOnly=true, Secure=true, SameSite=Strict，分别能防止什么攻击？\n3. SameSite=Lax 和 Strict 的区别是什么？什么场景用哪个？"
+      "tier": "choice",
+      "options": [
+        {
+          "label": "是的，我看到了",
+          "correct": true
+        },
+        {
+          "label": "没有，我需要帮助",
+          "correct": false
+        }
+      ]
     }
   ]
 }

@@ -31,8 +31,7 @@
           "title": "UA 覆盖测不了的",
           "body": "渲染引擎差异（CSS 布局/动画Bug）、JS API 实现差异、字体渲染、触摸事件行为"
         }
-      ],
-      "takeaway": "下一步：亲手在 DevTools 里把 UA 切成 Safari，看 Console 里 navigator.userAgent 变成了什么。"
+      ]
     },
     {
       "slug": "practice",
@@ -40,16 +39,16 @@
       "title": "伪装成 Safari，看 UA 变了什么",
       "intro": "用 DevTools 的 Network conditions 面板把 User-Agent 切成 Safari，然后到 Console 里验证。整个过程不超过 2 分钟。",
       "steps": [
-        "打开 react.dev。",
+        "打开 Webrex Demo 页面。",
         "按 `⌘+⌥+I` (Mac) / `F12` (Win/Linux) 打开 DevTools。",
         "点击 DevTools 右上角的三个竖点图标 **⋮**（在 Console / Issues 标签的同一行右侧）。",
         "在弹出菜单中依次进入 **More tools** → **Network conditions**。在 DevTools 底部会出现一个新的 Network conditions 面板。",
         "在 Network conditions 面板中，找到 **User agent** 区域。取消勾选 **Use browser default** 复选框。",
         "从下拉菜单里选择 **Safari - Mac** 或 **Safari - iPhone**。",
-        "保持 DevTools 开着，按 `⌘+R` (Mac) / `F5` (Win/Linux) 刷新页面。",
+        "保持 DevTools 开着，点击下方 **刷新 Demo** 按钮。",
         "切换到 DevTools 的 **Console** 标签，输入 `navigator.userAgent` 然后回车。",
         "你应该看到输出中包含 `Safari` 和 `AppleWebKit` 的字符串：`Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/17.0 Safari/605.1.15`——注意里面写的是 `Safari` 和 `AppleWebKit`，不是 `Chrome`。",
-        "看一下页面：react.dev 大概率渲染一切正常——因为 react.dev 没有针对 UA 做服务端分流。这正好说明：**同一套代码在不同引擎上可能出 bug，但 UA 覆盖抓不到这些 bug**。",
+        "看一下页面：Webrex Demo 大概率渲染一切正常——因为 Webrex Demo 没有针对 UA 做服务端分流。这正好说明：**同一套代码在不同引擎上可能出 bug，但 UA 覆盖抓不到这些 bug**。",
         "完成实验后，回到 Network conditions 面板，重新勾选 **Use browser default**，恢复正常 UA。"
       ],
       "shortcuts": [
@@ -57,30 +56,27 @@
           "label": "DevTools",
           "mac": "⌘+⌥+I",
           "win": "F12"
-        },
-        {
-          "label": "刷新页面",
-          "mac": "⌘+R",
-          "win": "F5"
         }
       ],
       "expectedOutcome": "你看到了 Safari 的 UA 字符串，页面没有变化——证明了 UA 覆盖的局限性：外观不变，引擎更没变。",
-      "externalSite": "react.dev"
+      "externalSite": "http://localhost:8787/demos/l9-3"
     },
     {
       "slug": "verify",
       "type": "verify",
       "title": "你在 Console 看到了什么 UA？",
       "prompt": "把你在 Console 里看到的 Safari User-Agent 字符串粘贴进来（整行或片段都行）。",
-      "tier": "soft",
-      "expectedRegex": "(Safari|WebKit|Version)"
-    },
-    {
-      "slug": "ask-ai",
-      "type": "ask-ai",
-      "title": "问 AI：UA 能骗什么，骗不了什么",
-      "intro": "你刚亲手切换了 UA 但页面没变。这次让 AI 帮你彻底理清 UA 覆盖的边界在哪里。",
-      "template": "我刚刚在 Chrome DevTools 的 Network conditions 面板里，把 User-Agent 从 Chrome 切成了 Safari on Mac，然后刷新页面。Console 里 navigator.userAgent 确实变成了 Safari，但页面渲染没有任何变化。\n\n请帮我：1. 解释为什么 UA 变了但页面渲染没变——底层原理是什么 2. UA 覆盖到底能测出哪几类真实 bug（给出具体例子）3. 如果真的想复现 Safari 渲染 bug，应该用什么工具和方案（Playwright WebKit？真机？BrowserStack？比较各自的优劣）。"
+      "tier": "choice",
+      "options": [
+        {
+          "label": "是的，我看到了",
+          "correct": true
+        },
+        {
+          "label": "没有，我需要帮助",
+          "correct": false
+        }
+      ]
     }
   ]
 }

@@ -51,6 +51,60 @@ app.post('/api/echo', async (c) => {
 });
 
 // ---------------------------------------------------------------------------
+// Products endpoint — for Network panel practice
+// ---------------------------------------------------------------------------
+app.get('/api/products', (c) =>
+  c.json([
+    { id: 1, name: 'Widget Pro', price: 29.99, category: 'electronics', inStock: true },
+    { id: 2, name: 'Super Gadget', price: 49.99, category: 'electronics', inStock: false },
+    { id: 3, name: 'Mega Tool', price: 19.99, category: 'tools', inStock: true },
+    { id: 4, name: 'Ultra Device', price: 99.99, category: 'electronics', inStock: true },
+    { id: 5, name: 'Basic Kit', price: 9.99, category: 'tools', inStock: true },
+    { id: 6, name: 'Pro Bundle', price: 149.99, category: 'software', inStock: true },
+    { id: 7, name: 'Starter Pack', price: 24.99, category: 'software', inStock: false },
+    { id: 8, name: 'Deluxe Set', price: 79.99, category: 'tools', inStock: true },
+  ]),
+);
+
+// ---------------------------------------------------------------------------
+// Users endpoint
+// ---------------------------------------------------------------------------
+app.get('/api/users', (c) =>
+  c.json([
+    { id: 1, name: 'Alice', role: 'admin', email: 'alice@webrex.dev' },
+    { id: 2, name: 'Bob', role: 'editor', email: 'bob@webrex.dev' },
+    { id: 3, name: 'Carol', role: 'viewer', email: 'carol@webrex.dev' },
+  ]),
+);
+
+// ---------------------------------------------------------------------------
+// Config endpoint — returns different status codes for testing
+// ---------------------------------------------------------------------------
+app.get('/api/config', (c) => {
+  const mode = c.req.query('mode');
+  if (mode === 'error') return c.json({ error: 'Forbidden' }, 403 as any);
+  if (mode === 'redirect') return c.redirect('/api/products', 302);
+  return c.json({ theme: 'auto', lang: 'zh-CN', debug: false, apiVersion: 'v2' });
+});
+
+// ---------------------------------------------------------------------------
+// Slow endpoint — for network timing practice
+// ---------------------------------------------------------------------------
+app.get('/api/slow', (c) => {
+  return new Promise<Response>((resolve) => {
+    setTimeout(() => {
+      resolve(
+        c.json({
+          status: 'ok',
+          delay: '2000ms',
+          message: 'This response was intentionally delayed by 2 seconds to show network timing.',
+        }) as any,
+      );
+    }, 2000);
+  }) as any;
+});
+
+// ---------------------------------------------------------------------------
 // GraphQL mock
 // ---------------------------------------------------------------------------
 app.post('/api/echo-graphql', async (c) => {

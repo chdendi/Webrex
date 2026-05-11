@@ -4,8 +4,6 @@ import ErrorBoundary from '~/components/ErrorBoundary.tsx';
 import HelpButton from '~/components/HelpButton.astro';
 import RedactionPanel from '~/components/RedactionPanel.tsx';
 import StepGuidePanel from '~/components/StepGuidePanel.tsx';
-import StepNav from '~/components/StepNav.astro';
-import StepProgress from '~/components/StepProgress.astro';
 import ConceptStep from '~/components/steps/ConceptStep.astro';
 import PracticeStep from '~/components/steps/PracticeStep.astro';
 import VerifyStep from '~/components/steps/VerifyStep.astro';
@@ -43,6 +41,7 @@ const stepKindLabel: Record<string, string> = {
   concept: 'Concept',
   practice: 'Practice',
   verify: 'Verify',
+  'ask-ai': 'Ask AI',
 };
 
 const nextLessonTitle = nextId
@@ -69,21 +68,14 @@ const locale = 'zh-CN' as const;
   index={lessonIndex}
   total={totalLessons}
 >
-  <StepProgress
-    current={stepIndex + 1}
-    total={stepCount}
-    stepTitle={step.title}
-    stepKind={stepKindLabel[step.type] ?? step.type}
-    locale={locale}
-  />
-
   {step.type === "concept" && (
     <ConceptStep
       title={step.title}
       hook={step.hook}
       body={step.body}
       bullets={step.bullets}
-      takeaway={step.takeaway}
+      nextHref={nextStep ? `/lessons/${lesson.id}/${nextStep.slug}` : undefined}
+      nextLabel={nextStep ? `Start ${stepKindLabel[nextStep.type].toLowerCase()}` : undefined}
     />
   )}
   {step.type === "practice" && (
@@ -97,6 +89,7 @@ const locale = 'zh-CN' as const;
       externalSite={step.externalSite}
       lessonId={lesson.id}
       stepSlug={step.slug}
+      nextStepHref={nextStepHref}
     />
   )}
   {step.type === "verify" && (
@@ -107,27 +100,17 @@ const locale = 'zh-CN' as const;
       expectedRegex={step.expectedRegex}
       labCheckEndpoint={step.labCheckEndpoint}
       options={step.options}
-      nextStepHref={nextStepHref}
+      nextStepHref={nextId ? `/lessons/${nextId}` : undefined}
       lessonId={lesson.id}
       stepId={step.slug}
     />
   )}
 
-  <StepNav
-    prevHref={prevStep ? `/lessons/${lesson.id}/${prevStep.slug}` : undefined}
-    nextHref={nextStep ? `/lessons/${lesson.id}/${nextStep.slug}` : undefined}
-    prevLabel={prevStep ? stepKindLabel[prevStep.type] : undefined}
-    nextLabel={nextStep ? `Continue to ${stepKindLabel[nextStep.type]}` : undefined}
-    isLastStep={isLastStep}
-    nextLessonHref={isLastStep && nextId ? `/lessons/${nextId}` : undefined}
-    nextLessonTitle={nextLessonTitle}
-  />
-
   <ErrorBoundary client:load>
     <RedactionPanel client:load />
   </ErrorBoundary>
 
-  {step.type === "practice" && (
+  {step.type === "practice" && !step.externalSite && (
     <ErrorBoundary client:load>
       <StepGuidePanel
         client:load

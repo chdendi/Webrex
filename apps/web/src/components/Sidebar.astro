@@ -124,19 +124,12 @@ function shortTitle(full: string): string {
           var parts = href.split('/');
           var id = parts[parts.length - 1];
           if (done.has(id)) {
+            a.style.textDecoration = 'line-through';
+            a.style.opacity = '0.5';
             var dot = a.querySelector('span:first-child');
             if (dot) {
               dot.style.background = 'var(--color-success)';
               dot.style.opacity = '1';
-              dot.style.width = '16px';
-              dot.style.height = '16px';
-              dot.style.borderRadius = '50%';
-              dot.style.display = 'flex';
-              dot.style.alignItems = 'center';
-              dot.style.justifyContent = 'center';
-              dot.style.fontSize = '10px';
-              dot.style.color = '#fff';
-              dot.textContent = '\u2713';
             }
           }
         });

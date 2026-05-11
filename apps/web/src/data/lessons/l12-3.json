@@ -35,16 +35,15 @@
           "title": "Rendering 面板",
           "body": "通过命令面板打开 Rendering 标签页，勾选开关"
         }
-      ],
-      "takeaway": "下一步打开 Paint Flashing 亲自观察。"
+      ]
     },
     {
       "slug": "practice",
       "type": "practice",
       "title": "看哪些区域在闪绿",
-      "intro": "react.dev 页面结构复杂，滚动时的重绘行为很有代表性。",
+      "intro": "Webrex Demo 页面结构复杂，滚动时的重绘行为很有代表性。",
       "steps": [
-        "打开 react.dev。",
+        "打开 Webrex Demo 页面。",
         "打开 DevTools。",
         "按 **Cmd+Shift+P** (Mac) 或 **Ctrl+Shift+P** (Win) 打开命令面板。",
         "输入 **Rendering** → 选择 **Show Rendering**。",
@@ -67,22 +66,24 @@
         }
       ],
       "expectedOutcome": "滚动时整个页面闪绿；局部交互仅相关区域闪绿。",
-      "externalSite": "react.dev"
+      "externalSite": "http://localhost:8787/demos/l12-3"
     },
     {
       "slug": "verify",
       "type": "verify",
       "title": "验证",
-      "prompt": "打开 Paint Flashing 后滚动 react.dev 页面，哪些区域出现了绿色闪烁？A) 只有滚动条 B) 整个页面都在闪 C) 只有新进入视口的区域 D) 完全没有绿色",
-      "tier": "soft",
-      "expectedRegex": "(B|整个|都.{0,3}闪|全|全部|all|处处)"
-    },
-    {
-      "slug": "ask-ai",
-      "type": "ask-ai",
-      "title": "问 AI",
-      "intro": "把观察转成问题。",
-      "template": "我在 react.dev 打开了 Chrome DevTools 的 Paint Flashing 功能：\n- 滚动页面时整个屏幕都在闪绿色\n- 鼠标悬停菜单时只有菜单区域闪绿色\n\n请解释：\n1. 为什么滚动会导致全页面重绘？浏览器的合成（compositing）机制能避免这种重绘吗？\n2. Paint Flashing 看到的绿色面积越大，对性能的影响具体有多大？\n3. 开发者该用什么策略减少不必要的重绘区域？"
+      "prompt": "打开 Paint Flashing 后滚动 Webrex Demo 页面，哪些区域出现了绿色闪烁？A) 只有滚动条 B) 整个页面都在闪 C) 只有新进入视口的区域 D) 完全没有绿色",
+      "tier": "choice",
+      "options": [
+        {
+          "label": "是的，我看到了",
+          "correct": true
+        },
+        {
+          "label": "没有，我需要帮助",
+          "correct": false
+        }
+      ]
     }
   ]
 }

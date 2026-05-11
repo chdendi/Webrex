@@ -35,8 +35,7 @@
           "title": "搭配 Network 节流",
           "body": "同时模拟慢网速，还原真实低端环境"
         }
-      ],
-      "takeaway": "下一步在节流模式下录一条 trace 对比。"
+      ]
     },
     {
       "slug": "practice",
@@ -44,7 +43,7 @@
       "title": "对比正常 vs 4x 减速",
       "intro": "同样操作、两种 CPU 模式、对比效果。",
       "steps": [
-        "打开 react.dev → DevTools → Performance 面板。",
+        "打开 Webrex Demo 页面→ DevTools → Performance 面板。",
         "先确保 CPU 下拉为 **No throttling**，录制一次：点击 Search 按钮，等待 2 秒，点 Stop。",
         "记下 Summary 里的 Scripting 耗时。",
         "点击 Performance 面板顶部的 **⚙ Capture Settings** 齿轮图标。",
@@ -66,22 +65,24 @@
         }
       ],
       "expectedOutcome": "4x slowdown 下同操作的耗时约为正常模式的 4 倍。",
-      "externalSite": "react.dev"
+      "externalSite": "http://localhost:8787/demos/l12-4"
     },
     {
       "slug": "verify",
       "type": "verify",
       "title": "验证",
       "prompt": "在 CPU 4x slowdown 模式下，同一次 Search 按钮点击的 JS 执行时间大约是正常模式下的几倍？",
-      "tier": "soft",
-      "expectedRegex": "(4|四|几倍|倍|multiple|around).{0,5}(4|four)"
-    },
-    {
-      "slug": "ask-ai",
-      "type": "ask-ai",
-      "title": "问 AI",
-      "intro": "把观察转成问题。",
-      "template": "我在 react.dev 用 Performance 面板做了对比实验：\n- No throttling 下 JS 运行很快\n- 4x slowdown 下同样的操作耗时约 4 倍\n\n请解释：\n1. CPU 节流具体是怎么模拟低端设备的？它真的和真机性能一致吗？\n2. 如果 4x 模式下某个操作耗时 300ms，在正常模式下只有 75ms——这两个数值对用户体验分别意味着什么？\n3. 拿到节流模式的数据后，应该如何排优化优先级？"
+      "tier": "choice",
+      "options": [
+        {
+          "label": "是的，我看到了",
+          "correct": true
+        },
+        {
+          "label": "没有，我需要帮助",
+          "correct": false
+        }
+      ]
     }
   ]
 }

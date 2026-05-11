@@ -1,7 +1,6 @@
 ---
 import '~/styles/global.css';
 import type { CollectionEntry } from 'astro:content';
-import Footer from '~/components/Footer.astro';
 import Sidebar from '~/components/Sidebar.astro';
 import TopNav from '~/components/TopNav.astro';
 
@@ -54,13 +53,5 @@ const htmlLang = locale;
         </div>
       </main>
     </div>
-
-    <Footer
-      prevId={prevId}
-      nextId={nextId}
-      index={index}
-      total={total}
-      locale={locale}
-    />
   </body>
 </html>

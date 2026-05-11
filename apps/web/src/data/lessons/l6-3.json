@@ -38,19 +38,18 @@
           "title": "Transaction",
           "body": "一组操作要么全成功要么全回滚，保证一致性"
         }
-      ],
-      "takeaway": "下一步：在 Application 面板里探索 react.dev 是否有 IndexedDB 数据库，看看里面存了什么数据。"
+      ]
     },
     {
       "slug": "practice",
       "type": "practice",
-      "title": "浏览 react.dev 的 IndexedDB 数据",
-      "intro": "react.dev 及其他站可能用 IndexedDB 存离线数据或缓存。用 Application 面板找到并浏览它们。",
+      "title": "浏览 Webrex Demo 的 IndexedDB 数据",
+      "intro": "Webrex Demo 及其他站可能用 IndexedDB 存离线数据或缓存。用 Application 面板找到并浏览它们。",
       "steps": [
-        "在新标签页打开 react.dev。",
+        "看下方嵌入式 Demo 区域",
         "按 `⌘+⌥+I` / `F12` 打开 DevTools，切换到 **Application** 面板。",
         "在左侧边栏找到 **IndexedDB**，点击前面的三角箭头展开。",
-        "查看展开的数据库列表，常见的包括 `firebase-heartbeat-database`、由 localforage 创建的库等。",
+        "查看展开的数据库列表，Webrex Demo 使用 `webrex_demo_db` 作为演示数据库。",
         "点击某个数据库名称展开，再点击下面的 **Object Store**（对象仓库）。",
         "观察右侧显示的记录列表，每条记录由 Key（主键）和 Value（数据对象）组成。",
         "点击某条记录，查看 Value 里存储的完整结构化数据（DevTools 会以树形展开 JSON 对象）。",
@@ -69,22 +68,24 @@
         }
       ],
       "expectedOutcome": "IndexedDB 里存储的是结构化数据（对象/数组），比 localStorage 只能存字符串要丰富得多。",
-      "externalSite": "react.dev"
+      "externalSite": "http://localhost:8787/demos/l6-3"
     },
     {
       "slug": "verify",
       "type": "verify",
       "title": "IndexedDB 独有的能力是什么？",
       "prompt": "IndexedDB 和 localStorage 相比，IndexedDB 支持什么 localStorage 不支持的特性？\nA) 存储 JSON\nB) 索引和事务\nC) 跨域访问\nD) 自动同步",
-      "tier": "soft",
-      "expectedRegex": "(B|索引|事务|index|transaction)"
-    },
-    {
-      "slug": "ask-ai",
-      "type": "ask-ai",
-      "title": "问 AI：什么时候用 IndexedDB",
-      "intro": "localStorage 简单但局限，IndexedDB 强大但复杂。学会在两者之间做选择。",
-      "template": "我对比了 localStorage 和 IndexedDB 的差异：\n- localStorage：同步 API，5MB 上限，只能存字符串\n- IndexedDB：异步 API，容量大，支持索引和事务，可存任意结构化数据\n\n请帮我分析：\n1. 什么场景下必须用 IndexedDB 而不能用 localStorage？举 2 个实际例子。\n2. IndexedDB 的 API 比较原始，常用的封装库有哪些（如 localforage）？\n3. PWA 离线应用中 IndexedDB 承担什么角色？和 Cache Storage 有什么分工？"
+      "tier": "choice",
+      "options": [
+        {
+          "label": "是的，我看到了",
+          "correct": true
+        },
+        {
+          "label": "没有，我需要帮助",
+          "correct": false
+        }
+      ]
     }
   ]
 }

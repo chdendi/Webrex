@@ -51,7 +51,7 @@ const stepsJson = JSON.stringify(steps.map((s) => md(s)));
       )}
     </header>
 
-    <script>
+    <script is:inline>
       window.addEventListener('message', function(e) {
         if (e.data && e.data.webrexDemoHeight) {
           var f = document.getElementById('demo-iframe');
@@ -91,7 +91,7 @@ const stepsJson = JSON.stringify(steps.map((s) => md(s)));
         ↻ Refresh Demo
       </button>
       <span id="refresh-hint" class="text-[11px]" style="color: var(--color-text-faint); opacity: 0; transition: opacity 0.2s;">Refreshed!</span>
-      <script>
+      <script is:inline>
         document.getElementById('refresh-demo').addEventListener('click', function() {
           var iframe = document.getElementById('demo-iframe');
           iframe.src = iframe.src;

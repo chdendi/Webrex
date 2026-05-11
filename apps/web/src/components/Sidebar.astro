@@ -159,7 +159,11 @@ function shortTitle(full: string): string {
           if (a.classList.contains('lesson-done')) return;
           var id = a.getAttribute('data-lesson-id');
           if (!id || !done.has(id)) return;
-          a.style.textDecoration = 'line-through';
+          var title = a.querySelector('span.flex-1');
+          if (title) {
+            title.style.textDecoration = 'line-through';
+            title.style.textDecorationColor = 'var(--color-text-muted)';
+          }
           a.style.opacity = '0.5';
           var dot = a.querySelector('span:first-child');
           if (dot) {

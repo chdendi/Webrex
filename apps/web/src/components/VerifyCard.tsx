@@ -121,7 +121,7 @@ export default function VerifyCard({
     if (showAchievement && nextStepHref) {
       const t = setTimeout(() => {
         window.location.href = nextStepHref;
-      }, 2000);
+      }, 6000);
       return () => clearTimeout(t);
     }
   }, [showAchievement, nextStepHref]);

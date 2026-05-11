@@ -42,8 +42,7 @@
           "title": "注意脱敏",
           "body": "HAR 常含 Cookie 和 Token，分享前必须删除"
         }
-      ],
-      "takeaway": "HAR 是把 Network 面板的所有请求打包成一份 JSON 给 AI 分析。"
+      ]
     },
     {
       "slug": "practice",
@@ -51,7 +50,7 @@
       "title": "导出 HAR 并查看内容",
       "intro": "这个页面会发出多种类型的请求，我们将其全部抓成 HAR。",
       "steps": [
-        "打开 http://localhost:8787/lessons/l13-har，等待页面所有请求完成。",
+        "看下方嵌入式 Demo 区域",
         "打开 DevTools → Network 面板。",
         "在请求列表的空白区域右键 → 选择 **Save all as HAR with content**。",
         "用文本编辑器打开下载的 .har 文件，确认它是 JSON 格式。",
@@ -66,22 +65,24 @@
         }
       ],
       "expectedOutcome": "HAR 文件是 JSON，包含所有请求的 URL、Headers、响应体。",
-      "labUrl": "http://localhost:8787/lessons/l13-har"
+      "externalSite": "http://localhost:8787/demos/l11-1"
     },
     {
       "slug": "verify",
       "type": "verify",
       "title": "验证",
       "prompt": "HAR 文件的本质是什么格式？A) XML B) JSON C) CSV D) YAML",
-      "tier": "soft",
-      "expectedRegex": "(B|JSON|json|Json)"
-    },
-    {
-      "slug": "ask-ai",
-      "type": "ask-ai",
-      "title": "问 AI",
-      "intro": "用这个模板让 AI 帮你分析 HAR 文件。",
-      "template": "这是我从浏览器导出的 HAR 文件内容（已删除所有 Cookie 和 Token 字段）：\n\n[paste HAR JSON here]\n\n请帮我：\n1. 列出所有失败的请求（状态码非 2xx/3xx）\n2. 找出最慢的 3 个请求并解释原因\n3. 检查是否有请求缺少必要的 Header"
+      "tier": "choice",
+      "options": [
+        {
+          "label": "是的，我看到了",
+          "correct": true
+        },
+        {
+          "label": "没有，我需要帮助",
+          "correct": false
+        }
+      ]
     }
   ]
 }

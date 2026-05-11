@@ -8,7 +8,7 @@
   "time": 4,
   "track": "core",
   "needsLab": false,
-  "stuck": "找不到带 hash 的 JS 文件名？刷新 react.dev，Network 面板的 JS 过滤器下找名称里包含随机字符串的文件。",
+  "stuck": "找不到带 hash 的 JS 文件名？刷新 Webrex Demo，Network 面板的 JS 过滤器下找名称里包含随机字符串的文件。",
   "steps": [
     {
       "slug": "concept",
@@ -42,17 +42,16 @@
           "title": "CDN 兼容",
           "body": "新 hash = 新 URL，CDN 上不会出现文件被覆盖的问题。"
         }
-      ],
-      "takeaway": "hash 不是随机字符串——它是内容指纹。hash 变了 = 内容变了 = 浏览器自动拿新文件。"
+      ]
     },
     {
       "slug": "practice",
       "type": "practice",
       "title": "从 Network 面板追踪缓存策略",
-      "intro": "打开 react.dev，观察真正的生产环境缓存配置。",
+      "intro": "打开 Webrex Demo 页面，观察真正的生产环境缓存配置。",
       "steps": [
-        "打开 react.dev → DevTools → Network 面板。",
-        "刷新页面，在筛选栏选择 JS，观察文件名列表。",
+        "打开 Webrex Demo 页面→ DevTools → Network 面板。",
+        "点击下方 **刷新 Demo** 按钮，在筛选栏选择 JS，观察文件名列表。",
         "找到文件名中带有 hash 片段的 JS 文件，格式为 `framework-abc123.js` 或 chunk 文件中包含随机字符串。",
         "点击某个 JS 文件 → Headers 标签 → 查看 Response Headers 中的 Cache-Control。",
         "它大概率显示 `public, max-age=31536000, immutable`，意思是缓存一年且永不过期。",
@@ -60,22 +59,24 @@
         "对比下表理解不同文件的缓存策略：\n\n| 文件类型 | 缓存策略 | 原因 |\n| --- | --- | --- |\n| index.html | max-age=0 / no-cache | 需要每次验证版本，确保拿到最新的资源引用 |\n| *.a3f8b2.js | max-age=31536000, immutable | hash 保证唯一性，可放心长缓存 |\n| *.d4e5f6.css | max-age=31536000, immutable | 同 JS，hash 变了自动更新 |\n| 图片/字体 | max-age=31536000 | 静态资源变动少，长缓存即可 |"
       ],
       "expectedOutcome": "JS 文件有长缓存（一年的 max-age），HTML 文档缓存短或无缓存。文件名中的随机字符串就是 content hash。",
-      "externalSite": "react.dev"
+      "externalSite": "http://localhost:8787/demos/l10-3"
     },
     {
       "slug": "verify",
       "type": "verify",
       "title": "验证",
       "prompt": "为什么生产环境的 JS 文件名里要带 hash？",
-      "tier": "soft",
-      "expectedRegex": "(缓存|更新|新版本|自动|cache|bust|hash|版本|version|刷新|换)"
-    },
-    {
-      "slug": "ask-ai",
-      "type": "ask-ai",
-      "title": "问 AI",
-      "intro": "从缓存策略延伸到部署架构。",
-      "template": "前端项目的缓存策略通常分两层：HTML 短缓存，静态资源长缓存。请解释为什么这样设计、content hash 如何实现可靠的 cache busting，以及部署到 CDN 时需要注意哪些问题（如新旧版本共存期间的非原子性发布）。"
+      "tier": "choice",
+      "options": [
+        {
+          "label": "是的，我看到了",
+          "correct": true
+        },
+        {
+          "label": "没有，我需要帮助",
+          "correct": false
+        }
+      ]
     }
   ]
 }

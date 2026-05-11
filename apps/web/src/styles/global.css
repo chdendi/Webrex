@@ -191,3 +191,9 @@ kbd {
 /* OS-aware shortcuts: show only the relevant shortcut set */
 [data-os="mac"] .shortcut-win { display: none; }
 [data-os="win"] .shortcut-mac { display: none; }
+
+/* Sidebar — completed lesson line-through */
+.lesson-done .flex-1 {
+  text-decoration: line-through;
+  text-decoration-color: var(--color-text-muted);
+}

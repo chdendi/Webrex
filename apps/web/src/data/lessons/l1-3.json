@@ -17,7 +17,7 @@
       "hook": "DevTools 一打开你看到 Elements / Console / Sources / Network / Application 5 个面板。每个面板对应一个具体问题。死记硬背没用，不如挨个去找一个真实数字。",
       "body": [
         "这一关你不需要懂这些面板背后的细节，**只需要知道它们各自能看到什么**。",
-        "下一步在 react.dev 上每个面板都摸一遍——每个面板找出 1 个具体数字。"
+        "下一步在下方 Demo 区每个面板都摸一遍——每个面板找出 1 个具体数字。"
       ],
       "bullets": [
         {
@@ -45,53 +45,56 @@
           "title": "Application",
           "body": "看页面存了什么数据"
         }
-      ],
-      "takeaway": "下一步在 react.dev 上 5 个面板各找一个数字。最后把 5 个数粘贴进 verify。"
+      ]
     },
     {
       "slug": "practice",
       "type": "practice",
-      "title": "在 react.dev 上每个面板找 1 个数",
-      "intro": "5 个面板顶部一排切换，每个找一个**具体数字**。这能让你以后想找东西时秒切对面板。",
+      "title": "在 Demo 区每个面板找 1 个数",
+      "intro": "下方 Demo 页面有 DOM 节点、Console 日志、JS 文件、网络请求和 Cookie。5 个面板各找一个具体数字。",
       "steps": [
-        "在新标签页打开 [react.dev](https://react.dev/)，按 `F12` / `⌘+⌥+I` 打开 DevTools。",
-        "**先做这一步**：刷新页面（`⌘+R` / `F5`），让 Network 面板能记录到请求。",
-        "顶部 tab 切到 **Elements**：找到 `<body>` 标签（按 `⌘+F` / `Ctrl+F` 搜 `body` 也行），看它的**直接子节点**有几个（一般是 `<header>`、`<main>`、`<footer>` 之类的，3-6 个）。",
-        "切到 **Console**：顶部 Filter 里看看有几条 ❌ Errors 或 ⚠️ Warnings。没有就是 0。",
-        "切到 **Sources**：左侧切到 **Page** 标签 → 展开 `top` → `react.dev` → 数它下面 `.js` 文件的个数（粗估即可，5 / 10 / 20 这种数量级）。",
-        "切到 **Network**：因为刚才刷新过，列表里已经有请求了。**看面板底部状态栏**：`X requests | Y kB transferred`，记下 X。",
-        "切到 **Application** → 左侧 **Storage** → **Cookies** → `https://react.dev`：看右侧表格里有**几行 cookie**。",
-        "把 5 个数字记下来：\n\n| 面板 | 找的是什么 | 你的数字 |\n| --- | --- | --- |\n| **Elements** | `<body>` 的直接子节点数 | _____ |\n| **Console** | Errors + Warnings 总条数 | _____ |\n| **Sources** | react.dev 域名下 `.js` 文件数 | _____ |\n| **Network** | 刷新后的总请求数 | _____ |\n| **Application** | react.dev 的 cookie 行数 | _____ |"
+        "看下方 Demo 页面，按 `F12` / `⌘+⌥+I` 打开 DevTools。",
+        "点击下方 **刷新 Demo** 按钮重新加载 demo，让 Network 面板记录到请求。",
+        "切到 **Elements**：找到 `<body>` 标签，看它的直接子节点有几个。",
+        "切到 **Console**：看有几条 Errors 或 Warnings。",
+        "切到 **Sources**：展开 `localhost:8787` 域名，数 .js 文件个数。",
+        "切到 **Network**：看面板底部状态栏的总请求数 X。",
+        "切到 **Application** → Cookies → 看有几行 cookie。"
       ],
       "shortcuts": [
         {
           "label": "DevTools",
           "mac": "⌘+⌥+I",
           "win": "F12"
-        },
-        {
-          "label": "刷新页面",
-          "mac": "⌘+R",
-          "win": "F5"
         }
       ],
-      "expectedOutcome": "5 个数字都拿到了。这意味着你**能在 5 个面板之间切换**，并且**知道每个面板大概在哪看什么**——这就是这一关的目的。具体数字本身不重要。",
-      "externalSite": "react.dev"
+      "expectedOutcome": "5 个面板各找到了一个数字，意味着你能在面板间自由切换。",
+      "externalSite": "http://localhost:8787/demos/l1-3"
     },
     {
       "slug": "verify",
       "type": "verify",
-      "title": "把 5 个数字粘进来",
-      "prompt": "按面板顺序粘贴你刚才找到的 5 个数字，**用斜杠或空格分开**。\n\n顺序是：Elements / Console / Sources / Network / Application。\n\n找不到的填 `0`。",
-      "tier": "soft",
-      "expectedRegex": "\\d+[\\s,/、]+\\d+[\\s,/、]+\\d+[\\s,/、]+\\d+"
-    },
-    {
-      "slug": "ask-ai",
-      "type": "ask-ai",
-      "title": "问 AI：这些数字算正常吗",
-      "intro": "把 5 个面板的数字喂给 AI，让它帮你判断这是个「健康的网站」还是「有可疑信号的网站」。",
-      "template": "我刚在 react.dev 上数了 5 个 DevTools 面板的数字：\n\n- Elements 里 `<body>` 的直接子节点数：[X]\n- Console 的报错+警告总数：[X]\n- Sources 里 react.dev 域名下的 .js 文件数：[X]\n- Network 刷新后的总请求数：[X]\n- Application → Cookies (react.dev) 的 cookie 条数：[X]\n\n请帮我判断这些数字「正常吗」：\n1. 60 个 Network 请求算多吗？这种规模的官方文档站合理范围是多少？\n2. Console 完全没报错没警告，是该高兴还是该怀疑（控制台被屏蔽了之类）？\n3. Cookie 数量在 0-3 这个区间，说明这个网站对追踪/广告的依赖如何？\n4. 如果换一个国内电商站（taobao.com 或 jd.com），上面这 5 个数字大概会怎么变化？为什么？"
+      "title": "哪个面板看网络请求？",
+      "prompt": "你要看页面发了哪些 HTTP 请求，应该切到哪个面板？",
+      "tier": "choice",
+      "options": [
+        {
+          "label": "Network",
+          "correct": true
+        },
+        {
+          "label": "Console",
+          "correct": false
+        },
+        {
+          "label": "Elements",
+          "correct": false
+        },
+        {
+          "label": "Application",
+          "correct": false
+        }
+      ]
     }
   ]
 }

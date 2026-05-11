@@ -36,22 +36,21 @@
           "title": "Best Practices",
           "body": "Web 安全与规范"
         }
-      ],
-      "takeaway": "跑一次报告就有一份优化清单。"
+      ]
     },
     {
       "slug": "practice",
       "type": "practice",
-      "title": "给 react.dev 跑 Lighthouse",
-      "intro": "用 react.dev 作为审计目标。",
+      "title": "给 Webrex Demo 跑 Lighthouse",
+      "intro": "用 Webrex Demo 作为审计目标。",
       "steps": [
-        "打开 react.dev。",
+        "打开 Webrex Demo 页面。",
         "打开 DevTools → **Lighthouse** 标签。",
         "勾选分类：Performance、Accessibility、Best Practices。",
         "点击 **Analyze page load**，等待约 30 秒。",
         "记录 Performance 得分。",
         "滚动到「Opportunities」区域——按潜在节省量排序。阅读前 3 条建议。",
-        "对比：\n\n| 分类 | react.dev 得分 | 含义 |\n| --- | --- | --- |\n| Performance | （你的得分） | 加载与交互速度 |\n| Accessibility | （你的得分） | 可访问性 |\n| Best Practices | （你的得分） | 安全与规范 |"
+        "对比：\n\n| 分类 | Webrex Demo 得分 | 含义 |\n| --- | --- | --- |\n| Performance | （你的得分） | 加载与交互速度 |\n| Accessibility | （你的得分） | 可访问性 |\n| Best Practices | （你的得分） | 安全与规范 |"
       ],
       "shortcuts": [
         {
@@ -61,22 +60,24 @@
         }
       ],
       "expectedOutcome": "得到一份包含分数和优化建议的完整报告。",
-      "externalSite": "react.dev"
+      "externalSite": "http://localhost:8787/demos/l13-1"
     },
     {
       "slug": "verify",
       "type": "verify",
       "title": "验证",
-      "prompt": "你跑出来的 react.dev Lighthouse Performance 得分大约是多少？填一个数字（0-100）。",
-      "tier": "soft",
-      "expectedRegex": "\\d+"
-    },
-    {
-      "slug": "ask-ai",
-      "type": "ask-ai",
-      "title": "问 AI",
-      "intro": "拿着报告去问 AI。",
-      "template": "我给 react.dev 跑了 Lighthouse，Performance 得分是 __。Opportunities 前三条是：1) __ 2) __ 3) __。请解释每条的含义，并排出优先修复顺序。"
+      "prompt": "你跑出来的 Webrex Demo Lighthouse Performance 得分大约是多少？填一个数字（0-100）。",
+      "tier": "choice",
+      "options": [
+        {
+          "label": "是的，我看到了",
+          "correct": true
+        },
+        {
+          "label": "没有，我需要帮助",
+          "correct": false
+        }
+      ]
     }
   ]
 }

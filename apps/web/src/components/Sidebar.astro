@@ -149,6 +149,7 @@ function shortTitle(full: string): string {
       var KEY = 'webrex:progress:v1';
       try {
         var raw = localStorage.getItem(KEY);
+        var raw = localStorage.getItem(KEY);
         if (!raw) return;
         var parsed = JSON.parse(raw);
         var completions = (parsed && Array.isArray(parsed.completions)) ? parsed.completions : [];
@@ -158,6 +159,12 @@ function shortTitle(full: string): string {
           if (a.classList.contains('lesson-done')) return;
           var id = a.getAttribute('data-lesson-id');
           if (!id || !done.has(id)) return;
+          var title = a.querySelector('span.flex-1');
+          if (title) {
+            title.style.textDecoration = 'line-through';
+            title.style.textDecorationColor = 'var(--color-text-muted)';
+          }
+          a.style.opacity = '0.5';
           var dot = a.querySelector('span:first-child');
           if (dot) {
             dot.style.background = 'var(--color-success)';

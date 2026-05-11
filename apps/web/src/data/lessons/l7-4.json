@@ -35,8 +35,7 @@
           "title": "一句话记忆",
           "body": "XSS = 代码跑错了地方；CSRF = 请求跑错了地方"
         }
-      ],
-      "takeaway": "防止 XSS → 永远用 textContent；防止 CSRF → 加 anti-CSRF token。"
+      ]
     },
     {
       "slug": "practice",
@@ -44,7 +43,7 @@
       "title": "危险输出 vs 安全输出",
       "intro": "同一个 payload，在不同的输出方式下，一个弹窗一个不弹。",
       "steps": [
-        "打开 http://localhost:8787/lessons/l10-xss。",
+        "看下方嵌入式 Demo 区域",
         "在「危险的输出（innerHTML）」输入框中输入 <img src=x onerror=alert('XSS')> 并点击输出按钮。",
         "观察：弹窗出现，说明恶意脚本被执行了。",
         "在「安全的输出（textContent）」输入框中输入同样的 payload 并点击输出按钮。",
@@ -63,7 +62,7 @@
           "win": "Ctrl+Shift+C"
         }
       ],
-      "labUrl": "http://localhost:8787/lessons/l10-xss",
+      "externalSite": "http://localhost:8787/demos/l7-4",
       "expectedOutcome": "innerHTML 触发 XSS 弹窗，textContent 安全显示纯文本。"
     },
     {
@@ -71,15 +70,17 @@
       "type": "verify",
       "title": "验证",
       "prompt": "要防止 XSS，输出用户输入时应该用 `textContent` 还是 `innerHTML`？",
-      "tier": "soft",
-      "expectedRegex": "(textContent|text|textContent|安全|safe|前者)"
-    },
-    {
-      "slug": "ask-ai",
-      "type": "ask-ai",
-      "title": "问 AI",
-      "intro": "把实验结论迁移到真实项目。",
-      "template": "我在一个 Lab 里验证了 XSS 攻击：\n- 用 innerHTML 输出用户输入时，<img src=x onerror=alert(1)> 被成功执行\n- 用 textContent 时，同样的输入被安全渲染为纯文本\n请告诉我：\n1. React/Vue 框架里用 dangerouslySetInnerHTML / v-html 时有哪些常见的 XSS 误区？\n2. 除了 textContent，还有哪些有效的 XSS 防护手段（CSP、DOMPurify 等）？\n3. CSRF 防护：anti-CSRF token 的工作流程是怎样的？"
+      "tier": "choice",
+      "options": [
+        {
+          "label": "是的，我看到了",
+          "correct": true
+        },
+        {
+          "label": "没有，我需要帮助",
+          "correct": false
+        }
+      ]
     }
   ]
 }

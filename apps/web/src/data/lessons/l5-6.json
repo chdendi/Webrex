@@ -42,22 +42,21 @@
           "title": "调用栈过滤",
           "body": "忽略后，Call Stack 里框架帧默认折叠，自己的代码更清晰"
         }
-      ],
-      "takeaway": "下一步：在 react.dev 的 Sources 面板里，把 React 相关文件加入 Ignore List，然后按 F11 验证它们被跳过了。"
+      ]
     },
     {
       "slug": "practice",
       "type": "practice",
-      "title": "在 react.dev 上把 React 加入 Ignore List",
-      "intro": "把 react.dev 上的 React 框架文件夹加入忽略列表，然后验证 F11 会跳过这些文件。",
+      "title": "在 Webrex Demo 页面上把外部库加入 Ignore List",
+      "intro": "把 Webrex Demo 上的外部库文件夹加入忽略列表，然后验证 F11 会跳过这些文件。",
       "steps": [
-        "打开 react.dev，按 `F12`（Win/Linux）或 `⌘+⌥+I`（Mac）打开 DevTools，切换到 **Sources** 面板。",
-        "在左侧文件树中找到 `react.dev` 域名下的文件夹结构。寻找包含 React 框架代码的文件夹——通常叫 `react`、`react-dom`，或者路径中包含 `node_modules/react` 的文件夹。",
-        "**右键点击**这个 React 框架文件夹（不是单个文件），在弹出的上下文菜单中选择 **Add to ignore list**。文件夹图标会变为灰色或带有特殊标识，表示已被忽略。",
-        "现在在**你自己的代码区域**（非 React 框架文件夹，如 `_next/static/chunks/pages/` 下面的文件）找一行代码，点击行号设一个普通断点。",
-        "回到 react.dev 页面，点击右上角的 **Search** 按钮触发断点。",
-        "断点触发后，按 `F11`（Step Into）多次尝试单步进入函数。观察调试器行为——当你 step into 一个调用了 React 内部函数的表达式时，DevTools 直接跳过了那些被忽略的文件，你的光标留在了可见的业务代码中。",
-        "对比一下：不去掉 Ignore List，直接右键被忽略的文件夹 → 选择 **Remove from ignore list**。再次按 F11——这次你会进入 React 内部代码。\n\n| 状态 | F11 Step Into 行为 |\n| --- | --- |\n| React 文件夹在 Ignore List | 跳过 React 内部代码，只在自己代码中前进 |\n| React 文件夹不在 Ignore List | 会进入 React 内部函数，偏离你的代码 |",
+        "打开 Webrex Demo 页面，按 `F12`（Win/Linux）或 `⌘+⌥+I`（Mac）打开 DevTools，切换到 **Sources** 面板。",
+        "在左侧文件树中找到 `localhost:8787` 域名下的文件夹结构。寻找包含外部库代码的文件夹——通常是第三方 CDN 脚本或以 `/js/` 开头带 hash 的压缩文件。",
+        "**右键点击**这个外部库文件夹（不是单个文件），在弹出的上下文菜单中选择 **Add to ignore list**。文件夹图标会变为灰色或带有特殊标识，表示已被忽略。",
+        "现在在**你自己的代码区域**（非外部库文件夹，如内联 JS block 或 `/js/utils.a3f8b2.js`）找一行代码，点击行号设一个普通断点。",
+        "回到 Webrex Demo 页面，点击 hero 区的 **Search** 按钮触发断点。",
+        "断点触发后，按 `F11`（Step Into）多次尝试单步进入函数。观察调试器行为——当你 step into 一个调用了外部库函数的表达式时，DevTools 直接跳过了那些被忽略的文件，你的光标留在了可见的业务代码中。",
+        "对比一下：不去掉 Ignore List，直接右键被忽略的文件夹 → 选择 **Remove from ignore list**。再次按 F11——这次你会进入外部库内部代码。\n\n| 状态 | F11 Step Into 行为 |\n| --- | --- |\n| 外部库文件夹在 Ignore List | 跳过外部库内部代码，只在自己代码中前进 |\n| 外部库文件夹不在 Ignore List | 会进入外部库内部函数，偏离你的代码 |",
         "按 `F8` 恢复执行。"
       ],
       "shortcuts": [
@@ -83,22 +82,24 @@
         }
       ],
       "expectedOutcome": "被加入 Ignore List 的文件夹在 F11 Step Into 时会被自动跳过，调试器只在自己写的代码中前进。",
-      "externalSite": "react.dev"
+      "externalSite": "http://localhost:8787/demos/l5-6"
     },
     {
       "slug": "verify",
       "type": "verify",
       "title": "忽略列表中的文件在 F11 时会怎样？",
       "prompt": "添加到 Ignore List 的文件，在你按 F11 单步执行时会怎样？A) 被跳过 B) 正常进入 C) 报错 D) 被删除",
-      "tier": "soft",
-      "expectedRegex": "(A|跳过|skip|忽略|不进入|绕过)"
-    },
-    {
-      "slug": "ask-ai",
-      "type": "ask-ai",
-      "title": "问 AI：什么时候设置 Ignore List",
-      "intro": "你现在知道 Ignore List 能帮你跳过框架代码。但哪些该忽略、哪些不该？让 AI 给你判断标准。",
-      "template": "我在 Chrome DevTools 使用 Sources 面板调试 react.dev。我把 React 的 node_modules 文件夹加入了 Ignore List，这样 F11 Step Into 时就不会陷入框架代码了。\n\n请帮我分析：\n1. 在一个典型的前端项目中，哪些文件/文件夹应该加入 Ignore List？哪些**绝对不能**加入（因为可能包含你自己的代码）？\n2. 用 Settings → Ignore List 的正则表达式批量配置（比如 `/node_modules/`）和手动右键添加，各有什么优缺点？\n3. Ignore List 会影响断点吗——如果我在被忽略的文件里打了断点，会触发吗？\n4. 在调试一个「可能是框架 bug」的场景时，应该怎么灵活开关 Ignore List？"
+      "tier": "choice",
+      "options": [
+        {
+          "label": "是的，我看到了",
+          "correct": true
+        },
+        {
+          "label": "没有，我需要帮助",
+          "correct": false
+        }
+      ]
     }
   ]
 }

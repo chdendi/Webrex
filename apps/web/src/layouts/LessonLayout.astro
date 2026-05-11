@@ -1,12 +1,8 @@
 ---
 import '~/styles/global.css';
 import type { CollectionEntry } from 'astro:content';
-import Footer from '~/components/Footer.astro';
-import ProgressSync from '~/components/ProgressSync.tsx';
 import Sidebar from '~/components/Sidebar.astro';
 import TopNav from '~/components/TopNav.astro';
-import { getCompletedLessonIdsForUser } from '~/lib/progress';
-import { getCurrentUser } from '~/lib/supabase/server';
 
 interface Props {
   current: CollectionEntry<'lessons'>;
@@ -22,11 +18,6 @@ const { current, allLessons, prevId, nextId, index, total, locale = 'zh-CN' } = 
 const data = current.data;
 const pageTitle = `L${data.level}.${data.sublevel} ${data.title} · Webrex`;
 const htmlLang = locale;
-
-// Single auth lookup feeds both the sidebar's completion marks and the
-// ProgressSync island below. Guests skip the DB query entirely.
-const currentUser = await getCurrentUser({ request: Astro.request, cookies: Astro.cookies });
-const completedIds = currentUser ? await getCompletedLessonIdsForUser(currentUser.id) : [];
 ---
 
 <!doctype html>
@@ -52,7 +43,7 @@ const completedIds = currentUser ? await getCompletedLessonIdsForUser(currentUse
     />
 
     <div class="flex flex-1 pt-14 pb-16">
-      <Sidebar lessons={allLessons} currentId={current.id} completedIds={completedIds} />
+      <Sidebar lessons={allLessons} currentId={current.id} />
 
       <main
         class="flex-1 md:ml-[280px] px-6 py-12 flex justify-center"
@@ -62,20 +53,5 @@ const completedIds = currentUser ? await getCompletedLessonIdsForUser(currentUse
         </div>
       </main>
     </div>
-
-    <Footer
-      prevId={prevId}
-      nextId={nextId}
-      index={index}
-      total={total}
-      locale={locale}
-    />
-
-    {currentUser && (
-      <Fragment>
-        <script is:inline set:html={`window.__webrexUser = ${JSON.stringify({ id: currentUser.id })};`} />
-        <ProgressSync client:idle />
-      </Fragment>
-    )}
   </body>
 </html>

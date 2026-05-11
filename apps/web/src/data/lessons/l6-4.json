@@ -8,7 +8,7 @@
   "time": 4,
   "track": "core",
   "needsLab": false,
-  "stuck": "看不到 Service Worker？确保页面是 https 加载的，且当前站点注册了 SW。react.dev 作为 PWA 站点通常会注册。",
+  "stuck": "看不到 Service Worker？确保页面是 https 加载的（或 localhost），且当前站点注册了 SW。Webrex Demo 注册了 `/sw.js`，可在 Application → Service Workers 中查看。",
   "steps": [
     {
       "slug": "concept",
@@ -38,21 +38,20 @@
           "title": "HTTP 缓存 vs Cache Storage",
           "body": "HTTP 缓存由浏览器自动管理；Cache Storage 由你的 JS 代码精确控制"
         }
-      ],
-      "takeaway": "下一步：用 Application 面板查看 react.dev 的 Service Worker 状态和它缓存的 Cache Storage 内容。"
+      ]
     },
     {
       "slug": "practice",
       "type": "practice",
-      "title": "查看 react.dev 的 Service Worker 和缓存",
-      "intro": "react.dev 很可能注册了 Service Worker 来实现离线支持和快速加载。用 Application 面板来验证。",
+      "title": "查看 Webrex Demo 的 Service Worker 和缓存",
+      "intro": "Webrex Demo 注册了 Service Worker（/sw.js）来实现缓存支持。用 Application 面板来验证。",
       "steps": [
-        "在新标签页打开 react.dev。",
+        "看下方嵌入式 Demo 区域",
         "按 `⌘+⌥+I` / `F12` 打开 DevTools，切换到 **Application** 面板。",
-        "在左侧边栏点击 **Service Workers**，查看当前页面注册的所有 SW。",
+        "在左侧边栏点击 **Service Workers**，查看当前页面注册的所有 SW——应该能看到 `/sw.js`。",
         "观察 SW 的状态（通常是绿色指示灯 `activated and is running`）以及 **Scope**（控制的范围路径）。",
-        "往下看，找到 **Update** 按钮和 **Unregister** 链接——点击 Unregister 可临时取消 SW（刷新页面会重新注册回来）。",
-        "在左侧边栏展开 **Cache Storage**，点击三角箭头，看到下方的缓存名称列表（如 `workbox-precache-v2-...`）。",
+        "往下看，找到 **Update** 按钮和 **Unregister** 链接——点击 Unregister 可临时取消 SW（点击下方 **刷新 Demo** 按钮会重新注册回来）。",
+        "在左侧边栏展开 **Cache Storage**，点击三角箭头，看到下方的缓存名称列表。",
         "点击某个缓存名称，右侧显示缓存的条目列表，每条有 URL 和响应状态。",
         "观察缓存的条目数量和类型——有 HTML 文件、JS 文件、字体文件等。这就是离线时不发网络请求也能呈现页面的原因。"
       ],
@@ -68,23 +67,25 @@
           "win": "Ctrl+Shift+A"
         }
       ],
-      "expectedOutcome": "Service Worker 注册了 react.dev 的缓存策略，Cache Storage 里预存了大量静态资源，使页面可在离线时加载。",
-      "externalSite": "react.dev"
+      "expectedOutcome": "Service Worker 注册了 Webrex Demo 的缓存策略，Cache Storage 里预存了大量静态资源，使页面可在离线时加载。",
+      "externalSite": "http://localhost:8787/demos/l6-4"
     },
     {
       "slug": "verify",
       "type": "verify",
       "title": "Cache Storage 和 HTTP 缓存是同一个东西吗？",
       "prompt": "Service Worker 的 Cache Storage 里缓存的内容，和浏览器 HTTP 缓存（disk cache / memory cache）是同一个东西吗？回答「是」或「不是」。",
-      "tier": "soft",
-      "expectedRegex": "(不是|不同|不一样|no|separate|独立)"
-    },
-    {
-      "slug": "ask-ai",
-      "type": "ask-ai",
-      "title": "问 AI：Service Worker 如何实现离线",
-      "intro": "你看到了 SW 的状态和它缓存的资源。把观察转化成对 PWA 离线机制的理解。",
-      "template": "我在 react.dev 的 Application 面板里看到：\n- Service Worker 状态为 activated and is running\n- Scope 为根路径 /\n- Cache Storage 里有 workbox 创建的缓存，存了大量 JS/CSS/字体/HTML 文件\n\n请帮我解释：\n1. Service Worker 的生命周期是怎样的？install → activate → fetch 三个阶段各做什么？\n2. Cache Storage 和浏览器自带的 HTTP 缓存（disk cache）有什么区别？为什么 SW 可以做到更精确的控制？\n3. 如果 react.dev 发布了新版本，SW 怎么知道要更新缓存？Workbox 通常用什么策略？"
+      "tier": "choice",
+      "options": [
+        {
+          "label": "是的，我看到了",
+          "correct": true
+        },
+        {
+          "label": "没有，我需要帮助",
+          "correct": false
+        }
+      ]
     }
   ]
 }

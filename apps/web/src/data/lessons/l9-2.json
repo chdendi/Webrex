@@ -1,80 +1,82 @@
 {
-	"id": "l9-2",
-	"level": 9,
-	"sublevel": 2,
-	"categoryIcon": "🧪",
-	"categoryName": "浏览器兼容性",
-	"title": "用 caniuse.com 提前避雷",
-	"time": 5,
-	"track": "core",
-	"needsLab": false,
-	"stuck": "caniuse.com 搜 backdrop-filter 结果太多？看顶部 Support 大表，向左滚动找到 iOS Safari 列。绿色格子上的数字是版本号。",
-	"steps": [
-		{
-			"slug": "concept",
-			"type": "concept",
-			"title": "别猜了，查就完了",
-			"hook": "你写了一个酷炫的 CSS 效果，在 Chrome 上完美——发到线上，iPhone 用户看到一团糊。这种事完全可以避免。",
-			"body": [
-				"caniuse.com 是前端领域公认的浏览器兼容性权威参考站。输入任何一个 CSS 属性、JS API 或 HTML 特性，它会展示该特性在所有主流浏览器和版本上的支持情况。",
-				"看懂颜色码：绿色 = 完全支持，红色 = 不支持，黄绿色 = 部分支持或需要加厂商前缀（如 `-webkit-`），灰色 = 该浏览器版本尚未发布。",
-				"日常开发中，在决定使用一个新 CSS 属性之前，花 10 秒在 caniuse.com 搜一下，可以避免 80% 的兼容性 bug。尤其是 Safari iOS 那一列——它往往是拖后腿最多的。"
-			],
-			"bullets": [
-				{
-					"emoji": "🟢",
-					"title": "绿色",
-					"body": "该浏览器版本完全支持此特性"
-				},
-				{
-					"emoji": "🔴",
-					"title": "红色",
-					"body": "不支持——换个方案或准备 polyfill"
-				},
-				{
-					"emoji": "🟡",
-					"title": "黄绿色",
-					"body": "部分支持——可能需要加 -webkit- 或 -moz- 前缀"
-				},
-				{
-					"emoji": "📝",
-					"title": "右上角 Notes",
-					"body": "点开看特殊说明——「需要前缀」「部分实现有 bug」等"
-				}
-			],
-			"takeaway": "下一步：打开 caniuse.com，搜索 backdrop-filter 和 gap in flexbox，看 Safari iOS 对这两个属性分别是什么态度。"
-		},
-		{
-			"slug": "practice",
-			"type": "practice",
-			"title": "查两个属性，看懂兼容信号",
-			"intro": "backdrop-filter 和 flexbox gap 是两个「在 Chrome 上早就普及、在 Safari 上走了很长弯路」的典型属性。查完你就知道 caniuse 怎么帮你做决策。",
-			"steps": [
-				"打开 https://caniuse.com/。",
-				"在页面顶部的搜索框里输入 `backdrop-filter`，按回车。",
-				"页面中间出现一个巨大的浏览器兼容性表格。向左滚动，找到 **Safari on iOS** 那一列——通常用蓝色背景标识。",
-				"注意：绿色格子下方或格子内可能有 `-webkit-` 标注。点开右上角的 **Notes** 区域，看看有没有「Partial support in Safari requires `-webkit-` prefix」的说明。",
-				"现在清空搜索框，输入 `gap in flexbox`，按回车。",
-				"同样看 **Safari** 和 **Safari on iOS** 列。你会发现 iOS 14 之前的版本是红色（不支持），iOS 14+ 才变绿。",
-				"对比下表，确认你的判断：\n\n| 属性 | Chrome 桌面 | Safari 桌面 | Safari iOS | 能否放心用？ |\n| --- | --- | --- | --- | --- |\n| `backdrop-filter` | ✅ 绿 | ✅ 需 `-webkit-` | ✅ 需 `-webkit-` | 加上前缀就可以 |\n| `gap in flexbox` | ✅ 绿 | ✅ iOS 14+ | ✅ iOS 14+ | 确认用户 iOS 版本 |\n\n如果你的用户群包含 iOS 13 以下的设备，那 `gap in flexbox` 就是个坑——这就是 caniuse 帮你做的决定。"
-			],
-			"shortcuts": [],
-			"expectedOutcome": "你能在 caniuse.com 上搜索任意 CSS/JS 特性，读懂颜色码和 Notes，并根据 Safari iOS 的支持情况判断能否在生产环境使用。"
-		},
-		{
-			"slug": "verify",
-			"type": "verify",
-			"title": "backdrop-filter 在 Safari iOS 要加前缀吗？",
-			"prompt": "在 caniuse.com 上查 `backdrop-filter`，在 Safari iOS 上它需要 `-webkit-` 前缀吗？回答“需要”或“不需要”。",
-			"tier": "soft",
-			"expectedRegex": "(需要|要|是|必须|yes|对)"
-		},
-		{
-			"slug": "ask-ai",
-			"type": "ask-ai",
-			"title": "问 AI：怎么把 caniuse 变日常工作流",
-			"intro": "知道 caniuse 存在不难，难的是每次写 CSS 时都记得用它。让 AI 告诉你如何养成这个习惯。",
-			"template": "我刚刚在 caniuse.com 上查了 `backdrop-filter` 和 `gap in flexbox` 的浏览器支持情况，发现 Safari iOS 经常是兼容性的短板。\n\n请帮我：1. 总结在什么场景下必须去 caniuse 查兼容性（列出 3 个触发条件）2. caniuse 的「Usage Global」百分比怎么解读——多高才算安全 3. 除了 caniuse，还有哪些工具可以在 CI/CD 或 VS Code 里自动提示兼容性问题。"
-		}
-	]
+  "id": "l9-2",
+  "level": 9,
+  "sublevel": 2,
+  "categoryIcon": "🧪",
+  "categoryName": "浏览器兼容性",
+  "title": "用 caniuse.com 提前避雷",
+  "time": 5,
+  "track": "core",
+  "needsLab": false,
+  "stuck": "caniuse.com 搜 backdrop-filter 结果太多？看顶部 Support 大表，向左滚动找到 iOS Safari 列。绿色格子上的数字是版本号。",
+  "steps": [
+    {
+      "slug": "concept",
+      "type": "concept",
+      "title": "别猜了，查就完了",
+      "hook": "你写了一个酷炫的 CSS 效果，在 Chrome 上完美——发到线上，iPhone 用户看到一团糊。这种事完全可以避免。",
+      "body": [
+        "caniuse.com 是前端领域公认的浏览器兼容性权威参考站。输入任何一个 CSS 属性、JS API 或 HTML 特性，它会展示该特性在所有主流浏览器和版本上的支持情况。",
+        "看懂颜色码：绿色 = 完全支持，红色 = 不支持，黄绿色 = 部分支持或需要加厂商前缀（如 `-webkit-`），灰色 = 该浏览器版本尚未发布。",
+        "日常开发中，在决定使用一个新 CSS 属性之前，花 10 秒在 caniuse.com 搜一下，可以避免 80% 的兼容性 bug。尤其是 Safari iOS 那一列——它往往是拖后腿最多的。"
+      ],
+      "bullets": [
+        {
+          "emoji": "🟢",
+          "title": "绿色",
+          "body": "该浏览器版本完全支持此特性"
+        },
+        {
+          "emoji": "🔴",
+          "title": "红色",
+          "body": "不支持——换个方案或准备 polyfill"
+        },
+        {
+          "emoji": "🟡",
+          "title": "黄绿色",
+          "body": "部分支持——可能需要加 -webkit- 或 -moz- 前缀"
+        },
+        {
+          "emoji": "📝",
+          "title": "右上角 Notes",
+          "body": "点开看特殊说明——「需要前缀」「部分实现有 bug」等"
+        }
+      ]
+    },
+    {
+      "slug": "practice",
+      "type": "practice",
+      "title": "查两个属性，看懂兼容信号",
+      "intro": "backdrop-filter 和 flexbox gap 是两个「在 Chrome 上早就普及、在 Safari 上走了很长弯路」的典型属性。查完你就知道 caniuse 怎么帮你做决策。",
+      "steps": [
+        "打开 https://caniuse.com/。",
+        "在页面顶部的搜索框里输入 `backdrop-filter`，按回车。",
+        "页面中间出现一个巨大的浏览器兼容性表格。向左滚动，找到 **Safari on iOS** 那一列——通常用蓝色背景标识。",
+        "注意：绿色格子下方或格子内可能有 `-webkit-` 标注。点开右上角的 **Notes** 区域，看看有没有「Partial support in Safari requires `-webkit-` prefix」的说明。",
+        "现在清空搜索框，输入 `gap in flexbox`，按回车。",
+        "同样看 **Safari** 和 **Safari on iOS** 列。你会发现 iOS 14 之前的版本是红色（不支持），iOS 14+ 才变绿。",
+        "对比下表，确认你的判断：\n\n| 属性 | Chrome 桌面 | Safari 桌面 | Safari iOS | 能否放心用？ |\n| --- | --- | --- | --- | --- |\n| `backdrop-filter` | ✅ 绿 | ✅ 需 `-webkit-` | ✅ 需 `-webkit-` | 加上前缀就可以 |\n| `gap in flexbox` | ✅ 绿 | ✅ iOS 14+ | ✅ iOS 14+ | 确认用户 iOS 版本 |\n\n如果你的用户群包含 iOS 13 以下的设备，那 `gap in flexbox` 就是个坑——这就是 caniuse 帮你做的决定。"
+      ],
+      "shortcuts": [],
+      "externalSite": "http://localhost:8787/demos/l9-2",
+      "expectedOutcome": "你能在 caniuse.com 上搜索任意 CSS/JS 特性，读懂颜色码和 Notes，并根据 Safari iOS 的支持情况判断能否在生产环境使用。"
+    },
+    {
+      "slug": "verify",
+      "type": "verify",
+      "title": "backdrop-filter 在 Safari iOS 要加前缀吗？",
+      "prompt": "在 caniuse.com 上查 `backdrop-filter`，在 Safari iOS 上它需要 `-webkit-` 前缀吗？回答“需要”或“不需要”。",
+      "tier": "choice",
+      "options": [
+        {
+          "label": "是的，我看到了",
+          "correct": true
+        },
+        {
+          "label": "没有，我需要帮助",
+          "correct": false
+        }
+      ]
+    }
+  ]
 }

@@ -36,8 +36,7 @@
           "title": "Gecko",
           "body": "Firefox — 独立生态，份额小但规则严格"
         }
-      ],
-      "takeaway": "下一步：在 Chrome 地址栏输入 chrome://version，直接查看你的浏览器用了什么引擎和 JS 引擎。"
+      ]
     },
     {
       "slug": "practice",
@@ -48,12 +47,12 @@
         "在 Chrome 地址栏输入 `chrome://version`，回车。",
         "找到 **JavaScript** 一行，确认看到 `V8`——这是 Chrome 的 JS 引擎。",
         "往下看 **User agent** 一行，整行大概长这样：`Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7)...Chrome/xxx Safari/537.36`。",
-        "关闭这个标签页，在新标签页打开 react.dev。",
+        "看下方嵌入式 Demo 区域",
         "现在闭上眼想一个场景：\n\n| 测试环境 | 引擎 | 结论 |\n| --- | --- | --- |\n| 桌面 Chrome 上测试通过 | Blink + V8 | 仅代表 Blink 没问题 |\n| iPhone 上 Chrome 打开同一页面 | WebKit + JavaScriptCore | 完全不同的一组引擎 |\n| iPhone 上 Safari 打开同一页面 | WebKit + JavaScriptCore | 和 iPhone Chrome 用的是同一套 |\n\n结论：桌面 Chrome 测试通过 ≠ iPhone Chrome 没问题。它们是两个不同的浏览器，只是穿着同一件外套。"
       ],
       "shortcuts": [],
       "expectedOutcome": "你能说出三个主流渲染引擎的名字（Blink / WebKit / Gecko），并解释为什么「桌面 Chrome 正常 ≠ iPhone Chrome 正常」。",
-      "externalSite": "react.dev"
+      "externalSite": "http://localhost:8787/demos/l9-1"
     },
     {
       "slug": "verify",
@@ -62,13 +61,6 @@
       "prompt": "iOS 上的 Chrome 浏览器使用什么渲染引擎？A) Blink  B) WebKit  C) Gecko  D) 自己的引擎",
       "tier": "self",
       "expectedRegex": "(B|WebKit|webkit|b)"
-    },
-    {
-      "slug": "ask-ai",
-      "type": "ask-ai",
-      "title": "问 AI：你想不到的跨浏览器坑",
-      "intro": "你知道 iOS 全是 WebKit 了，但真正麻烦的是那些「你觉得没问题其实有问题」的细节。让 AI 给你补上这课。",
-      "template": "我刚刚学到：iOS 上所有浏览器（包括 Chrome、Edge、Firefox）都被 Apple 要求使用 WebKit 渲染引擎，和桌面版用的是不同引擎。\n\n请帮我列出 3-5 个「开发者用桌面 Chrome 开发时觉得没问题，但到 iOS Safari/Chrome 上就会出 bug」的真实 CSS/JS 案例。每个案例给出：1）具体的 CSS 属性或 JS API 名称 2）在 iOS WebKit 上的表现 3）简单的修复方法。"
     }
   ]
 }

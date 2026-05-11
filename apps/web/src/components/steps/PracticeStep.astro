@@ -51,15 +51,6 @@ const stepsJson = JSON.stringify(steps.map((s) => md(s)));
       )}
     </header>
 
-    <script is:inline>
-      window.addEventListener('message', function(e) {
-        if (e.data && e.data.webrexDemoHeight) {
-          var f = document.getElementById('demo-iframe');
-          if (f) f.style.height = e.data.webrexDemoHeight + 16 + 'px';
-        }
-      });
-    </script>
-
     <!-- Step tabs (above demo) -->
     <div
       id="step-tabs"
@@ -85,6 +76,11 @@ const stepsJson = JSON.stringify(steps.map((s) => md(s)));
       </div>
     </div>
 
+    <!-- Demo iframe -->
+    <div class="shrink-0 mt-3 rounded-xl overflow-hidden border" style="border-color: var(--color-border); background: #fff;">
+      <iframe id="demo-iframe" class="w-full border-0 block" scrolling="no" style="height: 200px;" title="Demo" src={externalSite}></iframe>
+    </div>
+
     <!-- Refresh button bar -->
     <div class="shrink-0 mt-2 flex items-center gap-2">
       <button id="refresh-demo" class="px-4 py-1.5 text-xs font-semibold rounded-md border transition-all hover:brightness-110" style="background: var(--color-surface); color: var(--color-text); border-color: var(--color-border); cursor: pointer;">
@@ -102,17 +98,21 @@ const stepsJson = JSON.stringify(steps.map((s) => md(s)));
       </script>
     </div>
 
-    <!-- Demo iframe -->
-    <div class="shrink-0 mt-3 rounded-xl border" style="border-color: var(--color-border); background: #fff;">
-      <iframe id="demo-iframe" class="w-full border-0 block rounded-xl" style="min-height: 120px; transition: height 0.25s ease; overflow: hidden;" title="Demo" src={externalSite}></iframe>
-    </div>
-
     {expectedOutcome && (
       <div class="shrink-0 rounded-xl p-3 mt-3" style="background: var(--color-surface-muted); border-left: 3px solid var(--color-success);">
         <div class="text-[10px] font-semibold uppercase tracking-wider mb-1" style="color: var(--color-text-faint);">你应该看到</div>
         <div class="prose-step text-[0.875rem] leading-[1.6]" style="color: var(--color-text);" set:html={md(expectedOutcome)} />
       </div>
     )}
+
+    <script is:inline>
+      window.addEventListener('message', function(e) {
+        if (e.data && e.data.webrexDemoHeight) {
+          var f = document.getElementById('demo-iframe');
+          if (f) f.style.height = e.data.webrexDemoHeight + 16 + 'px';
+        }
+      });
+    </script>
 
     <script define:vars={{ stepsJson, nextStepHref }}>
       (function() {
@@ -162,7 +162,7 @@ const stepsJson = JSON.stringify(steps.map((s) => md(s)));
         function renderStep(i) {
           currentStep = i;
           var isLast = i === allSteps.length - 1;
-          content.innerHTML = allSteps[i];
+          content.innerHTML = '<span style="display:inline-flex;align-items:center;justify-content:center;width:22px;height:22px;border-radius:50%;background:var(--color-accent);color:#fff;font-size:11px;font-weight:600;margin-right:8px;flex-shrink:0;vertical-align:middle;">' + (i + 1) + '</span>' + allSteps[i];
           counter.textContent = (i + 1) + '/' + allSteps.length;
           prevBtn.disabled = i === 0;
           prevBtn.style.opacity = i === 0 ? '0.35' : '1';

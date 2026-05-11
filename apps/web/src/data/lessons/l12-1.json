@@ -35,16 +35,15 @@
           "title": "Summary",
           "body": "底部汇总：JS 耗时、渲染耗时、绘制耗时"
         }
-      ],
-      "takeaway": "下一步亲手录一条 trace。"
+      ]
     },
     {
       "slug": "practice",
       "type": "practice",
       "title": "录制第一条 trace",
-      "intro": "react.dev 是 React 官方文档站。",
+      "intro": "Webrex Demo 是 Webrex 自托管练习站。",
       "steps": [
-        "打开 react.dev。",
+        "打开 Webrex Demo 页面。",
         "打开 DevTools → Performance 面板。",
         "点击左上角 **● 录制按钮** 开始录制。",
         "操作页面：点击顶部 Search 按钮，向下滚动一段，等待 3 秒。",
@@ -60,21 +59,14 @@
         }
       ],
       "expectedOutcome": "Summary 标签页显示三类活动的时间分配，其中 Scripting 通常占最大。",
-      "externalSite": "react.dev"
+      "externalSite": "http://localhost:8787/demos/l12-1"
     },
     {
       "slug": "verify",
       "type": "verify",
       "title": "验证",
-      "prompt": "录制一次 react.dev 的 Performance trace 后，Summary 标签页里显示的总时间中，哪类活动占比最大？简要描述你看到的。",
+      "prompt": "录制一次 Webrex Demo 的 Performance trace 后，Summary 标签页里显示的总时间中，哪类活动占比最大？简要描述你看到的。",
       "tier": "self"
-    },
-    {
-      "slug": "ask-ai",
-      "type": "ask-ai",
-      "title": "问 AI",
-      "intro": "把观察转成问题。",
-      "template": "我在 react.dev 用 Chrome DevTools Performance 面板录了一条 trace：\n- Summary 显示 Scripting 占了大部分时间\n- Rendering 和 Painting 也有占比\n\n请解释：\n1. Scripting、Rendering、Painting 分别代表浏览器在做什么？\n2. 如何根据 Summary 数据判断性能瓶颈在哪一层？"
     }
   ]
 }

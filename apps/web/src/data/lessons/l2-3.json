@@ -36,26 +36,25 @@
           "title": "别和 Sources 搜混",
           "body": "搜源码全文是 Sources 面板的 Cmd+Opt+F"
         }
-      ],
-      "takeaway": "下一步：在练习页有个透明遮罩挡住了 **解锁按钮**，用 Cmd+F 找到它、用 H 藏掉、再点按钮——直接看到 alert 弹出。"
+      ]
     },
     {
       "slug": "practice",
       "type": "practice",
-      "title": "用 Cmd+F + H 让一个「点不动」的按钮变得可点",
-      "intro": "练习页有一个写着 **解锁按钮** 的按钮，正常情况下点它会弹 alert `按钮被点击了`。但页面上盖了一层 `rgba(0,0,0,0.001)` 的全屏透明 div——肉眼看不见，但接住了所有点击。我们来抓出这个真凶。",
-      "labUrl": "http://localhost:8787/lessons/l3-3",
+      "title": "用 Cmd+F + H 让被遮罩挡住的按钮恢复可点击",
+      "intro": "下方 Demo 里有三个按钮（Primary / Secondary / Danger）。页面上方盖了一层全屏透明的 ghost-overlay div，肉眼看不见，但接住了所有点击。我们用 H 键来抓出这个真凶。",
+      "externalSite": "http://localhost:8787/demos/l2-3",
       "steps": [
-        "在新标签页打开 [http://localhost:8787/lessons/l3-3](http://localhost:8787/lessons/l3-3)。看到标题 **L3.3 遮罩演示** 和一个写着 **解锁按钮** 的按钮。",
-        "**先点一下** 那个 **解锁按钮**。**没反应**——没有 alert 弹出来，按钮像死的一样。这就是我们要解决的「灵异事件」。",
+        "看下方嵌入式 Demo 区域。确认能看到 **Primary**、**Secondary**、**Danger** 三个按钮。",
+        "**先试着点一下 Primary 按钮**。如果没反应，就是因为 ghost-overlay 挡在了上面——这就是我们要解决的「灵异事件」。",
         "按 `F12` / `⌘+⌥+I` 打开 DevTools，切到 **Elements** 面板。",
-        "在 Elements 里按 `⌘+F` (Mac) / `Ctrl+F` (Win/Linux) 打开 Elements 搜索框（注意：要在 Elements 面板里按，不是在页面里按）。",
+        "在 Elements 里按 `⌘+F` (Mac) / `Ctrl+F` (Win/Linux) 打开 Elements 搜索框。",
         "在搜索框里输入 `data-testid=\"ghost-overlay\"` 回车。光标跳到一个 `<div data-testid=\"ghost-overlay\" ...>` 节点上，它被高亮选中。",
-        "看这个 div 右侧的 **Styles** 面板：能看到 `position: fixed; inset: 0; z-index: 9999; background: rgba(0,0,0,0.001);`——一个全屏、置顶、几乎全透明的覆盖层。**这就是嫌疑犯**。",
-        "确保这个 div 节点在 Elements 面板里**仍然是蓝色高亮选中**状态，按键盘 **H 键**。这个 div 节点上方出现一个紫色小圆点（DevTools 表示「这个元素被加了 visibility:hidden」的标记）。",
-        "**回到页面，再点 解锁按钮**。这次弹出 alert **按钮被点击了**——证明刚才就是这个 ghost-overlay 在挡。点击 alert 的「确定」关闭。",
-        "再回 Elements 面板，**ghost-overlay 节点仍然选中** → 再按一次 **H** → 紫色小圆点消失，遮罩恢复 → 再点 **解锁按钮** → 又点不动了。",
-        "用一张表对照三个状态：\n\n| 状态 | 按钮看起来 | 按钮能点吗 | overlay 在 DOM | overlay 视觉上 |\n| --- | --- | --- | --- | --- |\n| H 之前（初始） | 正常 | 不能 ✗ | 在 | 透明（看不见但挡着） |\n| 第一次 H 之后 | 正常 | 能 ✓ 弹 alert | 在 | 隐藏 (visibility:hidden) |\n| 第二次 H 之后 | 正常 | 不能 ✗ | 在 | 透明（恢复初始） |\n\n看到了吗？H 键不是「删元素」（DOM 里还在），是「让它视觉+交互上消失」——这就是它适合做「二分实验」的原因：随时可逆。"
+        "看这个 div 右侧的 **Styles** 面板：能看到 `position: fixed; inset: 0; z-index: 999;` ——一个全屏、置顶、几乎全透明的覆盖层。**这就是嫌疑犯**。",
+        "确保这个 div 节点在 Elements 面板里**仍然是蓝色高亮选中**状态，按键盘 **H 键**。这个 div 节点上方出现一个紫色小圆点。",
+        "**回到下方 Demo，再点 Primary 按钮**。这次如果再点不动，检查是否 overlay 被正确隐藏了。如果用 DevTools 打开 Demo 的 Inspect，会发现交互恢复正常了。",
+        "再回 Elements 面板，**ghost-overlay 节点仍然选中** → 再按一次 **H** → 紫色小圆点消失，遮罩恢复。",
+        "用一张表对照三个状态：\n\n| 状态 | 按钮看起来 | 按钮能点吗 | overlay 在 DOM | overlay 视觉上 |\n| --- | --- | --- | --- | --- |\n| H 之前（初始） | 正常 | 被挡住 ✗ | 在 | 透明（看不见但挡着） |\n| 第一次 H 之后 | 正常 | 能点 ✓ | 在 | 隐藏 (visibility:hidden) |\n| 第二次 H 之后 | 正常 | 被挡住 ✗ | 在 | 透明（恢复初始） |\n\n看到了吗？H 键不是「删元素」（DOM 里还在），是「让它视觉+交互上消失」——这就是它适合做「二分实验」的原因：随时可逆。"
       ],
       "shortcuts": [
         {
@@ -79,17 +78,19 @@
     {
       "slug": "verify",
       "type": "verify",
-      "title": "按 H 之后点解锁按钮，弹出的 alert 文字是什么？",
-      "prompt": "你藏掉 ghost-overlay 之后，再点了一次 **解锁按钮**，浏览器弹了一个 alert 提示框。\n\n这个 alert 里的文字是什么？（中文原文，不用包含「确定」按钮）",
-      "tier": "soft",
-      "expectedRegex": "按钮.{0,3}被.{0,3}点击|按钮.{0,3}点击|被点击"
-    },
-    {
-      "slug": "ask-ai",
-      "type": "ask-ai",
-      "title": "问 AI：H 键 vs 改 CSS，分别什么时候用",
-      "intro": "H 键和 Styles 面板里手动改 `display: none` / `visibility: hidden` 表面看一样，但用法定位完全不同。让 AI 给你拆 3 个真实场景。",
-      "template": "我在 Chrome DevTools 里学了两种「让元素消失」的方法：\n\n**方法 A**：选中元素后按 H 键 → DevTools 自动加 `visibility: hidden`，再按 H 还原。\n\n**方法 B**：在 Styles 面板手动给元素加 `display: none;` 或 `visibility: hidden;`。\n\n请给我 3 个真实工作场景，并指出每个场景应该用 A 还是 B：\n1. QA 怀疑某个浮层挡住了主按钮，要快速验证假设。\n2. PM 给设计师看「如果隐藏侧边栏，主内容区会不会塌掉」。\n3. 前端要给 PR 提一个「这个广告位先临时下掉」的 CSS 方案。\n\n顺便解释：H 键加的 `visibility:hidden` 和手动加的 `display:none`，在「布局是否塌缩」上有什么区别？什么时候这个区别会害到我？"
+      "title": "按 H 键后 ghost-overlay 节点发生了什么？",
+      "prompt": "你选中 ghost-overlay 节点后按了 H 键，它在 DOM 里还在吗？它视觉上还看得见吗？\n\n（提示：在 DOM 里还在，只是被加上了 visibility: hidden，用紫色小圆点标记）",
+      "tier": "choice",
+      "options": [
+        {
+          "label": "是的，我看到了",
+          "correct": true
+        },
+        {
+          "label": "没有，我需要帮助",
+          "correct": false
+        }
+      ]
     }
   ]
 }

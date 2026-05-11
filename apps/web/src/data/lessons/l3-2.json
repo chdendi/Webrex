@@ -37,16 +37,15 @@
           "title": "Internal URL / IP",
           "body": "暴露内部架构和拓扑"
         }
-      ],
-      "takeaway": "下一步：把 lab 第一条 Error 完整复制（含堆栈），过一遍 🛡 Redact 面板，看 chips 里检测到几类。"
+      ]
     },
     {
       "slug": "practice",
       "type": "practice",
       "title": "Console 右键复制 → Webrex 🛡 Redact → 看检测 chips",
-      "intro": "继续用 L2.1 的 lab：[http://localhost:8787/lessons/l2-1](http://localhost:8787/lessons/l2-1)。它的 5 条红色 Error 里有几条故意带了「看起来像」cookie / token / 邮箱 / 内网 URL 的字符串，正好用来练脱敏。",
+      "intro": "看下方嵌入式 Demo 区域。它的 5 条红色 Error 里有几条故意带了「看起来像」cookie / token / 邮箱 / 内网 URL 的字符串，正好用来练脱敏。",
       "steps": [
-        "回到 L2.1 的 lab 标签页（如果关了，重新打开 [http://localhost:8787/lessons/l2-1](http://localhost:8787/lessons/l2-1)，按 `F12` → Console，刷新一次让日志重新打印）。",
+        "看下方嵌入式 Demo 区域",
         "在 Console 里找到第一条红色 Error：`[lab] AbortError: The fetch to api/users/me was aborted`。",
         "**右键** 这条 Error 文本（在那一整行任意位置右键即可）。会弹出菜单。",
         "在菜单里找 **Copy** 子菜单 → 选 **Copy message**（只复制主消息）或 **Copy stack trace**（复制完整堆栈）。这次选 **Copy stack trace**，把完整堆栈拿到剪贴板。",
@@ -74,6 +73,7 @@
           "win": "F12"
         }
       ],
+      "externalSite": "http://localhost:8787/demos/l3-2",
       "expectedOutcome": "你完整走了一遍「Console 右键复制 → Webrex 🛡 Redact 面板 → 拿到脱敏后版本」的链路，并且能从顶部 chips 看出原文里到底藏了哪几类敏感数据。以后任何要往 AI / 工单 / Slack 粘报错的场合，都先过一道这个面板。"
     },
     {
@@ -81,15 +81,17 @@
       "type": "verify",
       "title": "Redact 面板检测到了几类敏感字段？",
       "prompt": "看你 Redact 面板顶部的 chips（一排小标签，每个标签前面带一个 emoji + 类别名 + `× N` 次数）。\n\n**总共有几个不同的 chip 标签**？（不是出现次数总和，是不同类别的数量）\n\n直接填一个数字（0–7 都可能）。",
-      "tier": "soft",
-      "expectedRegex": "^\\s*[0-7]\\s*$"
-    },
-    {
-      "slug": "ask-ai",
-      "type": "ask-ai",
-      "title": "问 AI：用脱敏后的报错分析根因",
-      "intro": "把刚才下半区 **Copy** 出来的脱敏版报错（不是原始版！）粘到下面 AI 模板里。模板已经声明了 `<REDACTED_*>` 是占位符，AI 不会被它误导。",
-      "template": "我在 Chrome DevTools Console 里看到一条 Error。我已经用脱敏工具处理过了——文本里所有 `<REDACTED_COOKIE>` `<REDACTED_BEARER>` `<REDACTED_EMAIL>` `<REDACTED_INTERNAL_URL>` 等占位符代表的是原本的敏感字段（cookie、token、邮箱、内网 URL），请你把这些占位符当作「存在但不可见」的数据来推理，不要试图去猜原值。\n\n脱敏后报错全文如下：\n\n```\n（在这里粘贴 Redact 面板下半区 Copy 出来的脱敏版本）\n```\n\n请帮我分析：\n1. 根据可见信息（错误类型、堆栈、文件名行号），最可能的根因是什么？\n2. 那些 `<REDACTED_*>` 占位符出现在堆栈里说明什么？（例如：请求带了 cookie 但被 abort，可能是哪些场景？）\n3. 我应该往什么方向继续排查？（前端代码 / 后端接口 / 网络层 / 配置）\n4. 给我 2–3 个具体的下一步动作。"
+      "tier": "choice",
+      "options": [
+        {
+          "label": "是的，我看到了",
+          "correct": true
+        },
+        {
+          "label": "没有，我需要帮助",
+          "correct": false
+        }
+      ]
     }
   ]
 }

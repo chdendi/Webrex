@@ -37,16 +37,15 @@
           "title": "INP",
           "body": "点击之后响应速度"
         }
-      ],
-      "takeaway": "三个指标定位页面卡在哪一环。"
+      ]
     },
     {
       "slug": "practice",
       "type": "practice",
-      "title": "在 react.dev 上找 LCP 和布局偏移",
+      "title": "在 Webrex Demo 页面上找 LCP 和布局偏移",
       "intro": "用 Performance 面板录制一次页面加载。",
       "steps": [
-        "打开 react.dev。",
+        "打开 Webrex Demo 页面。",
         "打开 DevTools → **Performance** 面板。",
         "点击录制按钮左侧的下拉箭头，选择 **「Page load」** 模式。",
         "点击录制按钮开始录制，页面自动刷新。加载完成后停止录制。",
@@ -62,22 +61,24 @@
         }
       ],
       "expectedOutcome": "找到 LCP 元素和耗时，看到 Experience 轨道中的布局偏移记录。",
-      "externalSite": "react.dev"
+      "externalSite": "http://localhost:8787/demos/l13-2"
     },
     {
       "slug": "verify",
       "type": "verify",
       "title": "验证",
-      "prompt": "react.dev 的 LCP 元素是什么类型？A) 大标题文字 B) 首屏大图/图标 C) 按钮 D) 视频",
-      "tier": "soft",
-      "expectedRegex": "(A|文字|标题|text|hero|heading|h1|大标题)"
-    },
-    {
-      "slug": "ask-ai",
-      "type": "ask-ai",
-      "title": "问 AI",
-      "intro": "把实测数据喂给 AI。",
-      "template": "我测了 react.dev：LCP 元素是 __，耗时 __ms。CLS 分数为 __。请解释这三个 Web Vitals 的含义，并给出每种指标变差时最常见的修复手段。"
+      "prompt": "Webrex Demo 的 LCP 元素是什么类型？A) 大标题文字 B) 首屏大图/图标 C) 按钮 D) 视频",
+      "tier": "choice",
+      "options": [
+        {
+          "label": "是的，我看到了",
+          "correct": true
+        },
+        {
+          "label": "没有，我需要帮助",
+          "correct": false
+        }
+      ]
     }
   ]
 }

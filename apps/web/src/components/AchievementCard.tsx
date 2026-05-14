@@ -29,17 +29,24 @@ export default function AchievementCard({ lessonId }: Props) {
 
   useEffect(() => {
     let alive = true;
-    setHasLocalCompletion(readCompletions().some((c) => c.lessonId === lessonId));
-    fetch(`/api/achievement?lesson=${encodeURIComponent(lessonId)}`)
-      .then((r) => (r.ok ? r.json() : Promise.reject(new Error(`HTTP ${r.status}`))))
-      .then((json) => {
-        if (alive) setData(json as Payload);
-      })
-      .catch((e) => {
-        if (alive) setError(e.message);
-      });
+    const refresh = () => {
+      setHasLocalCompletion(readCompletions().some((c) => c.lessonId === lessonId));
+      fetch(`/api/achievement?lesson=${encodeURIComponent(lessonId)}`)
+        .then((r) => (r.ok ? r.json() : Promise.reject(new Error(`HTTP ${r.status}`))))
+        .then((json) => {
+          if (alive) setData(json as Payload);
+        })
+        .catch((e) => {
+          if (alive) setError(e.message);
+        });
+    };
+    refresh();
+    // ProgressSync dispatches this after pushing local queue to the server;
+    // re-query so completionRank/totalCompletions reflect the just-synced rows.
+    window.addEventListener('webrex:progress-synced', refresh);
     return () => {
       alive = false;
+      window.removeEventListener('webrex:progress-synced', refresh);
     };
   }, [lessonId]);
 

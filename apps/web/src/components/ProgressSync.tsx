@@ -37,6 +37,7 @@ export default function ProgressSync() {
         if (r.ok) {
           clearAttempts();
           clearCompletions();
+          window.dispatchEvent(new CustomEvent('webrex:progress-synced'));
         }
       })
       .catch(() => {

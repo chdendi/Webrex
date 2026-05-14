@@ -319,11 +319,10 @@ export default function VerifyCard({
 
   return (
     <div
-      className="rounded-2xl border p-6 flex flex-col gap-4"
+      className="rounded-xl border p-5 flex flex-col gap-4"
       style={{
-        background: 'var(--color-surface)',
-        borderColor: 'var(--color-border)',
-        boxShadow: 'var(--shadow-card)',
+        background: 'var(--color-surface-container-lowest)',
+        borderColor: 'var(--color-outline-variant)',
       }}
     >
       <style>{`
@@ -353,29 +352,21 @@ export default function VerifyCard({
         }
       `}</style>
       <header className="flex items-center justify-between gap-3">
-        <div className="flex items-center gap-2">
-          <span className="text-xs font-mono" style={{ color: 'var(--color-text-faint)' }}>
-            ③
-          </span>
-          <h2 className="text-lg font-semibold" style={{ color: 'var(--color-text)' }}>
-            Verify
-          </h2>
-          <span
-            className="text-xs px-2 py-0.5 rounded border"
-            style={{
-              borderColor: 'var(--color-border)',
-              color: 'var(--color-text-muted)',
-            }}
-          >
-            {tier === 'hard'
-              ? 'hard verify'
-              : tier === 'soft'
-                ? 'soft verify'
-                : tier === 'choice'
-                  ? 'quick check'
-                  : 'self-check'}
-          </span>
-        </div>
+        <span
+          className="text-[10px] font-semibold uppercase tracking-wider px-2 py-0.5 rounded-full"
+          style={{
+            background: 'var(--color-surface-container)',
+            color: 'var(--color-on-surface-variant)',
+          }}
+        >
+          {tier === 'hard'
+            ? 'hard verify'
+            : tier === 'soft'
+              ? 'soft verify'
+              : tier === 'choice'
+                ? 'quick check'
+                : 'self-check'}
+        </span>
         <ConfidencePill />
       </header>
 

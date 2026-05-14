@@ -23,10 +23,12 @@ const { title, prompt, tier, expectedRegex, labCheckEndpoint, options, nextStepH
 const promptHtml = md(prompt);
 ---
 
-<article class="flex flex-col gap-7">
-  <h1 class="text-[2.25rem] leading-[1.2] font-semibold tracking-tight" style="color: var(--color-text);">
-    {title}
-  </h1>
+<article class="flex flex-col gap-5">
+  <header class="flex flex-col gap-2">
+    <h1 class="text-[1.75rem] leading-[1.25] font-semibold tracking-tight" style="color: var(--color-on-surface);">
+      {title}
+    </h1>
+  </header>
 
   <ErrorBoundary client:load>
     <VerifyCard

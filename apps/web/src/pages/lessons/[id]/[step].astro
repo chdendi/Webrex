@@ -53,7 +53,17 @@ const nextStepHref = isLastStep
   : `/lessons/${lesson.id}/${nextStep!.slug}`;
 
 const locale = 'zh-CN' as const;
-const hasRightRail = step.type === 'practice' && !!step.externalSite;
+
+// Demo iframe persists across practice → verify within the same lesson, so the
+// learner can re-inspect the demo while answering the check.
+const practiceWithDemo = steps.find((s: any) => s.type === 'practice' && s.externalSite);
+const railExternalSite: string | undefined =
+  step.type === 'practice'
+    ? (step as any).externalSite
+    : step.type === 'verify'
+      ? (practiceWithDemo as any)?.externalSite
+      : undefined;
+const hasRightRail = !!railExternalSite;
 ---
 
 <LessonLayout
@@ -103,8 +113,8 @@ const hasRightRail = step.type === 'practice' && !!step.externalSite;
     />
   )}
 
-  {hasRightRail && step.type === "practice" && step.externalSite && (
-    <DemoFrame slot="right-rail" url={step.externalSite} lessonId={lesson.id} />
+  {hasRightRail && railExternalSite && (
+    <DemoFrame slot="right-rail" url={railExternalSite} lessonId={lesson.id} />
   )}
 
   <ErrorBoundary client:load>

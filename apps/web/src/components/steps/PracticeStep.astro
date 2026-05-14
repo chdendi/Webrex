@@ -22,106 +22,122 @@ interface Props {
 const { title, intro, steps, shortcuts, expectedOutcome, labUrl, externalSite, lessonId, stepSlug, nextStepHref } =
   Astro.props;
 const stepsJson = JSON.stringify(steps.map((s) => md(s)));
+const expectedHtml = expectedOutcome ? md(expectedOutcome) : null;
 ---
 
 {externalSite ? (
-  <!-- ═══ Embedded Demo Layout ═══ -->
-  <article class="flex flex-col" style="min-height: calc(100vh - 56px - 2rem);">
+  <!-- ═══ Embedded-demo flow: middle column drives the lesson, demo lives in the right rail ═══ -->
+  <article class="flex flex-col gap-5">
     <style>
       @keyframes webrex-pulse {
         0%, 100% { transform: scale(1); box-shadow: 0 0 0 0 rgba(0,113,227,0.4); }
-        50% { transform: scale(1.06); box-shadow: 0 0 0 8px rgba(0,113,227,0); }
+        50% { transform: scale(1.04); box-shadow: 0 0 0 8px rgba(0,113,227,0); }
       }
       @keyframes webrex-particle {
         0% { opacity: 1; transform: translate(-50%,-50%) scale(1); }
         100% { opacity: 0; transform: translate(calc(-50% + var(--tx)), calc(-50% + var(--ty))) scale(0.3); }
       }
     </style>
-    <!-- Header -->
-    <header class="flex flex-col gap-2 shrink-0 px-0.5">
-      <h1 class="text-[1.5rem] leading-[1.3] font-semibold tracking-tight" style="color: var(--color-text);">
+
+    <header class="flex flex-col gap-2">
+      <h1 class="text-[1.75rem] leading-[1.25] font-semibold tracking-tight" style="color: var(--color-on-surface);">
         {title}
       </h1>
       {intro && (
         <div
-          class="prose-step text-[0.9375rem] leading-[1.6]"
-          style="color: var(--color-text-muted);"
+          class="prose-step text-[0.95rem] leading-[1.65]"
+          style="color: var(--color-on-surface-variant);"
           set:html={md(intro)}
         />
       )}
     </header>
 
-    <!-- Step tabs (above demo) -->
+    {/* Step capsule progress bar */}
+    <div class="flex items-center gap-1.5 overflow-x-auto py-1" id="step-capsules" data-total={steps.length}>
+      {steps.map((_, i) => (
+        <div class="flex items-center gap-1.5 shrink-0">
+          <button
+            type="button"
+            data-step-idx={i}
+            class="step-capsule shrink-0 w-7 h-7 rounded-full flex items-center justify-center text-[12px] font-semibold transition-all border"
+            style="border-color: var(--color-outline-variant); background: var(--color-surface-container-lowest); color: var(--color-on-surface-variant);"
+          >
+            {i + 1}
+          </button>
+          {i < steps.length - 1 && (
+            <span class="step-connector w-4 h-[2px] rounded-full shrink-0" style="background: var(--color-outline-variant);"></span>
+          )}
+        </div>
+      ))}
+    </div>
+
+    {/* Current step body */}
     <div
-      id="step-tabs"
-      class="shrink-0 mt-3 flex flex-col rounded-xl border overflow-hidden"
-      style="border-color: var(--color-border);"
+      id="step-body"
+      class="rounded-xl border p-5 min-h-[160px]"
+      style="border-color: var(--color-outline-variant); background: var(--color-surface-container-lowest);"
     >
+      <div class="prose-step text-[0.95rem] leading-[1.7]" style="color: var(--color-on-surface);"></div>
+    </div>
+
+    {/* Shortcuts (always visible if present) */}
+    {shortcuts && shortcuts.length > 0 && (
       <div
-        id="step-tab-header"
-        class="shrink-0 flex items-center justify-between px-4 py-2.5"
-        style="background: var(--color-surface-muted); border-bottom: 1px solid var(--color-border);"
+        class="rounded-xl p-4 flex flex-col gap-2.5"
+        style="background: var(--color-surface-container-low);"
       >
-        <div class="flex items-center gap-2">
-          <span class="text-xs font-semibold uppercase tracking-wider" style="color: var(--color-text-faint);">Steps</span>
-          <span id="step-counter" class="text-xs font-medium px-2 py-0.5 rounded-full" style="background: var(--color-accent); color: #fff;">1/{steps.length}</span>
+        <div class="text-[10px] font-semibold uppercase tracking-wider" style="color: var(--color-on-surface-faint);">
+          Keyboard shortcuts
         </div>
-        <div class="flex items-center gap-2">
-          <button id="step-prev" class="px-3 py-1 text-xs rounded-md border transition-colors hover:bg-[var(--color-surface-muted)]" style="border-color: var(--color-border); color: var(--color-text-muted);" disabled>← Prev</button>
-          <button id="step-next" class="px-4 py-1.5 text-xs font-semibold rounded-md transition-all hover:brightness-110" style="background: var(--color-accent); color: #fff; border: none;">Next →</button>
-        </div>
-      </div>
-      <div id="step-content" class="px-4 py-3" style="max-height: 320px; overflow-y: auto;">
-        <div class="prose-step text-[0.9375rem] leading-[1.7]" style="color: var(--color-text);"></div>
-      </div>
-    </div>
-
-    <!-- Demo iframe -->
-    <div class="shrink-0 mt-3 rounded-xl overflow-hidden border" style="border-color: var(--color-border); background: #fff;">
-      <iframe id="demo-iframe" class="w-full border-0 block" scrolling="no" style="height: 200px;" title="Demo" src={externalSite}></iframe>
-    </div>
-
-    <!-- Refresh button bar -->
-    <div class="shrink-0 mt-2 flex items-center gap-2">
-      <button id="refresh-demo" class="px-4 py-1.5 text-xs font-semibold rounded-md border transition-all hover:brightness-110" style="background: var(--color-surface); color: var(--color-text); border-color: var(--color-border); cursor: pointer;">
-        ↻ Refresh Demo
-      </button>
-      <span id="refresh-hint" class="text-[11px]" style="color: var(--color-text-faint); opacity: 0; transition: opacity 0.2s;">Refreshed!</span>
-      <script is:inline>
-        document.getElementById('refresh-demo').addEventListener('click', function() {
-          var iframe = document.getElementById('demo-iframe');
-          iframe.src = iframe.src;
-          var hint = document.getElementById('refresh-hint');
-          hint.style.opacity = '1';
-          setTimeout(function() { hint.style.opacity = '0'; }, 1500);
-        });
-      </script>
-    </div>
-
-    {expectedOutcome && (
-      <div class="shrink-0 rounded-xl p-3 mt-3" style="background: var(--color-surface-muted); border-left: 3px solid var(--color-success);">
-        <div class="text-[10px] font-semibold uppercase tracking-wider mb-1" style="color: var(--color-text-faint);">你应该看到</div>
-        <div class="prose-step text-[0.875rem] leading-[1.6]" style="color: var(--color-text);" set:html={md(expectedOutcome)} />
+        {shortcuts.map((s) => (
+          <div class="flex items-center gap-3 flex-wrap">
+            <span class="text-[13px] font-medium min-w-[140px]" style="color: var(--color-on-surface);">{s.label}</span>
+            <Shortcut mac={s.mac} win={s.win} />
+          </div>
+        ))}
       </div>
     )}
 
-    <script is:inline>
-      window.addEventListener('message', function(e) {
-        if (e.data && e.data.webrexDemoHeight) {
-          var f = document.getElementById('demo-iframe');
-          if (f) f.style.height = e.data.webrexDemoHeight + 16 + 'px';
-        }
-      });
-    </script>
+    {/* Expected outcome */}
+    {expectedHtml && (
+      <div class="rounded-xl p-4" style="background: var(--color-surface-container-low); border-left: 3px solid var(--color-success);">
+        <div class="text-[10px] font-semibold uppercase tracking-wider mb-1" style="color: var(--color-on-surface-faint);">
+          你应该看到
+        </div>
+        <div class="prose-step text-[0.875rem] leading-[1.6]" style="color: var(--color-on-surface);" set:html={expectedHtml} />
+      </div>
+    )}
+
+    {/* Footer nav */}
+    <div class="flex items-center justify-between pt-3 mt-1 border-t" style="border-color: var(--color-outline-variant);">
+      <button
+        id="step-prev"
+        class="px-4 py-2 text-[13px] font-medium rounded-md border transition-colors hover:bg-[color:var(--color-surface-container-low)] disabled:opacity-40 disabled:cursor-not-allowed"
+        style="border-color: var(--color-outline-variant); color: var(--color-on-surface);"
+        disabled
+      >
+        ← Prev
+      </button>
+      <span id="step-counter-text" class="text-[12px]" style="color: var(--color-on-surface-variant);">1 / {steps.length}</span>
+      <button
+        id="step-next"
+        class="px-5 py-2 text-[13px] font-semibold rounded-md transition-all hover:brightness-110"
+        style="background: var(--color-primary-container); color: var(--color-on-primary); border: none;"
+      >
+        Next →
+      </button>
+    </div>
 
     <script define:vars={{ stepsJson, nextStepHref }}>
-      (function() {
+      (function () {
         var allSteps = JSON.parse(stepsJson);
         var currentStep = 0;
-        var content = document.querySelector('#step-content .prose-step');
-        var counter = document.getElementById('step-counter');
+        var bodyContent = document.querySelector('#step-body .prose-step');
+        var counter = document.getElementById('step-counter-text');
         var prevBtn = document.getElementById('step-prev');
         var nextBtn = document.getElementById('step-next');
+        var capsules = document.querySelectorAll('.step-capsule');
+        var connectors = document.querySelectorAll('.step-connector');
         var hintTimer = null;
         var hintShown = false;
         var HINT_KEY = 'webrex_step_hint_shown';
@@ -129,18 +145,16 @@ const stepsJson = JSON.stringify(steps.map((s) => md(s)));
         function showHint() {
           if (hintShown) return;
           hintShown = true;
-          try { sessionStorage.setItem(HINT_KEY, '1'); } catch(e) {}
+          try { sessionStorage.setItem(HINT_KEY, '1'); } catch (e) {}
           nextBtn.style.animation = 'webrex-pulse 0.8s ease-in-out 3';
         }
         function resetHintTimer() {
           clearTimeout(hintTimer);
           if (!hintShown) hintTimer = setTimeout(showHint, 10000);
         }
-        function clearHintTimer() {
-          clearTimeout(hintTimer);
-        }
+        function clearHintTimer() { clearTimeout(hintTimer); }
 
-        try { if (sessionStorage.getItem(HINT_KEY)) hintShown = true; } catch(e) {}
+        try { if (sessionStorage.getItem(HINT_KEY)) hintShown = true; } catch (e) {}
 
         function doBurst() {
           var rect = nextBtn.getBoundingClientRect();
@@ -152,40 +166,71 @@ const stepsJson = JSON.stringify(steps.map((s) => md(s)));
             var dist = 40 + Math.random() * 50;
             particle.style.cssText = 'position:fixed;z-index:9999;left:' + cx + 'px;top:' + cy + 'px;width:8px;height:8px;border-radius:50%;background:#34C759;pointer-events:none;transform:translate(-50%,-50%);animation:webrex-particle 0.5s ease-out forwards;--tx:' + (Math.cos(angle) * dist) + 'px;--ty:' + (Math.sin(angle) * dist) + 'px;';
             document.body.appendChild(particle);
-            setTimeout(function(el) { el.remove(); }, 500, particle);
+            setTimeout(function (el) { el.remove(); }, 500, particle);
           }
-          setTimeout(function() {
+          setTimeout(function () {
             if (nextStepHref) window.location.href = nextStepHref;
           }, 400);
+        }
+
+        function paintCapsules() {
+          capsules.forEach(function (cap, i) {
+            if (i < currentStep) {
+              // completed
+              cap.style.background = 'var(--color-success)';
+              cap.style.color = '#fff';
+              cap.style.borderColor = 'var(--color-success)';
+              cap.textContent = '✓';
+            } else if (i === currentStep) {
+              // current
+              cap.style.background = 'var(--color-primary-container)';
+              cap.style.color = 'var(--color-on-primary)';
+              cap.style.borderColor = 'var(--color-primary-container)';
+              cap.textContent = String(i + 1);
+            } else {
+              // upcoming
+              cap.style.background = 'var(--color-surface-container-lowest)';
+              cap.style.color = 'var(--color-on-surface-variant)';
+              cap.style.borderColor = 'var(--color-outline-variant)';
+              cap.textContent = String(i + 1);
+            }
+          });
+          connectors.forEach(function (con, i) {
+            con.style.background = i < currentStep ? 'var(--color-success)' : 'var(--color-outline-variant)';
+          });
         }
 
         function renderStep(i) {
           currentStep = i;
           var isLast = i === allSteps.length - 1;
-          content.innerHTML = allSteps[i];
-          counter.textContent = (i + 1) + '/' + allSteps.length;
+          bodyContent.innerHTML = allSteps[i];
+          counter.textContent = (i + 1) + ' / ' + allSteps.length;
           prevBtn.disabled = i === 0;
-          prevBtn.style.opacity = i === 0 ? '0.35' : '1';
           nextBtn.disabled = false;
-          nextBtn.style.opacity = '1';
           if (isLast) {
             nextBtn.textContent = '✓ Done';
             nextBtn.style.background = 'var(--color-success)';
           } else {
             nextBtn.textContent = 'Next →';
-            nextBtn.style.background = 'var(--color-accent)';
+            nextBtn.style.background = 'var(--color-primary-container)';
           }
+          paintCapsules();
           resetHintTimer();
         }
 
-        prevBtn.addEventListener('click', function() { if (currentStep > 0) renderStep(currentStep - 1); });
-        nextBtn.addEventListener('click', function() {
+        prevBtn.addEventListener('click', function () { if (currentStep > 0) renderStep(currentStep - 1); });
+        nextBtn.addEventListener('click', function () {
           clearHintTimer();
-          if (currentStep < allSteps.length - 1) { renderStep(currentStep + 1); }
-          else { doBurst(); }
+          if (currentStep < allSteps.length - 1) renderStep(currentStep + 1);
+          else doBurst();
         });
-
-        document.addEventListener('keydown', function(e) {
+        capsules.forEach(function (cap) {
+          cap.addEventListener('click', function () {
+            var idx = parseInt(cap.getAttribute('data-step-idx'), 10);
+            if (!Number.isNaN(idx)) renderStep(idx);
+          });
+        });
+        document.addEventListener('keydown', function (e) {
           resetHintTimer();
           if (e.key === 'ArrowLeft' && currentStep > 0) { e.preventDefault(); renderStep(currentStep - 1); }
           if (e.key === 'ArrowRight' && currentStep < allSteps.length - 1) { e.preventDefault(); renderStep(currentStep + 1); }
@@ -196,16 +241,16 @@ const stepsJson = JSON.stringify(steps.map((s) => md(s)));
     </script>
   </article>
 ) : (
-  <!-- ═══ Traditional List Layout (no external site) ═══ -->
+  <!-- ═══ Traditional list layout (no embedded demo) ═══ -->
   <article class="flex flex-col gap-7">
     <header class="flex flex-col gap-3">
-      <h1 class="text-[2.25rem] leading-[1.2] font-semibold tracking-tight" style="color: var(--color-text);">
+      <h1 class="text-[2rem] leading-[1.2] font-semibold tracking-tight" style="color: var(--color-on-surface);">
         {title}
       </h1>
       {intro && (
         <div
-          class="prose-step text-[1.0625rem] leading-[1.75]"
-          style="color: var(--color-text-muted);"
+          class="prose-step text-[1rem] leading-[1.7]"
+          style="color: var(--color-on-surface-variant);"
           set:html={md(intro)}
         />
       )}
@@ -213,15 +258,15 @@ const stepsJson = JSON.stringify(steps.map((s) => md(s)));
 
     {shortcuts && shortcuts.length > 0 && (
       <div
-        class="rounded-2xl p-4 flex flex-col gap-3"
-        style="background: var(--color-surface-muted);"
+        class="rounded-xl p-4 flex flex-col gap-3"
+        style="background: var(--color-surface-container-low);"
       >
-        <div class="text-[10px] font-semibold uppercase tracking-wider" style="color: var(--color-text-faint);">
+        <div class="text-[10px] font-semibold uppercase tracking-wider" style="color: var(--color-on-surface-faint);">
           Keyboard shortcuts you'll use
         </div>
         {shortcuts.map((s) => (
           <div class="flex items-center gap-3 flex-wrap">
-            <span class="text-sm font-medium min-w-[160px]" style="color: var(--color-text);">{s.label}</span>
+            <span class="text-sm font-medium min-w-[160px]" style="color: var(--color-on-surface);">{s.label}</span>
             <Shortcut mac={s.mac} win={s.win} />
           </div>
         ))}
@@ -233,13 +278,13 @@ const stepsJson = JSON.stringify(steps.map((s) => md(s)));
         <li class="flex gap-4">
           <div
             class="shrink-0 w-8 h-8 rounded-full flex items-center justify-center text-sm font-semibold mt-0.5"
-            style="background: var(--color-accent); color: white;"
+            style="background: var(--color-primary-container); color: var(--color-on-primary);"
           >
             {i + 1}
           </div>
           <div
-            class="prose-step flex-1 text-[1.0625rem] leading-[1.75] pt-0.5"
-            style="color: var(--color-text);"
+            class="prose-step flex-1 text-[1rem] leading-[1.7] pt-0.5"
+            style="color: var(--color-on-surface);"
             set:html={md(s)}
           />
         </li>
@@ -251,26 +296,22 @@ const stepsJson = JSON.stringify(steps.map((s) => md(s)));
         href={labUrl}
         target="_blank"
         rel="noopener"
-        class="inline-flex items-center gap-2 px-5 py-2.5 text-sm font-medium text-white w-fit transition-all hover:shadow-md"
-        style="background: var(--color-accent); border-radius: var(--radius-button);"
+        class="inline-flex items-center gap-2 px-5 py-2.5 text-sm font-medium w-fit transition-all hover:brightness-110"
+        style="background: var(--color-primary-container); color: var(--color-on-primary); border-radius: var(--radius-button);"
       >
         Open demo lab page ↗
       </a>
     )}
 
-    {expectedOutcome && (
+    {expectedHtml && (
       <div
-        class="rounded-2xl p-5 mt-2"
-        style="background: var(--color-surface-muted); border-left: 3px solid var(--color-success);"
+        class="rounded-xl p-5 mt-2"
+        style="background: var(--color-surface-container-low); border-left: 3px solid var(--color-success);"
       >
-        <div class="text-[10px] font-semibold uppercase tracking-wider mb-2" style="color: var(--color-text-faint);">
+        <div class="text-[10px] font-semibold uppercase tracking-wider mb-2" style="color: var(--color-on-surface-faint);">
           你应该看到
         </div>
-        <div
-          class="prose-step text-[0.97rem] leading-[1.65]"
-          style="color: var(--color-text);"
-          set:html={md(expectedOutcome)}
-        />
+        <div class="prose-step text-[0.95rem] leading-[1.65]" style="color: var(--color-on-surface);" set:html={expectedHtml} />
       </div>
     )}
   </article>

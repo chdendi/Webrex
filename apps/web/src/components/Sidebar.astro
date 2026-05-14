@@ -18,23 +18,15 @@ for (const l of lessons) {
   arr.push(l);
   byLevel.set(l.data.level, arr);
 }
-// Sort lessons within each level
 for (const arr of byLevel.values()) {
   arr.sort((a, b) => a.data.sublevel - b.data.sublevel);
 }
 const sortedLevels = [...byLevel.entries()].sort((a, b) => a[0] - b[0]);
 
-// Compute total time per level
 function levelTime(arr: CollectionEntry<'lessons'>[]): number {
   return arr.reduce((sum, l) => sum + l.data.time, 0);
 }
 
-/**
- * Derive a concise title from the full lesson title.
- * - If "——" present, take text after the last "——"
- * - Else if "（" present, take text before the first "（"
- * - Otherwise use the full title
- */
 function shortTitle(full: string): string {
   const emDashIdx = full.lastIndexOf('——');
   if (emDashIdx !== -1) return full.slice(emDashIdx + 2).trim();
@@ -42,30 +34,51 @@ function shortTitle(full: string): string {
   if (parenIdx !== -1) return full.slice(0, parenIdx).trim();
   return full.trim();
 }
+
+const totalLessons = lessons.length;
+const completedCount = lessons.filter((l) => completedSet.has(l.id)).length;
+const progressPct = totalLessons > 0 ? Math.round((completedCount / totalLessons) * 100) : 0;
 ---
 
 <aside
   class="hidden md:flex fixed left-0 top-14 bottom-0 w-[280px] flex-col border-r overflow-y-auto"
-  style="background: var(--color-surface); border-color: var(--color-border);"
+  style="background: var(--color-surface-container-lowest); border-color: var(--color-outline-variant);"
 >
+  {/* Header card: progress summary */}
+  <div class="px-4 pt-4 pb-3 border-b" style="border-color: var(--color-outline-variant);">
+    <div class="flex items-center justify-between mb-1.5">
+      <span class="text-[13px] font-semibold" style="color: var(--color-on-surface);">课程进度</span>
+      <span class="text-[12px]" style="color: var(--color-on-surface-variant);">
+        {completedCount} / {totalLessons}
+      </span>
+    </div>
+    <div class="h-1 rounded-full overflow-hidden" style="background: var(--color-surface-container-high);">
+      <div
+        class="h-full rounded-full transition-all"
+        style={`width: ${progressPct}%; background: var(--color-primary-container);`}
+      />
+    </div>
+  </div>
+
   <nav class="flex-1 py-2">
     {
       sortedLevels.map(([level, arr]) => {
         const first = arr[0];
         return (
-          <div class="px-3 py-1">
+          <div class="px-3 py-1.5">
+            {/* Group header */}
             <div
-              class="flex items-center gap-2 px-2 py-2 text-xs font-semibold uppercase tracking-wider"
-              style="color: var(--color-text-muted);"
+              class="flex items-center gap-2 px-2 py-1.5 text-[11px] font-semibold uppercase tracking-wider"
+              style="color: var(--color-on-surface-variant);"
             >
-              <span class="text-base">{first.data.categoryIcon}</span>
-              <span>L{level} {first.data.categoryName}</span>
-              <span class="ml-auto text-[10px] font-normal opacity-60">
-                {levelTime(arr)} min
+              <span class="text-[15px]">{first.data.categoryIcon}</span>
+              <span class="flex-1 truncate">L{level} {first.data.categoryName}</span>
+              <span class="text-[10px] font-normal" style="color: var(--color-on-surface-faint);">
+                {levelTime(arr)}m
               </span>
             </div>
 
-            <ul class="ml-4 border-l pl-3 flex flex-col gap-0.5" style="border-color: var(--color-border);">
+            <ul class="mt-1 ml-3 border-l flex flex-col gap-0.5" style="border-color: var(--color-outline-variant);">
               {
                 arr.map((lesson) => {
                   const isCurrent = lesson.id === currentId;
@@ -78,14 +91,14 @@ function shortTitle(full: string): string {
                         href={`/lessons/${lesson.id}`}
                         data-lesson-id={lesson.id}
                         class:list={[
-                          'flex items-center gap-2 px-2 py-1.5 rounded-md text-sm transition-colors',
-                          isCurrent ? 'font-medium' : 'hover:bg-[color:var(--color-surface-muted)]',
+                          'group flex items-center gap-2 ml-2 pl-2 pr-2 py-1.5 rounded-md text-[13px] transition-colors',
+                          isCurrent ? 'font-semibold' : 'hover:bg-[color:var(--color-surface-container-low)]',
                           isDone && 'lesson-done',
                         ]}
                         style={
                           isCurrent
-                            ? "background: var(--color-accent-soft); color: var(--color-accent);"
-                            : "color: var(--color-text-muted);"
+                            ? "background: var(--color-secondary-container); color: var(--color-primary);"
+                            : "color: var(--color-on-surface-variant);"
                         }
                       >
                         {isDone ? (
@@ -100,19 +113,21 @@ function shortTitle(full: string): string {
                             class="w-1.5 h-1.5 rounded-full flex-shrink-0"
                             style={
                               isCurrent
-                                ? "background: var(--color-accent);"
-                                : "background: var(--color-text-faint); opacity: 0.5;"
+                                ? "background: var(--color-primary-container);"
+                                : "background: var(--color-on-surface-faint); opacity: 0.5;"
                             }
                           />
                         )}
                         <span class="flex-1 truncate" title={lesson.data.title}>
                           L{lesson.data.level}.{lesson.data.sublevel} {shortTitle(lesson.data.title)}
                         </span>
-                        <span class="text-[10px] opacity-60 flex-shrink-0">{lesson.data.time}m</span>
+                        <span class="text-[10px]" style="color: var(--color-on-surface-faint);">
+                          {lesson.data.time}m
+                        </span>
                         {social && (
                           <span
                             class="text-[10px] flex-shrink-0"
-                            style="color: var(--color-text-faint);"
+                            style="color: var(--color-on-surface-faint);"
                             title={`${social.completionsLast7d} completed in the past 7 days`}
                           >
                             · {social.completionsLast7d}
@@ -120,8 +135,8 @@ function shortTitle(full: string): string {
                         )}
                         {isExtension && (
                           <span
-                            class="text-[9px] px-1 rounded border"
-                            style="border-color: var(--color-border); color: var(--color-text-faint);"
+                            class="text-[9px] px-1 rounded border flex-shrink-0"
+                            style="border-color: var(--color-outline-variant); color: var(--color-on-surface-faint);"
                           >
                             ext
                           </span>
@@ -140,10 +155,8 @@ function shortTitle(full: string): string {
 
   <script is:inline>
     /**
-     * Client-side fallback for guests. Reads completions from the
-     * `webrex:progress:v1` local store (written by VerifyCard on a passing
-     * attempt). Logged-in users already have lessons styled by the server via
-     * the `lesson-done` class, so we skip those here to avoid double-styling.
+     * Client-side fallback for guests — read completions from local store
+     * and apply line-through + green check to matching sidebar items.
      */
     (function() {
       var KEY = 'webrex:progress:v1';
@@ -161,9 +174,9 @@ function shortTitle(full: string): string {
           var title = a.querySelector('span.flex-1');
           if (title) {
             title.style.textDecoration = 'line-through';
-            title.style.textDecorationColor = 'var(--color-text-muted)';
+            title.style.textDecorationColor = 'var(--color-on-surface-variant)';
           }
-          a.style.opacity = '0.5';
+          a.style.opacity = '0.55';
           var dot = a.querySelector('span:first-child');
           if (dot) {
             dot.style.background = 'var(--color-success)';

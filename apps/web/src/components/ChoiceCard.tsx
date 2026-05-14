@@ -79,31 +79,34 @@ export default function ChoiceCard({ options, disabled = false, onChoose, classN
 
         const buttonStyle: CSSProperties = {
           borderColor: isCorrectChoice
-            ? 'var(--color-success)'
+            ? 'var(--color-primary-container)'
             : isShaking
-              ? 'var(--color-danger)'
-              : 'var(--color-border)',
+              ? 'var(--color-error)'
+              : 'var(--color-outline-variant)',
+          borderWidth: isCorrectChoice || isShaking ? '2px' : '1px',
           background: isCorrectChoice
-            ? 'color-mix(in srgb, var(--color-success) 8%, transparent)'
+            ? 'var(--color-surface-container-low)'
             : isShaking
-              ? 'color-mix(in srgb, var(--color-danger) 6%, transparent)'
-              : 'var(--color-surface)',
-          opacity: isDimmed ? 0.35 : 1,
+              ? 'color-mix(in srgb, var(--color-error) 6%, transparent)'
+              : 'var(--color-surface-container-lowest)',
+          opacity: isDimmed ? 0.45 : 1,
           cursor: isFrozen ? 'default' : 'pointer',
+          boxShadow: isCorrectChoice ? '0 2px 8px rgba(0,113,227,0.08)' : 'none',
         };
 
         const dotStyle: CSSProperties = {
           borderColor: isCorrectChoice
             ? 'var(--color-success)'
             : isShaking
-              ? 'var(--color-danger)'
-              : 'var(--color-border)',
+              ? 'var(--color-error)'
+              : 'var(--color-outline-variant)',
           background: isCorrectChoice ? 'var(--color-success)' : 'transparent',
-          color: isCorrectChoice ? '#fff' : 'var(--color-text-muted)',
+          color: isCorrectChoice ? '#fff' : 'var(--color-on-surface-variant)',
         };
 
         const labelStyle: CSSProperties = {
-          color: isCorrectChoice ? 'var(--color-success)' : 'var(--color-text)',
+          color: isCorrectChoice ? 'var(--color-on-surface)' : 'var(--color-on-surface)',
+          fontWeight: isCorrectChoice ? 600 : 500,
         };
 
         return (
@@ -112,20 +115,20 @@ export default function ChoiceCard({ options, disabled = false, onChoose, classN
             type="button"
             onClick={() => handleChoice(i)}
             disabled={isFrozen}
-            className={`flex items-center gap-3 p-4 rounded-xl border-2 text-left transition-all ${
+            className={`flex items-start gap-4 p-5 rounded-2xl text-left transition-all ${
               isShaking ? 'wb-shake' : ''
-            }`}
+            } ${!isFrozen ? 'hover:border-[color:var(--color-outline)]' : ''}`}
             style={buttonStyle}
           >
             <span
-              className={`shrink-0 w-6 h-6 rounded-full border-2 flex items-center justify-center text-sm font-bold ${
+              className={`shrink-0 w-7 h-7 rounded-full border-2 flex items-center justify-center text-[13px] font-bold mt-0.5 ${
                 isCorrectChoice ? 'wb-check' : ''
               }`}
               style={dotStyle}
             >
               {isCorrectChoice ? '✓' : String.fromCharCode(65 + i)}
             </span>
-            <span className="text-[15px] font-medium" style={labelStyle}>
+            <span className="flex-1 text-[15px] leading-[1.55]" style={labelStyle}>
               {opt.label}
             </span>
           </button>

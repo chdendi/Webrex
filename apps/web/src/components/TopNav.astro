@@ -17,17 +17,17 @@ const __ = (key: string) => translate(locale, key);
 ---
 
 <header
-  class="fixed top-0 left-0 right-0 z-50 h-14 px-4 flex items-center justify-between border-b backdrop-blur-md"
-  style="background: color-mix(in srgb, var(--color-bg) 80%, transparent); border-color: var(--color-border);"
+  class="fixed top-0 left-0 right-0 z-50 h-14 px-5 flex items-center justify-between border-b backdrop-blur-md"
+  style="background: color-mix(in srgb, var(--color-background) 80%, transparent); border-color: var(--color-outline-variant);"
 >
   <div class="flex items-center gap-4">
-    <a href="/" class="font-bold text-lg tracking-tight" style="color: var(--color-text);">
+    <a href="/" class="font-bold text-lg tracking-tight" style="color: var(--color-primary);">
       Webrex
     </a>
-    <span class="text-sm" style="color: var(--color-text-muted);">{breadcrumb}</span>
+    <span class="hidden sm:inline text-sm" style="color: var(--color-on-surface-variant);">{breadcrumb}</span>
     <span
-      class="hidden md:flex items-center gap-1.5 text-xs px-2 py-1 rounded-full"
-      style="background: var(--color-surface-muted); color: var(--color-text-muted);"
+      class="hidden md:inline-flex items-center gap-1.5 text-xs px-2.5 py-1 rounded-full border"
+      style="background: var(--color-surface-container-lowest); color: var(--color-on-surface-variant); border-color: var(--color-outline-variant);"
     >
       <span class="w-1.5 h-1.5 rounded-full" style="background: var(--color-success);"></span>
       {__('common.labConnected')}
@@ -36,20 +36,20 @@ const __ = (key: string) => translate(locale, key);
 
   <div class="flex items-center gap-4">
     <div class="flex flex-col items-end gap-1">
-      <span class="text-xs" style="color: var(--color-text-muted);">
+      <span class="text-[11px]" style="color: var(--color-on-surface-variant);">
         {__('common.step')} {progressIndex} {__('common.of')} {progressTotal}
       </span>
-      <div class="w-32 h-1 rounded-full" style="background: var(--color-surface-muted);">
+      <div class="w-32 h-1 rounded-full overflow-hidden" style="background: var(--color-surface-container-high);">
         <div
           class="h-full rounded-full transition-all"
-          style={`width: ${pct}%; background: var(--color-accent);`}
+          style={`width: ${pct}%; background: var(--color-primary-container);`}
         ></div>
       </div>
     </div>
     <button
       id="redact-trigger"
-      class="text-sm px-3 py-1.5 rounded-full font-medium border transition-all hover:shadow-sm"
-      style="border-color: var(--color-border); color: var(--color-text);"
+      class="text-sm px-3 py-1.5 rounded-md font-medium border transition-all hover:bg-[color:var(--color-surface-container-low)]"
+      style="border-color: var(--color-outline-variant); color: var(--color-on-surface);"
     >
       {__('common.redact')}
     </button>

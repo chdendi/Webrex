@@ -1,71 +1,106 @@
 @import "tailwindcss";
 
-/* Webrex design tokens — Apple Human Interface aesthetic */
+/* Webrex design tokens — Material 3 inspired, Apple HIG aesthetic */
 @theme {
-  /* Surfaces (light) */
-  --color-bg: #F5F5F7;
-  --color-surface: #FFFFFF;
-  --color-surface-muted: #F0F0F3;
-  --color-border: #E5E5EA;
-  --color-border-strong: #D1D1D6;
+  /* ════════ Material 3 surfaces ════════ */
+  --color-background: #f9f9ff;
+  --color-surface: #f9f9ff;
+  --color-surface-container-lowest: #ffffff;
+  --color-surface-container-low: #f2f3fd;
+  --color-surface-container: #ecedf7;
+  --color-surface-container-high: #e6e8f2;
+  --color-surface-container-highest: #e0e2ec;
 
-  /* Text (light) */
-  --color-text: #1D1D1F;
-  --color-text-muted: #86868B;
-  --color-text-faint: #AEAEB2;
+  /* ════════ M3 outlines & text ════════ */
+  --color-outline: #717785;
+  --color-outline-variant: #c1c6d6;
 
-  /* Brand */
-  --color-accent: #0071E3;
-  --color-accent-hover: #0077ED;
-  --color-accent-soft: #E8F0FE;
+  --color-on-surface: #181c23;
+  --color-on-surface-variant: #414753;
+  --color-on-surface-faint: #8a8f9b;
 
-  /* Status */
-  --color-success: #34C759;
-  --color-warning: #FF9500;
-  --color-danger: #FF3B30;
-  --color-redact-bg: #FFF9E6;
-  --color-redact-border: #FFE08C;
-  --color-redact-text: #5C4100;
+  /* ════════ M3 primary / brand ════════ */
+  --color-primary: #0059b5;            /* darker accent for emphasis text/borders */
+  --color-primary-container: #0071e3;  /* solid button bg */
+  --color-on-primary: #ffffff;
+  --color-on-primary-container: #ffffff;
+  --color-primary-fixed: #d7e2ff;
+  --color-primary-fixed-dim: #abc7ff;
 
-  /* Typography — SF Pro on Apple devices, graceful fallback everywhere */
-  --font-sans: -apple-system, BlinkMacSystemFont, "SF Pro Display", "SF Pro Text", "Inter", system-ui, sans-serif;
-  --font-mono: "SF Mono", ui-monospace, "JetBrains Mono", "Geist Mono", monospace;
+  /* ════════ M3 secondary (soft accent) ════════ */
+  --color-secondary-container: #dbe3f1;
+  --color-on-secondary-container: #5d6571;
 
-  /* Radii — more generous, Apple-style */
-  --radius-card: 16px;
-  --radius-button: 10px;
-  --radius-chip: 6px;
+  /* ════════ Status ════════ */
+  --color-success: #34c759;
+  --color-success-container: #d1fae5;
+  --color-on-success-container: #065f46;
 
-  /* Shadows — soft, diffused, elegant */
-  --shadow-card: 0 2px 16px rgba(0, 0, 0, 0.06);
-  --shadow-pop: 0 8px 40px rgba(0, 0, 0, 0.12);
+  --color-warning: #ff9500;
+
+  --color-error: #ba1a1a;
+  --color-error-container: #ffdad6;
+  --color-on-error-container: #93000a;
+
+  /* ════════ Redaction (kept) ════════ */
+  --color-redact-bg: #fff9e6;
+  --color-redact-border: #ffe08c;
+  --color-redact-text: #5c4100;
+
+  /* ════════ Legacy aliases — keep older components working ════════ */
+  --color-bg: var(--color-background);
+  --color-surface-muted: var(--color-surface-container-low);
+  --color-border: var(--color-outline-variant);
+  --color-border-strong: var(--color-outline);
+  --color-text: var(--color-on-surface);
+  --color-text-muted: var(--color-on-surface-variant);
+  --color-text-faint: var(--color-on-surface-faint);
+  --color-accent: var(--color-primary-container);
+  --color-accent-hover: var(--color-primary);
+  --color-accent-soft: var(--color-secondary-container);
+  --color-danger: var(--color-error);
+
+  /* ════════ Typography ════════ */
+  --font-sans: "Inter", -apple-system, BlinkMacSystemFont, "SF Pro Display", "SF Pro Text", system-ui, sans-serif;
+  --font-mono: "Geist Mono", "SF Mono", ui-monospace, "JetBrains Mono", monospace;
+
+  /* ════════ Radii — Material 3 generous ════════ */
+  --radius-card: 12px;
+  --radius-card-lg: 16px;
+  --radius-button: 8px;
+  --radius-chip: 999px;
+
+  /* ════════ Shadows — almost flat ════════ */
+  --shadow-card: 0 1px 3px rgba(0, 0, 0, 0.04);
+  --shadow-pop: 0 8px 24px rgba(0, 0, 0, 0.08);
 }
 
 
 html, body {
-  background: var(--color-bg);
-  color: var(--color-text);
+  background: var(--color-background);
+  color: var(--color-on-surface);
   font-family: var(--font-sans);
-  font-size: 17px;
+  font-size: 16px;
   line-height: 1.6;
-  letter-spacing: -0.011em;
+  letter-spacing: -0.005em;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-rendering: optimizeLegibility;
 }
 
 /* Inline emphasis inside body prose */
-strong { font-weight: 600; color: var(--color-text); }
+strong { font-weight: 600; color: var(--color-on-surface); }
 em { font-style: italic; }
 
 /* Code spans inline */
 code {
   font-family: var(--font-mono);
-  font-size: 0.9em;
-  padding: 0.15em 0.4em;
+  font-size: 0.875em;
+  padding: 0.15em 0.45em;
   border-radius: 6px;
-  background: var(--color-surface-muted);
-  color: var(--color-accent);
+  background: var(--color-surface-container);
+  color: var(--color-on-surface);
+  border: 1px solid var(--color-outline-variant);
   font-weight: 500;
 }
 
@@ -81,9 +116,9 @@ code {
 .prose-step ul { list-style: disc; }
 .prose-step ol { list-style: decimal; }
 .prose-step li { margin: 0.4em 0; padding-left: 0.25em; }
-.prose-step li::marker { color: var(--color-text-faint); }
+.prose-step li::marker { color: var(--color-on-surface-faint); }
 .prose-step a {
-  color: var(--color-accent);
+  color: var(--color-primary);
   text-decoration: none;
   transition: text-decoration 0.15s;
 }
@@ -94,8 +129,8 @@ code {
 .prose-step pre {
   margin: 0.9em 0;
   padding: 1em 1.2em;
-  background: var(--color-surface-muted);
-  border: 1px solid var(--color-border);
+  background: var(--color-surface-container);
+  border: 1px solid var(--color-outline-variant);
   border-radius: var(--radius-card);
   overflow-x: auto;
   font-size: 0.9em;
@@ -104,18 +139,19 @@ code {
 .prose-step pre code {
   background: transparent;
   padding: 0;
+  border: 0;
   font-size: inherit;
 }
 .prose-step blockquote {
-  border-left: 3px solid var(--color-accent-soft);
+  border-left: 3px solid var(--color-secondary-container);
   margin: 0.9em 0;
   padding: 0.3em 0 0.3em 1.2em;
-  color: var(--color-text-muted);
+  color: var(--color-on-surface-variant);
   border-radius: 0 8px 8px 0;
 }
 .prose-step hr {
   border: none;
-  border-top: 1px solid var(--color-border);
+  border-top: 1px solid var(--color-outline-variant);
   margin: 1.4em 0;
 }
 
@@ -126,18 +162,18 @@ code {
   border-spacing: 0;
   margin: 0.8em 0;
   font-size: 0.95em;
-  border: 1px solid var(--color-border);
+  border: 1px solid var(--color-outline-variant);
   border-radius: var(--radius-card);
   overflow: hidden;
 }
 .prose-step thead {
-  background: var(--color-surface-muted);
+  background: var(--color-surface-container);
 }
 .prose-step th,
 .prose-step td {
   padding: 0.7em 0.9em;
   text-align: left;
-  border-bottom: 1px solid var(--color-border);
+  border-bottom: 1px solid var(--color-outline-variant);
   vertical-align: top;
   line-height: 1.55;
 }
@@ -145,21 +181,21 @@ code {
   font-weight: 600;
   font-size: 0.85em;
   text-transform: none;
-  color: var(--color-text-muted);
+  color: var(--color-on-surface-variant);
   letter-spacing: 0.01em;
 }
 .prose-step tr:last-child td { border-bottom: 0; }
-.prose-step tbody tr:hover { background: var(--color-surface-muted); }
+.prose-step tbody tr:hover { background: var(--color-surface-container-low); }
 
 /* Inline glossary tooltips: dotted underline */
 .glossary {
-  border-bottom: 1.5px dotted var(--color-text-faint);
+  border-bottom: 1.5px dotted var(--color-on-surface-faint);
   cursor: help;
   transition: background 0.2s, border-color 0.2s;
 }
 .glossary:hover {
   background: rgba(0, 113, 227, 0.06);
-  border-bottom-color: var(--color-accent);
+  border-bottom-color: var(--color-primary);
   border-radius: 2px;
 }
 
@@ -168,14 +204,14 @@ kbd {
   font-family: var(--font-mono);
   font-size: 0.8125rem;
   padding: 0.15rem 0.45rem;
-  border: 1px solid var(--color-border);
-  border-bottom-width: 2.5px;
-  border-radius: var(--radius-chip);
-  background: var(--color-surface-muted);
-  color: var(--color-text);
+  border: 1px solid var(--color-outline-variant);
+  border-bottom-width: 2px;
+  border-radius: 4px;
+  background: var(--color-surface-container);
+  color: var(--color-on-surface);
   display: inline-block;
   line-height: 1;
-  box-shadow: 0 1px 0 var(--color-border-strong);
+  box-shadow: 0 1px 0 var(--color-outline-variant);
 }
 
 @keyframes confidencePop {
@@ -195,5 +231,5 @@ kbd {
 /* Sidebar — completed lesson line-through */
 .lesson-done .flex-1 {
   text-decoration: line-through;
-  text-decoration-color: var(--color-text-muted);
+  text-decoration-color: var(--color-on-surface-variant);
 }

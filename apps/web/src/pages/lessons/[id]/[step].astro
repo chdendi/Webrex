@@ -1,4 +1,5 @@
 ---
+import DemoFrame from '~/components/DemoFrame.astro';
 import ErrorBoundary from '~/components/ErrorBoundary.tsx';
 import HelpButton from '~/components/HelpButton.astro';
 import RedactionPanel from '~/components/RedactionPanel.tsx';
@@ -52,6 +53,17 @@ const nextStepHref = isLastStep
   : `/lessons/${lesson.id}/${nextStep!.slug}`;
 
 const locale = 'zh-CN' as const;
+
+// Demo iframe persists across practice → verify within the same lesson, so the
+// learner can re-inspect the demo while answering the check.
+const practiceWithDemo = steps.find((s: any) => s.type === 'practice' && s.externalSite);
+const railExternalSite: string | undefined =
+  step.type === 'practice'
+    ? (step as any).externalSite
+    : step.type === 'verify'
+      ? (practiceWithDemo as any)?.externalSite
+      : undefined;
+const hasRightRail = !!railExternalSite;
 ---
 
 <LessonLayout
@@ -61,6 +73,7 @@ const locale = 'zh-CN' as const;
   nextId={nextId}
   index={lessonIndex}
   total={totalLessons}
+  hasRightRail={hasRightRail}
 >
   {step.type === "concept" && (
     <ConceptStep
@@ -98,6 +111,10 @@ const locale = 'zh-CN' as const;
       lessonId={lesson.id}
       stepId={step.slug}
     />
+  )}
+
+  {hasRightRail && railExternalSite && (
+    <DemoFrame slot="right-rail" url={railExternalSite} lessonId={lesson.id} />
   )}
 
   <ErrorBoundary client:load>

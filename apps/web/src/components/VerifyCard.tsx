@@ -61,7 +61,7 @@ export default function VerifyCard({
     const durationMs = Math.round(
       (typeof performance !== 'undefined' ? performance.now() : Date.now()) - startedAt.current,
     );
-    fetch('/api/attempts', {
+    const postPromise = fetch('/api/attempts', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
@@ -72,9 +72,7 @@ export default function VerifyCard({
         passed,
         durationMs,
       }),
-    }).catch(() => {
-      // Non-blocking — UI does not depend on success.
-    });
+    }).catch(() => null);
     // Mirror to localStorage unconditionally. Server drops anon writes; this
     // is the only durable record until the user signs in and we sync.
     appendAttempt({
@@ -90,8 +88,11 @@ export default function VerifyCard({
       appendCompletion(lessonId);
       if (!recordedPass.current) {
         recordedPass.current = true;
-        setShowAchievement(true);
         setShowCelebration(true);
+        // Defer AchievementCard mount until the attempt is durable on the
+        // server — otherwise its /api/achievement read races the insert and
+        // shows 0 completions.
+        postPromise.finally(() => setShowAchievement(true));
       }
     }
   };

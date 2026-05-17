@@ -25,7 +25,7 @@ app.get('/demos/l1-1', (c) =>
   ),
 );
 
-app.get('/demos/l1-2', (c) =>
+app.get('/demos/l4-5', (c) =>
   c.html(
     page(
       'Webrex · Network Timing',
@@ -169,8 +169,6 @@ app.get('/demos/l4-1', (c) => c.html(l4Demo()));
 app.get('/demos/l4-2', (c) => c.html(l4Demo()));
 app.get('/demos/l4-3', (c) => c.html(l4Demo()));
 app.get('/demos/l4-4', (c) => c.html(l4Demo()));
-app.get('/demos/l4-5', (c) => c.html(l4Demo()));
-app.get('/demos/l4-6', (c) => c.html(l4Demo()));
 
 // ── L5 — Sources ──────────────────────────
 const l5Demo = () =>

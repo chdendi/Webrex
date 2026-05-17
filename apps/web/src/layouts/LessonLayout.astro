@@ -80,5 +80,118 @@ const completedIds = currentUser ? await getCompletedLessonIdsForUser(currentUse
         <ProgressSync client:idle />
       </Fragment>
     )}
+
+    <script is:inline>
+      (function () {
+        if (window.__webrexGlossaryInit) return;
+        window.__webrexGlossaryInit = true;
+
+        var popup = null;
+        var openTrigger = null;
+
+        function slugFor(term) {
+          return term.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '');
+        }
+
+        function ensurePopup() {
+          if (popup) return popup;
+          popup = document.createElement('div');
+          popup.className = 'glossary-popup';
+          popup.setAttribute('role', 'dialog');
+          popup.setAttribute('aria-live', 'polite');
+          popup.innerHTML =
+            '<div class="glossary-popup__head">' +
+              '<span class="glossary-popup__term"></span>' +
+              '<span class="glossary-popup__fullname"></span>' +
+            '</div>' +
+            '<div class="glossary-popup__def"></div>' +
+            '<a class="glossary-popup__link" href="#">在词典里查看 →</a>';
+          document.body.appendChild(popup);
+          popup.addEventListener('click', function (e) { e.stopPropagation(); });
+          return popup;
+        }
+
+        function position(trigger) {
+          var p = ensurePopup();
+          var rect = trigger.getBoundingClientRect();
+          var pRect = p.getBoundingClientRect();
+          var gap = 8;
+          var margin = 8;
+          var left = rect.left + rect.width / 2 - pRect.width / 2;
+          var top = rect.bottom + gap;
+          if (top + pRect.height > window.innerHeight - margin) {
+            top = rect.top - pRect.height - gap;
+          }
+          if (left < margin) left = margin;
+          if (left + pRect.width > window.innerWidth - margin) {
+            left = window.innerWidth - pRect.width - margin;
+          }
+          p.style.left = left + 'px';
+          p.style.top = top + 'px';
+        }
+
+        function open(trigger) {
+          var term = trigger.getAttribute('data-glossary-term') || '';
+          var def = trigger.getAttribute('data-glossary-def') || '';
+          var fullName = trigger.getAttribute('data-glossary-fullname') || '';
+          var p = ensurePopup();
+          p.querySelector('.glossary-popup__term').textContent = term;
+          var fnEl = p.querySelector('.glossary-popup__fullname');
+          fnEl.textContent = fullName;
+          fnEl.style.display = fullName ? '' : 'none';
+          p.querySelector('.glossary-popup__def').textContent = def;
+          p.querySelector('.glossary-popup__link').setAttribute('href', '/glossary#' + slugFor(term));
+          if (openTrigger && openTrigger !== trigger) openTrigger.removeAttribute('data-popup-open');
+          openTrigger = trigger;
+          trigger.setAttribute('data-popup-open', 'true');
+          p.setAttribute('data-visible', 'true');
+          position(trigger);
+        }
+
+        function close() {
+          if (!popup) return;
+          popup.removeAttribute('data-visible');
+          if (openTrigger) {
+            openTrigger.removeAttribute('data-popup-open');
+            openTrigger = null;
+          }
+        }
+
+        document.addEventListener('click', function (e) {
+          var target = e.target;
+          if (!(target instanceof Element)) return;
+          var trigger = target.closest('.glossary');
+          if (trigger) {
+            e.preventDefault();
+            if (openTrigger === trigger) {
+              close();
+            } else {
+              open(trigger);
+            }
+            return;
+          }
+          if (popup && popup.contains(target)) return;
+          close();
+        });
+
+        document.addEventListener('keydown', function (e) {
+          if (e.key === 'Escape') {
+            close();
+            return;
+          }
+          if ((e.key === 'Enter' || e.key === ' ') && e.target instanceof Element) {
+            var trigger = e.target.closest('.glossary');
+            if (trigger) {
+              e.preventDefault();
+              if (openTrigger === trigger) close();
+              else open(trigger);
+            }
+          }
+        });
+
+        window.addEventListener('scroll', function () { if (openTrigger) position(openTrigger); }, true);
+        window.addEventListener('resize', function () { if (openTrigger) position(openTrigger); });
+      })();
+    </script>
   </body>
 </html>

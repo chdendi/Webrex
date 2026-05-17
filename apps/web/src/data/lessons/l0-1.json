@@ -1,0 +1,68 @@
+{
+  "id": "l0-1",
+  "level": 0,
+  "sublevel": 1,
+  "categoryIcon": "🌱",
+  "categoryName": "黑话速通",
+  "title": "网页的三层结构：HTML / CSS / JavaScript",
+  "time": 4,
+  "track": "core",
+  "needsLab": false,
+  "stuck": "记不住英文？换成「骨架/皮肤/动作」就行。下次 AI 跟你提到这三个词，你脑子里换成这三个词来理解。",
+  "steps": [
+    {
+      "slug": "concept",
+      "type": "concept",
+      "title": "结构 / 样式 / 行为：三层职责分离",
+      "hook": "AI 跟你说「这个 CSS 没生效」「JS 报错了」「HTML 结构不对」——别紧张，就这三个词，反复出现。",
+      "body": [
+        "你看到的每一个网页，背后都被拆成了三层：HTML 负责**结构**（页面里有什么）、CSS 负责**样式**（长什么样）、JavaScript 负责**行为**（点了之后干什么）。三者职责分离，谁都替代不了谁。",
+        "**用一个类比来记**：可以把网页想成一个人——HTML 是骨架、CSS 是皮肤、JS 是动作。",
+        "下次 AI 说「CSS 不生效」，你脑子里就翻译成「样式没穿对」；说「JS 报错」，就是「动作做不出来」；说「HTML 结构」，就是「骨头长歪了」。"
+      ],
+      "bullets": [
+        {
+          "emoji": "🦴",
+          "title": "HTML = 骨架",
+          "body": "页面有什么——标题、段落、按钮、图片"
+        },
+        {
+          "emoji": "👔",
+          "title": "CSS = 皮肤",
+          "body": "长什么样——颜色、大小、布局、动画"
+        },
+        {
+          "emoji": "⚡",
+          "title": "JS = 动作",
+          "body": "点了之后做什么——弹窗、跳转、拉数据"
+        }
+      ],
+      "takeaway": "三个英文缩写不用背，记「骨架/皮肤/动作」三个中文词就够你跟 AI 顺利对话了。"
+    },
+    {
+      "slug": "verify",
+      "type": "verify",
+      "title": "你点击一个按钮，弹出了一个对话框。这个『弹』属于哪一层？",
+      "prompt": "想一下：按钮本身是骨架（HTML），按钮的颜色是皮肤（CSS），那么「点了之后弹出对话框」这个**动作**是哪一层？",
+      "tier": "choice",
+      "options": [
+        {
+          "label": "HTML（骨架）",
+          "correct": false
+        },
+        {
+          "label": "CSS（皮肤）",
+          "correct": false
+        },
+        {
+          "label": "JS（动作）",
+          "correct": true
+        },
+        {
+          "label": "三层一起出力",
+          "correct": false
+        }
+      ]
+    }
+  ]
+}

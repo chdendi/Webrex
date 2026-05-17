@@ -187,16 +187,77 @@ code {
 .prose-step tr:last-child td { border-bottom: 0; }
 .prose-step tbody tr:hover { background: var(--color-surface-container-low); }
 
-/* Inline glossary tooltips: dotted underline */
+/* Inline glossary terms: dotted underline + click-to-popup */
 .glossary {
   border-bottom: 1.5px dotted var(--color-on-surface-faint);
-  cursor: help;
+  cursor: pointer;
   transition: background 0.2s, border-color 0.2s;
 }
-.glossary:hover {
+.glossary:hover,
+.glossary:focus-visible {
   background: rgba(0, 113, 227, 0.06);
   border-bottom-color: var(--color-primary);
   border-radius: 2px;
+  outline: none;
+}
+.glossary[data-popup-open="true"] {
+  background: var(--color-secondary-container);
+  border-bottom-color: var(--color-primary);
+}
+
+/* Click-triggered popup, positioned via JS */
+.glossary-popup {
+  position: fixed;
+  z-index: 9999;
+  max-width: 320px;
+  padding: 12px 14px;
+  border-radius: 10px;
+  background: var(--color-surface-container-highest, #ffffff);
+  color: var(--color-on-surface);
+  border: 1px solid var(--color-outline-variant);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12), 0 2px 6px rgba(0, 0, 0, 0.06);
+  font-size: 13px;
+  line-height: 1.55;
+  opacity: 0;
+  transform: translateY(-2px);
+  transition: opacity 0.12s ease, transform 0.12s ease;
+  pointer-events: none;
+}
+.glossary-popup[data-visible="true"] {
+  opacity: 1;
+  transform: translateY(0);
+  pointer-events: auto;
+}
+.glossary-popup__head {
+  display: flex;
+  align-items: baseline;
+  gap: 8px;
+  margin-bottom: 6px;
+  flex-wrap: wrap;
+}
+.glossary-popup__term {
+  font-weight: 600;
+  font-size: 13px;
+  color: var(--color-primary);
+  font-family: var(--font-mono);
+}
+.glossary-popup__fullname {
+  font-size: 11px;
+  color: var(--color-on-surface-faint);
+  font-style: italic;
+}
+.glossary-popup__def {
+  color: var(--color-on-surface-variant);
+}
+.glossary-popup__link {
+  display: inline-block;
+  margin-top: 8px;
+  font-size: 11px;
+  color: var(--color-primary);
+  text-decoration: none;
+}
+.glossary-popup__link:hover {
+  text-decoration: underline;
 }
 
 /* <kbd> styling for shortcut display */

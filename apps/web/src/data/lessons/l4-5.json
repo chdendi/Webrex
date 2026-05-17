@@ -4,84 +4,94 @@
   "sublevel": 5,
   "categoryIcon": "🌍",
   "categoryName": "网络 (Network)",
-  "title": "看懂 CORS 报错",
+  "title": "主请求的 5 个网络阶段（DNS → TCP → TLS → TTFB → Download）",
   "time": 5,
   "track": "core",
-  "needsLab": true,
-  "stuck": "Console 里没看到红色报错？确认下方 Demo 已加载完成，并已刷新页面。",
+  "needsLab": false,
+  "stuck": "Timing 标签是空的？刷新一下页面让浏览器重发一次请求。如果命中了缓存（disk cache）也不会有时序数据。陌生缩写：[DNS](/glossary#dns) / [TLS](/glossary#tls---ssl) / [TTFB](/glossary#ttfb) → [/glossary](/glossary)。",
   "steps": [
     {
       "slug": "concept",
       "type": "concept",
-      "title": "CORS 是浏览器警察，不是服务器锁",
-      "hook": "你写的请求服务器明明回了数据，浏览器却把它扔掉了。谁在替你做主？",
+      "title": "页面慢，到底慢在哪一段？",
+      "hook": "从你按回车到页面出现，浏览器其实做了 5 件事，每件都可能慢。只说「页面慢」根本没法定位是谁的锅。",
       "body": [
-        "CORS（跨域资源共享）是浏览器的安全机制。关键认知：服务器照常接收请求、照常返回响应，但浏览器检查响应头里有没有 Access-Control-Allow-Origin，没有就直接丢弃。",
-        "请求分为两种：简单请求（GET/POST 带有限几种 Content-Type）直接发，浏览器只看响应头；非简单请求浏览器会先发一个 OPTIONS「预检」请求，预检没通过，真正的请求根本不会发。",
-        "所以遇到两种 CORS 报错：Console 里 'has been blocked by CORS policy: No Access-Control-Allow-Origin header' 说明响应回来了但被丢弃；'has been blocked by CORS policy: Response to preflight' 说明预检阶段就被拒绝了。",
-        "下一步你在 lab 页面里会看到：一个请求被 CORS 拦截（红色）、一个请求正常通过（绿色）。两个请求的区别只在响应头，不在你写的代码。"
+        "Network 面板的 **Timing** 标签把这 5 段拆给你看，每段一个数字。",
+        "**学会看哪一段慢，就知道找谁修**：查地址（[DNS](/glossary#dns)）慢找运维、等服务器响应（[TTFB](/glossary#ttfb)）慢找后端、下载体积（Download）慢看带宽和资源大小。",
+        "陌生缩写不用记，碰到查 [/glossary](/glossary) 就行。"
       ],
       "bullets": [
         {
-          "emoji": "🚔",
-          "title": "浏览器把关",
-          "body": "服务器不拒绝跨域请求——是浏览器在拦截响应"
+          "emoji": "🌐",
+          "title": "查地址（DNS Lookup）",
+          "body": "把网址（如 google.com）翻译成服务器的实际 IP"
         },
         {
-          "emoji": "📋",
-          "title": "OPTIONS 预检",
-          "body": "非简单请求会先发预检，预检失败请求根本不发出"
+          "emoji": "🤝",
+          "title": "拨通电话（Initial connection）",
+          "body": "浏览器和服务器握个手，开通信通道"
         },
         {
-          "emoji": "🔑",
-          "title": "Access-Control-Allow-Origin",
-          "body": "这个响应头是唯一的关键——有它则通，无它则堵"
+          "emoji": "🔒",
+          "title": "加密协商（SSL/TLS）",
+          "body": "HTTPS 网站要先约定加密钥匙"
+        },
+        {
+          "emoji": "⏳",
+          "title": "等服务器干活（TTFB）",
+          "body": "请求发出去，等对面回第一个字节"
+        },
+        {
+          "emoji": "📦",
+          "title": "把内容拖下来（Download）",
+          "body": "把 HTML / 数据完整下载到本地"
         }
       ]
     },
     {
       "slug": "practice",
       "type": "practice",
-      "title": "在 lab 页面对比 CORS 拦截 vs 放行",
-      "intro": "这个 lab 页面会同时发两个跨域请求：一个被 CORS 拦截，一个被 CORS 放行。你要做的就是在 Console 和 Network 面板里对比两者。",
+      "title": "在 Demo 区查看主文档的 5 段时序",
+      "intro": "下方 Demo 页面提供了「发送慢请求」按钮，先打开 Network 面板，再点击按钮触发请求。",
       "steps": [
-        "看下方嵌入式 Demo 区域",
-        "按 `⌘+⌥+I` (Mac) / `F12` (Win/Linux) 打开 DevTools。",
-        "切换到 **Console** 面板。你应该看到一行红色报错和一 print green success 消息。红色报错包含 'has been blocked by CORS policy' 字样。如果没有，点击下方 **刷新 Demo** 按钮，。",
-        "切换到 **Network** 面板。如果面板是空的，点击下方 **刷新 Demo** 按钮，让 demo 重新加载。让它重新记录请求。",
-        "在 Network 列表里找到名为 `/api/cors-blocked` 的请求（红色/失败状态）和 `/api/cors-allowed` 的请求（绿色/成功状态）。如果列表太长，用顶部的 Filter 输入框过滤 'cors'。",
-        "点击 `/api/cors-blocked` 请求 → 右侧面板切换到 **Headers** 选项卡 → 查看 **Response Headers** 区域。",
-        "点击 `/api/cors-allowed` 请求 → 同样查看 **Response Headers** 区域。",
-        "对照下表：\n\n| 对比维度 | /api/cors-blocked | /api/cors-allowed |\n| --- | --- | --- |\n| HTTP 状态码 | 200（服务器正常返回） | 200 |\n| 响应体内容 | 有数据（但 Console 看不到） | 有数据（Console 打印了） |\n| Access-Control-Allow-Origin | **没有** ✗ | **有** ✓ |\n| Console 结果 | 红色 CORS 报错 ✗ | 绿色 success ✓ |\n\n看到差异在哪一列，就是 CORS 在做什么。"
+        "看下方 Demo 页面，确认加载完成。",
+        "按 `F12` / `⌘+⌥+I` 打开 DevTools，切到 **Network** 面板。",
+        "顶部勾上 **Disable cache**（防止走缓存导致没有时序数据）。",
+        "点击 Demo 页面上的 **Send Slow Request** 按钮，触发一次慢请求。",
+        "Network 列表中会多出一条 `/api/slow` 请求，点击它。",
+        "右侧面板切到 **Timing** 标签。你会看到一组色块，每段都标了名字和耗时（ms）。"
       ],
       "shortcuts": [
         {
           "label": "DevTools",
           "mac": "⌘+⌥+I",
           "win": "F12"
-        },
-        {
-          "label": "Network 面板",
-          "mac": "⌘+⌥+N",
-          "win": "Ctrl+Shift+N"
         }
       ],
-      "externalSite": "http://localhost:8787/demos/l4-5",
-      "expectedOutcome": "Console 里一条红色 CORS 报错 + 一条绿色 success；Network 里 /api/cors-blocked 的 Response Headers 缺少 Access-Control-Allow-Origin，/api/cors-allowed 有这个头。"
+      "expectedOutcome": "5 段时序数字都能看到。TTFB（Waiting for server response）通常是最长的一段。",
+      "externalSite": "http://localhost:8787/demos/l4-5"
     },
     {
       "slug": "verify",
       "type": "verify",
-      "title": "Console 里的 CORS 报错关键字是什么？",
-      "prompt": "上一步你在 Console 里看到了红色 CORS 报错。把那段报错里你能看到的英文关键词写下来（复制、凭记忆都行）。",
+      "title": "Network Timing 里耗时最长的通常是哪个阶段？",
+      "prompt": "在 Network → Timing 面板中，本地访问时耗时最长的那一段通常是？",
       "tier": "choice",
       "options": [
         {
-          "label": "是的，我看到了",
+          "label": "Waiting for server response (TTFB)",
           "correct": true
         },
         {
-          "label": "没有，我需要帮助",
+          "label": "DNS Lookup",
+          "correct": false
+        },
+        {
+          "label": "Content Download",
+          "correct": false
+        },
+        {
+          "label": "SSL",
           "correct": false
         }
       ]

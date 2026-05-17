@@ -23,7 +23,6 @@ export interface SocialStats {
 export const SOCIAL_STATS_BASELINE: Record<string, SocialStats> = {
   // L1 — basics (highest engagement)
   'l1-1': { completionsLast7d: 384, totalAttempts: 962, avgMinutes: 8.4 },
-  'l1-2': { completionsLast7d: 341, totalAttempts: 854, avgMinutes: 8.1 },
   'l1-3': { completionsLast7d: 298, totalAttempts: 762, avgMinutes: 10.2 },
   'l1-4': { completionsLast7d: 273, totalAttempts: 671, avgMinutes: 5.6 },
 
@@ -38,23 +37,19 @@ export const SOCIAL_STATS_BASELINE: Record<string, SocialStats> = {
   'l3-2': { completionsLast7d: 176, totalAttempts: 422, avgMinutes: 6.4 },
   'l3-3': { completionsLast7d: 164, totalAttempts: 389, avgMinutes: 5.1 },
   'l3-4': { completionsLast7d: 151, totalAttempts: 362, avgMinutes: 5.3 },
-  'l3-5': { completionsLast7d: 142, totalAttempts: 339, avgMinutes: 5.0 },
 
   // L4
   'l4-1': { completionsLast7d: 169, totalAttempts: 412, avgMinutes: 8.6 },
   'l4-2': { completionsLast7d: 157, totalAttempts: 379, avgMinutes: 8.2 },
   'l4-3': { completionsLast7d: 148, totalAttempts: 358, avgMinutes: 8.4 },
   'l4-4': { completionsLast7d: 138, totalAttempts: 331, avgMinutes: 8.7 },
-  'l4-5': { completionsLast7d: 129, totalAttempts: 308, avgMinutes: 8.1 },
-  'l4-6': { completionsLast7d: 121, totalAttempts: 287, avgMinutes: 8.5 },
+  'l4-5': { completionsLast7d: 341, totalAttempts: 854, avgMinutes: 8.1 },
 
   // L5
   'l5-1': { completionsLast7d: 152, totalAttempts: 364, avgMinutes: 7.0 },
   'l5-2': { completionsLast7d: 142, totalAttempts: 339, avgMinutes: 6.8 },
   'l5-3': { completionsLast7d: 134, totalAttempts: 318, avgMinutes: 6.9 },
   'l5-4': { completionsLast7d: 125, totalAttempts: 296, avgMinutes: 6.6 },
-  'l5-5': { completionsLast7d: 117, totalAttempts: 277, avgMinutes: 5.2 },
-  'l5-6': { completionsLast7d: 108, totalAttempts: 256, avgMinutes: 6.7 },
 
   // L6
   'l6-1': { completionsLast7d: 124, totalAttempts: 296, avgMinutes: 6.9 },
@@ -72,20 +67,17 @@ export const SOCIAL_STATS_BASELINE: Record<string, SocialStats> = {
   'l8-1': { completionsLast7d: 96, totalAttempts: 226, avgMinutes: 6.6 },
   'l8-2': { completionsLast7d: 89, totalAttempts: 209, avgMinutes: 6.8 },
   'l8-3': { completionsLast7d: 83, totalAttempts: 195, avgMinutes: 8.4 },
-  'l8-4': { completionsLast7d: 77, totalAttempts: 181, avgMinutes: 6.7 },
   'l8-5': { completionsLast7d: 71, totalAttempts: 168, avgMinutes: 8.2 },
 
   // L9
   'l9-1': { completionsLast7d: 84, totalAttempts: 198, avgMinutes: 6.7 },
   'l9-2': { completionsLast7d: 78, totalAttempts: 184, avgMinutes: 8.4 },
   'l9-3': { completionsLast7d: 72, totalAttempts: 170, avgMinutes: 8.6 },
-  'l9-4': { completionsLast7d: 67, totalAttempts: 158, avgMinutes: 8.1 },
 
   // L10
   'l10-1': { completionsLast7d: 75, totalAttempts: 178, avgMinutes: 8.3 },
   'l10-2': { completionsLast7d: 70, totalAttempts: 165, avgMinutes: 8.5 },
   'l10-3': { completionsLast7d: 65, totalAttempts: 153, avgMinutes: 6.7 },
-  'l10-4': { completionsLast7d: 60, totalAttempts: 142, avgMinutes: 8.4 },
 
   // L11
   'l11-1': { completionsLast7d: 65, totalAttempts: 154, avgMinutes: 8.2 },
@@ -95,13 +87,11 @@ export const SOCIAL_STATS_BASELINE: Record<string, SocialStats> = {
   // L12
   'l12-1': { completionsLast7d: 56, totalAttempts: 132, avgMinutes: 8.3 },
   'l12-2': { completionsLast7d: 52, totalAttempts: 123, avgMinutes: 8.1 },
-  'l12-3': { completionsLast7d: 48, totalAttempts: 113, avgMinutes: 5.2 },
   'l12-4': { completionsLast7d: 45, totalAttempts: 106, avgMinutes: 6.7 },
 
   // L13 — advanced (lowest)
   'l13-1': { completionsLast7d: 48, totalAttempts: 113, avgMinutes: 8.4 },
   'l13-2': { completionsLast7d: 44, totalAttempts: 104, avgMinutes: 8.2 },
-  'l13-3': { completionsLast7d: 41, totalAttempts: 97, avgMinutes: 8.5 },
 };
 
 /**

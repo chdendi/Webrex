@@ -10,6 +10,7 @@ type Confidence = 'high' | 'mid' | 'low' | null;
 interface ChoiceOption {
   label: string;
   correct: boolean;
+  hint?: string;
 }
 
 interface Props {
@@ -19,6 +20,7 @@ interface Props {
   labEndpoint?: string;
   expectedRegex?: string;
   options?: ChoiceOption[];
+  revealOption?: ChoiceOption;
   nextStepHref?: string;
   lessonId?: string;
   stepId?: string;
@@ -32,6 +34,7 @@ export default function VerifyCard({
   labEndpoint,
   expectedRegex,
   options,
+  revealOption,
   nextStepHref,
   lessonId,
   stepId,
@@ -131,18 +134,20 @@ export default function VerifyCard({
 
   const handleChoice = (idx: number) => {
     if (correctIdx !== null) return;
-    const opt = options?.[idx];
+    // The reveal option is appended at index === options.length when present.
+    const isReveal = !!revealOption && options && idx === options.length;
+    const opt = isReveal ? revealOption : options?.[idx];
     if (!opt) return;
 
     if (opt.correct) {
       setCorrectIdx(idx);
       setConfidence('high');
-      setFeedback('✅ Correct!');
+      setFeedback(opt.hint ?? '✅ Correct!');
       emitConfidence('high');
       recordAttempt(true, 'high');
       launchFireworks();
     } else {
-      setFeedback('❌ Not quite — try again.');
+      setFeedback(opt.hint ?? '❌ Not quite — try again.');
       recordAttempt(false, null);
     }
   };
@@ -386,7 +391,12 @@ export default function VerifyCard({
 
       {/* Choice tier: radio-style buttons with shake/check animations */}
       {tier === 'choice' && options && (
-        <ChoiceCard options={options} disabled={correctIdx !== null} onChoose={(idx) => handleChoice(idx)} />
+        <ChoiceCard
+          options={options}
+          revealOption={revealOption}
+          disabled={correctIdx !== null}
+          onChoose={(idx) => handleChoice(idx)}
+        />
       )}
 
       {tier === 'soft' && (

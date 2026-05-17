@@ -6,6 +6,7 @@ import ErrorBoundary from '../ErrorBoundary.tsx';
 interface ChoiceOption {
   label: string;
   correct: boolean;
+  hint?: string;
 }
 
 interface Props {
@@ -15,11 +16,13 @@ interface Props {
   expectedRegex?: string;
   labCheckEndpoint?: string;
   options?: ChoiceOption[];
+  revealOption?: ChoiceOption;
   nextStepHref?: string;
   lessonId: string;
   stepId: string;
 }
-const { title, prompt, tier, expectedRegex, labCheckEndpoint, options, nextStepHref, lessonId, stepId } = Astro.props;
+const { title, prompt, tier, expectedRegex, labCheckEndpoint, options, revealOption, nextStepHref, lessonId, stepId } =
+  Astro.props;
 const promptHtml = md(prompt);
 ---
 
@@ -38,6 +41,7 @@ const promptHtml = md(prompt);
       expectedRegex={expectedRegex}
       labEndpoint={labCheckEndpoint}
       options={options}
+      revealOption={revealOption}
       nextStepHref={nextStepHref}
       lessonId={lessonId}
       stepId={stepId}

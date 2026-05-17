@@ -8,39 +8,40 @@
   "time": 5,
   "track": "core",
   "needsLab": false,
-  "stuck": "看不懂 View Source？在下方 Demo 区域右键 → View Page Source 即可。",
+  "stuck": "看不懂 View Source？在下方 Demo 区域右键 → View Page Source 即可。陌生缩写：[SSR](/glossary#ssr) / [CSR](/glossary#csr) / [SSG](/glossary#ssg) / [Hydration](/glossary#hydration) → [/glossary](/glossary)。",
   "steps": [
     {
       "slug": "concept",
       "type": "concept",
-      "title": "三兄弟——HTML 从哪来",
-      "hook": "同样是 HTML，出生的地方完全不同。",
+      "title": "同一份 HTML，三种『出生方式』",
+      "hook": "AI 跟你说「这个组件要 SSR」「水合错了」「我们走 CSR 就行」——其实就是 HTML 在哪个时刻被『做出来』的三种方式。",
       "body": [
-        "SSR：HTML 在服务器上生成，完整发送到浏览器。用户看到内容快，SEO 友好。",
-        "CSR：服务器只发一个空壳 HTML（如 `<div id='root'></div>`），浏览器下载 JS 后在客户端构建整个 DOM。首屏白屏时间长。",
-        "SSG：HTML 在构建时就生成好了，部署的是纯静态文件。适合内容不常变的站点（博客、文档站）。",
-        "水合是 React 在 SSR HTML 上挂载事件监听器的过程（`hydrateRoot`）。服务器生成的 HTML 和客户端渲染结果不同时，就会报水合错误。"
+        "**先记一句话**：HTML 可以在 **服务器生成（SSR）**、**浏览器生成（CSR）**、或者 **打包时生成（SSG）**。三种方式就这点区别，剩下都是细节。",
+        "**服务端渲染（[SSR](/glossary#ssr)）**：服务器把页面拼成完整 HTML 发给你。你右键看源码就能看到全部内容。**优点**：首屏快、搜索引擎能读到内容（[SEO](/glossary#seo) 友好）。**代价**：服务器要干活。",
+        "**客户端渲染（[CSR](/glossary#csr)）**：服务器只发一个空壳子（`<div id='root'></div>`），让你的浏览器下载一堆 [JS](/glossary#js--javascript) 自己拼。**优点**：服务器轻松、跳页面像 App 一样丝滑。**代价**：首屏白屏一会儿，搜索引擎可能读不到内容。",
+        "**静态站点生成（[SSG](/glossary#ssg)）**：HTML 在你**部署网站时**就提前生成好了，访问时直接发现成的。**优点**：最快。**代价**：内容更新得重新部署。适合博客/文档站。",
+        "**水合（[Hydration](/glossary#hydration)）**：SSR 发来的 HTML 是「死的」——按钮长得像按钮但不能点。需要等 JS 加载完，给页面「充电」让它能动起来。这一步如果服务器和浏览器算出的 HTML **不一样**（比如服务端用了不同的语言、或者用到了 `Date.now()`），就会报『水合错误』。"
       ],
       "bullets": [
         {
           "emoji": "🖥️",
-          "title": "SSR",
-          "body": "HTML 在服务器生成，首屏快，SEO 好。"
+          "title": "SSR — 服务器现做现发",
+          "body": "首屏快、SEO 好；服务器要干活"
         },
         {
           "emoji": "🌍",
-          "title": "CSR",
-          "body": "空壳 HTML + JS 渲染，首屏白屏，SEO 差。"
+          "title": "CSR — 浏览器自己拼",
+          "body": "服务器轻松、交互丝滑；首屏会白屏"
         },
         {
           "emoji": "📦",
-          "title": "SSG",
-          "body": "构建时生成 HTML，纯静态，速度最快。"
+          "title": "SSG — 部署时就做好",
+          "body": "最快；内容更新要重新部署"
         },
         {
           "emoji": "💧",
-          "title": "水合",
-          "body": "React 把事件绑定到服务端 HTML，不一致就报错。"
+          "title": "水合 = 给死页面充电",
+          "body": "服务器/浏览器结果对不上，就报水合错误"
         }
       ]
     },

@@ -50,8 +50,16 @@ const verifyStep = z.object({
       z.object({
         label: z.string(),
         correct: z.boolean(),
+        hint: z.string().optional(),
       }),
     )
+    .optional(),
+  revealOption: z
+    .object({
+      label: z.string(),
+      correct: z.boolean(),
+      hint: z.string().optional(),
+    })
     .optional(),
 });
 
@@ -69,7 +77,7 @@ const lessons = defineCollection({
   loader: glob({ pattern: '**/*.json', base: 'src/data/lessons' }),
   schema: z.object({
     id: z.string(),
-    level: z.number().int().min(1).max(13),
+    level: z.number().int().min(0).max(13),
     sublevel: z.number().int().min(1),
     categoryIcon: z.string(),
     categoryName: z.string(),

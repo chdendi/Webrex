@@ -582,14 +582,14 @@ app.get('/lessons/l1-1/check', (c) =>
 );
 
 // ===========================================================================
-// L1.2 — Network timing demo
+// L4.5 — Network timing demo (formerly L1.2)
 // ===========================================================================
-app.get('/lessons/l1-2', (c) =>
+app.get('/lessons/l4-5', (c) =>
   c.html(`<!doctype html>
 <html lang="zh-CN">
   <head>
     <meta charset="UTF-8" />
-    <title>Webrex Lab · L1.2 Network Timing</title>
+    <title>Webrex Lab · L4.5 Network Timing</title>
     <style>
       body { font-family: system-ui, sans-serif; margin: 2rem auto; max-width: 720px; color: #1f2937; }
       h1 { font-size: 1.5rem; }
@@ -598,7 +598,7 @@ app.get('/lessons/l1-2', (c) =>
     </style>
   </head>
   <body>
-    <h1>L1.2 Lab · Network Timing 练习</h1>
+    <h1>L4.5 Lab · Network Timing 练习</h1>
     <p>先打开 DevTools → <strong>Network</strong> 面板，勾选 <strong>Disable cache</strong>，然后点击下方按钮触发慢请求。</p>
     <p>请求发起后，点列表中 <code>/api/slow</code> 这一行 → <strong>Timing</strong> 标签 → 看 5 段色块拆分。</p>
     <button id="trigger-btn" onclick="sendSlow()">🔁 发起慢请求</button>

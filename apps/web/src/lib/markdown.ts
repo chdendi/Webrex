@@ -96,23 +96,41 @@ function processInlineCode(text: string, processor: (s: string) => string): stri
 }
 
 function applyGlossary(text: string): string {
-  let result = text;
-  for (const entry of sortedGlossary) {
-    const escaped = escapeRegex(entry.term);
-    const isCJK = /^[\u4e00-\u9fff]/.test(entry.term);
-    const left = isCJK ? '' : '\\b';
-    const right = isCJK ? '' : '\\b';
-    const regex = new RegExp(`${left}${escaped}${right}`, 'gi');
-    result = result.replace(regex, (match) => {
-      const escapedDef = entry.definition
-        .replace(/&/g, '&amp;')
-        .replace(/"/g, '&quot;')
-        .replace(/</g, '&lt;')
-        .replace(/>/g, '&gt;');
-      return `<span class="glossary" title="${escapedDef}" data-glossary-term="${entry.term.replace(/"/g, '&quot;')}">${match}</span>`;
-    });
-  }
-  return result;
+  if (sortedGlossary.length === 0) return text;
+
+  // Single-pass replacement using one alternation regex. Longest terms come
+  // first in `sortedGlossary`, and JS regex alternation tries alternatives in
+  // order, so longer matches win when overlapping (e.g. "TLS / SSL" before
+  // "SSL"). Doing it in one pass also prevents the previous bug where
+  // iterating per-term would inject a <span> for term B inside the title=""
+  // attribute of an already-wrapped term A.
+  // Word-boundary the ASCII terms so "REST" doesn't match inside "RESTful";
+  // CJK terms get no boundary (Chinese has no \b concept).
+  const pattern = sortedGlossary
+    .map((g) => {
+      const escaped = escapeRegex(g.term);
+      const isCJK = /^[一-鿿]/.test(g.term);
+      return isCJK ? escaped : `\\b${escaped}\\b`;
+    })
+    .join('|');
+  const regex = new RegExp(pattern, 'gi');
+
+  // Split on HTML tags so we never run the replace inside an existing tag \u2014
+  // that protects markdown that already contains raw HTML, and protects us
+  // from re-processing the spans we just injected if this is ever called twice.
+  const parts = text.split(/(<[^>]+>)/);
+  return parts
+    .map((part) => {
+      if (!part || part.startsWith('<')) return part;
+      return part.replace(regex, (match) => {
+        const lookup = sortedGlossary.find((g) => g.term.toLowerCase() === match.toLowerCase()) ?? sortedGlossary[0];
+        const esc = (s: string) =>
+          s.replace(/&/g, '&amp;').replace(/"/g, '&quot;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+        const fullAttr = lookup.fullName ? ` data-glossary-fullname="${esc(lookup.fullName)}"` : '';
+        return `<span class="glossary" role="button" tabindex="0" aria-label="查看术语 ${esc(lookup.term)} 的释义" data-glossary-term="${esc(lookup.term)}" data-glossary-def="${esc(lookup.definition)}"${fullAttr}>${match}</span>`;
+      });
+    })
+    .join('');
 }
 
 export function mdGlossary(text: string): string {

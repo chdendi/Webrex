@@ -1,8 +1,12 @@
 ---
 import '~/styles/global.css';
+import { getAllLessonsSorted } from '~/lib/lessons';
 export const prerender = true;
 
 const locale: import('~/i18n/types').Locale = 'zh-CN';
+const allLessons = await getAllLessonsSorted();
+const firstLessonId = allLessons[0]?.id ?? 'l0-1';
+const orderedIds = allLessons.map((l) => l.id);
 ---
 
 <!doctype html>
@@ -48,7 +52,9 @@ const locale: import('~/i18n/types').Locale = 'zh-CN';
 
       <div class="w-full max-w-[320px] sm:max-w-none flex">
         <a
-          href="/lessons/l1-1"
+          id="start-cta"
+          href={`/lessons/${firstLessonId}`}
+          data-default-href={`/lessons/${firstLessonId}`}
           class="w-full sm:w-auto inline-flex items-center justify-center px-6 py-3 rounded-[var(--radius-button)] text-[14px] font-medium transition-colors"
           style="background: var(--color-accent); color: white;"
           onmouseover="this.style.background='var(--color-accent-hover)'"
@@ -58,5 +64,37 @@ const locale: import('~/i18n/types').Locale = 'zh-CN';
         </a>
       </div>
     </main>
+
+    <script is:inline define:vars={{ orderedIds }}>
+      (function () {
+        var KEY = 'webrex:progress:v1';
+        var cta = document.getElementById('start-cta');
+        if (!cta || !Array.isArray(orderedIds) || orderedIds.length === 0) return;
+        try {
+          var raw = localStorage.getItem(KEY);
+          if (!raw) return;
+          var parsed = JSON.parse(raw);
+          var completions = parsed && Array.isArray(parsed.completions) ? parsed.completions : [];
+          if (completions.length === 0) return;
+          var done = new Set();
+          completions.forEach(function (c) {
+            if (c && typeof c.lessonId === 'string') done.add(c.lessonId);
+          });
+          var nextId = null;
+          for (var i = 0; i < orderedIds.length; i++) {
+            if (!done.has(orderedIds[i])) {
+              nextId = orderedIds[i];
+              break;
+            }
+          }
+          if (nextId && nextId !== cta.getAttribute('data-default-href').split('/').pop()) {
+            cta.setAttribute('href', '/lessons/' + nextId);
+          } else if (!nextId) {
+            cta.setAttribute('href', '/lessons/' + orderedIds[orderedIds.length - 1]);
+            cta.textContent = 'Review the last lesson';
+          }
+        } catch (e) {}
+      })();
+    </script>
   </body>
 </html>

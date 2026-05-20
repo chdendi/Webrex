@@ -71,7 +71,7 @@
           "win": "Ctrl+Shift+R"
         }
       ],
-      "externalSite": "http://localhost:8787/demos/l4-6",
+      "externalSite": "/demos/l4-6",
       "expectedOutcome": "第二次刷新后：/api/cache/short.json 的 Size 列显示 disk cache 或 memory cache；/api/cache/no.json 的 Size 列显示实际体积（200）；页面文档可能显示 304 或实际体积。"
     },
     {

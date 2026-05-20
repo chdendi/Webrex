@@ -65,7 +65,7 @@
         }
       ],
       "expectedOutcome": "找到最宽的色块，记住它的函数名。",
-      "externalSite": "http://localhost:8787/demos/l12-2"
+      "externalSite": "/demos/l12-2"
     },
     {
       "slug": "verify",

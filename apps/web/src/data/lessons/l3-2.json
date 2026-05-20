@@ -73,7 +73,7 @@
           "win": "F12"
         }
       ],
-      "externalSite": "http://localhost:8787/demos/l3-2",
+      "externalSite": "/demos/l3-2",
       "expectedOutcome": "你完整走了一遍「Console 右键复制 → Webrex 🛡 Redact 面板 → 拿到脱敏后版本」的链路，并且能从顶部 chips 看出原文里到底藏了哪几类敏感数据。以后任何要往 AI / 工单 / Slack 粘报错的场合，都先过一道这个面板。"
     },
     {

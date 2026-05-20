@@ -66,7 +66,7 @@
         }
       ],
       "expectedOutcome": "在 Device Toolbar 的 iPhone 14 Pro 模式下，鼠标悬停顶部导航链接时 hover 效果仍然生效（颜色/下划线变化）。但在真实 iPhone 14 Pro 上，手指触摸无法触发 :hover。",
-      "externalSite": "http://localhost:8787/demos/l8-4"
+      "externalSite": "/demos/l8-4"
     },
     {
       "slug": "verify",

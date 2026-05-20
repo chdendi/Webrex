@@ -62,7 +62,7 @@
         }
       ],
       "expectedOutcome": "Slow 3G 下的 DOMContentLoaded 和 Load 时间显著高于 No throttling。Network 面板的 Waterfall 瀑布流清楚地显示了资源的下载顺序和时间。你找到了至少一个加载耗时最长的资源。",
-      "externalSite": "http://localhost:8787/demos/l4-4"
+      "externalSite": "/demos/l4-4"
     },
     {
       "slug": "verify",

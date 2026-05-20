@@ -68,7 +68,7 @@
         }
       ],
       "expectedOutcome": "IndexedDB 里存储的是结构化数据（对象/数组），比 localStorage 只能存字符串要丰富得多。",
-      "externalSite": "http://localhost:8787/demos/l6-3"
+      "externalSite": "/demos/l6-3"
     },
     {
       "slug": "verify",

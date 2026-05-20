@@ -62,7 +62,7 @@
           "win": "Ctrl+Shift+C"
         }
       ],
-      "externalSite": "http://localhost:8787/demos/l7-4",
+      "externalSite": "/demos/l7-4",
       "expectedOutcome": "innerHTML 触发 XSS 弹窗，textContent 安全显示纯文本。"
     },
     {

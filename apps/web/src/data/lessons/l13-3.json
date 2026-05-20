@@ -56,7 +56,7 @@
         }
       ],
       "expectedOutcome": "找到至少一个有 source map 的文件和一个没有的，感受两者差异。",
-      "externalSite": "http://localhost:8787/demos/l13-3"
+      "externalSite": "/demos/l13-3"
     },
     {
       "slug": "verify",

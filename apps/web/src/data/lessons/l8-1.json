@@ -66,7 +66,7 @@
         }
       ],
       "expectedOutcome": "iPhone SE 模式下视口宽度标注为 375px，页面顶部导航栏收成菜单图标，hero 区文字和按钮水平排列变为垂直排列。",
-      "externalSite": "http://localhost:8787/demos/l8-1"
+      "externalSite": "/demos/l8-1"
     },
     {
       "slug": "verify",

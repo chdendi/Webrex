@@ -51,7 +51,7 @@
       "intro": "把 Webrex Demo 上的外部库文件夹加入忽略列表，然后验证 F11 会跳过这些文件。",
       "steps": [
         "打开 Webrex Demo 页面，按 `F12`（Win/Linux）或 `⌘+⌥+I`（Mac）打开 DevTools，切换到 **Sources** 面板。",
-        "在左侧文件树中找到 `localhost:8787` 域名下的文件夹结构。寻找包含外部库代码的文件夹——通常是第三方 CDN 脚本或以 `/js/` 开头带 hash 的压缩文件。",
+        "在左侧文件树中找到 Demo 页面对应域名下的文件夹结构。寻找包含外部库代码的文件夹——通常是第三方 CDN 脚本或以 `/js/` 开头带 hash 的压缩文件。",
         "**右键点击**这个外部库文件夹（不是单个文件），在弹出的上下文菜单中选择 **Add to ignore list**。文件夹图标会变为灰色或带有特殊标识，表示已被忽略。",
         "现在在**你自己的代码区域**（非外部库文件夹，如内联 JS block 或 `/js/utils.a3f8b2.js`）找一行代码，点击行号设一个普通断点。",
         "回到 Webrex Demo 页面，点击 hero 区的 **Search** 按钮触发断点。",
@@ -82,7 +82,7 @@
         }
       ],
       "expectedOutcome": "被加入 Ignore List 的文件夹在 F11 Step Into 时会被自动跳过，调试器只在自己写的代码中前进。",
-      "externalSite": "http://localhost:8787/demos/l5-6"
+      "externalSite": "/demos/l5-6"
     },
     {
       "slug": "verify",

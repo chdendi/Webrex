@@ -73,7 +73,7 @@
         }
       ],
       "expectedOutcome": "Console 顶部固定显示 2–3 个 Live Expression，分别盯着焦点元素、滚动位置（和可选的实时时钟）。你按 Tab 时第一行跟着跳，滚页面时第二行数字实时变。这种「无侵入、无刷屏」的监控比 `console.log` 更适合调任何随时间变化的值。",
-      "externalSite": "http://localhost:8787/demos/l3-5"
+      "externalSite": "/demos/l3-5"
     },
     {
       "slug": "verify",

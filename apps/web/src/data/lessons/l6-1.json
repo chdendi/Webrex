@@ -49,7 +49,7 @@
         "看下方嵌入式 Demo 区域",
         "按 `⌘+⌥+I` / `F12` 打开 DevTools。",
         "点击顶部的 **Application** 面板标签。",
-        "在左侧边栏展开 **Cookies**，点击下面的 `http://localhost:8787`。",
+        "在左侧边栏展开 **Cookies**，点击下面的 Demo 页面 origin。",
         "观察右侧表格的 8 列信息。找到 **webrex_session** 和 **webrex_theme** cookie，对比它们的属性差异。",
         "找到 **HttpOnly** 列，注意 `webrex_session` 的 HttpOnly 值（安全相关的 session cookie 通常为 true）。",
         "找到 **Expires / Max-Age** 列，看哪些 Cookie 有日期（持久 Cookie），哪些是 `Session`（会话 Cookie）。",
@@ -68,7 +68,7 @@
         }
       ],
       "expectedOutcome": "HttpOnly=true 的 Cookie 不会出现在 document.cookie 的返回结果里，其余 Cookie 可以读到。",
-      "externalSite": "http://localhost:8787/demos/l6-1"
+      "externalSite": "/demos/l6-1"
     },
     {
       "slug": "verify",

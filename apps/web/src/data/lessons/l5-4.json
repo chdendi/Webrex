@@ -76,7 +76,7 @@
         }
       ],
       "expectedOutcome": "调用栈清晰地展示了从事件回调（栈底）到 deepNestedFunc（栈顶）的完整路径。点击不同帧能切换 Scope 面板内容。",
-      "externalSite": "http://localhost:8787/demos/l5-4"
+      "externalSite": "/demos/l5-4"
     },
     {
       "slug": "verify",

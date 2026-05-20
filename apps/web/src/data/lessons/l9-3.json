@@ -59,7 +59,7 @@
         }
       ],
       "expectedOutcome": "你看到了 Safari 的 UA 字符串，页面没有变化——证明了 UA 覆盖的局限性：外观不变，引擎更没变。",
-      "externalSite": "http://localhost:8787/demos/l9-3"
+      "externalSite": "/demos/l9-3"
     },
     {
       "slug": "verify",

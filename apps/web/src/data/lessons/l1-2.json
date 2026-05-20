@@ -68,7 +68,7 @@
         }
       ],
       "expectedOutcome": "5 段时序数字都能看到。TTFB（Waiting for server response）通常是最长的一段。",
-      "externalSite": "http://localhost:8787/demos/l1-2"
+      "externalSite": "/demos/l1-2"
     },
     {
       "slug": "verify",

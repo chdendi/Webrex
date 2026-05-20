@@ -58,7 +58,7 @@
         "对比下表，确认你的判断：\n\n| 属性 | Chrome 桌面 | Safari 桌面 | Safari iOS | 能否放心用？ |\n| --- | --- | --- | --- | --- |\n| `backdrop-filter` | ✅ 绿 | ✅ 需 `-webkit-` | ✅ 需 `-webkit-` | 加上前缀就可以 |\n| `gap in flexbox` | ✅ 绿 | ✅ iOS 14+ | ✅ iOS 14+ | 确认用户 iOS 版本 |\n\n如果你的用户群包含 iOS 13 以下的设备，那 `gap in flexbox` 就是个坑——这就是 caniuse 帮你做的决定。"
       ],
       "shortcuts": [],
-      "externalSite": "http://localhost:8787/demos/l9-2",
+      "externalSite": "/demos/l9-2",
       "expectedOutcome": "你能在 caniuse.com 上搜索任意 CSS/JS 特性，读懂颜色码和 Notes，并根据 Safari iOS 的支持情况判断能否在生产环境使用。"
     },
     {

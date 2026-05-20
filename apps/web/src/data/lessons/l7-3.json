@@ -67,7 +67,7 @@
           "win": "Ctrl+Shift+A"
         }
       ],
-      "externalSite": "http://localhost:8787/demos/l7-3",
+      "externalSite": "/demos/l7-3",
       "expectedOutcome": "Application 面板中看到 Cookie 的 SameSite 属性，Console 中 document.cookie 不返回 HttpOnly Cookie。"
     },
     {

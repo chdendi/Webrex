@@ -54,7 +54,7 @@
         "点击下方 **刷新 Demo** 按钮——页面正常加载，因为服务器配置了回退。",
         "对照下表理解 SPA 与 MPA 的差异：\n\n| 特征 | SPA | MPA |\n| --- | --- | --- |\n| 导航时的 URL 变化 | pushState 修改，无请求 | 浏览器发起 GET 请求 |\n| Network 面板 | 无新 HTML 文档请求 | 每次出现新 document |\n| 页面加载速度 | 首次慢，后续快 | 每次都重新加载 |\n| 刷新/直接访问 | 需要服务器回退 | 天然支持 |\n| SEO | 需额外处理（SSR/预渲染） | 天然支持 |"
       ],
-      "externalSite": "http://localhost:8787/demos/l10-1",
+      "externalSite": "/demos/l10-1",
       "expectedOutcome": "点击导航链接后 URL 变了，但 Network 面板里没有新的 document 请求。"
     },
     {

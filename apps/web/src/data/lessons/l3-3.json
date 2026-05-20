@@ -74,7 +74,7 @@
         }
       ],
       "expectedOutcome": "你已经在 Console 里把 `<h1>React</h1>` 当成 JS 对象操作了：读到了 `tagName === 'H1'`，并且通过 `$0.style.color = 'red'` 让页面上的字样**真的变红**。这个反馈环（点 → `$0` → 改 → 看见变化）就是后续所有「在线调样式 / 临时改 DOM」的基础。",
-      "externalSite": "http://localhost:8787/demos/l3-3"
+      "externalSite": "/demos/l3-3"
     },
     {
       "slug": "verify",

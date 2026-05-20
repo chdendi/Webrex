@@ -64,7 +64,7 @@
         }
       ],
       "expectedOutcome": "理解四种协议在 DevTools Network 面板中各自对应的过滤器。",
-      "externalSite": "http://localhost:8787/demos/l11-2"
+      "externalSite": "/demos/l11-2"
     },
     {
       "slug": "verify",

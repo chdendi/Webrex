@@ -59,7 +59,7 @@
         "对比下表理解不同文件的缓存策略：\n\n| 文件类型 | 缓存策略 | 原因 |\n| --- | --- | --- |\n| index.html | max-age=0 / no-cache | 需要每次验证版本，确保拿到最新的资源引用 |\n| *.a3f8b2.js | max-age=31536000, immutable | hash 保证唯一性，可放心长缓存 |\n| *.d4e5f6.css | max-age=31536000, immutable | 同 JS，hash 变了自动更新 |\n| 图片/字体 | max-age=31536000 | 静态资源变动少，长缓存即可 |"
       ],
       "expectedOutcome": "JS 文件有长缓存（一年的 max-age），HTML 文档缓存短或无缓存。文件名中的随机字符串就是 content hash。",
-      "externalSite": "http://localhost:8787/demos/l10-3"
+      "externalSite": "/demos/l10-3"
     },
     {
       "slug": "verify",

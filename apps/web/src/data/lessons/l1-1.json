@@ -66,7 +66,7 @@
         }
       ],
       "expectedOutcome": "对照上表：**没变化的部分**（文字、布局、配色）由 HTML+CSS 提供；**变化的部分**（搜索弹窗、可运行代码块）全部由 JS 提供。这就是三层的边界——它们各司其职，互不替代。",
-      "externalSite": "http://localhost:8787/demos/l1-1"
+      "externalSite": "/demos/l1-1"
     },
     {
       "slug": "verify",

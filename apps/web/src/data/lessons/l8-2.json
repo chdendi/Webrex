@@ -64,7 +64,7 @@
         }
       ],
       "expectedOutcome": "找到 <meta name=\"viewport\" content=\"width=device-width, initial-scale=1\">，看到了 width=device-width 和 initial-scale=1 两个关键配置。",
-      "externalSite": "http://localhost:8787/demos/l8-2"
+      "externalSite": "/demos/l8-2"
     },
     {
       "slug": "verify",

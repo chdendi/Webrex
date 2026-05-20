@@ -52,7 +52,7 @@
       ],
       "shortcuts": [],
       "expectedOutcome": "你能说出三个主流渲染引擎的名字（Blink / WebKit / Gecko），并解释为什么「桌面 Chrome 正常 ≠ iPhone Chrome 正常」。",
-      "externalSite": "http://localhost:8787/demos/l9-1"
+      "externalSite": "/demos/l9-1"
     },
     {
       "slug": "verify",

@@ -63,7 +63,7 @@
           "win": "F12"
         }
       ],
-      "externalSite": "http://localhost:8787/demos/l9-4",
+      "externalSite": "/demos/l9-4",
       "expectedOutcome": "你能说出 Safari 四个经典翻车点，并知道第一个（日期解析）的修复方法：空格改 T。"
     },
     {

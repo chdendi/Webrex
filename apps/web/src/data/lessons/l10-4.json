@@ -55,7 +55,7 @@
         "对照下表建立环境识别直觉：\n\n| 检查项 | Dev | Staging | Prod |\n| --- | --- | --- | --- |\n| React DevTools 图标 | 红色（开发模式） | 红色或正常 | 正常（无标记） |\n| Source Map | 完整加载 | 通常加载 | 一般不加载 |\n| Console 警告 | 详细的 React 警告 | 可能有 | 无开发警告 |\n| JS 代码格式 | 未压缩、可读 | 可能压缩 | 压缩混淆 |\n| API 域名 | localhost 或 dev 域名 | staging 域名 | 生产域名 |\n| 错误追踪 | 通常关闭 | 开启（staging 项目） | 开启（prod 项目） |"
       ],
       "expectedOutcome": "Webrex Demo 的 Console 里没有 React 开发警告，Sources 没有 source map，API 指向生产域名——符合生产环境特征。",
-      "externalSite": "http://localhost:8787/demos/l10-4"
+      "externalSite": "/demos/l10-4"
     },
     {
       "slug": "verify",

@@ -73,7 +73,7 @@
         }
       ],
       "expectedOutcome": "Logpoint 只在 Console 打印日志不暂停页面，条件断点只在条件满足时才暂停。两者都不需要改动源文件。",
-      "externalSite": "http://localhost:8787/demos/l5-3"
+      "externalSite": "/demos/l5-3"
     },
     {
       "slug": "verify",

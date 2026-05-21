@@ -19,7 +19,7 @@ app.get('/', (c) =>
       '/lessons/webrex-demo',
       '/lessons/l1-1',
       '/lessons/l1-1/check',
-      '/lessons/l1-2',
+      '/lessons/l4-5',
       '/lessons/l2-1',
       '/lessons/l2-3',
       '/lessons/l2-4',

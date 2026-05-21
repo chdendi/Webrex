@@ -8,16 +8,18 @@
   "time": 5,
   "track": "core",
   "needsLab": true,
-  "stuck": "Console 里没看到 CSP 报错？确认下方 Demo 已加载完成，按 Cmd+R / F5 刷新页面。",
+  "stuck": "Console 里没看到 CSP 报错？确认下方 Demo 已加载完成，按 Cmd+R / F5 刷新页面。陌生缩写：[CSP](/glossary#csp) / [XSS](/glossary#xss) → 查 [/glossary](/glossary)。",
   "steps": [
     {
       "slug": "concept",
       "type": "concept",
-      "title": "Content-Security-Policy 是什么",
-      "hook": "有时你的脚本明明写了，浏览器却说「我不执行」。",
+      "title": "CSP = 网站给浏览器列的『白名单』",
+      "hook": "有时你的脚本明明写了，浏览器却说「我不执行」。不是 bug——是这个网站设了白名单，你的脚本不在名单上。",
       "body": [
-        "CSP 是服务器返回的一个响应头，告诉浏览器哪些来源的脚本/样式/图片可以加载。",
-        "违反 CSP 的策略会在 Console 中以红色错误出现，Network 面板里可以直接看 Response Headers。"
+        "**先翻译名字**：内容安全策略（[CSP](/glossary#csp)，全称 Content-Security-Policy）= 网站偷偷给浏览器递的一份「白名单」，规定哪些来源的脚本/样式/图片**可以加载**，没在名单上的全部拦截。",
+        "**为什么要这么做**：防御跨站脚本攻击（[XSS](/glossary#xss)）。坏人即使把恶意脚本注入到页面里，浏览器也会因为这段代码不在白名单上而直接拒绝执行。",
+        "**怎么知道有 CSP**：白名单写在响应头里（HTTP 响应头中的 `Content-Security-Policy` 这一行）。在 Network 面板点某个请求 → Headers → Response Headers 就能看到。",
+        "**什么时候会撞上**：你或 AI 写的内联 `<script>` 标签、第三方加载的脚本，只要不在白名单上，Console 里就会蹦出红色 `Content Security Policy` 报错。"
       ],
       "bullets": [
         {

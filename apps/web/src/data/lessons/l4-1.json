@@ -8,7 +8,7 @@
   "time": 5,
   "track": "core",
   "needsLab": true,
-  "stuck": "Console 里没看到红色报错？确认下方 Demo 已加载完成，并已刷新页面。",
+  "stuck": "Console 里没看到红色报错？确认下方 Demo 已加载完成，并已刷新页面。陌生缩写没看懂？查 [/glossary](/glossary)。",
   "steps": [
     {
       "slug": "concept",
@@ -16,10 +16,11 @@
       "title": "CORS 是浏览器警察，不是服务器锁",
       "hook": "你写的请求服务器明明回了数据，浏览器却把它扔掉了。谁在替你做主？",
       "body": [
-        "CORS（跨域资源共享）是浏览器的安全机制。关键认知：服务器照常接收请求、照常返回响应，但浏览器检查响应头里有没有 Access-Control-Allow-Origin，没有就直接丢弃。",
-        "请求分为两种：简单请求（GET/POST 带有限几种 Content-Type）直接发，浏览器只看响应头；非简单请求浏览器会先发一个 OPTIONS「预检」请求，预检没通过，真正的请求根本不会发。",
-        "所以遇到两种 CORS 报错：Console 里 'has been blocked by CORS policy: No Access-Control-Allow-Origin header' 说明响应回来了但被丢弃；'has been blocked by CORS policy: Response to preflight' 说明预检阶段就被拒绝了。",
-        "下一步你在 lab 页面里会看到：一个请求被 CORS 拦截（红色）、一个请求正常通过（绿色）。两个请求的区别只在响应头，不在你写的代码。"
+        "**先把名字翻译一下**：跨域请求（[CORS](/glossary#cors)，全称 Cross-Origin Resource Sharing）= 你的页面来自 A 网址，但代码却想去 B 网址要数据。",
+        "**关键认知**：服务器其实**照常接收**请求、**照常返回**响应——拦截动作发生在你自己的浏览器里。浏览器收到响应后会检查它的「准入证」（一个叫 `Access-Control-Allow-Origin` 的响应头）。没准入证 → 浏览器直接把数据丢掉，你的代码以为请求失败了。",
+        "**还有个『预检』机制**：稍微复杂点的请求（比如带自定义请求头的 PUT/DELETE），浏览器会先偷偷发一个 `OPTIONS` 试探请求。试探没过，真正的请求根本不会发。",
+        "**所以你常见的两种红字**：`No Access-Control-Allow-Origin header` = 响应回来了但被丢弃；`Response to preflight` = 试探阶段就被拒了，真正请求没发。",
+        "下一步在 lab 页面里你会看到：一个请求被拦截（红）、一个正常通过（绿）。**两者代码完全一样**，差别只在响应头。"
       ],
       "bullets": [
         {

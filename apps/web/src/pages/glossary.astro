@@ -1,0 +1,132 @@
+---
+import '~/styles/global.css';
+import { glossary } from '~/data/glossary';
+
+export const prerender = true;
+
+const locale: import('~/i18n/types').Locale = 'zh-CN';
+
+// Sort case-insensitively so "API" comes before "Backend" but ordering stays
+// human (CSS before Cache-Control? let's just sort by uppercased term).
+const sorted = [...glossary].sort((a, b) => a.term.toUpperCase().localeCompare(b.term.toUpperCase()));
+
+// Build an A-Z jump strip from the actual first letters present.
+const letters = Array.from(new Set(sorted.map((g) => g.term[0].toUpperCase()))).sort();
+
+// Per-entry anchor id — strip non-alphanumerics so URLs like /glossary#cors
+// hit the right entry regardless of the original term style.
+function slugFor(term: string): string {
+  return term
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g, '-')
+    .replace(/(^-|-$)/g, '');
+}
+---
+
+<!doctype html>
+<html lang={locale}>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <title>Webrex 词典 — 前端黑话速查</title>
+    <meta name="description" content="Webrex 内置的前端术语速查表：CSS / DOM / API / CORS / SSR …… 每条只一行，看完就走。" />
+  </head>
+  <body
+    class="min-h-screen antialiased"
+    style="background: var(--color-bg); color: var(--color-text);"
+  >
+    <main class="max-w-[860px] mx-auto px-6 py-12 md:py-16">
+      <header class="mb-10 flex flex-col gap-3">
+        <a
+          href="/"
+          class="text-[12px] font-medium uppercase tracking-[0.15em] hover:underline"
+          style="color: var(--color-text-faint);"
+        >
+          ← Webrex
+        </a>
+        <h1
+          class="text-[32px] md:text-[40px] font-semibold tracking-[-0.01em] leading-[1.15]"
+          style="color: var(--color-text);"
+        >
+          📖 前端黑话词典
+        </h1>
+        <p class="text-[15px] md:text-[16px] leading-[1.6]" style="color: var(--color-text-muted);">
+          AI 给你蹦出来的缩写、术语，一行话讲明白。**不用背**——下次遇到回来查就行。
+        </p>
+      </header>
+
+      {/* Letter jump strip */}
+      <nav
+        class="sticky top-0 z-10 flex flex-wrap gap-1.5 mb-8 py-3 px-2 -mx-2 rounded-md"
+        style="background: var(--color-bg); border-bottom: 1px solid var(--color-outline-variant);"
+        aria-label="字母跳转"
+      >
+        {
+          letters.map((letter) => (
+            <a
+              href={`#letter-${letter}`}
+              class="inline-flex items-center justify-center w-7 h-7 rounded text-[12px] font-semibold transition-colors hover:bg-[color:var(--color-surface-container-low)]"
+              style="color: var(--color-text);"
+            >
+              {letter}
+            </a>
+          ))
+        }
+      </nav>
+
+      <ul class="flex flex-col gap-1.5">
+        {
+          sorted.map((entry, i) => {
+            const letter = entry.term[0].toUpperCase();
+            const prevLetter = i > 0 ? sorted[i - 1].term[0].toUpperCase() : '';
+            const isFirstOfLetter = letter !== prevLetter;
+            const slug = slugFor(entry.term);
+            return (
+              <>
+                {isFirstOfLetter && (
+                  <li
+                    id={`letter-${letter}`}
+                    class="mt-6 mb-1 text-[11px] font-bold uppercase tracking-[0.18em]"
+                    style="color: var(--color-on-surface-faint);"
+                  >
+                    {letter}
+                  </li>
+                )}
+                <li
+                  id={slug}
+                  class="flex flex-col sm:flex-row gap-2 sm:gap-4 py-3 px-3 rounded-lg scroll-mt-20"
+                  style="border: 1px solid var(--color-outline-variant); background: var(--color-surface-container-lowest);"
+                >
+                  <div class="sm:w-[200px] shrink-0 flex flex-col gap-0.5">
+                    <span
+                      class="font-mono text-[14px] font-semibold"
+                      style="color: var(--color-primary);"
+                    >
+                      {entry.term}
+                    </span>
+                    {entry.fullName && (
+                      <span
+                        class="text-[11px] italic leading-tight"
+                        style="color: var(--color-on-surface-faint);"
+                      >
+                        {entry.fullName}
+                      </span>
+                    )}
+                  </div>
+                  <div class="flex-1 text-[14px] leading-[1.6]" style="color: var(--color-text-muted);">
+                    {entry.definition}
+                  </div>
+                </li>
+              </>
+            );
+          })
+        }
+      </ul>
+
+      <footer class="mt-16 pt-6 text-[13px] border-t" style="color: var(--color-text-faint); border-color: var(--color-outline-variant);">
+        缺词？少了一条你想查的术语？提个 issue —— 这页是 Webrex 的活字典，会一直加。
+      </footer>
+    </main>
+  </body>
+</html>

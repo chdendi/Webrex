@@ -43,7 +43,7 @@
       "type": "practice",
       "title": "把 H1 改个文字、改个颜色、放大字号，最后 Copy rule",
       "intro": "下方 Demo 的 H1 **Elements Practice Page** 原始样式是 `font-size: 28px; color: #1F2937;`。我们临时把它变成红色大号字，然后把最终 CSS 复制出来。",
-      "externalSite": "http://localhost:8787/demos/l2-2",
+      "externalSite": "/demos/l2-2",
       "steps": [
         "看下方嵌入式 Demo 区域。按 `F12` / `⌘+⌥+I` 打开 DevTools，切到 **Elements** 面板。",
         "在 Elements 面板里按 `⌘+F` (Mac) / `Ctrl+F` (Win/Linux) 打开 Elements 搜索框，输入 `main` 按 Enter，光标自动跳到 `<h1 data-testid=\"main-heading\">Elements Practice Page</h1>` 节点。",

@@ -61,7 +61,7 @@
         }
       ],
       "expectedOutcome": "Slow 3G + 4× slowdown 下，Webrex Demo 的 Finish 时间从 < 1 秒变为若干秒（通常在 3-8 秒之间），页面加载过程明显可感知——白屏、文字逐块出现。",
-      "externalSite": "http://localhost:8787/demos/l8-5"
+      "externalSite": "/demos/l8-5"
     },
     {
       "slug": "verify",

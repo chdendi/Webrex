@@ -62,7 +62,7 @@
         }
       ],
       "expectedOutcome": "找到 LCP 元素和耗时，看到 Experience 轨道中的布局偏移记录。",
-      "externalSite": "http://localhost:8787/demos/l13-2"
+      "externalSite": "/demos/l13-2"
     },
     {
       "slug": "verify",

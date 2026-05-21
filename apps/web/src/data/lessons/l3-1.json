@@ -68,7 +68,7 @@
         }
       ],
       "expectedOutcome": "你能用 **Default levels** 下拉单独看 Errors / Warnings / Info（数量 5/3/2），且能展开第一条 Error 看到堆栈，知道它是从哪个文件抛出来的。这两件事——**筛选** 和 **追溯来源**——是后续所有 Console 排错的基础。",
-      "externalSite": "http://localhost:8787/demos/l3-1"
+      "externalSite": "/demos/l3-1"
     },
     {
       "slug": "verify",

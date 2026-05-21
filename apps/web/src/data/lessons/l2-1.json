@@ -43,7 +43,7 @@
       "type": "practice",
       "title": "在练习页用 Inspect 锁定 H1 并看浮窗信息",
       "intro": "下方 Demo 有一个超大标题 **Elements Practice Page**（字号 28px、颜色 #1F2937）和三个按钮。我们用 Inspect 模式直奔 H1。",
-      "externalSite": "http://localhost:8787/demos/l2-1",
+      "externalSite": "/demos/l2-1",
       "steps": [
         "看下方嵌入式 Demo 区域。确认 Demo 加载完成，能看到大标题 **Elements Practice Page** 和下方的 **Primary / Secondary / Danger** 三个按钮。",
         "按 `F12` (Win/Linux) 或 `⌘+⌥+I` (Mac) 打开 DevTools，切到 **Elements** 面板（顶栏第一个 tab）。",

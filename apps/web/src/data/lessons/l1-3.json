@@ -57,7 +57,7 @@
         "点击下方 **刷新 Demo** 按钮重新加载 demo，让 Network 面板记录到请求。",
         "切到 **Elements**：找到 `<body>` 标签，看它的直接子节点有几个。",
         "切到 **Console**：看有几条 Errors 或 Warnings。",
-        "切到 **Sources**：展开 `localhost:8787` 域名，数 .js 文件个数。",
+        "切到 **Sources**：展开 Demo 页面对应的域名，数 .js 文件个数。",
         "切到 **Network**：看面板底部状态栏的总请求数 X。",
         "切到 **Application** → Cookies → 看有几行 cookie。"
       ],
@@ -69,7 +69,7 @@
         }
       ],
       "expectedOutcome": "5 个面板各找到了一个数字，意味着你能在面板间自由切换。",
-      "externalSite": "http://localhost:8787/demos/l1-3"
+      "externalSite": "/demos/l1-3"
     },
     {
       "slug": "verify",

@@ -59,7 +59,7 @@
         }
       ],
       "expectedOutcome": "Summary 标签页显示三类活动的时间分配，其中 Scripting 通常占最大。",
-      "externalSite": "http://localhost:8787/demos/l12-1"
+      "externalSite": "/demos/l12-1"
     },
     {
       "slug": "verify",

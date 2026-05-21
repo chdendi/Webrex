@@ -43,7 +43,7 @@
       "type": "practice",
       "title": "用 Cmd+F + H 让被遮罩挡住的按钮恢复可点击",
       "intro": "下方 Demo 里有三个按钮（Primary / Secondary / Danger）。页面上方盖了一层全屏透明的 ghost-overlay div，肉眼看不见，但接住了所有点击。我们用 H 键来抓出这个真凶。",
-      "externalSite": "http://localhost:8787/demos/l2-3",
+      "externalSite": "/demos/l2-3",
       "steps": [
         "看下方嵌入式 Demo 区域。确认能看到 **Primary**、**Secondary**、**Danger** 三个按钮。",
         "**先试着点一下 Primary 按钮**。如果没反应，就是因为 ghost-overlay 挡在了上面——这就是我们要解决的「灵异事件」。",

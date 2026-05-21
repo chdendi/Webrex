@@ -68,7 +68,7 @@
         }
       ],
       "expectedOutcome": "Service Worker 注册了 Webrex Demo 的缓存策略，Cache Storage 里预存了大量静态资源，使页面可在离线时加载。",
-      "externalSite": "http://localhost:8787/demos/l6-4"
+      "externalSite": "/demos/l6-4"
     },
     {
       "slug": "verify",

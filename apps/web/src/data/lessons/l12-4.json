@@ -65,7 +65,7 @@
         }
       ],
       "expectedOutcome": "4x slowdown 下同操作的耗时约为正常模式的 4 倍。",
-      "externalSite": "http://localhost:8787/demos/l12-4"
+      "externalSite": "/demos/l12-4"
     },
     {
       "slug": "verify",

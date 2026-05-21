@@ -59,6 +59,11 @@ pnpm typecheck          # tsc/astro check across the workspace
 pnpm lint               # lint across the workspace
 ```
 
+For deployed lesson pages, set `PUBLIC_WEBREX_LAB_ORIGIN` on `@webrex/web` to
+the public origin of the deployed `@webrex/lab` Worker. Lesson content stores
+demo paths like `/demos/l1-2`; the web app resolves them through that origin so
+public users never load demos from their own `localhost`.
+
 ---
 
 ## What lives where

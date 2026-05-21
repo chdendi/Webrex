@@ -77,7 +77,7 @@
         }
       ],
       "expectedOutcome": "断点触发时能看到黄色高亮行、右侧 Scope 面板显示的变量值，以及调试控制栏的 F8/F10/F11 按钮。",
-      "externalSite": "http://localhost:8787/demos/l5-2"
+      "externalSite": "/demos/l5-2"
     },
     {
       "slug": "verify",

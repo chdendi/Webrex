@@ -60,7 +60,7 @@
         }
       ],
       "expectedOutcome": "得到一份包含分数和优化建议的完整报告。",
-      "externalSite": "http://localhost:8787/demos/l13-1"
+      "externalSite": "/demos/l13-1"
     },
     {
       "slug": "verify",

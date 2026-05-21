@@ -63,7 +63,7 @@
           "win": "Ctrl+Shift+N"
         }
       ],
-      "externalSite": "http://localhost:8787/demos/l7-2",
+      "externalSite": "/demos/l7-2",
       "expectedOutcome": "严格 CSP 下内联脚本被 block，Console 出现 CSP violation 错误。"
     },
     {

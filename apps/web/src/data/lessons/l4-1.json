@@ -67,7 +67,7 @@
           "win": "Ctrl+Shift+N"
         }
       ],
-      "externalSite": "http://localhost:8787/demos/l4-1",
+      "externalSite": "/demos/l4-1",
       "expectedOutcome": "Console 里一条红色 CORS 报错 + 一条绿色 success；Network 里 /api/cors-blocked 的 Response Headers 缺少 Access-Control-Allow-Origin，/api/cors-allowed 有这个头。"
     },
     {

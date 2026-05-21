@@ -48,11 +48,11 @@
       "steps": [
         "看下方嵌入式 Demo 区域",
         "按 `⌘+⌥+I` / `F12` 打开 DevTools，切换到 **Application** 面板。",
-        "在左侧边栏展开 **Local Storage**，点击 `http://localhost:8787`，查看已存储的 key（如 `webrex_prefs`）。",
+        "在左侧边栏展开 **Local Storage**，点击 Demo 页面 origin，查看已存储的 key（如 `webrex_prefs`）。",
         "切换到 **Console** 面板，输入 `localStorage.setItem('webrex-test', 'hello')` 回车。",
-        "切回 **Application** 面板，在 Local Storage 的 `http://localhost:8787` 下确认 `webrex-test` 和原有的 `webrex_prefs` 都在。",
+        "切回 **Application** 面板，在 Local Storage 的 Demo 页面 origin 下确认 `webrex-test` 和原有的 `webrex_prefs` 都在。",
         "在 Console 输入 `sessionStorage.setItem('webrex-test', 'hello session')` 回车。",
-        "在 Application 面板展开 **Session Storage** → `http://localhost:8787`，确认 `webrex-test` 和原有的 `webrex_temp` 都出现了。",
+        "在 Application 面板展开 **Session Storage** → Demo 页面 origin，确认 `webrex-test` 和原有的 `webrex_temp` 都出现了。",
         "关闭这个标签页（不要关整个浏览器），新开标签页重新打开 Webrex Demo 页面。",
         "打开 Application 面板，检查 Local Storage 和 Session Storage：localStorage 的 `webrex-test` 还在，sessionStorage 的已经没了。"
       ],
@@ -69,7 +69,7 @@
         }
       ],
       "expectedOutcome": "重新打开标签页后，localStorage 的 key 依然存在，sessionStorage 的 key 已经消失。",
-      "externalSite": "http://localhost:8787/demos/l6-2"
+      "externalSite": "/demos/l6-2"
     },
     {
       "slug": "verify",

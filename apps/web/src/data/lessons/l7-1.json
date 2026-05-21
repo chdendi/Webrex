@@ -55,7 +55,7 @@
           "win": "Ctrl+Shift+J"
         }
       ],
-      "externalSite": "http://localhost:8787/demos/l7-1",
+      "externalSite": "/demos/l7-1",
       "expectedOutcome": "Console 可能出现被动 Mixed Content 警告；主动 Mixed Content 则直接被 block。"
     },
     {

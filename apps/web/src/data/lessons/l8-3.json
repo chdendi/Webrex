@@ -71,7 +71,7 @@
         }
       ],
       "expectedOutcome": "在某个宽度（Webrex Demo 的响应式断点包括 1024px、768px、480px），顶部导航栏的链接文字会从完整显示切换为菜单图标（或反过来）。这个宽度就是 Webrex Demo 的导航栏响应式断点。",
-      "externalSite": "http://localhost:8787/demos/l8-3"
+      "externalSite": "/demos/l8-3"
     },
     {
       "slug": "verify",

@@ -66,7 +66,7 @@
         }
       ],
       "expectedOutcome": "3 个键都按过了：J → Console、C → Inspect、M → Device Toolbar。从此每种场景秒切对应工具。",
-      "externalSite": "http://localhost:8787/demos/l1-4"
+      "externalSite": "/demos/l1-4"
     },
     {
       "slug": "verify",

@@ -60,7 +60,7 @@
         "对照下表，判断一个页面属于哪种渲染模式：\n\n| 特性 | SSR | CSR | SSG | 判断方式 |\n| --- | --- | --- | --- |\n| View Source 有无内容 | 有完整 HTML | 只有空壳 | 有完整 HTML | view-source:URL |\n| 首屏速度 | 快 | 慢（白屏） | 最快 | Performance 面板 |\n| 是否需要服务器 | 是 | 否（可用 CDN） | 否（纯静态文件） | 看请求头 |\n| JS 禁用后能否显示 | 能（基础内容） | 不能 | 能（完整内容） | disable JS 测试 |"
       ],
       "expectedOutcome": "Webrex Demo 的 View Source 有完整 HTML 内容（SSR/SSG），本地 SPA 页面只有空壳（CSR）。",
-      "externalSite": "http://localhost:8787/demos/l10-2"
+      "externalSite": "/demos/l10-2"
     },
     {
       "slug": "verify",

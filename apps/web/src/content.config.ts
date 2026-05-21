@@ -7,6 +7,20 @@ const shortcutSchema = z.object({
   win: z.string(),
 });
 
+const loopbackHosts = new Set(['localhost', '127.0.0.1', '0.0.0.0', '[::1]', '::1']);
+
+const externalSiteSchema = z.string().refine(
+  (value) => {
+    if (value.startsWith('/')) return true;
+    try {
+      return !loopbackHosts.has(new URL(value).hostname);
+    } catch {
+      return true;
+    }
+  },
+  { message: 'externalSite must not point at localhost; use a /demos path or a public URL.' },
+);
+
 const conceptStep = z.object({
   slug: z.literal('concept'),
   type: z.literal('concept'),
@@ -34,7 +48,7 @@ const practiceStep = z.object({
   shortcuts: z.array(shortcutSchema).optional(),
   expectedOutcome: z.string().optional(),
   labUrl: z.string().optional(),
-  externalSite: z.string().optional(),
+  externalSite: externalSiteSchema.optional(),
 });
 
 const verifyStep = z.object({

@@ -8,6 +8,7 @@ import ConceptStep from '~/components/steps/ConceptStep.astro';
 import PracticeStep from '~/components/steps/PracticeStep.astro';
 import VerifyStep from '~/components/steps/VerifyStep.astro';
 import LessonLayout from '~/layouts/LessonLayout.astro';
+import { resolveDemoUrl } from '~/lib/demo-url';
 import { getLessonNavContext } from '~/lib/lessons';
 
 export const prerender = false;
@@ -57,12 +58,14 @@ const locale = 'zh-CN' as const;
 // Demo iframe persists across practice → verify within the same lesson, so the
 // learner can re-inspect the demo while answering the check.
 const practiceWithDemo = steps.find((s: any) => s.type === 'practice' && s.externalSite);
-const railExternalSite: string | undefined =
+const rawRailExternalSite: string | undefined =
   step.type === 'practice'
     ? (step as any).externalSite
     : step.type === 'verify'
       ? (practiceWithDemo as any)?.externalSite
       : undefined;
+const railExternalSite = resolveDemoUrl(rawRailExternalSite);
+const stepExternalSite = resolveDemoUrl((step as any).externalSite);
 const hasRightRail = !!railExternalSite;
 ---
 
@@ -93,7 +96,7 @@ const hasRightRail = !!railExternalSite;
       shortcuts={step.shortcuts}
       expectedOutcome={step.expectedOutcome}
       labUrl={step.labUrl}
-      externalSite={step.externalSite}
+      externalSite={stepExternalSite}
       lessonId={lesson.id}
       stepSlug={step.slug}
       nextStepHref={nextStepHref}
@@ -122,7 +125,7 @@ const hasRightRail = !!railExternalSite;
     <RedactionPanel client:load />
   </ErrorBoundary>
 
-  {step.type === "practice" && !step.externalSite && (
+  {step.type === "practice" && !stepExternalSite && (
     <ErrorBoundary client:load>
       <StepGuidePanel
         client:load
@@ -130,7 +133,7 @@ const hasRightRail = !!railExternalSite;
         stepTitle={step.title}
         lessonId={lesson.id}
         stepSlug={step.slug}
-        externalSite={step.externalSite}
+        externalSite={stepExternalSite}
         nextStepHref={nextStepHref}
       />
     </ErrorBoundary>

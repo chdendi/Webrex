@@ -65,7 +65,7 @@
         }
       ],
       "expectedOutcome": "HAR 文件是 JSON，包含所有请求的 URL、Headers、响应体。",
-      "externalSite": "http://localhost:8787/demos/l11-1"
+      "externalSite": "/demos/l11-1"
     },
     {
       "slug": "verify",

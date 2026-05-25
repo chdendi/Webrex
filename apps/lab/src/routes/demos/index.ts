@@ -86,7 +86,7 @@ app.get('/demos/l1-4', (c) =>
 );
 
 // ── L2 — Elements ─────────────────────────
-const l2Demo = () =>
+const l2Demo = ({ withOverlay = false }: { withOverlay?: boolean } = {}) =>
   page(
     'Webrex · Elements',
     `
@@ -101,17 +101,23 @@ const l2Demo = () =>
 <h3 style="font-size:15px;font-weight:600;margin-bottom:4px">Card Title</h3>
 <p style="font-size:13px;color:#64748b">Try double-clicking the title text to edit it inline, or modify styles in the Styles panel.</p>
 </div>
+${
+  withOverlay
+    ? `
 <div style="position:relative;padding:12px;background:#fef3c7;border-radius:8px;font-size:13px;color:#92400e">
 Tip: Press <strong>H</strong> in Elements to toggle visibility. Try it on the overlay below.
 </div>
 <div data-testid="ghost-overlay" style="position:fixed;inset:0;z-index:999;background:rgba(0,0,0,0.002);pointer-events:all"></div>
+`
+    : ''
+}
 `,
   );
 
 app.get('/demos/l2', (c) => c.html(l2Demo()));
 app.get('/demos/l2-1', (c) => c.html(l2Demo()));
 app.get('/demos/l2-2', (c) => c.html(l2Demo()));
-app.get('/demos/l2-3', (c) => c.html(l2Demo()));
+app.get('/demos/l2-3', (c) => c.html(l2Demo({ withOverlay: true })));
 app.get('/demos/l2-4', (c) => c.html(l2Demo()));
 
 // ── L3 — Console ──────────────────────────

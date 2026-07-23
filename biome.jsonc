@@ -1,5 +1,5 @@
 {
-  "$schema": "https://biomejs.dev/schemas/2.4.14/schema.json",
+  "$schema": "https://biomejs.dev/schemas/2.5.5/schema.json",
   "vcs": {
     "enabled": true,
     "clientKind": "git",
@@ -8,7 +8,7 @@
   "linter": {
     "enabled": true,
     "rules": {
-      "recommended": true,
+      "preset": "recommended",
       "style": {
         "noNonNullAssertion": "warn"
       },
@@ -39,7 +39,22 @@
       "trailingCommas": "all"
     }
   },
-  "overrides": [],
+  "overrides": [
+    {
+      "includes": ["apps/web/**/*.astro"],
+      "linter": {
+        "rules": {
+          "correctness": {
+            "noUnusedImports": "off",
+            "noUnusedVariables": "off"
+          },
+          "style": {
+            "noNonNullAssertion": "off"
+          }
+        }
+      }
+    }
+  ],
   "files": {
     "includes": ["apps/**/*.{ts,tsx,mjs,js,json,jsonc,astro}", "packages/**/*.ts"],
     "ignoreUnknown": true

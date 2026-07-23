@@ -7,10 +7,11 @@ export const hitCounts = new Map<string, Map<string, number>>();
 export function sessionTracker(c: Context, next: Next) {
   const path = c.req.path;
   const sessionId = c.req.header('x-webrex-session') || 'default';
-  if (!sessions.has(sessionId)) sessions.set(sessionId, new Set());
-  sessions.get(sessionId)!.add(path);
-  if (!hitCounts.has(sessionId)) hitCounts.set(sessionId, new Map());
-  const counts = hitCounts.get(sessionId)!;
+  const visited = sessions.get(sessionId) ?? new Set<string>();
+  visited.add(path);
+  sessions.set(sessionId, visited);
+  const counts = hitCounts.get(sessionId) ?? new Map<string, number>();
+  hitCounts.set(sessionId, counts);
   counts.set(path, (counts.get(path) || 0) + 1);
   return next();
 }

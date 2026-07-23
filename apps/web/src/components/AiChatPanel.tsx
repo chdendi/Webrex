@@ -119,6 +119,8 @@ export default function AiChatPanel(props: Props) {
     });
   }, []);
 
+  // messages drives this scroll side effect as streaming content changes.
+  // biome-ignore lint/correctness/useExhaustiveDependencies: messages is the trigger for scrolling
   useEffect(() => {
     if (msgAreaRef.current) scrollToBottom(msgAreaRef.current);
   }, [messages]);
@@ -149,7 +151,9 @@ export default function AiChatPanel(props: Props) {
     const ctx = formatLessonContext(props);
 
     try {
-      const session = await window.ai!.createTextSession();
+      const ai = window.ai;
+      if (!ai) throw new Error('Chrome built-in AI is unavailable');
+      const session = await ai.createTextSession();
       const fullPrompt = `${ctx}\n\nQuestion: ${q}`;
 
       if (session.promptStreaming) {
@@ -267,10 +271,12 @@ export default function AiChatPanel(props: Props) {
   };
 
   const clearMessages = () => setMessages([]);
+  const latestAssistant = [...messages].reverse().find((message) => message.role === 'assistant');
 
   if (!open) {
     return (
-      <button type="button"
+      <button
+        type="button"
         onClick={() => setOpen(true)}
         className="fixed bottom-20 right-6 z-40 flex items-center gap-2 px-4 py-2.5 rounded-full shadow-lg border text-sm font-medium transition-all hover:scale-105 active:scale-95"
         style={{
@@ -295,7 +301,13 @@ export default function AiChatPanel(props: Props) {
 
   return (
     <>
-      <div className="fixed inset-0 z-40" style={{ background: 'rgba(0,0,0,0.2)' }} onClick={() => setOpen(false)} />
+      <button
+        type="button"
+        aria-label="Close AI assistant"
+        className="fixed inset-0 z-40 border-0 p-0"
+        style={{ background: 'rgba(0,0,0,0.2)' }}
+        onClick={() => setOpen(false)}
+      />
 
       <aside
         className="fixed bottom-20 right-6 z-50 flex flex-col rounded-xl border shadow-2xl overflow-hidden animate-slide-up"
@@ -337,7 +349,8 @@ export default function AiChatPanel(props: Props) {
             </span>
           </div>
           <div className="flex items-center gap-1">
-            <button type="button"
+            <button
+              type="button"
               onClick={clearMessages}
               className="text-sm px-2 py-1 rounded"
               style={{ color: 'var(--color-text-muted)' }}
@@ -360,7 +373,8 @@ export default function AiChatPanel(props: Props) {
                 <path d="M8 6V4c0-1 1-2 2-2h4c1 0 2 1 2 2v2" />
               </svg>
             </button>
-            <button type="button"
+            <button
+              type="button"
               onClick={() => setOpen(false)}
               className="text-xl px-1 leading-none"
               style={{ color: 'var(--color-text-muted)' }}
@@ -377,7 +391,8 @@ export default function AiChatPanel(props: Props) {
             const disabled = m === 'quick' && !windowAiAvailable;
             const label = m === 'craft' ? 'Craft Prompt' : m === 'quick' ? 'Quick Answer' : 'Configure API';
             return (
-              <button type="button"
+              <button
+                type="button"
                 key={m}
                 onClick={() => {
                   if (!disabled) setMode(m);
@@ -442,7 +457,8 @@ export default function AiChatPanel(props: Props) {
                 }}
               />
             </label>
-            <button type="button"
+            <button
+              type="button"
               onClick={saveApiConfig}
               disabled={apiStatus === 'testing' || !apiKey}
               className="w-full px-4 py-2.5 rounded-md text-sm font-semibold text-white transition-colors disabled:opacity-50"
@@ -490,8 +506,8 @@ export default function AiChatPanel(props: Props) {
               ))}
               {messages.length > 0 &&
                 mode === 'craft' &&
-                [...messages].reverse().find((m) => m.role === 'assistant')?.content &&
-                [...messages].reverse().find((m) => m.role === 'assistant')!.content.length > 0 && (
+                latestAssistant?.content &&
+                latestAssistant.content.length > 0 && (
                   <div
                     className="flex flex-col gap-2 mt-2 pt-2 border-t"
                     style={{ borderColor: 'var(--color-border)' }}
@@ -503,21 +519,24 @@ export default function AiChatPanel(props: Props) {
                       Actions
                     </span>
                     <div className="flex flex-wrap gap-2">
-                      <button type="button"
+                      <button
+                        type="button"
                         onClick={() => copyAndOpen('claude')}
                         className="px-2.5 py-1.5 rounded-md text-xs font-medium text-white transition-colors"
                         style={{ background: 'var(--color-accent)' }}
                       >
                         🛡 Open Claude
                       </button>
-                      <button type="button"
+                      <button
+                        type="button"
                         onClick={() => copyAndOpen('chatgpt')}
                         className="px-2.5 py-1.5 rounded-md text-xs font-medium text-white transition-colors"
                         style={{ background: 'var(--color-accent)' }}
                       >
                         🛡 Open ChatGPT
                       </button>
-                      <button type="button"
+                      <button
+                        type="button"
                         onClick={() => copyAndOpen('copilot')}
                         className="px-2.5 py-1.5 rounded-md text-xs font-medium text-white transition-colors"
                         style={{ background: 'var(--color-accent)' }}
@@ -526,7 +545,8 @@ export default function AiChatPanel(props: Props) {
                       </button>
                     </div>
                     <div className="flex gap-2">
-                      <button type="button"
+                      <button
+                        type="button"
                         onClick={handleRedactCopy}
                         className="px-2.5 py-1.5 rounded-md text-xs border transition-colors"
                         style={{
@@ -536,7 +556,8 @@ export default function AiChatPanel(props: Props) {
                       >
                         🛡 Redact & Copy
                       </button>
-                      <button type="button"
+                      <button
+                        type="button"
                         onClick={handleCopyRaw}
                         className="px-2.5 py-1.5 rounded-md text-xs border transition-colors"
                         style={{
@@ -577,7 +598,8 @@ export default function AiChatPanel(props: Props) {
                 </span>
                 <div className="flex gap-2">
                   {streaming && (
-                    <button type="button"
+                    <button
+                      type="button"
                       onClick={handleStop}
                       className="px-3 py-1.5 rounded-md text-xs font-semibold border transition-colors"
                       style={{
@@ -588,7 +610,8 @@ export default function AiChatPanel(props: Props) {
                       Stop
                     </button>
                   )}
-                  <button type="button"
+                  <button
+                    type="button"
                     onClick={handleSend}
                     disabled={!input.trim() || streaming}
                     className="px-4 py-1.5 rounded-md text-xs font-semibold text-white transition-colors disabled:opacity-50"

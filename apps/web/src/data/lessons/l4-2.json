@@ -48,16 +48,16 @@
       "slug": "practice",
       "type": "practice",
       "title": "刷新两次，看三个资源的缓存差异",
-      "intro": "这个 lab 页面返回一个 HTML 和两个 JSON API：一个告诉浏览器「缓存 60 秒」，一个告诉浏览器「每次确认」。刷新两次之后，三行的 Size 列会有三种不同表现。",
+      "intro": "这个 lab 页面会加载三个 JSON API：长期缓存、缓存 60 秒和完全不缓存。刷新两次之后，三行的 Size 列会有不同表现。",
       "steps": [
         "看下方嵌入式 Demo 区域",
         "按 `⌘+⌥+I` (Mac) / `F12` (Win/Linux) 打开 DevTools。",
         "切换到 **Network** 面板。确认顶部的 **Disable cache** 复选框 **没有勾选**。如果已勾选，点击取消它。",
-        "点击下方 **刷新 Demo** 按钮，让 demo 重新加载。（第一次）。观察 Network 面板出现的请求。找到以下三个资源：主页面文档（l4-8）、/api/cache/short.json、/api/cache/no.json。",
+        "点击下方 **刷新 Demo** 按钮，让 demo 重新加载（第一次）。观察 Network 面板出现的请求，找到 `/api/cache/long.json`、`/api/cache/short.json`、`/api/cache/none.json`。",
         "在列表里点击 `/api/cache/short.json`，右侧面板切换到 **Headers** 选项卡，在 **Response Headers** 区域找到 `Cache-Control` 的值，记录下来。",
-        "在列表里点击 `/api/cache/no.json`，同样在 Response Headers 里找到 `Cache-Control` 的值，记录下来。",
+        "在列表里点击 `/api/cache/none.json`，同样在 Response Headers 里找到 `Cache-Control` 的值，记录下来。",
         "再次点击下方 **刷新 Demo** 按钮（第二次）。现在看 Network 列表里三个资源的 **Size** 列。",
-        "对照下表确认你看到的情况：\n\n| 资源 | Cache-Control | 第一次 Size | 第二次 Size |\n| --- | --- | --- | --- |\n| l4-8 (页面文档) | 每次验证 | 实际体积（如 1.2 kB） | 304 |\n| /api/cache/short.json | max-age=60 | 实际体积 | disk cache 或 memory cache |\n| /api/cache/no.json | no-store 或 no-cache | 实际体积 | 200 |\n\n/short.json 第二次会是 disk cache 或 memory cache（完全没发网络请求）；/no.json 每次都是 200（每次都去服务器拉完整的）。"
+        "对照下表确认你看到的情况：\n\n| 资源 | Cache-Control | 第一次 Size | 第二次 Size |\n| --- | --- | --- | --- |\n| /api/cache/long.json | max-age=31536000, immutable | 实际体积 | disk cache 或 memory cache |\n| /api/cache/short.json | max-age=60 | 实际体积 | disk cache 或 memory cache |\n| /api/cache/none.json | no-store | 实际体积 | 200 |\n\n/long.json 和 /short.json 第二次通常直接用本地缓存；/none.json 每次都是 200。"
       ],
       "shortcuts": [
         {
@@ -72,7 +72,10 @@
         }
       ],
       "externalSite": "/demos/l4-2",
-      "expectedOutcome": "第二次刷新后：/api/cache/short.json 的 Size 列显示 disk cache 或 memory cache；/api/cache/no.json 的 Size 列显示实际体积（200）；页面文档可能显示 304 或实际体积。"
+      "labContract": {
+        "bodyIncludes": ["/api/cache/long.json", "/api/cache/short.json", "/api/cache/none.json"]
+      },
+      "expectedOutcome": "第二次刷新后：/api/cache/long.json 和 /api/cache/short.json 的 Size 列通常显示 disk cache 或 memory cache；/api/cache/none.json 仍显示实际体积（200）。"
     },
     {
       "slug": "verify",

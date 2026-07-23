@@ -1260,7 +1260,7 @@ app.get('/lessons/l12-ssr', (c) =>
   </div>
   <script>
     // CSR — client renders this
-    document.getElementById('csr-container').innerHTML = '<strong>JS-rendered content:</strong> This text was rendered by JavaScript on the client. You won\'t find it in View Source.';
+    document.getElementById('csr-container').innerHTML = '<strong>JS-rendered content:</strong> This text was rendered by JavaScript on the client. You won\\u0027t find it in View Source.';
     // Simulate hydration mismatch
     document.getElementById('hydrate-demo').textContent = '客户端渲染的内容（和服务端不一致！）';
     if (document.getElementById('hydrate-demo').textContent !== '服务端渲染的内容') {

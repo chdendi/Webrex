@@ -65,12 +65,13 @@ export function redact(input: string, options: RedactOptions = {}): RedactionRes
   for (const def of PATTERNS) {
     if (!enabled[def.category]) continue;
     const re = new RegExp(def.pattern.source, def.pattern.flags);
-    let m: RegExpExecArray | null;
-    while ((m = re.exec(input))) {
+    let m = re.exec(input);
+    while (m) {
       const original = m[0];
       // Skip empty matches to avoid infinite loops on zero-width regexes
       if (original.length === 0) {
         re.lastIndex++;
+        m = re.exec(input);
         continue;
       }
       allMatches.push({
@@ -82,11 +83,11 @@ export function redact(input: string, options: RedactOptions = {}): RedactionRes
         original,
         replacement: makeReplacement(def, style),
       });
+      m = re.exec(input);
     }
   }
 
   // Sort by start, then prefer longer matches when overlap (drop overlapped shorter ones)
-  allMatches.sort((a, b) => a.start - b.start || b.end - b.end);
   const kept: RedactionMatch[] = [];
   let cursor = 0;
   for (const m of allMatches.sort((a, b) => a.start - b.start || b.end - b.start - (a.end - a.start))) {

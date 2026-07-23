@@ -66,7 +66,9 @@ export default function RedactionPanel() {
   return (
     <>
       {/* Backdrop */}
-      <div
+      <button
+        type="button"
+        aria-label="Close redaction panel"
         className="fixed inset-0 z-50"
         style={{ background: 'rgba(0,0,0,0.4)', backdropFilter: 'blur(2px)' }}
         onClick={() => setOpen(false)}
@@ -100,12 +102,9 @@ export default function RedactionPanel() {
         <div className="flex-1 overflow-y-auto p-5 flex flex-col gap-5">
           {/* Original */}
           <div className="flex flex-col gap-2">
-            <label
-              className="text-xs font-medium uppercase tracking-wider"
-              style={{ color: 'var(--color-text-muted)' }}
-            >
+            <span className="text-xs font-medium uppercase tracking-wider" style={{ color: 'var(--color-text-muted)' }}>
               Paste original
-            </label>
+            </span>
             <textarea
               value={text}
               onChange={(e) => setText(e.target.value)}
@@ -182,12 +181,9 @@ export default function RedactionPanel() {
 
           {/* Redacted */}
           <div className="flex flex-col gap-2">
-            <label
-              className="text-xs font-medium uppercase tracking-wider"
-              style={{ color: 'var(--color-text-muted)' }}
-            >
+            <span className="text-xs font-medium uppercase tracking-wider" style={{ color: 'var(--color-text-muted)' }}>
               Redacted output
-            </label>
+            </span>
             <div
               className="rounded-md border p-3 font-mono text-[13px] leading-relaxed whitespace-pre-wrap"
               style={{

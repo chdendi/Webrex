@@ -15,12 +15,9 @@ interface Props {
   expectedOutcome?: string;
   labUrl?: string;
   externalSite?: string;
-  lessonId?: string;
-  stepSlug?: string;
   nextStepHref?: string;
 }
-const { title, intro, steps, shortcuts, expectedOutcome, labUrl, externalSite, lessonId, stepSlug, nextStepHref } =
-  Astro.props;
+const { title, intro, steps, shortcuts, expectedOutcome, labUrl, externalSite, nextStepHref } = Astro.props;
 const stepsJson = JSON.stringify(steps.map((s) => md(s)));
 const expectedHtml = expectedOutcome ? md(expectedOutcome) : null;
 ---

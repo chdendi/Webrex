@@ -7,6 +7,10 @@ const shortcutSchema = z.object({
   win: z.string(),
 });
 
+const labContractSchema = z.object({
+  bodyIncludes: z.array(z.string().min(1)).min(1),
+});
+
 const loopbackHosts = new Set(['localhost', '127.0.0.1', '0.0.0.0', '[::1]', '::1']);
 
 const externalSiteSchema = z.string().refine(
@@ -49,6 +53,7 @@ const practiceStep = z.object({
   expectedOutcome: z.string().optional(),
   labUrl: z.string().optional(),
   externalSite: externalSiteSchema.optional(),
+  labContract: labContractSchema.optional(),
 });
 
 const verifyStep = z.object({

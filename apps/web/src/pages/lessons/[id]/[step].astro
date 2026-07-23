@@ -4,6 +4,7 @@ import ErrorBoundary from '~/components/ErrorBoundary.tsx';
 import HelpButton from '~/components/HelpButton.astro';
 import RedactionPanel from '~/components/RedactionPanel.tsx';
 import StepGuidePanel from '~/components/StepGuidePanel.tsx';
+import AskAiStep from '~/components/steps/AskAiStep.astro';
 import ConceptStep from '~/components/steps/ConceptStep.astro';
 import PracticeStep from '~/components/steps/PracticeStep.astro';
 import VerifyStep from '~/components/steps/VerifyStep.astro';
@@ -28,10 +29,7 @@ if (stepIndex === -1) {
   return Astro.rewrite('/404');
 }
 const step = steps[stepIndex];
-const stepCount = steps.length;
-const prevStep = stepIndex > 0 ? steps[stepIndex - 1] : null;
 const nextStep = stepIndex < steps.length - 1 ? steps[stepIndex + 1] : null;
-const isLastStep = stepIndex === steps.length - 1;
 
 const stepKindLabel: Record<string, string> = {
   concept: 'Concept',
@@ -40,20 +38,7 @@ const stepKindLabel: Record<string, string> = {
   'ask-ai': 'Ask AI',
 };
 
-const nextLessonTitle = nextId
-  ? allLessons
-      .find((l: any) => l.id === nextId)
-      ?.data.title.split('——')[0]
-      .trim()
-  : undefined;
-
-const nextStepHref = isLastStep
-  ? nextId
-    ? `/lessons/${nextId}`
-    : undefined
-  : `/lessons/${lesson.id}/${nextStep!.slug}`;
-
-const locale = 'zh-CN' as const;
+const nextStepHref = nextStep ? `/lessons/${lesson.id}/${nextStep.slug}` : nextId ? `/lessons/${nextId}` : undefined;
 
 // Demo iframe persists across practice → verify within the same lesson, so the
 // learner can re-inspect the demo while answering the check.
@@ -97,8 +82,6 @@ const hasRightRail = !!railExternalSite;
       expectedOutcome={step.expectedOutcome}
       labUrl={step.labUrl}
       externalSite={stepExternalSite}
-      lessonId={lesson.id}
-      stepSlug={step.slug}
       nextStepHref={nextStepHref}
     />
   )}
@@ -111,10 +94,13 @@ const hasRightRail = !!railExternalSite;
       labCheckEndpoint={step.labCheckEndpoint}
       options={step.options}
       revealOption={step.revealOption}
-      nextStepHref={nextId ? `/lessons/${nextId}` : undefined}
+      nextStepHref={nextStepHref}
       lessonId={lesson.id}
       stepId={step.slug}
     />
+  )}
+  {step.type === "ask-ai" && (
+    <AskAiStep title={step.title} intro={step.intro} template={step.template} />
   )}
 
   {hasRightRail && railExternalSite && (

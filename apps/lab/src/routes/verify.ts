@@ -60,8 +60,9 @@ app.get('/lessons/l10-xss/check', (c) => {
 
 app.post('/lessons/l10-xss/verify', async (c) => {
   const sessionId = c.req.header('x-webrex-session') || 'default';
-  if (!sessions.has(sessionId)) sessions.set(sessionId, new Set());
-  sessions.get(sessionId)!.add('/lessons/l10-xss/verify');
+  const visited = sessions.get(sessionId) ?? new Set<string>();
+  visited.add('/lessons/l10-xss/verify');
+  sessions.set(sessionId, visited);
   return c.json({ ok: true, message: 'XSS payload recorded' });
 });
 
@@ -83,8 +84,9 @@ app.get('/lessons/l12-spa/check', (c) => {
 app.post('/lessons/l12-spa/track', async (c) => {
   const sessionId = c.req.header('x-webrex-session') || 'default';
   const body = await c.req.text();
-  if (!sessions.has(sessionId)) sessions.set(sessionId, new Set());
-  sessions.get(sessionId)!.add(body);
+  const visited = sessions.get(sessionId) ?? new Set<string>();
+  visited.add(body);
+  sessions.set(sessionId, visited);
   return c.json({ ok: true });
 });
 

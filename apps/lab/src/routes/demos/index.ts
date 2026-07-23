@@ -137,8 +137,13 @@ console.warn('[lab] Deprecation: Synchronous XHR is deprecated');
 console.warn('[lab] Each child in a list should have a unique "key" prop');
 console.info('[lab] App initialized in 234ms');
 console.info('[lab] Service Worker registered');
-window.webrexData = {user:'demo@webrex.dev',token:'eyJhbG...redacted',prefs:{theme:'dark'}};
-localStorage.setItem('webrex_sample',JSON.stringify(window.webrexData));
+window.webrexData = {
+  user:'demo@webrex.dev',
+  token:'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjEyMzQ1NjcsIm5hbWUiOiJEZW1vIiwiaWF0IjoxNzAwMDAwMDAwfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c',
+  preferences:{theme:'dark',lang:'zh-CN'},
+  internalUrl:'https://internal.webrex.dev/admin/dashboard'
+};
+localStorage.setItem('webrex.sample',JSON.stringify(window.webrexData));
 function handleClick(){document.getElementById('output').textContent='Clicked at '+new Date().toLocaleTimeString();console.log('[demo] Button clicked');}
 function copyData(){console.log('[demo] Try: copy(window.webrexData) in Console to copy this object');document.getElementById('output').textContent='Data object is in window.webrexData — see Console';}
 </script>
@@ -170,9 +175,51 @@ const l4Demo = () =>
 `,
   );
 
+const l4CorsDemo = () =>
+  page(
+    'Webrex · CORS',
+    `
+<h1 style="font-size:24px;font-weight:700;margin-bottom:8px">CORS Practice</h1>
+<p style="color:#64748b;font-size:14px;margin-bottom:16px">This page sends two cross-origin requests. One target omits CORS response headers; the other allows browser access.</p>
+<div id="blocked-result" style="padding:12px;background:#fee2e2;color:#991b1b;border-radius:8px;font-size:13px;margin-bottom:8px">Waiting for blocked request...</div>
+<div id="allowed-result" style="padding:12px;background:#dcfce7;color:#166534;border-radius:8px;font-size:13px">Waiting for allowed request...</div>
+<script>
+const blockedUrl='https://example.com/';
+const allowedUrl='https://jsonplaceholder.typicode.com/todos/1';
+fetch(blockedUrl).then(r=>r.text()).then(()=>{
+  document.getElementById('blocked-result').textContent='Unexpected: blocked request was readable';
+}).catch(e=>{
+  document.getElementById('blocked-result').textContent='Blocked by CORS as expected: '+e.message;
+});
+fetch(allowedUrl).then(r=>r.json()).then(data=>{
+  document.getElementById('allowed-result').textContent='Allowed by CORS: '+JSON.stringify(data);
+}).catch(e=>{
+  document.getElementById('allowed-result').textContent='Allowed request failed: '+e.message;
+});
+</script>
+`,
+  );
+
+const l4CacheDemo = () =>
+  page(
+    'Webrex · HTTP Cache',
+    `
+<h1 style="font-size:24px;font-weight:700;margin-bottom:8px">HTTP Cache Practice</h1>
+<p style="color:#64748b;font-size:14px;margin-bottom:16px">Refresh twice with DevTools open and compare the Size and Cache-Control columns.</p>
+<div id="long-result" style="font-size:13px;margin-bottom:6px">Loading long.json...</div>
+<div id="short-result" style="font-size:13px;margin-bottom:6px">Loading short.json...</div>
+<div id="none-result" style="font-size:13px">Loading none.json...</div>
+<script>
+fetch('/api/cache/long.json').then(r=>r.json()).then(d=>{document.getElementById('long-result').textContent='long.json: '+JSON.stringify(d)});
+fetch('/api/cache/short.json').then(r=>r.json()).then(d=>{document.getElementById('short-result').textContent='short.json: '+JSON.stringify(d)});
+fetch('/api/cache/none.json').then(r=>r.json()).then(d=>{document.getElementById('none-result').textContent='none.json: '+JSON.stringify(d)});
+</script>
+`,
+  );
+
 app.get('/demos/l4', (c) => c.html(l4Demo()));
-app.get('/demos/l4-1', (c) => c.html(l4Demo()));
-app.get('/demos/l4-2', (c) => c.html(l4Demo()));
+app.get('/demos/l4-1', (c) => c.html(l4CorsDemo()));
+app.get('/demos/l4-2', (c) => c.html(l4CacheDemo()));
 app.get('/demos/l4-3', (c) => c.html(l4Demo()));
 app.get('/demos/l4-4', (c) => c.html(l4Demo()));
 
@@ -394,7 +441,7 @@ const l12Demo = () =>
 <p style="font-size:12px;color:#64748b;margin-top:8px">Open Network panel while clicking — no document request. This is SPA routing.</p>
 <p style="font-size:12px;color:#64748b">View Source vs Elements: server-rendered content is in source; client-rendered is only in Elements.</p>
 <script>
-var views={home:'<strong>Home</strong><p style="margin-top:8px">This content was rendered by JavaScript (CSR). View Source won\'t show it.</p>',about:'<strong>About</strong><p style="margin-top:8px">URL changed to /about but no page reload. History API + client-side rendering.</p>'};
+var views={home:'<strong>Home</strong><p style="margin-top:8px">This content was rendered by JavaScript (CSR). View Source won\\u0027t show it.</p>',about:'<strong>About</strong><p style="margin-top:8px">URL changed to /about but no page reload. History API + client-side rendering.</p>'};
 function navigate(page){history.pushState({},'',page==='home'?'/demos/l12':'/demos/l12/'+page);document.getElementById('spa-view').innerHTML=views[page];}
 </script>
 `,

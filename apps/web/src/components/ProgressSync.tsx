@@ -1,5 +1,5 @@
 import { useEffect } from 'react';
-import { clearAttempts, clearCompletions, readAttempts, readCompletions } from '~/lib/progress/local-store';
+import { readAttempts, readCompletions, removeAttempts, removeCompletions } from '~/lib/progress/local-store';
 
 declare global {
   interface Window {
@@ -10,9 +10,9 @@ declare global {
 
 /**
  * Mounted with `client:idle` from LessonLayout. If a user is signed in and
- * the local store has any queued anonymous progress, POST it to
- * /api/progress/sync. On 200, clear the local store; on any failure, leave
- * the local data intact so we can retry on the next page view.
+ * the local store has any queued progress, POST it to /api/progress/sync.
+ * On 200, remove only the acknowledged snapshot; on any failure, leave the
+ * local data intact so we can retry on the next page view.
  *
  * Renders nothing.
  */
@@ -35,8 +35,8 @@ export default function ProgressSync() {
     })
       .then((r) => {
         if (r.ok) {
-          clearAttempts();
-          clearCompletions();
+          removeAttempts(attempts.map((attempt) => attempt.eventId));
+          removeCompletions(completions);
           window.dispatchEvent(new CustomEvent('webrex:progress-synced'));
         }
       })

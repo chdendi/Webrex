@@ -74,6 +74,9 @@
         }
       ],
       "externalSite": "/demos/l3-4",
+      "labContract": {
+        "bodyIncludes": ["webrex.sample", "internalUrl", "preferences"]
+      },
       "expectedOutcome": "你用一行 `copy()` 把一个真实形态的用户数据对象拿到剪贴板，并通过 Redact 看到 `token` → `<REDACTED_BEARER>`、email → `<REDACTED_EMAIL>`、内网 URL → `<REDACTED_INTERNAL_URL>` 三类被自动替换，而非敏感的 `preferences` 字段被原样保留。这就是「拿数据 → 脱敏 → 外发」的标准动作。"
     },
     {

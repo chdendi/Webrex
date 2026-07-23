@@ -48,12 +48,12 @@
       "steps": [
         "看下方嵌入式 Demo 区域",
         "按 `⌘+⌥+I` (Mac) / `F12` (Win/Linux) 打开 DevTools。",
-        "切换到 **Console** 面板。你应该看到一行红色报错和一 print green success 消息。红色报错包含 'has been blocked by CORS policy' 字样。如果没有，点击下方 **刷新 Demo** 按钮，。",
+        "切换到 **Console** 面板。你应该看到一行红色 CORS 报错；Demo 页面内同时会显示一条绿色的成功结果。如果没有，点击下方 **刷新 Demo** 按钮。",
         "切换到 **Network** 面板。如果面板是空的，点击下方 **刷新 Demo** 按钮，让 demo 重新加载。让它重新记录请求。",
-        "在 Network 列表里找到名为 `/api/cors-blocked` 的请求（红色/失败状态）和 `/api/cors-allowed` 的请求（绿色/成功状态）。如果列表太长，用顶部的 Filter 输入框过滤 'cors'。",
-        "点击 `/api/cors-blocked` 请求 → 右侧面板切换到 **Headers** 选项卡 → 查看 **Response Headers** 区域。",
-        "点击 `/api/cors-allowed` 请求 → 同样查看 **Response Headers** 区域。",
-        "对照下表：\n\n| 对比维度 | /api/cors-blocked | /api/cors-allowed |\n| --- | --- | --- |\n| HTTP 状态码 | 200（服务器正常返回） | 200 |\n| 响应体内容 | 有数据（但 Console 看不到） | 有数据（Console 打印了） |\n| Access-Control-Allow-Origin | **没有** ✗ | **有** ✓ |\n| Console 结果 | 红色 CORS 报错 ✗ | 绿色 success ✓ |\n\n看到差异在哪一列，就是 CORS 在做什么。"
+        "在 Network 列表里找到发往 `example.com` 的失败请求和发往 `jsonplaceholder.typicode.com` 的成功请求。如果列表太长，用顶部的 Filter 输入框过滤域名。",
+        "点击 `example.com` 请求 → 右侧面板切换到 **Headers** 选项卡 → 查看 **Response Headers** 区域。",
+        "点击 `jsonplaceholder.typicode.com` 请求 → 同样查看 **Response Headers** 区域。",
+        "对照下表：\n\n| 对比维度 | example.com | jsonplaceholder.typicode.com |\n| --- | --- | --- |\n| HTTP 状态码 | 200（服务器正常返回） | 200 |\n| 响应体内容 | 有数据（但页面 JS 读不到） | 有数据（页面显示绿色结果） |\n| Access-Control-Allow-Origin | **没有** ✗ | **有** ✓ |\n| Console 结果 | 红色 CORS 报错 ✗ | 正常完成 ✓ |\n\n看到差异在哪一列，就是 CORS 在做什么。"
       ],
       "shortcuts": [
         {
@@ -68,7 +68,10 @@
         }
       ],
       "externalSite": "/demos/l4-1",
-      "expectedOutcome": "Console 里一条红色 CORS 报错 + 一条绿色 success；Network 里 /api/cors-blocked 的 Response Headers 缺少 Access-Control-Allow-Origin，/api/cors-allowed 有这个头。"
+      "labContract": {
+        "bodyIncludes": ["https://example.com/", "https://jsonplaceholder.typicode.com/todos/1"]
+      },
+      "expectedOutcome": "Console 里有一条红色 CORS 报错，Demo 页面里有一条绿色成功结果；Network 里 example.com 的响应缺少 Access-Control-Allow-Origin，而 jsonplaceholder.typicode.com 允许跨域读取。"
     },
     {
       "slug": "verify",

@@ -21,8 +21,8 @@ app.get('/api/cache/long.json', (c) => {
 });
 
 app.get('/api/cache/short.json', (c) => {
-  c.res.headers.set('Cache-Control', 'public, max-age=10');
-  return c.json({ resource: 'short', cached: true, ttl: '10 seconds' });
+  c.res.headers.set('Cache-Control', 'public, max-age=60');
+  return c.json({ resource: 'short', cached: true, ttl: '60 seconds' });
 });
 
 app.get('/api/cache/none.json', (c) => {

@@ -1,5 +1,6 @@
 import { marked } from 'marked';
-import { glossary } from '~/data/glossary';
+import sanitizeHtml from 'sanitize-html';
+import { glossary } from '../data/glossary';
 
 // Configure once at module load
 marked.setOptions({
@@ -7,14 +8,30 @@ marked.setOptions({
   gfm: true,
 });
 
+const sanitizeOptions: sanitizeHtml.IOptions = {
+  allowedTags: [...sanitizeHtml.defaults.allowedTags, 'span'],
+  allowedAttributes: {
+    ...sanitizeHtml.defaults.allowedAttributes,
+    span: [
+      'class',
+      'role',
+      'tabindex',
+      'aria-label',
+      'data-glossary-term',
+      'data-glossary-def',
+      'data-glossary-fullname',
+    ],
+  },
+};
+
 // Render block-level markdown (paragraphs, lists, tables, code blocks)
 export function md(text: string): string {
-  return marked.parse(text) as string;
+  return sanitizeHtml(marked.parse(text) as string, sanitizeOptions);
 }
 
 // Render inline-only markdown (no paragraph wrapping); useful for headlines/captions
 export function mdInline(text: string): string {
-  return marked.parseInline(text) as string;
+  return sanitizeHtml(marked.parseInline(text) as string, sanitizeOptions);
 }
 
 function escapeRegex(s: string): string {

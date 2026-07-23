@@ -5,6 +5,7 @@ import { getCurrentUser } from '~/lib/supabase/server';
 export const prerender = false;
 
 type AttemptBody = {
+  eventId: string;
   lessonId: string;
   stepId: string;
   tier: 'hard' | 'soft' | 'self' | 'choice';
@@ -15,10 +16,14 @@ type AttemptBody = {
 
 const TIERS = new Set(['hard', 'soft', 'self', 'choice']);
 const CONFIDENCES = new Set(['high', 'mid', 'low']);
+const UUID_PATTERN = /^[0-9a-f]{8}-[0-9a-f]{4}-[1-8][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i;
 
 function parseBody(input: unknown): AttemptBody | { error: string } {
   if (!input || typeof input !== 'object') return { error: 'body must be object' };
   const o = input as Record<string, unknown>;
+  if (typeof o.eventId !== 'string' || !UUID_PATTERN.test(o.eventId)) {
+    return { error: 'invalid eventId' };
+  }
   if (typeof o.lessonId !== 'string' || o.lessonId.length === 0 || o.lessonId.length > 64) {
     return { error: 'invalid lessonId' };
   }
@@ -53,6 +58,7 @@ function parseBody(input: unknown): AttemptBody | { error: string } {
   }
 
   return {
+    eventId: o.eventId,
     lessonId: o.lessonId,
     stepId: o.stepId,
     tier: o.tier as AttemptBody['tier'],
@@ -77,15 +83,19 @@ export const POST: APIRoute = async ({ request, cookies }) => {
     return Response.json({ error: parsed.error }, { status: 400 });
   }
 
-  const { error } = await supabaseAdmin.from('attempts').insert({
-    user_id: user.id,
-    lesson_id: parsed.lessonId,
-    step_id: parsed.stepId,
-    tier: parsed.tier,
-    confidence: parsed.confidence,
-    passed: parsed.passed,
-    duration_ms: parsed.durationMs,
-  });
+  const { error } = await supabaseAdmin.from('attempts').upsert(
+    {
+      user_id: user.id,
+      client_event_id: parsed.eventId,
+      lesson_id: parsed.lessonId,
+      step_id: parsed.stepId,
+      tier: parsed.tier,
+      confidence: parsed.confidence,
+      passed: parsed.passed,
+      duration_ms: parsed.durationMs,
+    },
+    { onConflict: 'user_id,client_event_id', ignoreDuplicates: true },
+  );
 
   if (error) {
     return Response.json({ error: 'insert_failed', detail: error.message }, { status: 500 });

@@ -39,7 +39,8 @@ function saveCompleted(lessonId: string, stepSlug: string, completed: Set<number
 }
 
 function stripInlineMarkdown(text: string): string {
-  return text
+  const escaped = text.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+  return escaped
     .replace(/\[([^\]]+)\]\([^)]+\)/g, '$1')
     .replace(/\*\*([^*]+)\*\*/g, '<strong>$1</strong>')
     .replace(/`([^`]+)`/g, '<code>$1</code>')
@@ -284,7 +285,7 @@ export default function StepGuidePanel({ steps, stepTitle, lessonId, stepSlug, e
     };
     ch.addEventListener('message', handler);
     return () => ch.close();
-  }, []);
+  }, [nextStepHref, steps.length]);
 
   const writeGuideContent = useCallback(
     (win: Window) => {
@@ -426,7 +427,7 @@ export default function StepGuidePanel({ steps, stepTitle, lessonId, stepSlug, e
     const html = renderMarkdown(step);
     return (
       <button
-        key={i}
+        key={step}
         type="button"
         onClick={() => (isDone ? unmarkDone(i) : markDone(i))}
         className={[

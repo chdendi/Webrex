@@ -25,12 +25,12 @@
         {
           "emoji": "🔑",
           "title": "script-src 'self'",
-          "body": "只允许同源脚本，内联 <script> 和 eval 全部被 block"
+          "body": "只允许同源脚本，内联 `<script>` 和 eval 全部被 block"
         },
         {
           "emoji": "⚠️",
           "title": "script-src 'self' 'unsafe-inline'",
-          "body": "允许同源脚本 + 页面内联 <script>，安全性降低"
+          "body": "允许同源脚本 + 页面内联 `<script>`，安全性降低"
         },
         {
           "emoji": "🌐",

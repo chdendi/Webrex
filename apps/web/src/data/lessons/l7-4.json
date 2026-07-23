@@ -23,7 +23,7 @@
         {
           "emoji": "💉",
           "title": "XSS — 代码不该跑到这",
-          "body": "<img src=x onerror=alert(1)> 在 innerHTML 里会执行，在 textContent 里只是文字"
+          "body": "`<img src=x onerror=alert(1)>` 在 innerHTML 里会执行，在 textContent 里只是文字"
         },
         {
           "emoji": "🎭",
@@ -44,7 +44,7 @@
       "intro": "同一个 payload，在不同的输出方式下，一个弹窗一个不弹。",
       "steps": [
         "看下方嵌入式 Demo 区域",
-        "在「危险的输出（innerHTML）」输入框中输入 <img src=x onerror=alert('XSS')> 并点击输出按钮。",
+        "在「危险的输出（innerHTML）」输入框中输入 `<img src=x onerror=alert('XSS')>` 并点击输出按钮。",
         "观察：弹窗出现，说明恶意脚本被执行了。",
         "在「安全的输出（textContent）」输入框中输入同样的 payload 并点击输出按钮。",
         "观察：没有弹窗，HTML 标签被当作文本直接显示。",

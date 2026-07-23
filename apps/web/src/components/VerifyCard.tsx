@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from 'react';
-import { appendAttempt, appendCompletion } from '~/lib/progress/local-store';
+import { appendAttempt, appendCompletion, removeAttempts, removeCompletion } from '~/lib/progress/local-store';
 import AchievementCard from './AchievementCard';
 import CelebrationOverlay from './CelebrationOverlay';
 import ChoiceCard from './ChoiceCard';
@@ -64,21 +64,8 @@ export default function VerifyCard({
     const durationMs = Math.round(
       (typeof performance !== 'undefined' ? performance.now() : Date.now()) - startedAt.current,
     );
-    const postPromise = fetch('/api/attempts', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        lessonId,
-        stepId,
-        tier,
-        confidence: conf,
-        passed,
-        durationMs,
-      }),
-    }).catch(() => null);
-    // Mirror to localStorage unconditionally. Server drops anon writes; this
-    // is the only durable record until the user signs in and we sync.
-    appendAttempt({
+    const attempt = {
+      eventId: crypto.randomUUID(),
       lessonId,
       stepId,
       tier,
@@ -86,9 +73,27 @@ export default function VerifyCard({
       passed,
       durationMs,
       ts: Date.now(),
-    });
+    };
+    appendAttempt(attempt);
+    if (passed) appendCompletion(lessonId);
+
+    const postPromise = fetch('/api/attempts', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(attempt),
+    })
+      .then(async (response) => {
+        if (!response.ok) return null;
+        const result = (await response.json()) as { recorded?: boolean };
+        if (result.recorded) {
+          removeAttempts([attempt.eventId]);
+          if (passed) removeCompletion(lessonId);
+        }
+        return result;
+      })
+      .catch(() => null);
+
     if (passed) {
-      appendCompletion(lessonId);
       if (!recordedPass.current) {
         recordedPass.current = true;
         setShowCelebration(true);
@@ -108,17 +113,6 @@ export default function VerifyCard({
       return () => clearTimeout(t);
     }
   }, [confidence]);
-
-  // Auto-advance after correct choice + checkmark animation. Skip when an
-  // achievement card is rendering — the learner needs time to see it.
-  useEffect(() => {
-    if (showAchievement && nextStepHref) {
-      const t = setTimeout(() => {
-        window.location.href = nextStepHref;
-      }, 2000);
-      return () => clearTimeout(t);
-    }
-  }, [showAchievement, nextStepHref]);
 
   // Auto-advance after achievement card has been shown
   useEffect(() => {
@@ -380,7 +374,7 @@ export default function VerifyCard({
         <div
           className="prose-step text-[0.95rem] leading-relaxed"
           style={{ color: 'var(--color-text-muted)' }}
-          // biome-ignore lint/security/noDangerouslySetInnerHtml: promptHtml is sanitized by marked() before rendering
+          // biome-ignore lint/security/noDangerouslySetInnerHtml: promptHtml is sanitized by markdown.ts before rendering
           dangerouslySetInnerHTML={{ __html: promptHtml }}
         />
       ) : prompt ? (

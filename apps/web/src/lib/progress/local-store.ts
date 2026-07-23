@@ -1,9 +1,9 @@
 /**
- * Anonymous-progress local store.
+ * Progress outbox stored locally until the server acknowledges each event.
  *
- * While the user is signed out, /api/attempts short-circuits and persists
- * nothing. We mirror every attempt into localStorage so that, on next sign-in,
- * we can POST the queue to /api/progress/sync and back-fill the database.
+ * Every attempt enters this local outbox first. Anonymous attempts wait here
+ * until sign-in; authenticated attempts are removed after the direct API write
+ * is acknowledged. The same event id makes retries safe.
  *
  * Storage key holds a single JSON object:
  *   { attempts: LocalAttempt[], completions: LocalCompletion[] }
@@ -17,14 +17,14 @@ const STORAGE_KEY = 'webrex:progress:v1';
 const MAX_ATTEMPTS = 1000;
 
 export type LocalAttempt = {
+  eventId: string;
   lessonId: string;
   stepId: string;
   tier: 'hard' | 'soft' | 'self' | 'choice';
   confidence: 'high' | 'mid' | 'low' | null;
   passed: boolean;
   durationMs: number | null;
-  /** Epoch ms recorded on the client at attempt time. Used as a stable
-   *  ordering key when syncing and a soft idempotency hint. */
+  /** Epoch ms recorded on the client at attempt time. */
   ts: number;
 };
 
@@ -48,10 +48,21 @@ function readStore(): Store {
     const raw = window.localStorage.getItem(STORAGE_KEY);
     if (!raw) return emptyStore();
     const parsed = JSON.parse(raw) as Partial<Store>;
-    return {
-      attempts: Array.isArray(parsed.attempts) ? parsed.attempts : [],
+    const rawAttempts = Array.isArray(parsed.attempts) ? parsed.attempts : [];
+    let migrated = false;
+    const attempts = rawAttempts.map((attempt) => {
+      if (attempt && typeof attempt === 'object' && typeof attempt.eventId !== 'string') {
+        migrated = true;
+        return { ...attempt, eventId: crypto.randomUUID() } as LocalAttempt;
+      }
+      return attempt as LocalAttempt;
+    });
+    const store = {
+      attempts,
       completions: Array.isArray(parsed.completions) ? parsed.completions : [],
     };
+    if (migrated) window.localStorage.setItem(STORAGE_KEY, JSON.stringify(store));
+    return store;
   } catch {
     return emptyStore();
   }
@@ -81,6 +92,14 @@ export function readAttempts(): LocalAttempt[] {
   return readStore().attempts;
 }
 
+export function removeAttempts(eventIds: string[]): void {
+  if (typeof window === 'undefined' || eventIds.length === 0) return;
+  const acknowledged = new Set(eventIds);
+  const store = readStore();
+  store.attempts = store.attempts.filter((attempt) => !acknowledged.has(attempt.eventId));
+  writeStore(store);
+}
+
 export function clearAttempts(): void {
   if (typeof window === 'undefined') return;
   const store = readStore();
@@ -99,6 +118,23 @@ export function appendCompletion(lessonId: string): void {
 
 export function readCompletions(): LocalCompletion[] {
   return readStore().completions;
+}
+
+export function removeCompletions(completions: LocalCompletion[]): void {
+  if (typeof window === 'undefined' || completions.length === 0) return;
+  const acknowledged = new Set(completions.map((completion) => `${completion.lessonId}:${completion.ts}`));
+  const store = readStore();
+  store.completions = store.completions.filter(
+    (completion) => !acknowledged.has(`${completion.lessonId}:${completion.ts}`),
+  );
+  writeStore(store);
+}
+
+export function removeCompletion(lessonId: string): void {
+  if (typeof window === 'undefined') return;
+  const store = readStore();
+  store.completions = store.completions.filter((completion) => completion.lessonId !== lessonId);
+  writeStore(store);
 }
 
 export function clearCompletions(): void {

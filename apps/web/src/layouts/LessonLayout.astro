@@ -18,7 +18,7 @@ interface Props {
   hasRightRail?: boolean;
 }
 
-const { current, allLessons, prevId, nextId, index, total, locale = 'zh-CN', hasRightRail = false } = Astro.props;
+const { current, allLessons, locale = 'zh-CN', index, total, hasRightRail = false } = Astro.props;
 const data = current.data;
 const pageTitle = `L${data.level}.${data.sublevel} ${data.title} · Webrex`;
 const htmlLang = locale;
@@ -36,7 +36,7 @@ const completedIds = currentUser ? await getCompletedLessonIdsForUser(currentUse
     <title>{pageTitle}</title>
     <script>
       (function () {
-        var p = navigator.platform || '';
+        var p = navigator.userAgent || '';
         document.documentElement.setAttribute('data-os', /Mac/i.test(p) ? 'mac' : 'win');
       })();
     </script>

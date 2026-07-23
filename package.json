@@ -8,14 +8,14 @@
 		"dev:web": "pnpm --filter @webrex/web run dev",
 		"dev:lab": "pnpm --filter @webrex/lab run dev",
 		"build": "pnpm -r run build",
-		"lint": "biome lint .",
+		"lint": "biome lint --error-on-warnings .",
 		"format": "biome format --write .",
 		"check": "biome check --write .",
 		"test": "pnpm -r run test",
 		"typecheck": "pnpm -r run typecheck"
 	},
 	"devDependencies": {
-		"@biomejs/biome": "^2.4.14",
+		"@biomejs/biome": "^2.5.5",
 		"lefthook": "^2.1.6",
 		"typescript": "^5.6.3"
 	},
@@ -23,12 +23,12 @@
 	"engines": {
 		"node": ">=20"
 	},
-  "pnpm": {
-    "onlyBuiltDependencies": [
-      "esbuild",
-      "lefthook",
-      "sharp",
-      "workerd"
-    ]
-  }
+	"pnpm": {
+		"onlyBuiltDependencies": [
+			"esbuild",
+			"lefthook",
+			"sharp",
+			"workerd"
+		]
+	}
 }

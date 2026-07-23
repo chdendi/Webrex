@@ -5,6 +5,7 @@ import { getCurrentUser } from '~/lib/supabase/server';
 export const prerender = false;
 
 type LocalAttempt = {
+  eventId: string;
   lessonId: string;
   stepId: string;
   tier: 'hard' | 'soft' | 'self' | 'choice';
@@ -28,10 +29,12 @@ const TIERS = new Set(['hard', 'soft', 'self', 'choice']);
 const CONFIDENCES = new Set(['high', 'mid', 'low']);
 const MAX_ATTEMPTS = 1000;
 const MAX_COMPLETIONS = 1000;
+const UUID_PATTERN = /^[0-9a-f]{8}-[0-9a-f]{4}-[1-8][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i;
 
 function parseAttempt(input: unknown): LocalAttempt | null {
   if (!input || typeof input !== 'object') return null;
   const o = input as Record<string, unknown>;
+  if (typeof o.eventId !== 'string' || !UUID_PATTERN.test(o.eventId)) return null;
   if (typeof o.lessonId !== 'string' || o.lessonId.length === 0 || o.lessonId.length > 64) return null;
   if (typeof o.stepId !== 'string' || o.stepId.length === 0 || o.stepId.length > 64) return null;
   if (typeof o.tier !== 'string' || !TIERS.has(o.tier)) return null;
@@ -58,6 +61,7 @@ function parseAttempt(input: unknown): LocalAttempt | null {
   }
 
   return {
+    eventId: o.eventId,
     lessonId: o.lessonId,
     stepId: o.stepId,
     tier: o.tier as LocalAttempt['tier'],
@@ -120,6 +124,7 @@ export const POST: APIRoute = async ({ request, cookies }) => {
     const ordered = [...parsed.attempts].sort((a, b) => a.ts - b.ts);
     const rows = ordered.map((a) => ({
       user_id: user.id,
+      client_event_id: a.eventId,
       lesson_id: a.lessonId,
       step_id: a.stepId,
       tier: a.tier,
@@ -129,9 +134,11 @@ export const POST: APIRoute = async ({ request, cookies }) => {
       // Preserve client timestamp so percentile/rank reflect actual order.
       created_at: new Date(a.ts).toISOString(),
     }));
-    // Schema has no unique constraint on (user_id, lesson_id, step_id, created_at)
-    // — using plain insert; client clears its queue on 200 so re-syncs are rare.
-    const { error, count } = await supabaseAdmin.from('attempts').insert(rows, { count: 'exact' });
+    const { error, count } = await supabaseAdmin.from('attempts').upsert(rows, {
+      onConflict: 'user_id,client_event_id',
+      ignoreDuplicates: true,
+      count: 'exact',
+    });
     if (error) {
       return Response.json({ error: 'insert_failed', detail: error.message }, { status: 500 });
     }

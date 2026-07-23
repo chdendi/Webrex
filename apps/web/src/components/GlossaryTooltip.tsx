@@ -10,7 +10,7 @@ export default function GlossaryTooltip({ term, definition, children }: Props) {
   const [visible, setVisible] = useState(false);
   const [below, setBelow] = useState(false);
   const [style, setStyle] = useState<React.CSSProperties>({});
-  const wrapperRef = useRef<HTMLSpanElement>(null);
+  const wrapperRef = useRef<HTMLButtonElement>(null);
   const tooltipRef = useRef<HTMLDivElement>(null);
 
   const position = useCallback(() => {
@@ -50,13 +50,18 @@ export default function GlossaryTooltip({ term, definition, children }: Props) {
   }, [visible, position]);
 
   return (
-    <span
-      ref={wrapperRef}
-      className="glossary relative inline"
-      onMouseEnter={() => setVisible(true)}
-      onMouseLeave={() => setVisible(false)}
-    >
-      {children}
+    <span className="relative inline">
+      <button
+        ref={wrapperRef}
+        type="button"
+        className="glossary inline border-0 bg-transparent p-0 font-inherit"
+        onMouseEnter={() => setVisible(true)}
+        onMouseLeave={() => setVisible(false)}
+        onFocus={() => setVisible(true)}
+        onBlur={() => setVisible(false)}
+      >
+        {children}
+      </button>
       {visible && (
         <div ref={tooltipRef} className="fixed z-[9999] pointer-events-none" style={style}>
           {!below && (

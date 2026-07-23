@@ -9,6 +9,7 @@
     "preview": "astro preview",
     "lint": "biome lint --error-on-warnings .",
     "format": "biome format --write .",
+    "test": "vitest run",
     "typecheck": "astro check"
   },
   "dependencies": {
@@ -25,7 +26,12 @@
     "marked": "^18.0.3",
     "react": "^19.2.0",
     "react-dom": "^19.2.0",
+    "sanitize-html": "^2.17.0",
     "tailwindcss": "^4.1.16",
     "typescript": "^5.6.3"
+  },
+  "devDependencies": {
+    "@types/sanitize-html": "^2.16.0",
+    "vitest": "^4.1.5"
   }
 }

@@ -29,6 +29,12 @@ jobs:
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
 
+      - name: Validate Lab
+        run: |
+          pnpm --filter @webrex/lab lint
+          pnpm --filter @webrex/lab typecheck
+          pnpm --filter @webrex/lab test
+
       - name: Deploy to Cloudflare Workers
         uses: cloudflare/wrangler-action@v3
         with:

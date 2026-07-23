@@ -64,6 +64,13 @@ describe('redact()', () => {
       expect(result.redacted).not.toContain('abcdefghijk');
       expect(result.redacted).toContain('REDACTED_BEARER');
     });
+
+    it('redacts a raw JWT stored in a JSON token field', () => {
+      const input = '"token":"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjEyMzQ1NjcsIm5hbWUiOiJEZW1vIn0.signature"';
+      const result = redact(input);
+      expect(result.redacted).not.toContain('eyJhbGciOiJIUzI1NiI');
+      expect(result.redacted).toContain('REDACTED_BEARER');
+    });
   });
 
   describe('email redaction', () => {
@@ -134,6 +141,13 @@ describe('redact()', () => {
       const input = 'Check http://staging.local/settings';
       const result = redact(input);
       expect(result.redacted).not.toContain('staging.local');
+      expect(result.redacted).toContain('REDACTED_INTERNALURL');
+    });
+
+    it('redacts hostnames with the internal prefix', () => {
+      const input = 'Open https://internal.webrex.dev/admin/dashboard';
+      const result = redact(input);
+      expect(result.redacted).not.toContain('internal.webrex.dev');
       expect(result.redacted).toContain('REDACTED_INTERNALURL');
     });
 
